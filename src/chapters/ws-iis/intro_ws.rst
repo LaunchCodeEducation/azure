@@ -65,9 +65,9 @@ Recall that both the Azure CLI and the web portal GUI are backed by the same RES
 
 .. admonition:: tip
 
-    Unlike the browser console you can use the ``az CLI`` to issue RunCommands to *multiple machines at once* using their resource IDs!
+    Unlike the browser console you can use the ``az CLI`` to issue RunCommands to *multiple machines at once* using their resource IDs (VM identities)!
 
-Within the Azure CLI the ``vm`` Sub-Group ``run-command`` can be used to toggle commonly machine settings or execute complete scripts remotely. Every RunCommand command corresponds to a unique ID which you can view using ``list``:
+Within the Azure CLI the ``vm`` Sub-Group ``run-command`` can be used to toggle commonly machine settings or execute complete scripts remotely. Every RunCommand has a unique name known as its ``command-id`` which you can view using ``list``:
 
 .. sourcecode:: powershell
     :caption: assumes the default location has been configured
@@ -83,6 +83,37 @@ To issue a RunCommand use the ``invoke`` Command:
     :caption: assumes a default RG, location and VM have been configured
 
     > az vm run-command invoke --command-id <command ID>
+
+Here is an example that will invoke a pre-written script. This is the command-line equivalent of pasting the script into the RunCommand console in the browser. You can run any number of scripts using the ``--scripts`` argument. These can be quoted or references to files on your machine.
+
+.. admonition:: tip
+
+  For Windows VMs you should use ``RunPowerShellScript`` and for Linux VMs use ``RunShellScript``. Note that this is in reference to the remote VM you are interacting with *not the OS of your local machine*. 
+
+Here is an example of simply listing files in the home directory. For Windows we use ``Get-ChildItem`` and for Linux its equivalent ``ls``. 
+
+.. sourcecode:: powershell
+    :caption: assumes a default RG, location and VM have been configured
+
+    # for a windows VM run a PowerShell script (uses PowerShell in the VM)
+    > az vm run-command invoke --command-id RunPowerShellScript --scripts "Get-ChildItem"
+
+    # for a linux VM run a Shell script (uses the default shell of the VM)
+    > az vm run-command invoke --command-id RunShellScript --scripts "ls"
+
+For longer scripts than one-off commands like above you will want to reference pre-written script files on your local machine. You can do this using the ``@/path/to/script`` syntax. 
+
+Here is an example that uses a script file located in the home (``~``) directory called ``myscript.<ext>`` with the appropriate extension (PowerShell or BASH) corresponding to the OS of the remote VM.
+
+.. sourcecode:: powershell
+    :caption: assumes a default RG, location and VM have been configured
+
+    # myscript.ps is a PowerShell script
+    > az vm run-command invoke --command-id RunPowerShellScript --scripts @~/myscript.ps
+
+    # myscript.sh is a BASH script
+    > az vm run-command invoke --command-id RunShellScript --scripts @~/myscript.sh
+
 
 Remote Desktop Protocol (RDP)
 -----------------------------
