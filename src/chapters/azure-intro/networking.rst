@@ -34,7 +34,7 @@ Examples of valid IP addresses:
 
 You have already worked with one special IP address the **loopback** IP Address. The loopback IP Address is represented as ``127.0.0.1`` and when requests are made to this address the request is sent back to the machine that made the request. We have done this throughout the class when running our C#.NET web applications, and to access the web app we would make a request to 127.0.0.1 in our browser.
 
-.. admonition: fun fact
+.. admonition:: fun fact
 
    The Loopback Interface was designed specifically for developers to simulate networking from within a single host machine. The IP address ``127.0.0.1`` or *home IP* is mapped to the aptly named host name ``localhost`` which you have undoubtedly used many times!
 
