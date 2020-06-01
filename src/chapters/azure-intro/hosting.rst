@@ -11,7 +11,7 @@ This is where the idea of Hosting, or Deploying comes in. We will look at both o
 Local Hosting
 =============
 
-Before we deploy any applications to a remote server, or cloud environment let's discuss the steps for deploying an application to your local machine.
+Before we deploy any applications to a remote server or cloud environment let's discuss the steps for deploying an application to your local machine.
 
 Throughout this class you have predominately run your applications with your IDE Visual Studio. You simply click the green play button and your application springs to life. However our remote server will not have access to Visual Studio and will need to run our application in a different way.
 
@@ -83,7 +83,7 @@ Cloud Hosting allows us to overcome these issues by providing us with an always 
 
 Cloud is a term used a lot in technology, but it's really just a collection of servers that are available on the internet, they usually contain additional services like data backup, or privacy in the form of authentication, or encryption, and more.
 
-You can setup  your own servers and configure them to always be on, and to have public facing IP addresses however this can take a fair amount of setup. Most companies these days use Cloud Hosting Providers that do this configuration for them. So you no longer need to own a server to access a server. YOu simply rent one from a cloud services provider. Microsoft Azure is one of these Cloud Services Provider, and the tool we will be using throughout this class.
+You can setup  your own servers and configure them to always be on, and to have public facing IP addresses however this can take a fair amount of setup. Most companies these days use Cloud Hosting Providers that do this configuration for them. So you no longer need to own a server to access a server. You simply rent one from a cloud services provider. Microsoft Azure is one of these Cloud Services Provider, and the tool we will be using throughout this class.
 
 Using Azure we can easily, quickly, and cheaply start up our own server that has a public IP address, is always on, and can be configured with a DNS.
 
