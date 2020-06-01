@@ -249,6 +249,18 @@ Let's create our VM! Note that this command will take some time to complete.
 
     $ az vm create -n <name>-linux-vm --size "Standard_B2s" --image "$image_urn" --admin-username "student" --assign-identity
 
+.. admonition:: note
+
+  If you receive the following error output:
+
+  .. sourcecode:: bash
+
+    An RSA key file or key value must be supplied to SSH Key Value.
+    
+    You can use --generate-ssh-keys to let CLI generate one for you
+
+  You can fix this by reissuing the command and appending ``--generate-ssh-keys`` after ``--assign-identity``. We will learn about SSH, RSA keys and how they relate to this message in later lessons.    
+
 You should receive an output like this:
 
 .. sourcecode:: bash
