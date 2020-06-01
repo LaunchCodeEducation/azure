@@ -99,7 +99,7 @@ You are given a public IP address by your ISP when you connect to the internet t
 
    Even though every machine on the internet has an IP address, not every machine or network is configured to be accessed via the internet. Your LAN has a public IP address, but is not configured to be accessed by end users of the internet. If someone else makes a request to your public IP address it will be shut down by your router, and no payload will be sent back to whoever made the request. This is true for all machines on the internet. They must first be configured to allow traffic through before websites, web apps, or services can be accessed through the internet.
 
-Additionally, every website, web app, or service on the internet is hosted on a a machine and each machine has a public IP address. When you want to access the website, web app, or service you must make a request to their machine's public IP address. To simplfy this process instead of using public IP Addresses we typically use a domain name.
+Additionally, every website, web app, or service on the internet is hosted on a a machine and each machine has a public IP address. When you want to access the website, web app, or service you must make a request to their machine's public IP address. To simplfy this process we typically use a domain name instead of a public IP address.
 
 A **Domain Name System** is a naming system for IP addresses, and domain names. 
 
