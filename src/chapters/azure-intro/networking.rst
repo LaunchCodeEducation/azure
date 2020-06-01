@@ -86,7 +86,7 @@ The **internet** is a collection of inter-connected public networks. You can thi
 
 To access the internet you must go through an **Internet Service Provider (ISP)** an organization that controls a network that is already configured as one of the networks on the internet. Your ISP will provide you with an IP address on their network, that has access to the greater internet.
 
-Once you have been delgated a public IP address from your ISP you can access other computers, or servers on the greater internet. For example to view the curriculum of this class you opened a web browser and navigated to ``education.launchcode.org``.
+Once you have been delgated a public IP address from your ISP you can access other computers, or servers on the greater internet. For example to view the curriculum of this class you opened a web browser and navigated to ``education.launchcode.org``. Your browser uses the public IP address that was assigned to your LAN and accesses the public internet through the network established by the ISP. Once the request your browser makes gets to the public internet the URL ``education.launchcode.org`` can be resolved to an IP address where the website resources are located, and the resources are sent back to your browser where they are rendered.
 
 Public IP Addresses
 ^^^^^^^^^^^^^^^^^^^
@@ -99,7 +99,7 @@ You are given a public IP address by your ISP when you connect to the internet t
 
    Even though every machine on the internet has an IP address, not every machine or network is configured to be accessed via the internet. Your LAN has a public IP address, but is not configured to be accessed by end users of the internet. If someone else makes a request to your public IP address it will be shut down by your router, and no payload will be sent back to whoever made the request. This is true for all machines on the internet. They must first be configured to allow traffic through before websites, web apps, or services can be accessed through the internet.
 
-Additionally, every website, web app, or service on the internet is hosted on a a machine and each machine has a public IP address. When you want to access the website, web app, or service you must make a request to their machine's public IP address. To simplfy this process, instead of using public IP Addresses we typically use a domain name.
+Additionally, every website, web app, or service on the internet is hosted on a a machine and each machine has a public IP address. When you want to access the website, web app, or service you must make a request to their machine's public IP address. To simplfy this process instead of using public IP Addresses we typically use a domain name.
 
 A **Domain Name System** is a naming system for IP addresses, and domain names. 
 
