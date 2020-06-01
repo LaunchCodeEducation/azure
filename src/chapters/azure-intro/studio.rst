@@ -24,7 +24,7 @@ You will see a configuration for Swagger on ``line 25``:
 
 .. sourcecode:: csharp
    :lineno-start: 25
-   :emphasize-lines: 31,32
+   :emphasize-lines: 7,8
    :caption: CodingEventsAPI/CodingEventsAPI.csproj
 
    services.AddSwaggerGen(

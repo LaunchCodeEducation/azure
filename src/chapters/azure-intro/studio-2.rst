@@ -23,7 +23,7 @@ You will see a configuration for Swagger on ``line 25``:
 
 .. sourcecode:: csharp
    :lineno-start: 25
-   :emphasis-lines: 31,32
+   :emphasize-lines: 7,8
    :caption: CodingEventsAPI/CodingEventsAPI.csproj
 
    services.AddSwaggerGen(
@@ -53,7 +53,7 @@ The Remote Server Machine
 
 Your development machine will also act as the remote server. After completing the steps in the previous section go ahead and deploy the application.
 
-As the final step open the Swagger documentation page `https://localhost:5001`_ in your browser from the local development machine. You should see the Swagger documentation you saw earlier.
+As the final step open the Swagger documentation page `https://localhost:5001 <https://localhost:5001>`_ in your browser from the local development machine. You should see the Swagger documentation you saw earlier.
 
 Now to connect to the API from another device. To do this you will need to know the private IP address of your development machine. There are multiple ways of doing this the easieast is to run ``ifconfig`` from a powershell (Windows) or bash (OSX/Linux) terminal or to run ``ipconfig`` from the command prompt (Windows).
 

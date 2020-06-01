@@ -22,7 +22,7 @@ Fork the Repo
 
 We will begin by forking the API repo onto our own accounts. This will allow us to make and push changes we make throughout the week. 
 
-First go to `Coding Events API Repo<https://github.com/launchcodeeducation/coding-events-api>`_. 
+First go to `Coding Events API Repo <https://github.com/launchcodeeducation/coding-events-api>`_. 
 
 At the top right corner select the **Fork** option:
 
@@ -73,7 +73,7 @@ We will simulate what it's like to run our application in the cloud by going thr
 Publish the API
 ---------------
 
-There are multiple ways to publish your project and even more to customize how it is packaged. In this course we will focus on the `self-contained<https://docs.microsoft.com/en-us/dotnet/core/deploying/#publish-self-contained>`_ strategy with options to build a single executable project file. Rather than using our IDE we will use the ``dotnet`` CLI tool to get comfortable working from the command line.
+There are multiple ways to publish your project and even more to customize how it is packaged. In this course we will focus on the `self-contained <https://docs.microsoft.com/en-us/dotnet/core/deploying/#publish-self-contained>`_ strategy with options to build a single executable project file. Rather than using our IDE we will use the ``dotnet`` CLI tool to get comfortable working from the command line.
 
 First navigate to your cloned repo (solution) directory. In the cloning example above the path to that directory was ``~/coding-projects/azure/coding-events-api``:
 
@@ -123,4 +123,4 @@ Within the ``CodingEventsAPI/bin/Release/netcoreapp3.1/linux-x64/publish/`` dire
 
    $ ./CodingEventsAPI/bin/Release/netcoreapp3.1/linux-x64/publish/CodingEventsAPI
 
-Now you can navigate to `https://localhost:5001`_ and view the Swagger API documentation!
+Now you can navigate to `https://localhost:5001 <https://localhost:5001>`_ and view the Swagger API documentation!
