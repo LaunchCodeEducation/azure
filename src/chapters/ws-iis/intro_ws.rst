@@ -115,14 +115,40 @@ Here is an example that uses a script file located in the home (``~``) directory
     > az vm run-command invoke --command-id RunShellScript --scripts @~/myscript.sh
 
 
-Remote Desktop Protocol (RDP)
------------------------------
+Remote Desktop Protocol
+-----------------------
+
+The Remote Desktop Protocol (RDP) is a tool used for accessing the GUI desktop of a remote Windows machine. Note that the Windows machine can be physical or virtual but in our case we will always use RDP with VMs. Instead of interacting with the machine using the command line you can use the VM as if it were right in front of you! 
+
+It is often used by technical support staff to help enterprise and consumer customers debug issues on their machines. But RDP is great for DevOps engineers to troubleshoot and configure things manually where a full desktop experience is preferred. 
+
+One common use case for RDP is to interact with machines that exist within a protected network. These operational machines are typically referred to as **jump-boxes**. In order to protect production machines RDP is locked down to only accept remote access connections from within the protected network. 
+
+Jump-boxes are configured to expose RDP access only to developers of the company identified by their IP address or other more advanced mechanisms. They can RDP into the jump-box and from there *jump to* other machines within the protected network for troubleshooting and configuration.
+
+This strategy minimizes the attack vectors of the system. Instead of having to worry about *all of the machines* having public RDP access only a few jump-boxes need to be monitored. From there access control between the jump-boxes and production machines can be carefully controlled and monitored.
 
 MSTSC
 ^^^^^
 
-Windows Remote Management (WinRM)
----------------------------------
+Windows provides the ``mstsc`` command-line utility for creating an RDP session between your local machine and a remote VM. Access is very simple and only requires the public IP address of the VM and the login credentials. In more advanced 
+
+Here is the general form of using ``mstsc``:
+
+.. sourcecode:: powershell
+
+  > mstsc /v:<public IP address>
+
+This will prompt you for a username and password to access the VM. Once those are entered a new window will appear that provides the full desktop GUI of the remote machine! We will practice using RDP in the upcoming exercises.
+
+.. admonition:: note
+
+  Desktop access over RDP inherently requires the VM to have the desktop GUI running. If the VM is using the ``Windows Server Core`` OS then only a PowerShell terminal is presented by default.
+
+Windows Remote Management
+-------------------------
+
+Windows Remote Management (WinRM) 
 
 PS-Session
 ^^^^^^^^^^
