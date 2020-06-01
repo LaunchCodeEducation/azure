@@ -8,6 +8,7 @@ In this class we will cover the basics of networking. Networking is an important
 Networking refers to both private networks (home network, office network), and public networks (the internet, a university/organization intranet).
 
 There are two types of networks:
+
 - Private Intranets
 - Public Internet
 
