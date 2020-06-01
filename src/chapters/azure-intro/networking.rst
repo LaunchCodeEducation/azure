@@ -12,7 +12,7 @@ There are two types of networks:
 - Private Intranets
 - Public Internet
 
-Intranets are private networks that range from local networks like in your home to wider corporate networks that span multiple locations. Modern intranets also include private virtual networks that can be provisioned and managed from CSPs like Azure. The internet itself is a public world-wide network that interconnects machines across homes, companies and governments.
+Intranets are private networks that range from local networks like in your home to wider corporate networks that span multiple locations. Modern intranets also include private virtual networks that can be provisioned and managed from CSPs like Azure. The internet is a public world-wide network that interconnects machines across homes, companies and governments.
 
 IP Addresses
 ------------
