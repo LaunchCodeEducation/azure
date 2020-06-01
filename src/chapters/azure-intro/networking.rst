@@ -119,7 +119,7 @@ As a final precursor to web hosting we need to learn a little about computer pro
 Server Processes
 ----------------
 
-A computer **process** is an actively running instance of a program. Every time you launch an application on your computer the operating system creates at least one process that runs the entire time the application is open. When you run your code, similarly the operating system creates at least one process for your application code, the process will stay alive until the application starts running. Anytime an application is open, running, or idling in the background the operating system has at least one process running managing the applications access to the operating system, and hardware.
+A computer **process** is an actively running instance of a program. Every time you launch an application on your computer the operating system creates at least one process that runs the entire time the application is open. When you run your code, similarly the operating system creates at least one process for your application code, the process will stay alive until the application starts running. Anytime an application is open, running, or idling in the background the operating system has at least one process running managing the applications access to the operating system and hardware.
 
 A process will always have a process ID (PID), and some information about what application the process is associated with, this varies between OS, and is sometimes a path to the program using the process, or the name of the program, etc.
 
