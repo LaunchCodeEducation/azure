@@ -118,32 +118,42 @@ Here is an example that uses a script file located in the home (``~``) directory
 Remote Desktop Protocol
 -----------------------
 
-The Remote Desktop Protocol (RDP) is a tool used for accessing the GUI desktop of a remote Windows machine. Note that the Windows machine can be physical or virtual but in our case we will always use RDP with VMs. Instead of interacting with the machine using the command line you can use the VM as if it were right in front of you! 
+The Remote Desktop Protocol (RDP) is a protocol developed by Microsoft for accessing the GUI desktop of a remote Windows machine. The remote machine can be physical or virtual but in our case we will always use RDP with Windows Server VMs. Instead of interacting with the machine using the command line you can use the VM as if it were right in front of you! 
 
 It is often used by technical support staff to help enterprise and consumer customers debug issues on their machines. But RDP is great for DevOps engineers to troubleshoot and configure things manually where a full desktop experience is preferred. 
 
-One common use case for RDP is to interact with machines that exist within a protected network. These operational machines are typically referred to as **jump-boxes**. In order to protect production machines RDP is locked down to only accept remote access connections from within the protected network. 
+Jump-Boxes
+^^^^^^^^^^
 
-Jump-boxes are configured to expose RDP access only to developers of the company identified by their IP address or other more advanced mechanisms. They can RDP into the jump-box and from there *jump to* other machines within the protected network for troubleshooting and configuration.
+One common use case for RDP is to remotely access machines that exist within a protected network. These operational machines are typically referred to as **jump-boxes**. In order to protect production machines their network and firewall configurations are locked down to only accept connections using private IP addresses of machines that are connected to the protected network. 
 
-This strategy minimizes the attack vectors of the system. Instead of having to worry about *all of the machines* having public RDP access only a few jump-boxes need to be monitored. From there access control between the jump-boxes and production machines can be carefully controlled and monitored.
+Jump-boxes on the other hand are configured to expose the RDP port on a public IP address. For security reasons they are typically configured to expose RDP access only to developers of the company by using an IP address whitelist or other more advanced mechanisms. 
+
+Developers can first RDP into the jump-box and from there *jump to* other machines within the protected network for troubleshooting and configuration. You can think of the jump-box like a middle man between the developer's local machine and the protected machines.
+
+.. todo:: replace with proper diagram
+
+.. image:: /_static/images/ws/jump-box.jpg
+
+This strategy minimizes the attack vectors of the system. Instead of having to worry about *all of the machines* having public IP addresses and RDP access only a few jump-boxes are exposed. Often times these boxes are started and stopped as needed to further protect their usage. From these minimal entry points to the system the access between the jump-boxes and production machines can be carefully restricted, monitored and logged.
 
 MSTSC
 ^^^^^
 
-Windows provides the ``mstsc`` command-line utility for creating an RDP session between your local machine and a remote VM. Access is very simple and only requires the public IP address of the VM and the login credentials. In more advanced 
+Windows provides the ``mstsc`` command-line utility for creating an RDP session between your local and remote machine. Opening an RDP session is very simple and only requires the public IP address of the VM and the login credentials.
 
 Here is the general form of using ``mstsc``:
 
 .. sourcecode:: powershell
+  :caption: mstsc is available on Windows machines
 
   > mstsc /v:<public IP address>
 
-This will prompt you for a username and password to access the VM. Once those are entered a new window will appear that provides the full desktop GUI of the remote machine! We will practice using RDP in the upcoming exercises.
+This will prompt you for a username and password to access the VM. Once those are entered a new window will appear that provides the full desktop GUI of the remote machine! We will get to practice using RDP in the upcoming exercises.
 
 .. admonition:: note
 
-  Desktop access over RDP inherently requires the VM to have the desktop GUI running. If the VM is using the ``Windows Server Core`` OS then only a PowerShell terminal is presented by default.
+  Desktop access over RDP inherently requires the VM to have the desktop GUI shell installed. If the VM is using the ``Windows Server Core`` OS then only a PowerShell terminal is presented during an RDP session.
 
 Windows Remote Management
 -------------------------
