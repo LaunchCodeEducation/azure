@@ -9,9 +9,9 @@ Virtual Machine
 
 A Virtual Machine is a highly customizable virtual computer with an accessible Operating System.
 
-From Microsoft: A virtual machine is a computer file, typically called an image, that behaves like an actual computer. It's virtual in the fact that's it's an operating system on an already existing operating system that is configured to behave like a standalone computer.
+From Microsoft: A **virtual machine** is a computer file, typically called an image, that behaves like an actual computer. It's virtual in the fact that's it's an operating system on an already existing operating system that is configured to behave like a standalone computer.
 
-You can create and access a virtual machine in a couple of different ways from the Azure Web Dashboard, or using the Azure-CLI, in this class we will always create Virtual Machines from the Azure Web Dashboard.
+You can create and access a virtual machine in a couple of different ways from the Azure Web Dashboard, or using the Azure-CLI we will use both tools to start virtual machines, but today we will focus solely on the Web Dashboard.
 
 You can provision a Virtual Machine from the Azure Dashboard by accessing the Virtual machines blade.
 
@@ -29,7 +29,7 @@ This screen contains a few tabs worth of options that allow you to configure the
 
 After you finish the form to create your VM Azure takes a couple of minutes, but will provide you with a public IP address for the machine, and you will be able to connect to it to configure the machine to run whatever application you may have.
 
-In your studio today we will take you through the steps to create your first VM and deploy an application to the VM!
+In your activities today we will take you through the steps to create your first VM and deploy an application to the VM!
 
 Virtual Machine Benefits
 ========================
@@ -53,7 +53,7 @@ Configurable
 
 Azure gives us lots of different options for our VMs. We can fine tune the hardware that is available by dictating exactly how much RAM, how powerful the CPU is, and how much disk storage the VM has access to.
 
-Outside of hardware configuration we can choose the image, or Operating System of our VM. We can choose various Linux, Windows, or MacOS Operating Systems. Most of these options can be further configured by choosing the major and minor versions of the images.
+Outside of hardware configuration we can choose the image, or Operating System, of our VM. We can choose various Linux, Windows, or MacOS Operating Systems. Most of these options can be further configured by choosing the major and minor versions of the images.
 
 After choosing our hardware, and image, we can then install any additional software to our VM. We can install mysql-cli, git, dotnet, nginx, etc.
 
@@ -64,7 +64,7 @@ Parity
 
 Since the Virtual Machine can be configured to use many different images, and you can install whatever technical stack you want you can achieve a higher level of parity.
 
-Parity is equivalence between the development environment and production environment. In some instances you may develop and use a slightly different tech stack than the server. Since we can control our server we control the tech stack, and therefore can use the same tech stack for development and production.
+**Parity** is equivalence between the development environment and production environment. In some instances you may develop and use a slightly different tech stack than the server. Since we can control our server we control the tech stack, and therefore can use the same tech stack for development and production.
 
 Scalable
 --------
