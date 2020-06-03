@@ -122,9 +122,13 @@ There are many other use cases and features of the VM ``run-command`` Sub-Group.
 Remote Desktop Protocol
 -----------------------
 
-The Remote Desktop Protocol (RDP) is a protocol developed by Microsoft for accessing the GUI desktop of a remote Windows machine. The remote machine can be physical or virtual but in our case we will always use RDP with Windows Server VMs. Instead of interacting with the machine using the command-line you can use the VM as if it were right in front of you! 
+The Remote Desktop Protocol (RDP) is a protocol developed by Microsoft for accessing the GUI desktop of a remote Windows machine. The remote machine can be physical or virtual but in our case we will always use RDP with Windows Server VMs. Instead of interacting with the machine using the command-line you can use the VM as if it were right in front of you!
 
 RDP is often used by technical support staff to help enterprise and consumer customers debug issues on their machines. But RDP is great for DevOps engineers to troubleshoot and configure things manually where a full desktop experience is preferred. 
+
+.. admonition:: fun fact
+
+  RDP is used as both a noun, referring to the protocol itself, and as a verb, referring to the "act of RDP-ing into a machine"!
 
 Jump-Boxes
 ^^^^^^^^^^
