@@ -13,7 +13,7 @@ Now that we have learned about remote access mechanisms and the IIS Manager it's
 
 .. admonition:: note
 
-  This walkthrough requires a local Windows machine in order to use RDP. Some of the ``az CLI`` steps are shown in both Windows/PowerShell and Linux/BASH to illustrate that they can work cross-platform with minor syntactical changes.
+  This walkthrough **requires a local Windows machine in order to use RDP**. Some of the ``az CLI`` steps are shown in both Windows/PowerShell and Linux/BASH to reinforce the cross-platform nature of the tool with minor syntactical changes.
   
 
 Provision the VM
@@ -75,32 +75,94 @@ To create our VM we will use most of the same Arguments as we did when creating 
 
   $ az vm create -n ws-vm --size "Standard_B2s" --image "$ws_image_urn" --admin-username "student" --admin-password "LaunchCde-@zure1" --assign-identity
 
-Once the VM is created let's set is as the default VM and capture its public IP address in a variable so we can use it to RDP into the machine:
+Once the VM is created let's set is as the default VM: 
 
 .. sourcecode:: powershell
   :caption: Windows/PowerShell
 
   > az configure -d vm=ws-vm
 
-  > $VmPublicIp=$(az vm list-ip-addresses --query "[0].virtualMachine.network.publicIpAddresses[0].ipAddress")
-
 .. sourcecode:: bash
   :caption: Linux/BASH
 
   $ az configure -d vm=ws-vm
 
-  # output in tsv format
-  $ vm_public_ip=$(az vm list-ip-addresses -o tsv --query "[0].virtualMachine.network.publicIpAddresses[0].ipAddress")
-
 
 Set up & Explore IIS
 ====================
 
+Now that we have our Windows Server VM we can get our first taste of using RDP. We will use RDP to enter the desktop of the VM and configure it to deploy our sample application.
+
+.. admonition:: note
+
+  **You must use a local Windows machine in order to RDP into the VM using ``mstsc``**
+
+
 RDP into the VM
 ---------------
 
+In order to RDP into a machine you need (at minimum):
+
+- the IP address 
+- username: ``student``
+- password: ``LaunchCode-@zure1``
+
+Since we have set the VM as our default we can use the ``list-ip-addresses`` Command and a query filter to get its value. We will capture the public IP address in a variable so we can use it to RDP into the machine:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > $VmPublicIp=$(az vm list-ip-addresses --query "[0].virtualMachine.network.publicIpAddresses[0].ipAddress")
+
+.. sourcecode:: bash
+  :caption: Linux/BASH
+
+  # output in tsv format
+  $ vm_public_ip=$(az vm list-ip-addresses -o tsv --query "[0].virtualMachine.network.publicIpAddresses[0].ipAddress")
+
+Now we can use the built-in ``mstsc`` command-line utility to open an RDP session with the machine:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > mstsc /v:"$VmPublicIp"
+
+This will begin the RDP authentication process and prompt you to enter your credentials:
+
+.. image:: /_static/images/ws/rdp-credentials.png
+  :alt: RDP credentials prompt
+
+The first time you connect to a remote machine (using default RDP settings) you will need to confirm that you trust the remote machine you are connecting to. Select "don't ask me again" and confirm:
+
+.. image:: /_static/images/ws/rdp-trust-remote-server.png
+  :alt: RDP trust remote server prompt
+
+A new window will appear that gives you access to the full desktop of the remote machine! If you are prompted to make the machine "discoverable on the network" select "no". 
+
+The Server Manager
+^^^^^^^^^^^^^^^^^^
+
+The Server Manager application will then open to the dashboard overview:
+
+.. image:: /_static/images/ws/server-manager-dashboard.png
+:alt: Windows Server Manager dashboard view
+
+The SM can be used to manage fleets of servers. But for our purposes we will only interact with a single server. You can select the ``Local Server`` tab on the left to switch to a view specific to the current VM:
+
+.. image:: /_static/images/ws/server-manager-local.png
+:alt: Windows Server Manager local server view
+
 Install IIS Server Manager
 --------------------------
+
+Enable the Role
+^^^^^^^^^^^^^^^
+
+Enable the Features
+^^^^^^^^^^^^^^^^^^^
+
+Explore the IIS Server Manager
+------------------------------
 
 Connect to the default site within the VM
 ------------------------------------------
