@@ -22,7 +22,9 @@ Provision the VM
 Create a Resource Group
 -----------------------
 
-As always we will begin by creating a resource group. This time we will combine the creating and configuring the default into one step! Notice how we use the ``--query`` Argument to have the output of the ``create`` Command be just the name of the new RG. We perform all of this within an in-line evaluation so the output (the RG name) can be assigned as the default group value:
+As always we will begin by creating a resource group. This time we will combine creating and configuring it as the default group into one step! 
+
+Notice how we use the ``--query`` Argument to have the output of the ``create`` Command be just the name of the new RG. We perform all of this within an in-line evaluation so the output (the RG name) can be assigned as the default group value:
 
 .. sourcecode:: powershell
   :caption: Windows/PowerShell
@@ -78,14 +80,9 @@ To create our VM we will use most of the same Arguments as we did when creating 
 Once the VM is created let's set is as the default VM: 
 
 .. sourcecode:: powershell
-  :caption: Windows/PowerShell
+  :caption: either shell
 
   > az configure -d vm=ws-vm
-
-.. sourcecode:: bash
-  :caption: Linux/BASH
-
-  $ az configure -d vm=ws-vm
 
 
 Set up & Explore IIS
@@ -95,7 +92,7 @@ Now that we have our Windows Server VM we can get our first taste of using RDP. 
 
 .. admonition:: note
 
-  **You must use a local Windows machine in order to RDP into the VM using ``mstsc``**
+  **You must use a local Windows machine in order to RDP into the VM using** the pre-installed ``mstsc`` utility.
 
 
 RDP into the VM
@@ -132,25 +129,39 @@ This will begin the RDP authentication process and prompt you to enter your cred
 .. image:: /_static/images/ws/rdp-credentials.png
   :alt: RDP credentials prompt
 
-The first time you connect to a remote machine (using default RDP settings) you will need to confirm that you trust the remote machine you are connecting to. Select "don't ask me again" and confirm:
+The first time you connect to a remote machine (using default RDP settings) you will need to confirm that you trust it. This is due to the default usage of a self-signed server certificate in the VM. The discussion of Public Key Infrastructure (PKI) and certificates is outside of the scope of this course but in this context the warning is nothing to be concerned about.
+
+
+.. admonition:: tip
+
+  In a production setting you would likely `configure a Group Policy Object <https://www.derekseaman.com/2018/12/trusted-remote-desktop-services-ssl-certs-for-win10-2019.html>`_ (GPO) for enforcing trusted connections. If you are curious feel free to look over that link but do not be concerned if it goes over your head! 
+
+For now you can select "don't ask me again" and confirm to continue:
 
 .. image:: /_static/images/ws/rdp-trust-remote-server.png
   :alt: RDP trust remote server prompt
 
-A new window will appear that gives you access to the full desktop of the remote machine! If you are prompted to make the machine "discoverable on the network" select "no". 
+If everything goes well a new window will appear that gives you access to the full desktop of the remote machine!
 
-The Server Manager
-^^^^^^^^^^^^^^^^^^
+Using the Server Manager
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Server Manager application will then open to the dashboard overview:
 
 .. image:: /_static/images/ws/server-manager-dashboard.png
-:alt: Windows Server Manager dashboard view
+  :alt: Windows Server Manager dashboard view
 
-The SM can be used to manage fleets of servers. But for our purposes we will only interact with a single server. You can select the ``Local Server`` tab on the left to switch to a view specific to the current VM:
+The SM can be used to monitor and manage fleets of servers, but for our purposes we will focus on a single server. You can select the ``Local Server`` tab on the left to switch to a view specific to the current VM:
 
 .. image:: /_static/images/ws/server-manager-local.png
-:alt: Windows Server Manager local server view
+  :alt: Windows Server Manager local server view
+
+Take a moment to explore this section of the SM. You can find details about how the server is configured as well as live statistics like CPU and memory usage.
+
+.. image:: /_static/images/ws/server-manager-local-usage-stats.png
+  :alt: Windows Server Manager local server usage statistics
+
+
 
 Install IIS Server Manager
 --------------------------
