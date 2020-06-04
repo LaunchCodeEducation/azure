@@ -158,16 +158,55 @@ This will prompt you for a username and password to access the VM. Once those ar
 Windows Remote Management
 -------------------------
 
-Windows Remote Management (WinRM) 
+Outside of RDP, and MSTSC there are other ways of connecting to a remote Windows machine. Throughout this class we will work with connecting with remote machines that are associated with Azure by using the Azure CLI, you will see multiple examples throughout this class showing you these tools.
+
+Another way is connecting to a Windows Machine with a remote PowerShell session, or by running an Invoke-Command that executes a single PowerShell command or script on a machine. Both of these tools are very powerful when you need to access a Windows machine that is running on a network you can access.
+
+Both Invoke-Command & Remote PowerShell uses Windows Remote Management (WinRM). 
+
+**Windows Remote Management** (WinRM) is the Microsoft implementation of WS-Management Protocol, a standard SOAP protocol that allows hardware and operating sytems to interoperate.
+
+.. note:: 
+
+   This class won't configure WinRM, or utilize New-PSSession or Invoke-Command however they are important tools for gaining access to remote Windows machines and you may use them in your career moving forward. Make a note of them and research them when you will need them on the job.
 
 PS-Session
 ^^^^^^^^^^
 
+One of the tools that uses WinRM is ``New-PSSession``. This is a Powershell module that allows you to connect to a remote Windows Machine via a Powershell session. When you create a ``New-PSSession`` your computer connects to a PowerShell session on the remote machine. This PowerShell session actually runs on the remote machine even though you are using it from your local machine.
+
+.. note::
+
+   In order to use New-PSSession and the other PSSession PowerShell modules you must be using Windows 10 Pro, Enterprise, or Student as these Operating Systems all come with the Hyper-V Module which is necessary for creating remote PS Sessions. This is not a module that can be added to Windows 10 Home, as the tool was not created for typical OS users.
+
+After activating the necessary requisites you can access a remote windows machine with a command like:
+
+.. sourcecode:: powershell
+
+   New-PSSession -VMId 484155ab-b52b-4d554-akk7f1540e80
+
+If you were to run this command you would be asked for credentials (username, and password for the VM) and then granted access to a PowerShell session on the remote machine.
+
+Although we won't use New-PSSession in this class you can learn more by searching for the New-PSSession documentation, or by typing ``Get-Help New-PSSession`` in a PowerShell terminal.
+
 Invoke-Command
 ^^^^^^^^^^^^^^
 
-Windows Admin Center
---------------------
+Entering in a new PowerShell session allows you to attach to the remote machine and you can run as many commands as you need. However, if you simply need to run one command on the remote machine using New-PSSession is unnecessary. So Microsoft has given us another tool that uses WinRM for simply running one command on the remote machine.
+
+``Invoke-Command`` gives you the ability to pass in one PowerShell command, or PowerShell script you want to execute on the remote Windows machine.
+
+In this class we won't play with Invoke-Command, but an example might look like:
+
+.. sourcecode:: powershell
+
+   Invoke-Command -computername 52.55.134.28 -credential student -filepath c:\user\scripts\some-script.ps
+
+The preceding command would run the PowerShell script found at ``c:\user\scripts\some-script.ps`` on the remote machine at the ip address ``52.55.134.28`` and has the username ``student``. The password for the student role would need to be entered before the script is sent to be run on the remote machine.
+
+Again we won't be using this command in this class, but you may use it in the future. You can find more information by searching the Microsoft documentation for Invoke-Command, or by entering ``Get-Help Invoke-Command`` in a PowerShell terminal.
 
 Next Step
 =========
+
+We learned about Windows Server, and some of the ways of interacting with remote Windows Server. You will get some practice with the concepts introduced in this article throughout the class. Even though you won't be shown all of the ways you can connect with a remote server, it is a good thing to remember that multiple ways of interacting with a server are possbile. Choosing the correct tool usually comes with time and practice, but knowing about this different ways should help you in your career.
