@@ -32,7 +32,7 @@ The default Windows Server VM image includes a full GUI shell just like Windows 
 WS Core
 ^^^^^^^
 
-Windows Server also comes in a nearly headless **Core** option which removes the majority of the desktop GUI leaving only a PowerShell terminal! Windows Server Core is even leaner than WS Desktop allowing you to start *from the core* and add just the features and applications you need. Windows Server Core represents an *unopinionated* server OS that leaves it to you to customize exactly what is needed for your use case. You can read more about the WS Core design and comparison to the more opinionated WS Desktop Experience `in this article<https://docs.microsoft.com/en-us/windows-server/administration/server-core/what-is-server-core>`_. 
+Windows Server also comes in a nearly headless **Core** option which removes the majority of the desktop GUI leaving only a PowerShell terminal! Windows Server Core is even leaner than WS Desktop allowing you to start *from the core* and add just the features and applications you need. Windows Server Core represents an *unopinionated* server OS that leaves it to you to customize exactly what is needed for your use case. You can read more about the WS Core design and comparison to the more opinionated WS Desktop Experience `in this article <https://docs.microsoft.com/en-us/windows-server/administration/server-core/what-is-server-core>`_. 
 
 Server Manager
 --------------
@@ -84,39 +84,41 @@ To issue a RunCommand use the ``invoke`` Command:
 
     > az vm run-command invoke --command-id <command ID>
 
-There are several RunCommand commands that perform specific actions on the remote machine. However, you will often want to run custom scripts or shell commands directly. Executing scripts remotely use the ``RunPowerShellScript`` and ``RunShellScript`` command IDs for Windows and Linux respectively.
+There are several RunCommand commands that perform pre-defined actions on the remote machine. However, you will often want to run custom scripts or individual shell commands directly. To execute scripts remotely you can use the ``RunPowerShellScript`` and ``RunShellScript`` command IDs for Windows and Linux VMs respectively.
 
-Using these RunCommand commands is the command-line equivalent of pasting the script into the RunCommand console in the browser. You can run any number of scripts using the ``--scripts`` argument. These can be single quoted shell commands or references to pre-written script files on your local machine.
+Using these RunCommand commands is the command-line equivalent of pasting the script into the RunCommand console in the browser. You can run any number of scripts using the ``--scripts`` argument. These can be individual shell commands written in quotes or file path references to pre-written scripts on your local machine.
 
 .. admonition:: tip
 
   For Windows VMs you should use ``RunPowerShellScript`` and for Linux VMs use ``RunShellScript``. Note that **this is in reference to the remote VM you are interacting with**, not the OS of your local machine that is issuing the RunCommand. 
 
-Here is an example of issuing single shell commands that simply list files in the home directory of the VM. For Windows we use the PowerShell``Get-ChildItem`` and for Linux its BASH equivalent ``ls``. 
+Here is an example of issuing single shell commands that simply list files in the home directory of the VM. For Windows we use the PowerShell ``Get-ChildItem`` and for Linux, its BASH equivalent, ``ls``. 
 
 .. sourcecode:: powershell
     :caption: assumes a default RG, location and VM have been configured
 
-    # for a windows VM run a PowerShell script (uses PowerShell in the VM)
+    # for a Windows VM run a PowerShell script (uses PowerShell in the VM)
     > az vm run-command invoke --command-id RunPowerShellScript --scripts "Get-ChildItem"
 
-    # for a linux VM run a Shell script (uses the default shell of the VM)
+    # for a Linux VM run a Shell script (uses the default shell of the VM, usually BASH)
     > az vm run-command invoke --command-id RunShellScript --scripts "ls"
 
 For longer scripts than one-off commands like the examples above you will want to reference pre-written script files on your local machine. You can do this using the ``@/path/to/script`` syntax. 
 
-Here is an example that uses a script file located in the home (``~``) directory called ``myscript.<ext>`` with the appropriate extension (PowerShell or BASH) corresponding to the OS of the remote VM.
+Here is an example that uses a script file located in the home (``~``) directory called ``myscript.<ext>`` with the appropriate extension for PowerShell or BASH corresponding to the CLI shell of the remote VM.
 
 .. sourcecode:: powershell
     :caption: assumes a default RG, location and VM have been configured
 
     # myscript.ps is a PowerShell script
-    > az vm run-command invoke --command-id RunPowerShellScript --scripts @~/myscript.ps
+    > az vm run-command invoke --command-id RunPowerShellScript --scripts @"~/myscript.ps"
 
     # myscript.sh is a BASH script
-    > az vm run-command invoke --command-id RunShellScript --scripts @~/myscript.sh
+    > az vm run-command invoke --command-id RunShellScript --scripts @"~/myscript.sh"
 
-There are many other use cases and features of the VM ``run-command`` Sub-Group. Remember that you can always explore it in more detail by using the ``-h`` Argument.
+After invoking the script it will output information about the result. By default the ``message`` property of the output object will show the ``stdout`` and ``stderr`` with newline characters (``\n``) between them. 
+
+One thing to keep in mind is that RunCommand is just as slow from the command-line as it is in the browser console. It can still be useful for executing on multiple machines at once but it is more common to use the other remote management mechanisms discussed below.
 
 
 Remote Desktop Protocol
@@ -141,7 +143,7 @@ For security reasons jump-boxes are configured to expose RDP access only to deve
 
 .. todo:: replace with proper diagram
 
-.. image:: /_static/images/ws/jump-box.jpg
+.. .. image:: /_static/images/ws/jump-box.jpg
 
 This strategy minimizes the *exposed network area* of the infrastructure much like the slimmed Windows Server OS minimizes the *exposed software area* for potential attacks. Instead of having to worry about *all of the machines* having public IP addresses and RDP access only a few jump-boxes are exposed. Often times these boxes are started and stopped on demand to further restrict their usage. From these minimal entry points to the system the access between the local machine, jump-boxes and production machines can be carefully restricted, monitored and logged.
 
