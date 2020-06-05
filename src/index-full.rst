@@ -2,8 +2,7 @@ Chapters
 ========
 
 .. toctree::
-   :numbered:
-   :maxdepth: 1
+   :maxdepth: 2
    :name: chapterstoc
 
    chapters/azure-intro/index
@@ -11,6 +10,9 @@ Chapters
    chapters/secrets-and-backing/index
    chapters/azure-adb2c/index
    chapters/authorization-and-next-steps/index
+
+   chapters/az-cli/index
+   chapters/ws-iis/index
 
 .. toctree::
 
