@@ -143,8 +143,8 @@ For now you can select "don't ask me again" and confirm to continue:
 
 If everything goes well a new window will appear that gives you access to the full desktop of the remote machine!
 
-Using the Server Manager
-^^^^^^^^^^^^^^^^^^^^^^^^
+Explore the Server Manager
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Server Manager application will then open to the dashboard overview:
 
@@ -156,24 +156,24 @@ The SM can be used to monitor and manage fleets of servers, but for our purposes
 .. image:: /_static/images/ws/server-manager-local.png
   :alt: Windows Server Manager local server view
 
-Take a moment to explore this section of the SM. You can find details about how the server is configured as well as live statistics like CPU and memory usage.
+Take a moment to explore this section of the SM. You can find details about how the server is configured as well as live performance statistics like CPU and memory usage.
 
 .. image:: /_static/images/ws/server-manager-local-usage-stats.png
   :alt: Windows Server Manager local server usage statistics
 
+Configure as a Web Server
+-------------------------
+
+Before we can host our application we need to configure our VM to operate as a Web Server using IIS. In the top right corner of the SM you will see a ``Manage`` dropdown containing an option to ``Add Roles and Features``. This will open the Roles and Features wizard::
+
+.. image:: /_static/images/ws/server-manager-add-roles-features.png
+  :alt: Windows Server Manager add Roles & Features
+
+Next select the 
 
 
-Install IIS Server Manager
---------------------------
-
-Enable the Role
-^^^^^^^^^^^^^^^
-
-Enable the Features
-^^^^^^^^^^^^^^^^^^^
-
-Explore the IIS Server Manager
-------------------------------
+Explore the IIS Console
+-----------------------
 
 Connect to the default site within the VM
 ------------------------------------------
