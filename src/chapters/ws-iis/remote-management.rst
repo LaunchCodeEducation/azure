@@ -177,8 +177,9 @@ Entering an interactive session with ``Enter-PSSession`` allows you to attach to
 ``Invoke-Command`` gives you the ability to pass in one PowerShell command, or local PowerShell script, you want to execute on the remote Windows machine:
 
 .. sourcecode:: powershell
+  :caption: Windows/PowerShell
 
-   Invoke-Command -ComputerName 52.55.134.28 -credential student -filepath c:\user\scripts\some-script.ps
+  > Invoke-Command -ComputerName 52.55.134.28 -credential student -filepath c:\user\scripts\some-script.ps
 
 The preceding command would run the PowerShell script found at ``c:\user\scripts\some-script.ps`` on the remote machine at the IP address ``52.55.134.28`` and using the username ``student``. The password for the student role would need to be entered before the script is sent to be run on the remote machine.
 

@@ -19,7 +19,7 @@ This is a process you can carry with you as you continue to work with the ``az C
 
 .. note::
 
-    As a cross-platform tool all of the base commands will work the same on any OS or shell. In some cases we will utilize shell-specific syntax to accomplish our tasks. Where there are syntactical differences the commands for both Linux/BASH and Windows/PowerShell will be presented.
+    As a cross-platform tool all of the base commands will work the same on any OS or shell. In some cases we will utilize shell-specific syntax to accomplish our tasks. Where there are syntactical differences the commands for both Linux/BASH and Windows/PowerShell will be presented. Otherwise you can freely use the commands in either shell.
 
 Setup
 =====
@@ -37,7 +37,7 @@ Once you are logged in you can make use of the global ``configure`` Command to s
 
 .. sourcecode:: powershell
 
-    # -d can also be used as a shorthand 
+    # -d can also be used as a shorthand for --default 
     > az configure --default location=eastus
 
 Now any resource that has a required Argument of ``--location`` or ``-l`` will automatically have ``eastus`` set as its value.
@@ -50,13 +50,13 @@ Now any resource that has a required Argument of ``--location`` or ``-l`` will a
 
     .. sourcecode:: powershell
 
-        # -l can also be used as a shorthand
+        # -l can also be used as a shorthand for --list-defaults
         > az configure --list-defaults
 
 Resource Groups
 ===============
 
-As always we will begin by provisioning a resource group to hold the other resources associated with it. Resource groups are an organizational tool to keep track of and manage resources as a whole instead of individually. One of the benefits of this approach is that it is easy to dispose of all of the resources by deleting the resource group they are contained in instead of deleting each of them one-by-one.
+We will begin by provisioning a resource group to hold the other resources associated with it. Resource groups are an organizational tool to keep track of and manage resources as a whole instead of individually. One of the benefits of this approach is that it is easy to dispose of all of the resources by deleting the resource group they are contained in instead of deleting each of them one-by-one.
 
 Exploration
 -----------
@@ -119,7 +119,7 @@ Notice how the subscription and location are set automatically. The former by lo
 Configuring
 -----------
 
-Just as we set a default location we will assign this resource group as a default as well. Be sure to enter your new resource group name as the value:
+Earlier we configured a default location, let's configure the default resource group too. Don't forget to enter your new resource group name as the value:
 
 .. sourcecode:: powershell
 
@@ -150,7 +150,7 @@ Once again let's begin by assessing what is available to us:
 Planning
 --------
 
-Creating a VM will naturally require many Arguments to customize it. Recall in the web portal how there were several menus we had to work through to provision it. In addition to all of those options the ``az CLI`` exposes additional configuration Arguments for more granular control. 
+Recall in the web portal how there were several menus we had to work through to provision it. In addition to all of those options the ``az CLI`` exposes additional configuration Arguments for more granular control. 
 
 Let's see what Arguments are associated with creating a VM:
 
@@ -158,7 +158,7 @@ Let's see what Arguments are associated with creating a VM:
 
     > az vm create -h
 
-From this long list of arguments we will need to provide values for the following:
+From this long list of Arguments we will need to provide values for the following:
 
 - ``-n``: the name of the VM
 - ``-l``: the location [default configured]
@@ -179,7 +179,7 @@ In order to define the image for the VM we have to find its URN. In the ``vm cre
 
 Many different images are provided in the JSON object list output. But all we care for is the URN values. We could manually scroll through all of them to find the URN of the Ubuntu image. Or we can make use of the global ``--query`` Argument to output only the data we need!
 
-The `JMESPath query<https://jmespath.org/>`_ value we will use is ``"[].urn"`` which means take the output list ``[]`` and instead of the complete image objects only output the value for each of their the ``urn`` properties. The result is a list of just URN values which is much easier to work with!
+The `JMESPath query <https://jmespath.org/>`_ value we will use is ``"[].urn"`` which means take the output list ``[]`` and instead of the complete image objects only output the value for each of their the ``urn`` properties. The result is a list of just URN values which is much easier to work with!
 
 .. sourcecode:: powershell
 
@@ -197,7 +197,7 @@ From here we can see the URN we need for the Ubuntu image is ``"Canonical:Ubuntu
 
     $ image_urn="Canonical:UbuntuServer:18.04-LTS:latest"
 
-Now we can reference the URN by its variable name ``$ImageURN`` or ``image_urn`` depending on your chosen shell.
+Now we can reference the URN by its variable name ``$ImageURN`` (PowerShell) or ``image_urn`` (BASH) depending on your chosen shell.
 
 .. admonition:: tip
 
@@ -309,7 +309,7 @@ If you configured the default VM correctly you should receive a lengthy output o
 KeyVault Secrets
 ================
 
-As our final step we will provision and configure our KeyVault.
+As our final step we will provision and configure our KeyVault. Recall that the KeyVault is used to store external configuration values for flexibility and security. We use the KeyVault (and its local counterpart User-Secrets) to keep our protected credentials out of version control.
 
 Exploration
 -----------
@@ -465,26 +465,12 @@ We can capture this value in a variable by combining the VM ``show`` command wit
 Least-Privileged Access
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``--secret-permissions`` argument accepts a space-separated list of permissions you would like to grant to the given resource object, our VM in this case. Of the many available permissions which should we choose to grant and why?
+The ``--secret-permissions`` Argument accepts a space-separated list of permissions you would like to grant to the given resource object, our VM in this case. Of the many available permissions which should we choose to grant and why?
 
-In an ideal world your resources interact responsibly with each other and everything goes according to plan. But there can be disastrous consequences if they are given greater access privileges than needed to support that plan. 
+Remember that whenever you are granting permissions you want to follow the concept of least-privileged access. In our case the API hosted by the VM only needs the ability to *read* from its KeyVault. It has no need for writing or deletion capabilities. The minimum permissions we need to grant to the VM to support this use case are:
 
-Whenever you are granting permissions you want to follow the concept of **least-privileged access**: 
-
-.. tip::
-
-    Granting **least-privileged access** means to grant the bare minimum permissions needed to support the **current use case**.
-
-Mistakes can happen within your team due to bugs or misconfigurations that, without access restriction, can result in havoc. For example, imagine a VM that due to a bug and broad access ends up deleting or overwriting mission-critical KeyVault secrets. If instead its access were restricted initially the result would have just been a crash report when its bugged request was rejected by the access policy. 
-
-Even worse is the threat of a malicious user that gains access to a resource within the system. Many of the high-profile security failures you hear about were predicated on an attacker exploiting an over-privileged resource to do things it was never intended to do. Without proper access control these sorts of scenarios are a real threat to the work you do.
-
-Never grant broad access because "we might need it later" or out of laziness. Granting additional access permissions is trivial if needed in the future by simply issuing another ``set-policy`` command. However, if you grant broad permissions from the start it can be challenging at best to undo the actions that an over-privileged service performs when misused. It is important to always review the available access permissions and consider their ramifications before granting them. 
-
-In our case the API hosted by the VM only needs the ability to *read* from its KeyVault. It has no need for writing or deletion capabilities. The minimum permissions we need to grant to the VM to support this use case are:
-
-- ``list``: for accessing the names of secrets
 - ``get``: for accessing the individual secret values
+- ``list``: for accessing the names of secrets so they can be read
 
 Granting VM Access
 ^^^^^^^^^^^^^^^^^^
@@ -532,6 +518,6 @@ After reviewing your resources it's time to clean up after ourselves by deleting
     # when prompted enter y for yes
     > az group delete
 
-.. todo:: discuss using service principals for CLI use vs logging in? refer to the addition of our personal account in the access policies list
+.. todo:: SECURITY - discuss using service principals for CLI use vs logging in? refer to the addition of our personal account in the access policies list
 
-Congratulations on learning a new way of managing your Azure resources. Now that you have tried both the CLI and GUI, which do you prefer and why? Take a moment to consider how all of these steps could be accomplished in a single command by composing them into a script. When you are ready head over to the :ref:`walkthrough_ws-iis` article to learn about provisioning and configuring a new type of VM -- the Windows Server!
+Congratulations on learning a new way of managing your Azure resources. Now that you have tried both the CLI and GUI, what are the pros and cons of each type of interface? In terms of automation, consider how all of these steps could be accomplished in a single command by composing them into a script. Up next we will learn about provisioning and configuring a new type of VM, the Windows Server, along with its suite of related tools!

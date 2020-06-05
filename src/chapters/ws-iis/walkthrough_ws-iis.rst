@@ -164,7 +164,7 @@ Take a moment to explore this section of the SM. You can find details about how 
 Configure as a Web Server
 -------------------------
 
-Before we can host our application we need to configure our VM to operate as a Web Server using IIS. In the top right corner of the SM you will see a ``Manage`` dropdown containing an option to ``Add Roles and Features``. This will open the Roles and Features wizard::
+Before we can host our application we need to configure our VM to operate as a Web Server using IIS. In the top right corner of the SM you will see a ``Manage`` dropdown containing an option to ``Add Roles and Features``. This will open the Roles and Features wizard:
 
 .. image:: /_static/images/ws/server-manager-add-roles-features.png
   :alt: Windows Server Manager add Roles & Features

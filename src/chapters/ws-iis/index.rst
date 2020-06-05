@@ -7,6 +7,6 @@ Windows Server & IIS
 
    intro_ws
    iis
-   remote_management
+   remote-management
    walkthrough_ws-iis
-   studio_ws_deployment
+   studio_ws-deployment
