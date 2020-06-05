@@ -1,0 +1,4 @@
+FROM python
+ENV PORT="${PORT:-8008}"
+EXPOSE ${PORT}
+CMD python -m http.server -d /docs ${PORT}
