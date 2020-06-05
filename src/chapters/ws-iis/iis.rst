@@ -13,9 +13,8 @@ Kestrel Web Server
 Internet Information Services (IIS) Web Server
 ----------------------------------------------
 
-IIS Features
-============
-
+IIS Capabilities
+================
 Serving Static Sites
 --------------------
 

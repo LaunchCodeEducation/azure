@@ -51,172 +51,54 @@ In this course we will use the SM to manage the Roles and Features of the **Loca
 .. image:: /_static/images/ws/sm-roles-features-wiz.png
     :alt: Server Manager Roles and Features Wizard
 
-Remote Management
-=================
+Windows Server Roles & Features
+===============================
 
-Remote management is the practice of accessing and managing a (remote) machine from another (local) machine. For consumers, Remote management (RM) is often used by help desk professionals to troubleshoot issues by controlling the client's PC instead of relaying instructions over the phone. In our context we use RM to manage our servers which, being virtual, can never be accessed physically. 
+Windows Server uses a system of Roles, Role Services and Features to fine-tune each VM's behavior according to business needs. Let's explore what each of these components are and how they are used to customize a server's purpose such as operating as a Web Server host.
 
-So far you have experienced a simplistic form of RM using the Azure web portal's RunCommand console. Although the RunCommand console was convenient for us to interact with our Ubuntu VM it is not commonly, if ever, used by professionals due to its inherent limitations. As you likely noticed the RunCommand console is browser-based, slow, and only able to send commands and print their outputs one at a time. In order to effectively configure and troubleshoot our VMs we need more robust RM tooling.
+Configuring the responsibility and behavior of a VM is made simple thanks to the ``Roles & Features`` wizard available in the Server Manager:
 
-Azure CLI RunCommand
---------------------
+.. image:: /_static/images/ws/server-manager-add-roles-features.png
+  :alt: Windows Server Manager Roles & Features wizard
 
-Recall that both the Azure CLI and the web portal GUI are backed by the same REST API. We have also learned that working from the command-line offers greater portability and automation capability relative to using a browser based GUI. With the ``az CLI`` we are able to use the same RunCommand we experienced in the browser but with all of the benefits of the command-line. 
+What are Roles?
+---------------
 
-.. admonition:: tip
+Within a network or a sub-group of servers called a **server pool**, each server has some designated responsibilities. Roles are the way that WS assigns and configures the responsibilities of each server within that network or pool. Windows Servers have dozens of Roles to choose from, each with their own set of corresponding Role Services and Features. 
 
-    Unlike the browser console you can use the ``az CLI`` to issue RunCommands to *multiple machines at once* using their resource IDs (VM identities)!
+For example, our VM will have the responsibility of acting as a Web Server. We will use the ``Web Server (IIS)`` Role to designate this responsibility of hosting static sites and .NET web applications. 
 
-Within the Azure CLI the ``vm`` Sub-Group ``run-command`` can be used to toggle commonly used machine settings or execute complete scripts remotely. Every RunCommand has a unique name known as its ``command-id`` which you can view using ``list``:
+.. image:: /_static/images/ws/rf-wizard-select-role.png
+  :alt: Roles & Features wizard select Role
 
-.. sourcecode:: powershell
-    :caption: assumes the default location has been configured
+Once our server has assumed this Role we will gain access to installing the Role Services and Features needed to operate as a web host.
 
-    > az vm run-command list
-
-    # concise table output using a JMESPath query 
-    > az vm run-command list --query "[].{ commandId: id, label: label }" -o table
-
-To issue a RunCommand use the ``invoke`` Command:
-
-.. sourcecode:: powershell
-    :caption: assumes a default RG, location and VM have been configured
-
-    > az vm run-command invoke --command-id <command ID>
-
-There are several RunCommand commands that perform pre-defined actions on the remote machine. However, you will often want to run custom scripts or individual shell commands directly. To execute scripts remotely you can use the ``RunPowerShellScript`` and ``RunShellScript`` command IDs for Windows and Linux VMs respectively.
-
-Using these RunCommand commands is the command-line equivalent of pasting the script into the RunCommand console in the browser. You can run any number of scripts using the ``--scripts`` argument. These can be individual shell commands written in quotes or file path references to pre-written scripts on your local machine.
-
-.. admonition:: tip
-
-  For Windows VMs you should use ``RunPowerShellScript`` and for Linux VMs use ``RunShellScript``. Note that **this is in reference to the remote VM you are interacting with**, not the OS of your local machine that is issuing the RunCommand. 
-
-Here is an example of issuing single shell commands that simply list files in the home directory of the VM. For Windows we use the PowerShell ``Get-ChildItem`` and for Linux, its BASH equivalent, ``ls``. 
-
-.. sourcecode:: powershell
-    :caption: assumes a default RG, location and VM have been configured
-
-    # for a Windows VM run a PowerShell script (uses PowerShell in the VM)
-    > az vm run-command invoke --command-id RunPowerShellScript --scripts "Get-ChildItem"
-
-    # for a Linux VM run a Shell script (uses the default shell of the VM, usually BASH)
-    > az vm run-command invoke --command-id RunShellScript --scripts "ls"
-
-For longer scripts than one-off commands like the examples above you will want to reference pre-written script files on your local machine. You can do this using the ``@/path/to/script`` syntax. 
-
-Here is an example that uses a script file located in the home (``~``) directory called ``myscript.<ext>`` with the appropriate extension for PowerShell or BASH corresponding to the CLI shell of the remote VM.
-
-.. sourcecode:: powershell
-    :caption: assumes a default RG, location and VM have been configured
-
-    # myscript.ps is a PowerShell script
-    > az vm run-command invoke --command-id RunPowerShellScript --scripts @"~/myscript.ps"
-
-    # myscript.sh is a BASH script
-    > az vm run-command invoke --command-id RunShellScript --scripts @"~/myscript.sh"
-
-After invoking the script it will output information about the result. By default the ``message`` property of the output object will show the ``stdout`` and ``stderr`` with newline characters (``\n``) between them. 
-
-One thing to keep in mind is that RunCommand is just as slow from the command-line as it is in the browser console. It can still be useful for executing on multiple machines at once but it is more common to use the other remote management mechanisms discussed below.
-
-
-Remote Desktop Protocol
+What are Role Services?
 -----------------------
 
-The Remote Desktop Protocol (RDP) is a protocol developed by Microsoft for accessing the GUI desktop of a remote Windows machine. The remote machine can be physical or virtual but in our case we will always use RDP with Windows Server VMs. Instead of interacting with the machine using the command-line you can use the VM as if it were right in front of you!
+Role Services are **background tools** needed for a server to support the behavior of a Role. Some Roles do not have reliance on any additional services. While others, like the Web Server Role, have a dependency on many underlying services. For the Web Server Role the minimum Role Services needed provide it the ability to host static sites and media content.
 
-RDP is often used by technical support staff to help enterprise and consumer customers debug issues on their machines. But RDP is great for DevOps engineers to troubleshoot and configure things manually where a full desktop experience is preferred. 
+Fortunately WS provides opinionated defaults for operating as a secure and efficient Web Server which makes it a breeze to configure. 
 
-.. admonition:: fun fact
+.. image:: /_static/images/ws/rf-wizard-iis-role-services.png
+  :alt: Roles & Features wizard IIS Role Services
 
-  RDP is used as both a noun, referring to the protocol itself, and as a verb, referring to the "act of RDP-ing into a machine"!
+Depending on the use cases you encounter in the future, additional Role Services may be needed to provide support for things like authentication and caching at the web server level.
 
-Jump-Boxes
-^^^^^^^^^^
+What are Features?
+------------------
 
-One common use case for RDP is to securely access machines that exist within a protected corporate network. In order to protect production machines their network and firewall configurations are locked down to only accept connections using the private IP addresses of machines that are connected to their protected network.
+Features are applications that can be installed on a server, or PC in some cases, for managing and further customizing a machine's capabilities. Some of them are directly related to Roles while others operate independently. When a Role has a direct dependence on particular Features a dialog box will notify you when selecting that Role.
 
-In addition to the production servers a small number of VMs, called **jump-boxes** or **jump-servers**, are given public IP addresses and RDP access. Jump-boxes bridge the gap between the public internet (your local machine) and the private network (production servers). These operational machines allow you to connect from your local machine to the jump-box and then *jump* to access the protected machines within the private network. You can think of the jump-box like a middle man between the developer's local machine and the protected machines.
+For our server to function as a Web Server using IIS we will need to install a Feature called the IIS Management Console. When selecting the Web Server Role a dialog box prompts us to install this IIS Console that is needed for configuring hosting. 
 
-For security reasons jump-boxes are configured to expose RDP access only to developers of the company by using an IP address whitelist, VPN tunneling or other more complex patterns. Once you have RDP'd into the jump-box it behaves as if you are using a desktop from within the private network. From there you can access protected machines using RDP or one of the other remote access mechanisms.
+.. image:: /_static/images/ws/rf-wizard-iis-features.png
+  :alt: Roles & Features wizard IIS required Features
 
-.. todo:: replace with proper diagram
-
-.. .. image:: /_static/images/ws/jump-box.jpg
-
-This strategy minimizes the *exposed network area* of the infrastructure much like the slimmed Windows Server OS minimizes the *exposed software area* for potential attacks. Instead of having to worry about *all of the machines* having public IP addresses and RDP access only a few jump-boxes are exposed. Often times these boxes are started and stopped on demand to further restrict their usage. From these minimal entry points to the system the access between the local machine, jump-boxes and production machines can be carefully restricted, monitored and logged.
-
-MSTSC
-^^^^^
-
-Windows provides the ``mstsc`` command-line utility for creating an RDP session between your local and remote machine. Opening an RDP session is very simple and only requires the public IP address of the VM and the login credentials.
-
-Here is the general form of using ``mstsc``:
-
-.. sourcecode:: powershell
-  :caption: mstsc is available on Windows machines
-
-  > mstsc /v:<public IP address>
-
-This will prompt you for a username and password to access the VM. Once those are entered a new window will appear that provides the full desktop GUI of the remote machine! We will get to practice using RDP in the upcoming exercises.
-
-.. admonition:: note
-
-  Desktop access over RDP inherently requires the VM to have the desktop GUI shell installed. If the VM is using the ``Windows Server Core`` OS then only a PowerShell terminal is presented during an RDP session.
-
-Windows Remote Management
--------------------------
-
-Outside of RDP, and MSTSC there are other ways of connecting to a remote Windows machine. Throughout this class we will work with connecting with remote machines that are associated with Azure by using the Azure CLI, you will see multiple examples throughout this class showing you these tools.
-
-Another way is connecting to a Windows Machine with a remote PowerShell session, or by running an Invoke-Command that executes a single PowerShell command or script on a machine. Both of these tools are very powerful when you need to access a Windows machine that is running on a network you can access.
-
-Both Invoke-Command & Remote PowerShell uses Windows Remote Management (WinRM). 
-
-**Windows Remote Management** (WinRM) is the Microsoft implementation of WS-Management Protocol, a standard SOAP protocol that allows hardware and operating sytems to interoperate.
-
-.. note:: 
-
-   This class won't configure WinRM, or utilize New-PSSession or Invoke-Command however they are important tools for gaining access to remote Windows machines and you may use them in your career moving forward. Make a note of them and research them when you will need them on the job.
-
-PS-Session
-^^^^^^^^^^
-
-One of the tools that uses WinRM is ``New-PSSession``. This is a Powershell module that allows you to connect to a remote Windows Machine via a Powershell session. When you create a ``New-PSSession`` your computer connects to a PowerShell session on the remote machine. This PowerShell session actually runs on the remote machine even though you are using it from your local machine.
-
-.. note::
-
-   In order to use New-PSSession and the other PSSession PowerShell modules you must be using Windows 10 Pro, Enterprise, or Student as these Operating Systems all come with the Hyper-V Module which is necessary for creating remote PS Sessions. This is not a module that can be added to Windows 10 Home, as the tool was not created for typical OS users.
-
-After activating the necessary requisites you can access a remote windows machine with a command like:
-
-.. sourcecode:: powershell
-
-   New-PSSession -VMId 484155ab-b52b-4d554-akk7f1540e80
-
-If you were to run this command you would be asked for credentials (username, and password for the VM) and then granted access to a PowerShell session on the remote machine.
-
-Although we won't use New-PSSession in this class you can learn more by searching for the New-PSSession documentation, or by typing ``Get-Help New-PSSession`` in a PowerShell terminal.
-
-Invoke-Command
-^^^^^^^^^^^^^^
-
-Entering in a new PowerShell session allows you to attach to the remote machine and you can run as many commands as you need. However, if you simply need to run one command on the remote machine using New-PSSession is unnecessary. So Microsoft has given us another tool that uses WinRM for simply running one command on the remote machine.
-
-``Invoke-Command`` gives you the ability to pass in one PowerShell command, or PowerShell script you want to execute on the remote Windows machine.
-
-In this class we won't play with Invoke-Command, but an example might look like:
-
-.. sourcecode:: powershell
-
-   Invoke-Command -computername 52.55.134.28 -credential student -filepath c:\user\scripts\some-script.ps
-
-The preceding command would run the PowerShell script found at ``c:\user\scripts\some-script.ps`` on the remote machine at the ip address ``52.55.134.28`` and has the username ``student``. The password for the student role would need to be entered before the script is sent to be run on the remote machine.
-
-Again we won't be using this command in this class, but you may use it in the future. You can find more information by searching the Microsoft documentation for Invoke-Command, or by entering ``Get-Help Invoke-Command`` in a PowerShell terminal.
+We will install the IIS Console on the VM but as noted in the dialog box it can also be installed on another machine to manage the IIS settings remotely.
 
 Next Step
 =========
 
-We learned about Windows Server, and some of the ways of interacting with remote Windows Server. You will get some practice with the concepts introduced in this article throughout the class. Even though you won't be shown all of the ways you can connect with a remote server, it is a good thing to remember that multiple ways of interacting with a server are possbile. Choosing the correct tool usually comes with time and practice, but knowing about this different ways should help you in your career.
+Windows Server is a powerful server OS for handling a variety of use cases. It is deeply customizable and, unlike Linux servers, promotes the use of a full desktop GUI for intuitive configuration. For this course we will assign our WS VM the Web Server Role and configure IIS to host our .NET API. Up next we will learn more about IIS and how it enables us to host our web applications.
+
