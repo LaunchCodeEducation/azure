@@ -21,9 +21,9 @@ Before we get into defining each of these, consider the following diagram that s
 Server
 ------
 
-A **Server** is the broadest and most ambiguous of these terms. In technical terms it refers to the physical, or virtualized, hardware itself -- like a Windows Server or Linux machine. Think of this as the outermost box of the system, it holds each of the other components within it. Servers **do not necessarily have anything to do with the web**, they are just machines whose roles are defined by the software they run. 
+A **Server**, or **host machine**, is the broadest and most ambiguous of these terms. In technical terms it refers to the physical, or virtualized, hardware itself -- like a Windows Server or Linux machine. Think of this as the outermost box of the system, it holds each of the other components within it. Servers **do not necessarily have anything to do with the web**, they are just powerful machines whose roles are defined by the software they run. 
 
-When discussing web-related roles a Server is responsible for handling network requests of various protocols and passing the packets off to the appropriate service for handling them. In our context the packets are passed off to a Web Server service designed for managing HTTP traffic.
+When discussing web-related roles a Server is responsible for handling network requests of various protocols and passing the packets off to the appropriate service for handling them. In our context the packets are passed off to a Web Server service designed for managing raw HTTP traffic.
 
 Web Server
 ----------
@@ -35,21 +35,20 @@ Web Servers can be used to serve **static content** (content that does not chang
 Web Servers handle things like:
 
 - serving static content
+- load balancing and rate limiting
 - TLS termination for secure (HTTPS) connections
 - decompression and compression of requests and responses
-- interfacing with Application Servers to serve dynamic content 
 
 Web Application Server
 ----------------------
 
-A web **Application Server** is defined by the source code that developers work on. They are written in C#/ASP.NET, NodeJS/Express, PHP/Laravel or any other number of language and **Web Application Framework** combinations. Application Servers are made up of code that defines **business logic for working with data and processing requests**. They are **not responsible for managing HTTP logic and raw packets**. Instead they deal with Request and Response objects within the code that are managed by the Web Application Framework.
+A web **Application Server** is defined by the source code that developers work on. It is written in C#/ASP.NET, NodeJS/Express, PHP/Laravel or any other number of language and **Application Server Framework** combinations. Application Servers are made up of code that defines **business logic for working with data and processing requests**. They are **not responsible** for managing HTTP logic and raw packets. Instead, they deal with Request and Response objects within the code that are managed by the Web Application Framework.
 
 Application Servers handle things like:
 
 - authorization logic
 - rendering HTML templates
 - connecting to and interacting with database servers
-- interfacing with Web Servers to pass have their content served to the web
 
 Web Application Framework
 -------------------------
@@ -64,7 +63,9 @@ Application Server Frameworks, like ASP.NET, **have connectors for transforming*
 Kestrel Web Server
 ==================
 
-All ASP.NET Application Servers come packaged with a Web Server called Kestrel. Kestrel is a powerful Web Server that can be used as a default when running .NET applications on Linux Servers. But when you have the luxury of working with a Windows Server machine the IIS Web Server is preferred due to its greater capabilities and performance. 
+All ASP.NET Application Servers come packaged with a *lightweight* Web Server called Kestrel. When you run your Application Server on your local machine it is Kestrel that manages the underlying HTTP logic. This is done transparently for you to only have to work with Request and Response objects themselves. However, being a lightweight Web Server, Kestrel has limited capabilities. For this reason it is not recommended to use Kestrel by itself, as referenced in its `Microsoft documentation <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-3.1>`_.
+
+As we saw in our first Linux deployment the Kestrel Web Server can be used behind a more robust Web Server like Nginx in a `reverse proxy arrangement <https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/>`_. But when you have the luxury of working with a Windows Server machine the IIS Web Server is hands-down the best choice for the job. 
 
 IIS Web Server
 ==============
