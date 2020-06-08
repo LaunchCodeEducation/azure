@@ -7,8 +7,8 @@ services:
   builder:
     container_name: docs_builder
     volumes:
-      - "./src:/curriculum/src:rw"
-      - "docs:/curriculum/docs"
+      - ".:/curriculum:rw"
+      - "docs:/docs"
     build:
       context: .
       dockerfile: "Dockerfile.builder"
