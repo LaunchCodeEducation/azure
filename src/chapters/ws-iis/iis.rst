@@ -7,7 +7,7 @@ Introduction to Web Servers & IIS
 Components of Web Hosting
 =========================
 
-When learning about hosting content on the web you will come across the terms **Server**, **Web Server**, **Web Application Server**, and **Web Application Framework** and will likely be confused on what role each of them play. While these terms are mistakenly used interchangeably it is important to distinguish them to form a strong mental model. Understanding and properly communicating the details of a web hosting system are critical aspects of being able to troubleshoot and solve problems that arise.
+When learning about hosting content on the web you will come across the terms **Server**, **Web Server**, **Web Application Server**, and **Web Application Framework** and will likely be confused on what role each of them play. While these terms are sometimes mistakenly used interchangeably it is important to distinguish them to form a strong mental model. Understanding and properly communicating the details of a web hosting system are critical aspects of being able to design it and to troubleshoot and solve any problems that arise.
 
 Before we get into defining each of these, consider the following diagram that shows how the components of a web hosting system relate to each other:
 
@@ -78,19 +78,33 @@ The IIS Management Console is an application for monitoring and configuring the 
 .. image:: /_static/images/ws/iis-manager-dashboard.png
   :alt: IIS Manager dashboard view
 
-Each **Site** served by IIS corresponds to a directory that contains either static content or the artifact files of a published ASP.NET Web App. A Site is managed by an **Application Pool** which is configured according to what content is being served. Application Pools are used to define the behavior of a Site including request rate limiting and CPU utilization caps. We will explore the details of configuring IIS in the upcoming walkthrough.
+Sites
+^^^^^
+
+Each **Site** served by IIS corresponds to a directory that contains either static content or the artifact files of a published ASP.NET Web App. A Site is managed by an **Application Pool** which is configured according to what content is being served. 
+
+Sites are bounded by their content directory and listening port. IIS is capable of serving any number of Sites. But, like all server process running on a machine, each Site must have a unique port.
+
+Application Pools
+^^^^^^^^^^^^^^^^^
+
+Application Pools are individual ``w3wp`` Web Server processes that run within the host machine. They are used to define and manage the runtime behavior of ``w3wp`` process that serves the Sites assigned to them. Each Application Pool can be customized to control features including resource access, request rate limiting and CPU utilization caps. 
+
+While we will be using IIS to serve a single Site there are cases where multiple Sites of content need to be managed in one Web Server. When considering these multi-Site scenarios the ability for Application Pools to be compartmentalized from each other is invaluable. 
+
+Each Application Pool can be customized to run with a specific security and resource utilization profile. This feature allows for Sites to be operated independently and prevent one crash or malicious attack from impacting other Sites or the Server as a whole. 
 
 Static Sites
 ^^^^^^^^^^^^
 
-Serving static content is as easy as telling IIS what directory the content is held in and what port to listen and serve from. Initially IIS comes with a Default Site made up of static HTML and CSS files available on port 80. 
+Serving static content is as easy as telling IIS what directory the content is held in and what port to listen and serve from. IIS comes pre-configured with a Default Site made up of static HTML and CSS files available on port 80 and managed by a default Application Pool.  
 
 ASP.NET Web Application Sites
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Serving ASP.NET Web Applications requires a bit more effort. However, it is still leagues ahead of alternative Web Servers when it comes to ease of configuration. Out of the box IIS relies on the .NET runtime and an additional dependency called the ``dotnet hosting bundle`` for serving Web Apps. 
 
-Rather than running a Web Application Server directly the IIS Web Server is responsible for executing and forwarding traffic to and from it. The Site's directory holds the executable artifacts produced from publishing the Web App with ``dotnet publish``. An Application Pool is then customized for serving dynamic content which manages the life cycle and behavior of how the Web App is served. 
+Rather than running a Web Application Server directly, the IIS Web Server is responsible for executing and forwarding traffic for you. The Site's directory holds the executable artifacts produced from publishing the Web App with ``dotnet publish``. An Application Pool is then customized for serving dynamic content which manages the life cycle and behavior of how the Web App is served. 
 
 Next Step
 =========
