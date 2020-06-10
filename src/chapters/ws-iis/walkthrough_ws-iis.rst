@@ -161,25 +161,153 @@ Take a moment to explore this section of the SM. You can find details about how 
 .. image:: /_static/images/ws/server-manager-local-usage-stats.png
   :alt: Windows Server Manager local server usage statistics
 
-Configure as a Web Server
+Configure Web Server Role
 -------------------------
 
-Before we can host our application we need to configure our VM to operate as a Web Server using IIS. In the top right corner of the SM you will see a ``Manage`` dropdown containing an option to ``Add Roles and Features``. This will open the Roles and Features wizard:
+Before we can host our application we need to configure our VM to operate as a Web Server Role. In the top right corner of the SM you will see a ``Manage`` dropdown containing an option to ``Add Roles and Features``. This will open the Roles and Features wizard:
 
 .. image:: /_static/images/ws/server-manager-add-roles-features.png
   :alt: Windows Server Manager add Roles & Features
 
-Next select the 
+Because we are configuring this single server we can select the first option:
 
+.. image:: /_static/images/ws/rf-wizard-role-based.png
+  :alt: Roles & Features wizard Role based installation
 
-Explore the IIS Console
+We want to select our server by its name. We should only have a single server in our pool:
+
+.. image:: /_static/images/ws/rf-wizard-select-server.png
+  :alt: Roles & Features wizard select server by name
+
+We want to configure our server to assume the Web Server Role to use the IIS Web Server. You can find this Role at the end of the Server Roles list:
+
+.. image:: /_static/images/ws/rf-wizard-select-role.png
+  :alt: Roles & Features wizard add Web Server (IIS) Role
+
+Because IIS requires the IIS Management Console to configure it we are prompted to install the required Feature. Although it can be installed and used remotely we will install it locally on this server. Select Add Features to install it:
+
+.. image:: /_static/images/ws/rf-wizard-iis-features.png
+  :alt: Roles & Features wizard install IIS Management Console Feature
+
+For our purposes we will not require any other Role Services beyond the defaults. Feel free to read over what each Role Service does by selecting it and reading its description on the right side panel. **Be careful not to check any boxes beyond those that are already selected by default**:
+
+.. image:: /_static/images/ws/rf-wizard-iis-select-role-services.png
+  :alt: Roles & Features wizard select IIS Role Service defaults
+
+Finally you can continue to the Confirmation tab. Double check that your selections match the list below. The installation process may take a minute or two but will not require a restart:
+
+.. image:: /_static/images/ws/rf-wizard-iis-confirm.png
+  :alt: Roles & Features wizard confirm Web Server (IIS) Role
+
+Explore the IIS Manager
 -----------------------
+
+Once the installation is complete you can open the IIS Manager. In your taskbar search for IIS:
+
+.. image:: /_static/images/ws/search-iis-manager.png
+  :alt: Search for IIS Manager
+
+The IIS Manager dashboard shows all of the servers that are linked to it. In our case we will see just our single VM listed. Within each Server are sections for configuring the Application Pools and Sites that will be served by IIS from that machine.
+
+IIS includes a pre-configured default Site and Application Pool to get you started. Let's take a look at the Default Site:
+
+.. image:: /_static/images/ws/iis-sites.png
+  :alt: IIS Manager Sites view
+
+From the Sites tab you can see all of the Sites that are being served by IIS. Notice how each Site has a name, a binding (what port it listens on) and a path to its content directory.
+
+Selecting the Default Site will display the Site dashboard. From here you can configure all of the content-related aspects of the Site. 
+
+.. image:: /_static/images/ws/iis-default-site.png
+  :alt: IIS Manager Default Site dashboard
+
+At the bottom of the view is a tab to switch from Features to Content. Selecting the Content tab shows the contents of the Site's directory. For the default Site there are just two files -- an HTML file and an image:
+
+.. image:: /_static/images/ws/iis-default-site-content-view.png
+  :alt: IIS Manager Default Site content view
+
+Within the Content view mode you can select the Explore option on the right-side panel. 
+
+.. image:: /_static/images/ws/iis-default-site-explore-files.png
+  :alt: IIS default Site Explore action
+
+This will open the file explorer to the content directory path to see and manage the files directly. Notice how this directory path matches the default Site path we saw in the Sites overview earlier:
+
+.. image:: /_static/images/ws/iis-default-site-files.png
+  :alt: IIS default Site contents in file explorer
 
 Connect to the default site within the VM
 ------------------------------------------
 
+Once IIS has been installed, through the Web Server Role, it immediately begins serving the default Site on port 80. You can open the IE browser within the Server to ``http://localhost`` to view it. Notice how we do not need to include the port because the browser sets it implicitly as the standard ``http`` protocol port. 
+
+.. admonition:: warning
+
+  As part of the Windows Server security defaults IE is locked down to restrict its usage. Unless you have good reason to stray from these defaults you should accept them and proceed to viewing the default Site. 
+
+.. image:: /_static/images/ws/iis-default-site-browser.png
+  :alt: IIS default Site in the local Server browser
+
 Connect to the default site from your local machine
 ----------------------------------------------------
+
+So far we have been able to connect to the default Site within the Server itself. But what about connecting to it publicly over the internet? By now you should understand that navigating to ``http://localhost`` on your local machine will not request the default Site. 
+
+Instead we will need to use the public IP address of our VM in place of ``localhost``. This should make sense because it is not **locally hosted** anymore -- it is publicly hosted! Or is it? 
+
+On your local machine open your browser and navigate to ``http://<your VM public IP>``:
+
+.. image:: /_static/images/ws/iis-default-site-local-browser-timeout.png
+  :alt: IIS default Site local browser timeout
+
+Before continuing take a moment to consider *why the connection timed out*. Use what you have learned to apply critical thinking to this all too common issue when hosting on the web. 
+
+.. admonition:: tip
+
+  Connection timeouts are an indication of a *network related issue*. If you receive a status code ``5XX`` it means a connection was formed but something went wrong with the server. Receiving no response at all means that some sort of machine or network level firewall has blocked the connection from ever being formed.
+
+When we provisioned our VM we assumed default network security group (NSG) rules. The default NSG configuration for a new VM does not allow traffic to reach the machine through any port including the common HTTP ports (80 for ``http`` and 443 for ``https``). 
+
+However, when you create a Windows Server VM a new rule that exposes port 3389 is opened automatically to allow for RDP traffic. This behavior is described in the ``az vm create -h`` listing.
+
+Adding a new NSG rule
+---------------------
+
+In order to connect to our VM, and therefore the Site, we need to add an additional NSG rule that will allow traffic on port 80. Fortunately this is a quick fix using our trusty ``az CLI`` and the VM ``open-port`` Command.
+
+.. sourcecode:: powershell
+  :caption: assumes a default RG, location and VM have been configured
+
+  > az vm open-port --port 80
+
+You will receive a lengthy output showing the current state of the NSG associated with the VM. Most of the output is related to the first property, ``defaultSecurityRules``. Towards the bottom you will the ``securityRules`` list which includes both the RDP and the new port 80 rules.
+
+.. code-block:: json
+  :caption: trimmed securityRules list showing rules allowing RDP and http public traffic
+
+  ...
+  "securityRules": [
+    {
+      "access": "Allow",
+      "destinationPortRange": "3389",
+      "direction": "Inbound",
+      "name": "rdp",
+      ...
+    },
+    {
+      "access": "Allow",
+      "destinationPortRange": "80",
+      "direction": "Inbound",
+      "name": "open-port-80",
+      ...
+    }
+  ],
+  ...
+
+.. admonition:: note
+
+  This Command opens a port for *all public traffic*. In other words, requests from *any IP address* and *any protocol* will be allowed access to our VM on port 80. This is a quick solution for our purposes. But in a production setting you will likely use more rigorous NSG rules with source wIP and protocol restrictions for greater security.
+
 
 Configure the Host VM
 =====================
