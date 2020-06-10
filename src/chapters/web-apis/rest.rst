@@ -7,7 +7,7 @@ We learned about REST in an earlier lesson, so this is just a short review, sinc
 Review
 ======
 
-A Resource is a piece of business data, it is regularly represented as a Model in your application. A Resource could be a user, or a paystub, or a car, or a transaction, etc.
+A Resource is a piece of business data, it may be represented as a Model in your application. A Resource could be a user, or a paystub, or a car, or a transaction, etc. In REST a resource is a noun. It's some tangible piece of business data your application needs to function.
 
 Resources are identified by a unique URL in REST. ``/api/dog/{dog_id}`` would reference one single dog as identified by the dog_id. A collection of resource can be requested as well ``/api/dog`` would be requesting a collection of all the dog resources that exist in our backing service.
 
