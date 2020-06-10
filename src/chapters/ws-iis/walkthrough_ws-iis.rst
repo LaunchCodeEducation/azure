@@ -7,15 +7,15 @@ Walkthrough: Windows Server & IIS Deployment
 Now that we have learned about remote access mechanisms and the IIS Manager it's time to get our hands dirty! In this walkthrough we will:
 
 - provision a Windows Server VM
-- RDP into the machine to install, explore and configure IIS
-- execute scripts remotely to configure the host  machine
-- deploy a .NET starter API to IIS
+- RDP into the machine to configure the Web Server Role
+- explore the IIS Manager and connect to the default Site
+- configure IIS to serve a .NET Web App
+- deploy and connect to a .NET starter Web App served by IIS
 
 .. admonition:: note
 
-  This walkthrough **requires a local Windows machine in order to use RDP**. Some of the ``az CLI`` steps are shown in both Windows/PowerShell and Linux/BASH to reinforce the cross-platform nature of the tool with minor syntactical changes.
+   Some of the ``az CLI`` steps are shown in both Windows/PowerShell and Linux/BASH to illustrate the cross-platform nature of the tool with minor syntactical changes. However, to complete this walkthrough will **require a local Windows machine in order to use RDP**.
   
-
 Provision the VM
 ================
 
@@ -65,17 +65,17 @@ To create our VM we will use most of the same Arguments as we did when creating 
 
 .. admonition:: warning
 
-  It is important that you do not change the admin username (``student``) or password (``LaunchCde-@zure1``). Although it is a poor practice to use the same password for everyone we do so for consistency in order to make it easy to help you debug if somethings goes wrong.
+  It is important that you do not change the admin username (``student``) or password (``LaunchCode-@zure1``). Although it is a poor practice to use the same password for everyone we do so for consistency in order to make it easy to help you debug if somethings goes wrong.
 
 .. sourcecode:: powershell
   :caption: Windows/PowerShell
 
-  > az vm create -n ws-vm --size "Standard_B2s" --image "$WsImageUrn" --admin-username "student" --admin-password "LaunchCde-@zure1" --assign-identity
+  > az vm create -n ws-vm --size "Standard_B2s" --image "$WsImageUrn" --admin-username "student" --admin-password "LaunchCode-@zure1" --assign-identity
 
 .. sourcecode:: bash
   :caption: Linux/BASH
 
-  $ az vm create -n ws-vm --size "Standard_B2s" --image "$ws_image_urn" --admin-username "student" --admin-password "LaunchCde-@zure1" --assign-identity
+  $ az vm create -n ws-vm --size "Standard_B2s" --image "$ws_image_urn" --admin-username "student" --admin-password "LaunchCode-@zure1" --assign-identity
 
 Once the VM is created let's set is as the default VM: 
 
@@ -83,7 +83,6 @@ Once the VM is created let's set is as the default VM:
   :caption: either shell
 
   > az configure -d vm=ws-vm
-
 
 Set up & Explore IIS
 ====================
@@ -93,7 +92,6 @@ Now that we have our Windows Server VM we can get our first taste of using RDP. 
 .. admonition:: note
 
   **You must use a local Windows machine in order to RDP into the VM using** the pre-installed ``mstsc`` utility.
-
 
 RDP into the VM
 ---------------
@@ -130,7 +128,6 @@ This will begin the RDP authentication process and prompt you to enter your cred
   :alt: RDP credentials prompt
 
 The first time you connect to a remote machine (using default RDP settings) you will need to confirm that you trust it. This is due to the default usage of a self-signed server certificate in the VM. The discussion of Public Key Infrastructure (PKI) and certificates is outside of the scope of this course but in this context the warning is nothing to be concerned about.
-
 
 .. admonition:: tip
 
@@ -308,24 +305,130 @@ You will receive a lengthy output showing the current state of the NSG associate
 
   This Command opens a port for *all public traffic*. In other words, requests from *any IP address* and *any protocol* will be allowed access to our VM on port 80. This is a quick solution for our purposes. But in a production setting you will likely use more rigorous NSG rules with source wIP and protocol restrictions for greater security.
 
-
 Configure the Host VM
 =====================
+
+As the final steps of our walkthrough we will create, publish and deploy a .NET starter API to IIS.
 
 Install Dependencies
 --------------------
 
-Configure IIS to host a .NET API site
--------------------------------------
+In order to create and host the starter project we will need to install the following dependencies:
 
-Deploy a .NET API
-=================
+- **chocolatey**: the package manager for Windows to install other dependencies
+- **dotnet**: the .NET SDK and CLI tool for creating and publishing the starter MVC Web App
+- **dotnet hosting bundle**: IIS dependencies needed to serve a .NET Web App
 
-Create the starter API
-----------------------
+In your VM open up the PowerShell console by searching for it:
 
-Publish the API
----------------
+.. admonition:: tip
+
+  You can right click PowerShell and pin it to the task bar for easy access.
+
+Now open PowerShell and enter the following command to install ``choco``:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+Next we will use the ``choco`` package manager to install the .NET hosting bundle:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  # the -y option skips prompting for confirmation
+  > choco install dotnetcore-windowshosting -y
+
+In order for the hosting bundle to be recognized by IIS we need to restart the underlying processes used by IIS. The `Windows Process Activation Service (WAS) <https://docs.microsoft.com/en-us/iis/manage/provisioning-and-managing-iis/features-of-the-windows-process-activation-service-was>`_ and its dependent World Wide Publishing Service (W3SVC) can be restarted by entering the following commands:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  # /y is like -y and is used to skip a confirmation prompt
+
+  # when WAS is stopped it automatically stops all dependent processes including W3SVC
+  > net stop WAS /y
+
+  # when W3SVC is started it starts its WAS process dependency automatically
+  > net start W3SVC
+
+Finally let's install the dotnet SDK and CLI tool using ``choco``:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > choco install dotnetcore-sdk -y
+
+After installing you **need to close PowerShell and reopen it** before the ``dotnet`` CLI can be used. Then enter the following command to confirm it is installed and usable:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  # expect a single line with the version number as output
+  > dotnet --version
+
+If you get an error it means you did not close and reopen PowerShell.
+
+Disable the default Site
+------------------------
+
+After installing the dependencies we need to disable the default Site. This will free up port 80 for our .NET Web App to be hosted instead. 
+
+In the IIS Manager right click on the default Site and select Remove:
+
+.. image:: /_static/images/ws/iis-default-site-remove.png
+  :alt: IIS Manager remove default Site
+
+Deploy a .NET Web App
+=====================
+
+Create the starter Web App
+---------------------- ---
+
+Let's start by creating and switching to a new directory to keep our home directory clean:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  # issue this in the home directory, C:\Users\student
+  > New-Item -ItemType directory -Path WebApps
+  > Set-Location WebApps
+
+  # or using the simpler mkdir and cd aliases
+  > mkdir WebApps
+  > cd WebApps
+
+Inside this directory we can create the starter MVC project:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > dotnet new webapp -n StarterApp
+
+Publish the Web App
+-------------------
+
+Before we publish the Web App we need to create a content directory for IIS to serve. The ``C:\inetpub`` directory is traditionally used by IIS for Site content. We will create a ``StarterApp`` directory in here to hold our published content:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > New-Item -ItemType directory -Path C:\inetpub\StarterApp
+
+  # or using the simpler mkdir and cd aliases
+  > mkdir C:\inetpub\StarterApp
+
+Now we can publish our Web App into this directory so IIS can serve it. If you are not already in the StarterApp directory then switch to it first. We will publish for the Windows x64 architecture and output to the new ``inetpub/StarterApp`` directory we just made:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > cd C:\Users\student\WebApps\StarterApp
+  > dotnet publish -c Release -r win-x64 -o C:\inetpub\StarterApp
+
+Configure IIS to serve the Web App Site
+---------------------------------------
 
 Next Step
 =========
