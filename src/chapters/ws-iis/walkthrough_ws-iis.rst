@@ -243,7 +243,7 @@ Once IIS has been installed, through the Web Server Role, it immediately begins 
   As part of the Windows Server security defaults IE is locked down to restrict its usage. Unless you have good reason to stray from these defaults you should accept them and proceed to viewing the default Site. 
 
 .. image:: /_static/images/ws/iis-default-site-browser.png
-  :alt: IIS default Site in the local Server browser
+  :alt: IIS default Site in the Server browser
 
 Connect to the default site from your local machine
 ----------------------------------------------------
@@ -368,17 +368,7 @@ After installing you **need to close PowerShell and reopen it** before the ``dot
   # expect a single line with the version number as output
   > dotnet --version
 
-If you get an error it means you did not close and reopen PowerShell.
-
-Disable the default Site
-------------------------
-
-After installing the dependencies we need to disable the default Site. This will free up port 80 for our .NET Web App to be hosted instead. 
-
-In the IIS Manager right click on the default Site and select Remove:
-
-.. image:: /_static/images/ws/iis-default-site-remove.png
-  :alt: IIS Manager remove default Site
+If you get an error it means you did not close and reopen PowerShell, sometimes this can happen if multiple PowerShell windows are open. Make sure you close all of them before reopening.
 
 Deploy a .NET Web App
 =====================
@@ -419,7 +409,7 @@ Before we publish the Web App we need to create a content directory for IIS to s
   # or using the simpler mkdir and cd aliases
   > mkdir C:\inetpub\StarterApp
 
-Now we can publish our Web App into this directory so IIS can serve it. If you are not already in the StarterApp directory then switch to it first. We will publish for the Windows x64 architecture and output to the new ``inetpub/StarterApp`` directory we just made:
+Now we can publish our Web App into this directory so IIS can serve it. If you are not already in the StarterApp directory then switch to it first. We will publish for the `Windows x64 architecture <https://docs.microsoft.com/en-us/dotnet/core/rid-catalog#windows-rids>`_ and output to the new ``C:\inetpub\StarterApp`` directory we just made:
 
 .. sourcecode:: powershell
   :caption: Windows/PowerShell
@@ -430,11 +420,48 @@ Now we can publish our Web App into this directory so IIS can serve it. If you a
 Configure IIS to serve the Web App Site
 ---------------------------------------
 
-Next Step
-=========
+We now have a published Web App and its contents in a directory. The final step is to configure a new Site for IIS to serve it. Let's begin this process by removing the default Site. This will free up port 80 for our .NET Web App Site.
+
+In the IIS Manager right click on the default Site and select Remove:
+
+.. image:: /_static/images/ws/iis-default-site-remove.png
+  :alt: IIS Manager remove default Site
+
+Next right click the Sites icon and select Add Website:
+
+.. image:: /_static/images/ws/iis-manager-new-site.png
+  :alt: IIS Manager add new Site
+
+This will present the new Site dialog. We need to fill in the following details:
+
+- **site name**: ``StarterApp``
+- **application pool**: ``StarterApp``, by default it will create a new pool with the same name as the Site
+- **physical path**: ``C:\inetpub\StarterApp``, this is the path to the directory we published the Web App to
+- **binding**: 80, we want to serve on the standard ``http`` port
+- **host name**: leave blank, we do not have a domain name to add a host name to
+
+After hitting OK IIS will create the Application Pool and immediately begin serving the site.
 
 Test your work
 --------------
 
-Clean up resources
-------------------
+Try connecting locally on the Server to confirm everything worked. You can open IE to ``http://localhost`` and should see the starter Web App content:
+
+.. image:: /_static/images/ws/iis-manager-starter-app-browser.png
+  :alt: IIS StarterApp in Server browser
+
+Finally confirm that you are able to connect over the internet from your local machine:
+
+.. image:: /_static/images/ws/iis-manager-starter-app-local-browser.png
+  :alt: IIS StarterApp in local browser
+
+Next Step
+=========
+
+Congratulations on completing your first Windows Server & IIS deployment! How did this process feel relative to using the Azure browser console and a Linux VM? Did you like using RDP and having a full desktop to work with?
+
+Before continuing to your Studio consider the following aspects needed for the CodingEvents API deployment:
+
+- what other dependencies will we need (tools, backing services)?
+- how will we get our API source code onto the Server to publish?
+- how can we serve the API Site on port 443 (``https``) to support the secure connection requirement of Azure ADB2C?
