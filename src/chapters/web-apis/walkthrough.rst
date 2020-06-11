@@ -141,17 +141,109 @@ We will again be using the Run Command to run our dotnet CLI commands.
 .. sourcecode:: bash
 
    export DOTNET_CLI_HOME=/home/student
-   /usr/bin/dotnet new mvc -n hello-world -o /home/student
+   export HOME=/home/student
+   cd /home/student
    dotnet new mvc -n hello-world
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-4.png
 
-Run Project
-===========
+Breaking down the commands we sent to our VM we set a couple of environment variables for the bash shell, namely DOTNET_CLI_HOME, and HOME. We have to perform this step because when you run commands from the Run Command operation in the Azure Portal the commands are always run as root, and not as the student user. The root user does not have any ideas on where the dotnet home, and user home directory exists so we have to provide this information. ``cd /home/student`` changed to the home directory for the student. Finally the ``dotnet new mvc -n hello-world`` command created a new .NET C# MVC project named hello-world. This should have created a base project for us in /home/student/hello-world.
+
+Let's run one final command to make sure the ``dotnet new mvc -n hello-world`` created a new directory named hello-world and filled it with a base MVC project.
 
 .. sourcecode:: bash
 
-   dotnet run --project hello-world/hello-world.csproj
+   cd /home/student/hello-world
+   pwd
+   ls
 
-Connect to Source Code
-======================
+.. image:: /_static/images/web-apis/walkthrough-run-command-5.png
+
+As we can see from the output our ``pwd`` command tells us we are in /home/student/hello-world so the dotnet command created a new folder. From the ``ls`` command we can see the hello-world folder has quite a few folders and files in it including ``hello-world.csproj``. This is a runnable project.
+
+Open Network Security Groups
+============================
+
+Before we run our app we will need to create a new inbound and outbound network security group rule to let the traffic in and let our app respond to the traffic. Our app will be running on port 80 so we will need to open that port.
+
+From the Azure Portal look for the Networking tab of the Setting sections.
+
+.. image:: /_static/images/web-apis/walkthrough-settings-networking.png
+
+When looking at the networking section of your VM the inbound rules are listed in front of you. A few were created automatically for you, we won't be touching these, but will be creating a new inbound rule for port 80.
+
+Click the add inbound port rule button to create a new rule.
+
+.. image:: /_static/images/web-apis/walkthrough-add-inbound.png
+
+This brings out a box that allows you to quickly and easily create a new rule. We will be changing the port to 80, and giving it a name ``web-app-inbound``.
+
+.. image:: /_static/images/web-apis/walkthrough-inbound-form.png
+
+After entering the port, and the name click the add button. It will take a few seconds for the rule to be created. While it's spinning up let's create the outbound rule too. Click the Outbound port rules tab, and the add outbound port rule button to bring up the outbound rule form. Again fill in port 80 and the name web-app-outbound.
+
+.. image:: /_static/images/web-apis/walkthrough-outbound-form.png
+
+Click the add button to create this outbound rule. After a few seconds you should see the new rules in their reflective areas.
+
+Double check both the inbound port rule, and the outbound port rule. If these are messed up you won't be able access your web app from your browser.
+
+.. note:: 
+   
+   Misconfiguring a Network Security Group is a common error when deploying applications and should be one of the first things you check if you cannot access your running application.
+
+Run Project
+===========
+
+We will run our project using the run command with the following code:
+
+.. sourcecode:: bash
+
+   export DOTNET_CLI_HOME=/home/student
+   export HOME=/home/student
+   dotnet run --project /home/student/hello-world/hello-world.csproj --urls http://*:80
+
+This command is a little different. Traditionally when you run a project with ``dotnet run`` the terminal attaches itself to the process as the project runs. Since it does this you won't see anything in the output section, and it will appear to be frozen like in the following picture.
+
+.. image:: /_static/images/web-apis/walkthrough-run-command-6.png
+
+However, the command is still running, and your application is running on port 80.
+
+Connect to App
+==============
+
+As a final step we will be connecting to our running web app in our browser. To do this we will need the public IP address of our VM. You can find this 
+
+.. image:: /_static/images/web-apis/walkthrough-overview-public-ip.png
+
+In your browser navigate to the public IP address found in the overview section of your VM and you should see the deployed application.
+
+.. image:: /_static/images/web-apis/walkthrough-connect-to-app.png
+
+There it is! The hello-world app we created on the VM is running and we can connect to it from a browser using it's public IP address! However, it isn't just your computer we configured our network security groups to allow traffic from anywhere. So anyone that has access to the internet would be able to access your web application at your public IP address.
+
+Troubleshooting
+===============
+
+For this first deployment we are doing things in a less than ideal way. We have been using the Azure Portal run command which isn't very flexible, and your app will only run as long as a dotnet run command is currently connected to your app. We will learn about better, more robust ways to deploy applications in the class, but they are the same principle.
+
+If you run into errors throughout this guide the best advice is to throw everything you've done away (by deleting the Resource Group) and start again from the top of this article.
+
+You can also walk through the article section by section to make sure you haven't made any mistakes. Even one small typo can keep your application from deploying.
+
+Troubleshooting is a very important skill in Operations, and it's a good idea to start taking note of what things trip you up when deploying.
+
+Common things you should lookout for:
+  - VM is running
+  - VM has a public IP address
+  - VM has dependencies for your application (dotnet cli)
+  - VM has your project source code, or build artifacts
+  - VM has properly set inbound AND outbound network security group rules
+  - VM is currently running your project (if you don't have a tab open with a frozen ``dotnet run`` command your app is probably not running)
+
+Outside of our recommendations of things to look for start your own list! Making mistakes is a part of the process, and keeping track of the mistakes you've made in the past, or frequently forget is a great way of accelerating your journey in Operations.
+
+Cleaning Up
+===========
+
+As a final step you will want to delete your Resource Group. Running a VM costs money when you are done with this Walkthrough and no longer have any questions deleting your Resource group is the best way to make sure you aren't wasting Azure credits.
