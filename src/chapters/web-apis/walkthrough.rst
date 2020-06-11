@@ -81,23 +81,77 @@ We will need to set:
 
 After filling out the form click review and create. On the review screen double check that you created your VM with the settings listed above, then finally click Create.
 
+.. image:: /_static/images/web-apis/walkthrough-vm-3.png
+
+The screen after review shows the status as your VM spins up. It will take a few minutes, but eventually your VM will be ready to work with.
+
 After creating the VM it will take a couple of minutes for the VM to fully provision. This takes time because Azure is doing a lot of things for us in the background. They are accessing a server at one of theri many data centers in the region we selected, and creating a virutal machine with the requirements we entered. Then it has to create the file structure on the virutal machine. After that it has to configure the network so the machine is accessible to us through the internet including a public IP. Only when all of that is one can we access our machine.
 
 Configure VM
 ============
 
+To configure our VM we will need to access the resource. Navigate back to the Virtual Machine blade, then select the VM you just spun up by clicking the link of your VM name.
+
+.. image:: /_static/images/web-apis/walkthrough-access-vm.png
+
 Now that we have created a VM we will need to configure it so that it is ready to run our project. Configuration can be done in many ways, and you will see a couple of them in this class. Today we will configure our VM by sending it BASH commands through the Command section of the Azure Portal.
 
 When we enter commands here they will be run, just like we were in a bash terminal on the VM!
 
+To find the run command we need to look at the home page of our VM. Under operations select ``Run Command``
+
+.. image:: /_static/images/web-apis/walkthrough-select-run-command.png
+
+From here you will be provided with a couple of options make sure to select ``RunShellScript``.
+
+From here a screen will pop out showing you a text box where we can send bash commands to our VM.
+
+.. image:: /_static/images/web-apis/walkthrough-run-command-1.png
+
+We need to install the DotNetCLI onto this Ubuntu machine which we can do by adding the following code block to the run command.
+
+.. sourcecode:: bash
+
+   wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+   sudo dpkg -i packages-microsoft-prod.deb
+   sudo apt-get update; \
+     sudo apt-get install -y apt-transport-https && \
+     sudo apt-get update && \
+     sudo apt-get install -y dotnet-sdk-3.1
+
+.. image:: /_static/images/web-apis/walkthrough-run-command-2.png
+
+Then hit run to run the bash command on the VM. It will take a couple of minutes to run. When the command is done the STDOUT of the terminal will be displayed in the output.\
+
+You should look over the output to make sure everything installed properly. Below is a picture showing a section of the output that shows the .NET CLI was installed and is ready to go.
+
+.. image:: /_static/images/web-apis/walkthrough-run-command-3.png
+
+For this walkthrough we are goign to deploy a base Rest API that comes when you create a new application with the dotnet CLI.
+
+It should be noted that in your studio and in future walkthroughs and studios you will probably have additional configuration steps. Installing additional dependencies.
+
 Create Project
 ==============
 
-Publish Project
-===============
+Our next step is to create our project. Since we installed the dotnet CLI in the previous step we can use that tool to generate a hello world starter project.
+
+We will again be using the Run Command to run our dotnet CLI commands.
+
+.. sourcecode:: bash
+
+   export DOTNET_CLI_HOME=/home/student
+   /usr/bin/dotnet new mvc -n hello-world -o /home/student
+   dotnet new mvc -n hello-world
+
+.. image:: /_static/images/web-apis/walkthrough-run-command-4.png
 
 Run Project
 ===========
+
+.. sourcecode:: bash
+
+   dotnet run --project hello-world/hello-world.csproj
 
 Connect to Source Code
 ======================
