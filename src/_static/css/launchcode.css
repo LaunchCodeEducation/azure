@@ -335,6 +335,13 @@ table.highlighttable td {
     border-left: none;
 }
 
+/* fix for code blocks with annotations, TODO: include in template */
+div.literal-block-wrapper.container {
+   padding: 0;
+   margin: 0;
+   width: auto;
+ }
+
 blockquote {
     padding: 30px 45px;
     border: none;
