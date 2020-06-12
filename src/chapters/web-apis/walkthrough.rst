@@ -11,8 +11,9 @@ We have a few steps we will need to accomplish to deploy and access our applicat
     - Spin up a VM with an Ubuntu OS
     - Configure our VM to run our application
     - Create our source code
-    - Create the build artifacts that will be deployed
-    - Deploy project
+    - Create the build artifacts (Publish)
+    - Deploy the build artifacts
+    - Open the VM Security Group
     - Connect to deployed project
 
 Login to Azure Portal
@@ -161,10 +162,36 @@ Let's run one final command to make sure the ``dotnet new mvc -n hello-world`` c
 
 As we can see from the output our ``pwd`` command tells us we are in /home/student/hello-world so the dotnet command created a new folder. From the ``ls`` command we can see the hello-world folder has quite a few folders and files in it including ``hello-world.csproj``. This is a runnable project.
 
+Publish Project
+===============
+
+Our source code exists and we need to create build artificats from our source code to deploy our project. Earlier we learned about the ``dotnet publish`` command that creates the build artifacts. Let's do that now.
+
+.. sourcecode:: bash
+
+   export DOTNET_CLI_HOME=/home/student
+   export HOME=/home/student
+   cd /home/student/hello-world
+   dotnet publish -c Release -r linux-x64 -p:PublishSingleFile=true
+
+.. image:: /_static/images/web-apis/walkthrough-run-command-6.png
+
+This will publish to ``/home/student/hello-world/bin/Release/netcoreapp3.1/linux-x64/publish/``.
+
+We can look into this folder with ``ls``.
+
+.. sourcecode:: bash
+
+   ls /home/student/hello-world/bin/Release/netcoreapp3.1/linux-x64/publish/
+
+.. image:: /_static/images/web-apis/walkthrough-run-command-7.png
+
+The publish directory has our build artifacts and we have something to deploy!
+
 Open Network Security Groups
 ============================
 
-Before we run our app we will need to create a new inbound and outbound network security group rule to let the traffic in and let our app respond to the traffic. Our app will be running on port 80 so we will need to open that port.
+Before we deploy our build artifacts we will need to create a new inbound and outbound network security group rule to let the traffic in and let our app respond to the traffic. Our app will be running on port 80 so we will need to open that port.
 
 From the Azure Portal look for the Networking tab of the Setting sections.
 
@@ -192,20 +219,19 @@ Double check both the inbound port rule, and the outbound port rule. If these ar
    
    Misconfiguring a Network Security Group is a common error when deploying applications and should be one of the first things you check if you cannot access your running application.
 
-Run Project
-===========
+Deploy Project
+==============
 
-We will run our project using the run command with the following code:
+We will deploy our project using the executable artifact created by our publish step. However, we want this project to run on port 80, not the default port of 5000 so we are going to set an Environment variable when we run our executable.
 
 .. sourcecode:: bash
 
-   export DOTNET_CLI_HOME=/home/student
-   export HOME=/home/student
-   dotnet run --project /home/student/hello-world/hello-world.csproj --urls http://*:80
+   cd /home/student/hello-world
+   ASPNETCORE_URLS="http://*:80" ./bin/Release/netcoreapp3.1/linux-x64/publish/hello-world
 
-This command is a little different. Traditionally when you run a project with ``dotnet run`` the terminal attaches itself to the process as the project runs. Since it does this you won't see anything in the output section, and it will appear to be frozen like in the following picture.
+This command is a little different. Traditionally when you run an executable .NET project the terminal attaches itself to the process as the project runs. Since it does this you won't see anything in the output section, and it will appear to be frozen like in the following picture. The reason it appears to be frozen is because the Azure Portal Run Command can only display information once it gets a response from the terminal on the VM that ran our command. Since that terminal is attached to the process associated with our project, and our project runs until it crashes, it will not send a response back to the Azure Portal Run Command window.
 
-.. image:: /_static/images/web-apis/walkthrough-run-command-6.png
+.. image:: /_static/images/web-apis/walkthrough-run-command-8.png
 
 However, the command is still running, and your application is running on port 80.
 
