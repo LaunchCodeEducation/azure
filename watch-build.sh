@@ -4,8 +4,9 @@ build_docs() {
   sphinx-build -b html-a11y /curriculum/src /docs
 }
 
-# initial build
-build_docs
+# initial clean build
+rm -rf /docs/*
+build_docs 
 
 # watch for changes and pipe out the file name
 inotifywait -m --format "%f" -e create -e delete -e modify -r /curriculum/src | \
