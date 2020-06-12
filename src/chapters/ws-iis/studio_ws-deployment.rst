@@ -2,9 +2,11 @@
 Studio: CLI Deployment to Windows Server & IIS
 ==============================================
 
-In today's studio you will practice deploying the Coding Events API to a Windows Server VM. You will be using the ``az CLI`` and the new Windows Server tools that you learned about. Keep the end goal in mind and apply the knowledge you gained from the Linux API and Windows Server sample app deployments to solve the challenges you are presented with.
+In today's studio you will practice deploying the Coding Events API to a Windows Server VM. You will be using the ``az CLI`` and the new Windows Server tools that you learned about.
 
-This studio will be more hands-off than you are used to. This is an opportunity to step out of your comfort zone and take ownership of your abilities. Applied learning "off the tracks" is the best way to solidify your understanding. Stay calm and if you are in doubt feel free to refer to your notes or previous lessons to help find your way. 
+This studio will be more hands-off than you are used to. This is an opportunity to step out of your comfort zone and take ownership of your abilities. Applied learning "off the tracks" is the best way to solidify your understanding and build confidence. 
+
+While it will be challenging, do your best to complete the tasks on your own by referring to your notes and previous lessons. If you are completely stuck then reach out to a TA or your instructor for help.
 
 We will provide some high-level planning and guidance for new steps you haven't seen before. Otherwise, you are on your own to complete the mission. Good luck!
 
@@ -47,6 +49,8 @@ Let's consider the general requirements that our API has on its hosting environm
 Limited Guidance
 ================
 
+The following sections will guide you on specifics and steps you may not have seen yet. Before starting the studio take a moment to read them over and come up with a plan for when and how you will use them.
+
 Packages
 --------
 
@@ -54,10 +58,10 @@ Many of these requirements can be satisfied by using a package manager. On Windo
 
 The packages you need to install with ``choco`` have the following names:
 
-- ``dotnetcore-sdk``: installs the latest SDK and the ``dotnet CLI``
-- ``mysql``: installs the latest MySQL database server and its companion tool the ``mysql CLI``
-- ``git``: installs the latest Git version control system
-- ``dotnetcore-windowshosting``: the IIS hosting bundle for .NET core Web Apps
+- ``dotnetcore-sdk``: the latest SDK and the ``dotnet CLI``
+- ``mysql``: the latest MySQL database server and its companion tool the ``mysql CLI``
+- ``git``: the latest Git version control system
+- ``dotnetcore-windowshosting``: the latest IIS hosting bundle for serving .NET core Web Apps
 
 Recall that the general form of using ``choco`` is:
 
