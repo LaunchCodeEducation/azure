@@ -74,8 +74,8 @@ We will need to set:
   - Size: Standard_B2s - 2 vcpu, 4 GiB memory ($$$)
   - Authentication type: Password
   - username: student
-  - password: LaunchCode-@zure1
-  - confirm password: LaunchCode-@zure1
+  - password: ``LaunchCode-@zure1``
+  - confirm password: ``LaunchCode-@zure1``
 
 .. image:: /_static/images/web-apis/walkthrough-vm-2.png
 
