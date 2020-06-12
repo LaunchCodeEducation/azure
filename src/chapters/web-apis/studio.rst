@@ -101,3 +101,8 @@ View Swagger Docs
 Finally after you have run these steps navigate to your VM's public IP address in your browser and you should see the Swagger Page to let you know your API has been successfully deployed!
 
 .. image:: /_static/images/web-apis/studio-final-screen.png
+
+Recap
+=====
+
+We manually deployed our application using the Azure Run Command console in the browser. While this was likely a time-consuming process for you know that the techniques we will learn in future classes are much more intuitive and efficient. It is important to understand the discrete steps involved so that you understand what is going on behind the scenes when using tools that abstract this process. 
