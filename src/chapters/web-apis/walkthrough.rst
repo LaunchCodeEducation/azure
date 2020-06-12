@@ -1,10 +1,10 @@
-==============================
-Walkthrough: Connect to an API
-==============================
+=========================================
+Walkthrough: Linux Starter App Deployment
+=========================================
 
-In this walkthrough we will be deploying our first API with Azure.
+In this walkthrough we will be deploying our first Web Application on Azure.
 
-Throughout this week we will use Ubuntu operating system on the hardware of our Virtual Machine. Next week we will be deploying to a Windows Server operating system. Due to the powerful DotNetCore libraries the same project will be deployable to multiple different operating systems.
+Throughout this week we will use Ubuntu operating system on the hardware of our Virtual Machine. Next week we will be deploying to a Windows Server operating system. Due to the cross-platform design of .NET core the same project will be deployable to multiple operating systems.
 
 We have a few steps we will need to accomplish to deploy and access our application:
     - Create a Resource Group
@@ -19,14 +19,14 @@ We have a few steps we will need to accomplish to deploy and access our applicat
 Login to Azure Portal
 =====================
 
-Before we can deploy our application to a VM, we will need to first access our Azure accounts. You shoud have set this up yesterday, go ahead and login and navigate to the main screen.
+Before we can deploy our application to a VM, we will need to first access our Azure accounts. You should have set this up yesterday, go ahead and login and navigate to the main screen.
 
 .. image:: /_static/images/web-apis/walkthrough-azure-home.png
 
 Create a Resource Group
 =======================
 
-A resource group is a great way of organizing your Azure resources. Since we are deploying a project for the first time let's create a unique resource group to contain anything we will need to create for this project.
+A resource group is a great way of organizing your Azure resources. Since we are deploying a project for the first time let's create a unique resource group to contain all of the resources we will need to create for this project.
 
 Navigate to the resource group blade by searching for resource group in the search bar.
 
@@ -46,8 +46,8 @@ After entering your resource group name click review and create, and then finall
 
 Now if you go to the resource group blade homepage you should see the new resource group with the name you entered in the list.
 
-Spin up VM
-==========
+Provision the VM
+================
 
 Now that we have a resource group to contain all of the resources we need for this project we can start spinning up the resources we will need for our deployment.
 
@@ -63,9 +63,7 @@ Clicking this blade will take you to the home page for all your VMs. For now it 
 
 We will need to create a new VM, which will require us to go through a lengthy web form. To get started click the add VM button which will take you to the first screen.
 
-.. image:: /_static/images/web-apis/walkthrough-vm-1.png
-
-On this page we will need to fill out quite a few things, but will be sticking to defaults as much as possbile.
+On this page we will need to fill out quite a few things, but will be sticking to defaults as much as possible.
 
 We will need to set:
   - Resource group: ``your-name-lc-rg-web-api``
@@ -73,6 +71,10 @@ We will need to set:
   - Region: East US
   - Image: Ubuntu Server 18.04 LTS
   - Size: Standard_B2s - 2 vcpu, 4 GiB memory ($$$)
+
+.. image:: /_static/images/web-apis/walkthrough-vm-1.png
+
+Scrolling down you can complete the remaining fields:
   - Authentication type: Password
   - username: student
   - password: ``LaunchCode-@zure1``
@@ -82,34 +84,36 @@ We will need to set:
 
 After filling out the form click review and create. On the review screen double check that you created your VM with the settings listed above, then finally click Create.
 
-.. image:: /_static/images/web-apis/walkthrough-vm-3.png
-
 The screen after review shows the status as your VM spins up. It will take a few minutes, but eventually your VM will be ready to work with.
 
-After creating the VM it will take a couple of minutes for the VM to fully provision. This takes time because Azure is doing a lot of things for us in the background. They are accessing a server at one of theri many data centers in the region we selected, and creating a virutal machine with the requirements we entered. Then it has to create the file structure on the virutal machine. After that it has to configure the network so the machine is accessible to us through the internet including a public IP. Only when all of that is one can we access our machine.
+.. image:: /_static/images/web-apis/walkthrough-vm-3.png
+
+After creating the VM it will take a couple of minutes for the VM to fully provision. This takes time because Azure is doing a lot of things for us in the background. They are accessing a server at one of their many data centers in the region we selected, and creating a virtual machine with the requirements we entered. Then it has to create the file structure on the virtual machine. After that it has to configure the network so the machine is accessible to us through the internet by assigning it a public IP address. Only when all of that is done can we access our machine.
 
 Configure VM
 ============
 
-To configure our VM we will need to access the resource. Navigate back to the Virtual Machine blade, then select the VM you just spun up by clicking the link of your VM name.
+Now that we have created a VM we will need to configure it so that it is ready to run our project. To configure our VM we will need to access the resource. 
 
-.. image:: /_static/images/web-apis/walkthrough-access-vm.png
+Navigate back to the Virtual Machine blade, then select the VM you just spun up by clicking the link of your VM name.
 
-Now that we have created a VM we will need to configure it so that it is ready to run our project. Configuration can be done in many ways, and you will see a couple of them in this class. Today we will configure our VM by sending it BASH commands through the Command section of the Azure Portal.
+.. image:: /_static/images/web-apis/walkthrough-access-vm.png 
 
-When we enter commands here they will be run, just like we were in a bash terminal on the VM!
+Configuration can be done in many ways, and you will see a couple of them in this class. Today we will configure our VM by sending it BASH commands through the Run Command console of the Azure Portal.
 
-To find the run command we need to look at the home page of our VM. Under operations select ``Run Command``
+When we enter commands here they will be run as if we were in the BASH terminal of the VM!
+
+To find the Run Command we need to look at the home page of our VM. Under operations select ``Run Command``.
 
 .. image:: /_static/images/web-apis/walkthrough-select-run-command.png
 
 From here you will be provided with a couple of options make sure to select ``RunShellScript``.
 
-From here a screen will pop out showing you a text box where we can send bash commands to our VM.
+From here a screen will pop out showing you a text box where we can send BASH commands to our VM.
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-1.png
 
-We need to install the DotNetCLI onto this Ubuntu machine which we can do by adding the following code block to the run command.
+We need to install the ``dotnet CLI`` onto this Ubuntu machine which we can do by adding the following code block to the Run Command.
 
 .. sourcecode:: bash
 
@@ -122,22 +126,24 @@ We need to install the DotNetCLI onto this Ubuntu machine which we can do by add
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-2.png
 
-Then hit run to run the bash command on the VM. It will take a couple of minutes to run. When the command is done the STDOUT of the terminal will be displayed in the output.\
+Then hit run to run the BASH command on the VM. It will take a couple of minutes to run. When the command is done the STDOUT of the terminal will be displayed in the output.\
 
-You should look over the output to make sure everything installed properly. Below is a picture showing a section of the output that shows the .NET CLI was installed and is ready to go.
+You should look over the output to make sure everything installed properly. Below is a picture showing a section of the output that shows the ``dotnet CLI`` was installed and is ready to be used.
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-3.png
 
-For this walkthrough we are goign to deploy a base Rest API that comes when you create a new application with the dotnet CLI.
+For this walkthrough we are going to deploy a starter .NET MVC Web App that we will create using the ``dotnet CLI``.
 
-It should be noted that in your studio and in future walkthroughs and studios you will probably have additional configuration steps. Installing additional dependencies.
+.. admonition:: note
+
+   In your upcoming studio and in future walkthroughs and studios you will have additional configuration steps.
 
 Create Project
 ==============
 
-Our next step is to create our project. Since we installed the dotnet CLI in the previous step we can use that tool to generate a hello world starter project.
+Our next step is to create our project. Since we installed the ``dotnet CLI`` in the previous step we can use that tool to generate a hello world starter project.
 
-We will again be using the Run Command to run our dotnet CLI commands.
+We will again be using the Run Command to run our ``dotnet CLI`` commands.
 
 .. sourcecode:: bash
 
@@ -148,9 +154,15 @@ We will again be using the Run Command to run our dotnet CLI commands.
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-4.png
 
-Breaking down the commands we sent to our VM we set a couple of environment variables for the bash shell, namely DOTNET_CLI_HOME, and HOME. We have to perform this step because when you run commands from the Run Command operation in the Azure Portal the commands are always run as root, and not as the student user. The root user does not have any ideas on where the dotnet home, and user home directory exists so we have to provide this information. ``cd /home/student`` changed to the home directory for the student. Finally the ``dotnet new mvc -n hello-world`` command created a new .NET C# MVC project named hello-world. This should have created a base project for us in /home/student/hello-world.
+Breaking down the commands we sent to our VM we set a couple of environment variables for the BASH shell, namely DOTNET_CLI_HOME, and HOME. We have to perform this step because when you run commands from the Run Command operation in the Azure Portal the commands are always run as the root user, and not as the student user. 
 
-Let's run one final command to make sure the ``dotnet new mvc -n hello-world`` created a new directory named hello-world and filled it with a base MVC project.
+The root user does not have a home directory so it is not able to run the ``dotnet CLI``. 
+
+The command ``cd /home/student`` changed the working directory to the home directory for the student. 
+
+Finally the ``dotnet new mvc -n hello-world`` command created a new .NET MVC project named ``hello-world``. This created a base project for us in the working directory, ``/home/student/hello-world``.
+
+Let's run one final command to make sure the ``dotnet new mvc -n hello-world`` created a new directory named ``hello-world`` and populated it with a base MVC project.
 
 .. sourcecode:: bash
 
@@ -160,12 +172,12 @@ Let's run one final command to make sure the ``dotnet new mvc -n hello-world`` c
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-5.png
 
-As we can see from the output our ``pwd`` command tells us we are in /home/student/hello-world so the dotnet command created a new folder. From the ``ls`` command we can see the hello-world folder has quite a few folders and files in it including ``hello-world.csproj``. This is a runnable project.
+As we can see from the output our ``pwd`` command tells us we are in ``/home/student/hello-world``. If the directory had not been created by the ``dotnet CLI`` then the ``cd`` command would have failed. The ``ls`` command displays the contents of the ``hello-world`` directory and confirms the project files were all created successfully.
 
 Publish Project
 ===============
 
-Our source code exists and we need to create build artificats from our source code to deploy our project. Earlier we learned about the ``dotnet publish`` command that creates the build artifacts. Let's do that now.
+Our source code exists and we need to create the build artifacts from it to deploy our project. Earlier we learned about the ``dotnet publish`` command that creates the build artifacts. Let's use that command now.
 
 .. sourcecode:: bash
 
@@ -186,18 +198,18 @@ We can look into this folder with ``ls``.
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-7.png
 
-The publish directory has our build artifacts and we have something to deploy!
+The publish directory has our build artifacts and we have everything we need to deploy!
 
 Open Network Security Groups
 ============================
 
-Before we deploy our build artifacts we will need to create a new inbound and outbound network security group rule to let the traffic in and let our app respond to the traffic. Our app will be running on port 80 so we will need to open that port.
+Before we deploy our build artifacts we will need to create a new inbound and outbound Network Security Group (NSG) rule to allow inbound and outbound traffic to our machine. Our app will be listening on port 80 in the Server so we will need to open that port.
 
-From the Azure Portal look for the Networking tab of the Setting sections.
+In the Azure VM page look for the Networking tab of the Setting sections.
 
 .. image:: /_static/images/web-apis/walkthrough-settings-networking.png
 
-When looking at the networking section of your VM the inbound rules are listed in front of you. A few were created automatically for you, we won't be touching these, but will be creating a new inbound rule for port 80.
+When looking at the networking section of your VM the inbound rules are listed by default. A few were created automatically for you, we won't be touching these, but will be creating a new inbound rule for port 80.
 
 Click the add inbound port rule button to create a new rule.
 
@@ -211,34 +223,36 @@ After entering the port, and the name click the add button. It will take a few s
 
 .. image:: /_static/images/web-apis/walkthrough-outbound-form.png
 
-Click the add button to create this outbound rule. After a few seconds you should see the new rules in their reflective areas.
+Click the add button to create this outbound rule. After a few seconds you should see the new rules in their respective areas.
 
-Double check both the inbound port rule, and the outbound port rule. If these are messed up you won't be able access your web app from your browser.
+Double check both the inbound and outbound port rules. If these are not configured correctly you won't be able access your web app from your browser.
 
-.. note:: 
+.. admonition:: tip 
    
-   Misconfiguring a Network Security Group is a common error when deploying applications and should be one of the first things you check if you cannot access your running application.
+   Mis-configuring a Network Security Group is a common error when deploying applications and should be one of the first things you check if you receive a connection timeout when connecting to your deployed app.
 
 Deploy Project
 ==============
 
-We will deploy our project using the executable artifact created by our publish step. However, we want this project to run on port 80, not the default port of 5000 so we are going to set an Environment variable when we run our executable.
+We will deploy our project using the executable artifact created by our publish step. However, we want this project to run on port 80 (the default HTTP port), not the .NET default port of 5000. We are going to set an environment variable to override the .NET default port when we run our executable.
 
 .. sourcecode:: bash
 
    cd /home/student/hello-world
    ASPNETCORE_URLS="http://*:80" ./bin/Release/netcoreapp3.1/linux-x64/publish/hello-world
 
-This command is a little different. Traditionally when you run an executable .NET project the terminal attaches itself to the process as the project runs. Since it does this you won't see anything in the output section, and it will appear to be frozen like in the following picture. The reason it appears to be frozen is because the Azure Portal Run Command can only display information once it gets a response from the terminal on the VM that ran our command. Since that terminal is attached to the process associated with our project, and our project runs until it crashes, it will not send a response back to the Azure Portal Run Command window.
+This command is a little different. Traditionally when you run an executable .NET project the terminal attaches itself to the process as the project runs. Since it does this you won't see anything in the output section, and it will appear to be frozen like in the following picture. 
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-8.png
 
-However, the command is still running, and your application is running on port 80.
+.. admonition:: note
+
+   The reason it appears to be frozen is because the Azure Portal Run Command can only display information once it gets a response from the terminal on the VM that ran our command. Since that terminal is attached to the process associated with our project, and our project runs until it crashes, it will not send a response back to the Azure Portal Run Command window.
 
 Connect to App
 ==============
 
-As a final step we will be connecting to our running web app in our browser. To do this we will need the public IP address of our VM. You can find this 
+As a final step we will be connecting to our running web app in our browser. To do this we will need the public IP address of our VM. You can find this in the overview section of the VM view:
 
 .. image:: /_static/images/web-apis/walkthrough-overview-public-ip.png
 
@@ -246,30 +260,34 @@ In your browser navigate to the public IP address found in the overview section 
 
 .. image:: /_static/images/web-apis/walkthrough-connect-to-app.png
 
-There it is! The hello-world app we created on the VM is running and we can connect to it from a browser using it's public IP address! However, it isn't just your computer we configured our network security groups to allow traffic from anywhere. So anyone that has access to the internet would be able to access your web application at your public IP address.
+The ``hello-world`` app we created on the VM is running and we can connect to it from a browser using it's public IP address!
+
+.. admonition:: note
+
+   Our NSG rules allow traffic from *any IP address*. This means that anyone can connect to it if they have the public IP of the machine.
 
 Troubleshooting
 ===============
 
-For this first deployment we are doing things in a less than ideal way. We have been using the Azure Portal run command which isn't very flexible, and your app will only run as long as a dotnet run command is currently connected to your app. We will learn about better, more robust ways to deploy applications in the class, but they are the same principle.
+For this first deployment we are doing things in a less than ideal way. We have been using the Azure Portal Run Command which isn't very flexible. We will learn about more robust ways to deploy applications in the class.
 
-If you run into errors throughout this guide the best advice is to throw everything you've done away (by deleting the Resource Group) and start again from the top of this article.
+We will continue to develop our troubleshooting strategy in tandem with learning these other deployment mechanisms. Troubleshooting is a very important skill in Operations, and it's a good idea to start taking note of what things trip you up when deploying.
 
-You can also walk through the article section by section to make sure you haven't made any mistakes. Even one small typo can keep your application from deploying.
+For today, if you run into errors when following this guide the best advice is to throw everything you've done away and start over. Fortunately this can be done quickly by deleting the Resource Group and starting again from the top of this article.
 
-Troubleshooting is a very important skill in Operations, and it's a good idea to start taking note of what things trip you up when deploying.
+.. todo:: move to troubleshooting article
 
-Common things you should lookout for:
-  - VM is running
-  - VM has a public IP address
-  - VM has dependencies for your application (dotnet cli)
-  - VM has your project source code, or build artifacts
-  - VM has properly set inbound AND outbound network security group rules
-  - VM is currently running your project (if you don't have a tab open with a frozen ``dotnet run`` command your app is probably not running)
+.. Common things you should lookout for:
+..   - VM is running
+..   - VM has a public IP address
+..   - VM has dependencies for your application (dotnet cli)
+..   - VM has your project source code, or build artifacts
+..   - VM has properly set inbound AND outbound network security group rules
+..   - VM is currently running your project (if you don't have a tab open with a frozen ``dotnet run`` command your app is probably not running)
 
-Outside of our recommendations of things to look for start your own list! Making mistakes is a part of the process, and keeping track of the mistakes you've made in the past, or frequently forget is a great way of accelerating your journey in Operations.
+.. Outside of our recommendations of things to look for start your own list! Making mistakes is a part of the process, and keeping track of the mistakes you've made in the past, or frequently forget is a great way of accelerating your journey in Operations.
 
 Cleaning Up
 ===========
 
-As a final step you will want to delete your Resource Group. Running a VM costs money when you are done with this Walkthrough and no longer have any questions deleting your Resource group is the best way to make sure you aren't wasting Azure credits.
+After you have completed this walkthrough and have connected to your deployed application you will want to delete your Resource Group. Running a VM costs money and by removing unused resources you can preserve your subscription credits.

@@ -7,6 +7,7 @@ Chapters
    :name: fulltoc
 
    chapters/azure-intro/index
+   chapters/web-apis/index
 
    chapters/az-cli/index
    chapters/ws-iis/index
