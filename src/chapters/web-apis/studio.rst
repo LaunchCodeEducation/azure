@@ -61,11 +61,12 @@ We can check that it installed the source code properly by looking into the ``co
 
    cd /home/student
    git clone https://github.com/LaunchCodeEducation/coding-events-api
+   git checkout 1-sqlite
    ls /home/student/coding-events-api
 
 .. image:: /_static/images/web-apis/studio-run-command-2.png
 
-Looking into the directory we can see we have some source code. I don't see a .csproj file though, and that's what we normally run. However, I see another directory ``/home/student/coding-events-api/CodingEventsAPI`` maybe this has our .csproj file?
+Looking into the directory we can see we have some source code. I don't see a .csproj file though, and that must be present to publish our application. However, I see another directory ``/home/student/coding-events-api/CodingEventsAPI`` maybe this has a .csproj file?
 
 .. sourcecode::
 
@@ -73,10 +74,32 @@ Looking into the directory we can see we have some source code. I don't see a .c
 
 .. image:: /_static/images/web-apis/studio-run-command-3.png
 
-In this folder I can see a .csproj file.
+In this folder I can see a .csproj file, so we will be able to publish this project to create our build artifacts.
 
 Publish Source Code
 ===================
 
-Connect to Source Code
-======================
+We published a project in the walkthrough you will want to do the same thing. You will want to change to the directory that holds the project solution, or the ``coding-events-api.sln`` file.
+
+You will want to change to that directory and then run the publish command.
+
+Open VM Network Security Groups (NSG)
+=====================================
+
+Similarly to the walkthrough we will need to create inbound and outbound rules for port 80, before users can access our application.
+
+Run Project
+===========
+
+After getting our NSG set up we can run the executable that was created for us.
+
+You may have to look around for it, it's probably somewhere in the ``/bin`` subdirectories. Don't forget ``ls`` is your friend for finding files and directories.
+
+Don't forget to run your executable with the environment variable we set in the walkthrough ``ASPNETCORE_URLS="http://*:80"`` is what we had to add before running our executable check out the walkthrough for the exact syntax.
+
+View Swagger Docs
+=================
+
+Finally after you have run these steps navigate to your VM's IP address in your browser and you should see the Swagger Page to let you know your API has been successfully deployed!
+
+.. image:: /_static/images/web-apis/studio-final-screen.png
