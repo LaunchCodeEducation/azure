@@ -1,156 +1,73 @@
-# Introduction to Microsoft Azure
+# Azure Course Overview
 
-## day 1: intro to hosting, azure & VMs
+## Week 1: Introduction to Ops With Microsoft Azure
 
-### setup
+> **topics**: command line fundamentals, REST API deployment on linux and managing azure services through the web GUI
 
-- linux subsystem (ubuntu 18.04 LTS)
-  - CLI
-    - dotnet
-    - azure
+> **note**: deployments on linux VM this week
 
-### conceptual
+### day 1: intro to command line with bash and powershell
 
-- intro to hosting
-  - local (loopback), W/LAN, internet
-  - addressing (machine IPs, server process ports)
-  - connecting (URLs, domain IP resolution)
-- intro to azure
-  - high level (cloud computing, azure services used in the course)
-- intro to VMs
-  - high level (virtualization, provisioning on-demand, parity)
+> **conceptual goals**: understand the similarities and differences between GUI and CLI, fundamental aspects and uses of OS shells, understanding piping
 
-### practical
+> **practical goals**: (bash and powershell) navigate and manage the file system, install and manage programs, basic scripting, ability to pipe STDOUT to additional shell commands
 
-- dev: dotnet web API starter
-  - publishing and executing
-  - connecting (local, WAN, internet)
-  - how a project is published and executed outside of an IDE
-    - ? self-contained or runtime-dependent ?
-- ops: provision a VM deploy the starter
-  - set up azure accounts
-  - how to provision and configure a publicly accessible VM
-  - how to use the VM RunCommand console
-    - configure dependencies
-    - run the API
-  - connect to a hosted project
+### day 2: intro to hosting, azure & VMs
 
-## day 2: IaaS, web APIs & REST
+> **conceptual goals**: introduction to hosting, basic networking, azure and VMs
 
-### conceptual
+> **practical goals**: practicing publishing, executing and connecting to remote (W/LAN) machines, set up their Azure accounts and explore the Azure Portal
 
-- IaaS
-  - infrastructure (physical/virtual servers, networks, storage)
-  - on-site vs cloud (availability, expenses, management, security)
-  - scaling (horizontal, vertical)
-- web APIs
-  - review essentials (resources, JSON, endpoints)
-- REST
-  - review essentials (resource organization, methods, status codes)
-  - swagger (OpenAPI spec, importance of documentation)
+### day 3: IaaS, web APIs & REST
 
-### practical
+> **conceptual goals**: understand purpose and differences between IaaS and on-prem, review web APIs, REST and swagger
 
-- dev: explore a basic web API
-  - code
-    - single resource (CodingEvent) API
-    - SQLLite db
-  - dotnet core
-    - how an API is configured
-  - swagger
-    - how endpoints are documented
-    - how to navigate and use the swagger UI
-- ops: deploy the API to the VM
-  - use RunCommand
-    - remove starter API
-    - run CodingEvents API
-  - connect to hosted swagger UI
+> **practical goals**: explore dotnet web API structure and deploy a basic sqlite backed API to azure linux VM through the Azure Portal
 
-## day 3: secrets management & backing services
+### day 4: environment configurations & backing services
 
-### conceptual
+> **conceptual goals**: learn about backing services, methods of external configurations and secrets management
 
-- backing services
-  - external application dependency (db, logging, caching)
-- application environment configs
-  - parity and portability (dev, test, prod)
-  - external configuration (public, secret)
-  - version control
-    - committed (source, public config)
-    - ignored (derived, sensitive config)
-  - secrets management
-    - dotnet tooling
-      - local: user-secrets
-      - remote: keyvault
+> **practical goals**: learn how to use local user-secrets and remote keyvault and deploy an API backed by an embedded mysql container to an azure linux VM through the Azure Portal
 
-### practical
+### day 5: OAuth, OIDC, azure ADB2C
 
-- dev: configuring API
-  - use MySQL
-  - configuring appsettings.json
-  - configuring Startup.cs for secrets access
-- ops: storing and managing secrets access
-  - local
-    - configuring dotnet user-secrets
-    - storing db credentials as a secret
-  - remote
-    - provisioning KeyVault
-    - configuring VM-KeyVault permissions
-    - storing db credentials
-  - deployment: update deployment with MySQL backed API
-    - use RunCommand
-      - install and configure MySQL backing service
-      - update and run latest API version
+> **conceptual goals**: learn about OAuth, OIDC, JWTs and azure ADB2C service
 
-## day 4: OAuth, OIDC, azure ADB2C
+> **practical goals**: explore OAuth, setup ADB2C tenant, deploy ADB2C API version with nginx reverse proxy for self-signed TLS termination through the Azure Portal
 
-### conceptual
+# Week 2: Automated Ops & Troubleshooting With Azure
 
-- oauth
-  - fundamentals (authentication, authorization, delegation)
-  - oauth flows (security, use cases)
-  - JWT (transport medium, format, authenticity signatures)
-- oidc
-  - fundamentals (oauth extension spec, id tokens)
-  - implicit flow
-- Azure ADB2C
-  - fundamentals (tenant, providers, scopes, flows)
+> **topics**: managing and automating azure deployment to a windows server VM from the command line, automated scripting, dev and ops troubleshooting, conceptual overview of out-of-scope ops topics
 
-### practical
+> **note**: deployments on windows server VM this week
 
-- dev: explore ADB2C integration in the API
-  - configuring appsettings.json for ADB2C
-  - how to use the swagger UI to make authenticated requests
-- ops: ADB2C setup
-  - provision and configure ADB2C tenant directory
-    - connect ADB2C directory to primary subscription
-  - configure
-    - API application
-      - redirect URIs
-      - API access and published scopes
-    - local identity provider
-    - SUSI flow (provider and claims)
-  - deployment: update deployment with ADB2C API
-    - use RunCommand
-      - install and configure nginx RP and openSSL cert
-      - update and run latest API version
-      - connect to hosted swagger UI
+### day 1: introduction to azure CLI and windows server deployment
 
-## day 5: authorization, next steps
+> **conceptual goals**: learn about the az CLI and manual deployment to IIS on a windows server VM
 
-### conceptual
+> **practical goals**: how to provision and configure a windows server VM and keyvault using the az CLI, install and configure IIS over RDP, deploy the ADB2C API version manually
 
-- authorization
-  - roles (identity associations, endpoint access, attribute access)
-- next steps
-  - decoupling services (managed databases, subnets)
-  - load balancing
-  - security (firewalls, vulnerabilities)
-  - CI/CD (automation, code quality, testing)
-  - application environments (dev, test, staging, prod)
-  - monitoring (logging, notifications, automation)
+### day 2: automated script deployments to linux and windows server
 
-### practical
+> **conceptual goals**: continued exposure to powershell and bash scripting to automate provisioning and configuration using the az CLI, introduction to SSH and SCP for interfacing with headless linux VMs, comparing and contrasting windows (powershell) and linux (bash) based automations
 
-- dev: exploring roles and authorization
-- ops: deploy final completed API
+> **practical goals**: write automation scripts for provisioning and configuring windows server (powershell) and ubuntu (bash) VMs, using openssl to provision self-signed certs, use SSH and SCP to configure and deliver to the linux VM
+
+> **note**: windows server delivery with git over RDP, linux delivery via SSH and SCP
+
+### day 3: introduction to CI/CD with Azure DevOps Pipelines
+
+> **conceptual goals**: learn the fundamentals of continuous integration, delivery, and deployment, introduction to Azure DevOps Pipelines, conceptual overview of pipeline stages and use cases
+
+> **practical goals**: understanding YML syntax and pipeline configuration directives, provision and configure two Azure DevOps Pipelines to automate build, publish, and deployment stages to a windows server VM and linux VM
+
+### day 4: (devops troubleshooting) identifying, isolating, communicating and potential solutions
+
+> **conceptual goals**: gaining independence with application-level troubleshooting and root cause analysis. gaining independence with ops-level troubleshooting and root cause analysis from the VPC to the VM
+
+> **practical goals**: understanding timeouts and 5XX status codes, VPC-level issues, VM-level issues, communicating and implementing solutions. hands-on troubleshooting by accessing and analyzing logs, tracing 4XX/500 status codes, communicating and implementing solutions
+
+### day 5: next steps
+
+> **conceptual goals**: closing exposure to other ops terminology, services, and best practices
