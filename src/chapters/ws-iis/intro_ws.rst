@@ -4,20 +4,20 @@
 Introduction to Windows Server
 ==============================
 
-Previously we used the Azure web portal to provision and deploy our API to an Ubuntu Linux VM. In order to execute commands and scripts to configure the deployment we used the RunCommand tool that was built into the web portal. 
+Previously we used the Azure web portal to provision and deploy our API to an Ubuntu Linux VM. In order to execute commands and scripts to configure the deployment we used the Run Command tool that was built into the web portal. 
 
-Today we will learn about the other choice of OS for hosting our web applications -- Windows Server. Now that you are more comfortable working away from the web portal we will also learn how to remotely access our new Windows Server VM from outside of the browser.
+Today we will learn about one of the other choices of OS for hosting our web applications -- Windows Server. Now that you are more comfortable working away from the web portal we will also learn how to remotely access our new Windows Server VM from outside of the browser.
 
 A Native Server OS
 ==================
 
-Windows Server (WS) is built on top of the same base as the PC-grade Windows 10 operating system but has been customized for use as a server. While there are many Windows 10 editions from consumer to enterprise none of them are optimized for server workloads like WS. Servers naturally have greater operational demand than PCs. As a result WS has been designed to manage significantly greater memory and CPU allocations than what someone would run on a PC -- even a decked out gaming rig.
+Windows Server (WS) is built on top of the same base as the PC-grade Windows 10 operating system but has been customized for use as a server. Servers naturally have greater operational demand than Personal Computers (PC). While there are many Windows 10 editions from consumer to enterprise none of them are optimized for server workloads like WS. As a result WS has been designed to manage significantly greater memory and CPU allocations than what someone would run on a PC.
 
 .. admonition:: fun fact
 
-    Windows Server is capable of managing an incredible 24 **terabytes** of RAM and *any number* of CPU cores! But can it run Crysis?
+    Operating Systems have limits to the hardware they can manage. One machine running Windows Server is capable of managing an incredible 24 **terabytes** of RAM and *any number* of CPU cores!
 
-Because WS is designed for computing it strips away many of the applications and features that are meant for PCs. The result is a smaller OS footprint that reduces resource usage. These savings may seem small for individual machines but can be appreciable when managing large fleets of servers. 
+Because WS is designed for computing it strips away many of the applications and features that are meant for Personal Computers. The result is a smaller software footprint that reduces resource usage. These savings may seem small for individual machines but can be appreciable when managing large fleets of servers. 
 
 A smaller OS also means **less code to monitor for and protect against** potential vulnerabilities. The reduced attack surface of the slimmer OS is complemented by sensible firewall defaults and other restrictions that further bolster its security profile relative to a PC.
 
@@ -27,19 +27,19 @@ Installation Options
 WS Desktop Experience
 ^^^^^^^^^^^^^^^^^^^^^
 
-The default Windows Server VM image includes a full GUI shell just like Windows 10. The WS Desktop Experience installation option makes working with WS as familiar as working on your machine at home. While it gets rid of consumer applications it replaces them with a collection of administrative tools including the Server Manager we will be using in this class.
+The default Windows Server VM image includes a full GUI Shell just like Windows 10. The WS Desktop Experience installation option makes working with WS as familiar as working on your machine at home. While it gets rid of consumer applications it does include a collection of administrative tools like the Server Manager we will be using in this class.
 
 WS Core
 ^^^^^^^
 
-Windows Server also comes in a nearly headless **Core** option which removes the majority of the desktop GUI leaving only a PowerShell terminal! Windows Server Core is even leaner than WS Desktop allowing you to start *from the core* and add just the features and applications you need. Windows Server Core represents an *unopinionated* server OS that leaves it to you to customize exactly what is needed for your use case. You can read more about the WS Core design and comparison to the more opinionated WS Desktop Experience `in this article <https://docs.microsoft.com/en-us/windows-server/administration/server-core/what-is-server-core>`_. 
+Windows Server also comes in a nearly headless **Core** option which removes the majority of the desktop GUI leaving only a PowerShell terminal! Windows Server Core is even leaner than WS Desktop allowing you to start *from the core* and add just the features and applications you need. Windows Server Core represents an *unopinionated* server OS that leaves it to you to customize exactly what is needed for your use case. You can read more about the WS Core design and comparison to the more opinionated WS Desktop Experience `in this article <https://docs.microsoft.com/en-us/windows-server/administration/server-core/what-is-server-core>`_. Throughout this class we will be working with Windows Server Desktop, but WS Core is a popular option you should be aware of.
 
 Server Manager
 --------------
 
-The Windows Server Manager is a powerful GUI-based tool for monitoring and managing your Windows Server. In more advanced contexts the Server Manager (SM) can even be used to manage multiple physical or virtual WS machines. Windows Server Manager comes pre-installed on the WS Desktop edition but can be manually installed on your Windows 10 PC as well.
+The Windows Server Manager is a powerful GUI-based tool for monitoring and managing your Windows Server. Windows Server Manager comes pre-installed on the WS Desktop edition but can be manually installed on your Windows 10 PC as well. In more advanced contexts the Server Manager (SM) can even be used to manage multiple physical or virtual WS machines.
 
-The Server Manager is the entry point of the WS VM and is presented to you after opening a Remote Desktop session. 
+The Server Manager is the entry point of the WS VM and is presented to you after opening a Remote Desktop session which we will explore in a following lesson. 
 
 .. image:: /_static/images/ws/server-manager.png
     :alt: Server Manager dashboard
@@ -48,25 +48,25 @@ Within the SM you can configure many aspects of the server including updates, st
 
 In this course we will use the SM to manage the Roles and Features of the **Local Server** (local relative to the machine the SM is running on). The Roles and Features wizard can be used to install and configure additional tooling like the IIS Web Server Manager which we will cover in later lessons.
 
-.. image:: /_static/images/ws/sm-roles-features-wiz.png
-    :alt: Server Manager Roles and Features Wizard
+.. image:: /_static/images/ws/server-manager-add-roles-features.png
+  :alt: Windows Server Manager open Roles & Features wizard
 
 Windows Server Roles & Features
 ===============================
 
 Windows Server uses a system of Roles, Role Services and Features to fine-tune each VM's behavior according to business needs. Let's explore what each of these components are and how they are used to customize a server's purpose such as operating as a Web Server host.
 
-Configuring the responsibility and behavior of a VM is made simple thanks to the ``Roles & Features`` wizard available in the Server Manager:
+Configuring the responsibility and behavior of a VM is made simple thanks to the **Roles & Features** wizard available in the Server Manager:
 
-.. image:: /_static/images/ws/server-manager-add-roles-features.png
-  :alt: Windows Server Manager Roles & Features wizard
+.. image:: /_static/images/ws/sm-roles-features-wiz.png
+    :alt: Server Manager Roles and Features Wizard
 
 What are Roles?
 ---------------
 
 Within a network or a sub-group of servers called a **server pool**, each server has some designated responsibilities. Roles are the way that WS assigns and configures the responsibilities of each server within that network or pool. Windows Servers have dozens of Roles to choose from, each with their own set of corresponding Role Services and Features. 
 
-For example, our VM will have the responsibility of acting as a Web Server. We will use the ``Web Server (IIS)`` Role to designate this responsibility of hosting static sites and .NET web applications. 
+For example, our VM will have the responsibility of acting as a Web Server. We will use the **Web Server (IIS)** Role to designate this responsibility of hosting static sites and .NET web applications. 
 
 .. image:: /_static/images/ws/rf-wizard-select-role.png
   :alt: Roles & Features wizard select Role
@@ -88,7 +88,7 @@ Depending on the use cases you encounter in the future, additional Role Services
 What are Features?
 ------------------
 
-Features are applications that can be installed on a server, or PC in some cases, for managing and further customizing a machine's capabilities. Some of them are directly related to Roles while others operate independently. When a Role has a direct dependence on particular Features a dialog box will notify you when selecting that Role.
+Features are applications that can be installed on a server for managing and further customizing a machine's capabilities. Some of them are directly related to Roles while others operate independently. When a Role has a direct dependence on particular Features a dialog box will notify you when selecting that Role.
 
 For our server to function as a Web Server using IIS we will need to install a Feature called the IIS Management Console. When selecting the Web Server Role a dialog box prompts us to install this IIS Console that is needed for configuring hosting. 
 

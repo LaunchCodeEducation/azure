@@ -236,7 +236,7 @@ This will open the file explorer to the content directory path to see and manage
 Connect to the default site within the VM
 ------------------------------------------
 
-Once IIS has been installed, through the Web Server Role, it immediately begins serving the default Site on port 80. You can open the IE browser within the Server to ``http://localhost`` to view it. Notice how we do not need to include the port because the browser sets it implicitly as the standard ``http`` protocol port. 
+Once IIS has been installed, through the Web Server Role, it immediately begins serving the default Site on port 80. You can open the IE browser within the Server to ``http://localhost`` to view it. Notice how we do not need to include the port because the browser sets ``80`` implicitly as the standard ``http`` protocol port. 
 
 .. admonition:: warning
 
@@ -257,11 +257,11 @@ On your local machine open your browser and navigate to ``http://<your VM public
 .. image:: /_static/images/ws/iis-default-site-local-browser-timeout.png
   :alt: IIS default Site local browser timeout
 
-Before continuing take a moment to consider *why the connection timed out*. Use what you have learned to apply critical thinking to this all too common issue when hosting on the web. 
+Before continuing take a moment to consider *why the connection timed out*. Use what you have learned to apply critical thinking to this common issue when hosting on the web. 
 
 .. admonition:: tip
 
-  Connection timeouts are an indication of a *network related issue*. If you receive a status code ``5XX`` it means a connection was formed but something went wrong with the server. Receiving no response at all means that some sort of machine or network level firewall has blocked the connection from ever being formed.
+  Connection timeouts are an indication of a *network related issue*. If you receive a status code ``5XX`` it means a connection was formed but something went wrong with the Web or Application Server. Receiving no response at all means that some sort of machine or network level firewall has blocked the connection from ever being formed.
 
 When we provisioned our VM we assumed default network security group (NSG) rules. The default NSG configuration for a new VM does not allow traffic to reach the machine through any port including the common HTTP ports (80 for ``http`` and 443 for ``https``). 
 
@@ -277,7 +277,7 @@ In order to connect to our VM, and therefore the Site, we need to add an additio
 
   > az vm open-port --port 80
 
-You will receive a lengthy output showing the current state of the NSG associated with the VM. Most of the output is related to the first property, ``defaultSecurityRules``. Towards the bottom you will the ``securityRules`` list which includes both the RDP and the new port 80 rules.
+You will receive a lengthy output showing the current state of the NSG associated with the VM. Most of the output is related to the first property, ``defaultSecurityRules``. Towards the bottom you will see the ``securityRules`` list which includes both the RDP and the new port 80 rules.
 
 .. code-block:: json
   :caption: trimmed securityRules list showing rules allowing RDP and http public traffic
@@ -303,7 +303,7 @@ You will receive a lengthy output showing the current state of the NSG associate
 
 .. admonition:: note
 
-  This Command opens a port for *all public traffic*. In other words, requests from *any IP address* and *any protocol* will be allowed access to our VM on port 80. This is a quick solution for our purposes. But in a production setting you will likely use more rigorous NSG rules with source wIP and protocol restrictions for greater security.
+  This Command opens a port for *all public traffic*. In other words, requests from *any IP address* and *any protocol* will be allowed access to our VM on port 80. This is a quick solution for our purposes. But in a production setting you will likely use more rigorous NSG rules with source IP and protocol restrictions for greater security.
 
 Configure the Host VM
 =====================
@@ -319,7 +319,7 @@ In order to create and host the starter project we will need to install the foll
 - **dotnet**: the .NET SDK and CLI tool for creating and publishing the starter MVC Web App
 - **dotnet hosting bundle**: IIS dependencies needed to serve a .NET Web App
 
-In your VM open up the PowerShell console by searching for it:
+In your VM open up the PowerShell console by searching for it like you did for the IIS Manager.
 
 .. admonition:: tip
 
@@ -330,7 +330,7 @@ Now open PowerShell and enter the following command to install ``choco``:
 .. sourcecode:: powershell
   :caption: Windows/PowerShell
 
-  > Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+  > [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 Next we will use the ``choco`` package manager to install the .NET hosting bundle:
 
@@ -374,7 +374,7 @@ Deploy a .NET Web App
 =====================
 
 Create the starter Web App
----------------------- ---
+--------------------------
 
 Let's start by creating and switching to a new directory to keep our home directory clean:
 
@@ -406,7 +406,7 @@ Before we publish the Web App we need to create a content directory for IIS to s
 
   > New-Item -ItemType directory -Path C:\inetpub\StarterApp
 
-  # or using the simpler mkdir and cd aliases
+  # or using the simpler mkdir alias
   > mkdir C:\inetpub\StarterApp
 
 Now we can publish our Web App into this directory so IIS can serve it. If you are not already in the StarterApp directory then switch to it first. We will publish for the `Windows x64 architecture <https://docs.microsoft.com/en-us/dotnet/core/rid-catalog#windows-rids>`_ and output to the new ``C:\inetpub\StarterApp`` directory we just made:

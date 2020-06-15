@@ -21,7 +21,7 @@ Note that this list is neither exhaustively detailed nor necessarily in a specif
 - provision and configure a KeyVault with the database connection string secret
 - install and configure IIS to host .NET Web App Sites
 - configure the hosting environment for the API
-- deliver and publish the API
+- deliver and publish the API (``4-member-roles`` branch)
 - configure IIS to serve the API over ``https``
 
 Gotchas
@@ -30,7 +30,7 @@ Gotchas
 Along the way there are a few "gotchas" that you should keep in mind:
 
 - The ``appsettings.json`` entry for ``Server.Origin`` needs to be updated with your new VM's public IP address. You can update and push this change before delivery or you can use the ``notepad`` tool to open and edit the file from within the Server afterwards.
-- The ``dotnetcore-windowshosting`` package must be installed **after** installing IIS
+- The ``dotnetcore-windowshosting`` bundle must be installed **after** installing IIS
 - You must allow VM traffic through the correct ``https`` port (hint -- it's not over port 80 like the previous walkthrough)
 
 Planning
