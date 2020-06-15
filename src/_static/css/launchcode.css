@@ -278,15 +278,16 @@ div[id^="exercises-"] ol ol ol {
 }
 
 pre {
-    display: block;
-    overflow-x: auto;
-    padding: 1.5rem;
-    -webkit-text-size-adjust: none;
-    color: #ffffff;
-    border: 1px solid #777;
-    border-radius: 4px;
-    background-color: #354a5f;
-    margin: 0;
+   display: block;
+   overflow-x: auto;
+   padding: 1.5rem;
+   -webkit-text-size-adjust: none;
+   color: #ffffff;
+   border: 1px solid #777;
+   border-radius: 4px;
+   background-color: #354a5f;
+   /* fix code block around p tags spacing, TODO: include in template */
+   /* margin: 0; */
 }
 
 div.highlight-js,
