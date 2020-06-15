@@ -47,6 +47,7 @@ Application Servers handle things like:
 - authorization logic
 - rendering HTML templates
 - connecting to and interacting with database servers
+- creating JSON responses when operating as an API
 
 Web Application Framework
 -------------------------
@@ -61,9 +62,9 @@ Web Application Frameworks, like ASP.NET, **have connectors for transforming** r
 Kestrel Web Server
 ==================
 
-All ASP.NET Application Servers come packaged with a *lightweight* Web Server called Kestrel. When you run your Application Server on your local machine it is Kestrel that manages the underlying HTTP logic. This is done transparently for you to only have to work with Request and Response objects themselves. However, being a lightweight Web Server, Kestrel has limited capabilities. 
+All ASP.NET Application Servers come packaged with a *lightweight* Web Server called Kestrel. When you run your Application Server on your local machine it is Kestrel that manages the underlying HTTP logic. This is done transparently for you so you only have to work with Request and Response objects within your code. However, being a lightweight Web Server, Kestrel has limited capabilities. 
 
-Because it has been designed as a simple Web Server it is not recommended to use Kestrel by itself, as referenced in its `Microsoft documentation <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-3.1>`_. When deploying to Linux, Kestrel can be used behind a more robust Web Server like Nginx in a `reverse proxy arrangement <https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/>`_. However, when you have the luxury of working with a Windows Server machine the IIS Web Server is hands-down the best choice for the job. 
+Because it has been designed as a simple Web Server it is not recommended to use Kestrel by itself, as referenced in its `Microsoft documentation <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-3.1>`_. When deploying to a Linux machine, Kestrel can be used behind a more robust Web Server like Nginx in a `reverse proxy arrangement <https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/>`_. However, when you have the luxury of working with a Windows Server machine the IIS Web Server is hands-down the best choice for the job. 
 
 IIS Web Server
 ==============
@@ -81,14 +82,14 @@ The IIS Management Console is an application for monitoring and configuring the 
 Sites
 ^^^^^
 
-Each **Site** served by IIS corresponds to a directory that contains either static content or the artifact files of a published ASP.NET Web App. A Site is managed by an **Application Pool** which is configured according to what content is being served. 
+Each **Site**, or website, served by IIS corresponds to a directory that contains either static content or the artifact files of a published ASP.NET Web App. A Site is managed by an **Application Pool** which is configured according to what content is being served. 
 
-Sites are bounded by their content directory and listening port. IIS is capable of serving any number of Sites. But, like all server process running on a machine, each Site must have a unique port.
+Sites are bounded by their content directory and listening port. IIS is capable of serving any number of Sites. But, like all server processes running on a machine, each Site must be bound to a unique port.
 
 Application Pools
 ^^^^^^^^^^^^^^^^^
 
-Application Pools are individual ``w3wp`` Web Server processes that run within the host machine. They are used to define and manage the runtime behavior of ``w3wp`` process that serves the Sites assigned to them. Each Application Pool can be customized to control features including resource access, request rate limiting and CPU utilization caps. 
+Application Pools are individual ``w3wp`` Web Server processes that run within the host machine. They are used to define and manage the runtime behavior of the ``w3wp`` process that serves the Sites assigned to them. Each Application Pool can be customized to control features including resource access, request rate limiting and CPU utilization caps. 
 
 While we will be using IIS to serve a single Site there are cases where multiple Sites of content need to be managed in one Web Server. When considering these multi-Site scenarios the ability for Application Pools to be compartmentalized from each other is invaluable. 
 
@@ -97,16 +98,16 @@ Each Application Pool can be customized to run with a specific security and reso
 Static Sites
 ^^^^^^^^^^^^
 
-Serving static content is as easy as telling IIS what directory the content is held in and what port to listen and serve from. IIS comes pre-configured with a Default Site made up of static HTML and CSS files available on port 80 and managed by a default Application Pool.  
+Serving static content is as easy as telling IIS what directory the content is held in and what port to listen and serve from. IIS comes pre-configured with a Default Site made up of static HTML and CSS files available on port 80. The Default Site is managed by the Default Application Pool that is also pre-configured.  
 
 ASP.NET Web Application Sites
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Serving ASP.NET Web Applications requires a bit more effort. However, it is still leagues ahead of alternative Web Servers when it comes to ease of configuration. Out of the box IIS relies on the .NET runtime and an additional dependency called the ``dotnet hosting bundle`` for serving Web Apps. 
+Serving ASP.NET Web Applications requires a bit more effort. However, it is still leagues ahead of alternative Web Servers when it comes to ease of configuration. Out of the box IIS relies on the .NET runtime and an additional dependency called the ``dotnetcore-windowshosting`` bundle for serving Web Apps. 
 
 Rather than running a Web Application Server directly, the IIS Web Server is responsible for executing and forwarding traffic for you. The Site's directory holds the executable artifacts produced from publishing the Web App with ``dotnet publish``. An Application Pool is then customized for serving dynamic content which manages the life cycle and behavior of how the Web App is served. 
 
 Next Step
 =========
 
-In this article we covered the technical differences and responsibilities of Servers, Web Servers, Web Application Servers and Web Application Frameworks. You should feel comfortable describing the differences between each of these components and have a mental model of how they interact with each other. With this newfound knowledge you are ready to spin up your first Windows Server to host an ASP.NET Web App in the IIS Web Server!
+In this article we covered the technical differences and responsibilities of Servers, Web Servers, Web Application Servers and Web Application Frameworks. You should feel comfortable describing the differences between each of these components and have a mental model of how they interact with each other.
