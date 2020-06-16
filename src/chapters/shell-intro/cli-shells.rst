@@ -76,7 +76,9 @@ Throughout this course we will explore both Linux with BASH and Windows with Pow
 Terminal Emulators
 ===================
 
-Years ago humans interacted with computers using Terminal screens which translated keyboard input signals into commands and displayed output as plain text. Today the CLI uses programs called **Terminal Emulators** which *emulate* the behavior of the original Terminals. Terminal Emulators are basic, text-based, applications that are used to interact with the CLI Shell of the machine.
+Years ago humans interacted with computers using Terminal screens which translated keyboard input signals into commands and displayed output as plain text. Today the CLI uses programs called **Terminal Emulators** which *emulate* the behavior of the original Terminals. 
+
+Terminal Emulators are GUI applications that are used to interact with the CLI Shell of the machine. Because they are emulated in a GUI window they allow some limited use of the mouse for things like copying, pasting and other conveniences.
 
 .. admonition:: note
 
@@ -111,38 +113,20 @@ When you open a Terminal application a REPL of the Login Shell will begin automa
    
       > command
 
-I/O Streams
------------
-
-STDIN
-^^^^^
-
-STDOUT
-^^^^^^
-
-STDERR
-^^^^^^
-
 Gnome Terminal
 --------------
+
+In this class we will be using the `Ubuntu distribution <https://ubuntu.com/>`_ as our Linux OS. We will refer to this as either Ubuntu or Linux interchangeably for simplicity. Ubuntu is one of the more polished distributions and, in the Desktop version, includes a window manager (GUI Shell) called Gnome.
+
+The default Terminal that comes pre-installed in Ubuntu is called the Gnome Terminal. When we discuss the Terminal while working in Linux this is the program we are referring to.
+
+.. image:: /_static/images/cli-shells/gnome-terminal.png
+   :alt: Ubuntu default Gnome Terminal
 
 PowerShell Terminal
 --------------------
 
-Shell Fundamentals
-==================
+In Windows 10, and later on Windows Server, we will use the PowerShell Terminal. While the program itself is called Windows PowerShell we will refer to it as the Terminal or PowerShell interchangeably when working on a Windows machine.
 
-Commands
---------
-
-CLI Tools
----------
-
-File System navigation
-----------------------
-
-Piping
-------
-
-Scripting
----------
+.. image:: /_static/images/cli-shells/powershell-terminal.png
+   :alt: Windows PowerShell Terminal
