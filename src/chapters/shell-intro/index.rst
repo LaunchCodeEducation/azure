@@ -5,7 +5,8 @@ Introduction to CLI Shells
 .. toctree::
    :maxdepth: 3
 
-   cli-shells
+   intro
+   shell-fundamentals
    bash-fundamentals
    walkthrough_bash-basics
    powershell-fundamentals
