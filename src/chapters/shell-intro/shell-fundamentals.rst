@@ -5,14 +5,33 @@ Shell Fundamentals
 Commands
 ========
 
+BASH Built-Ins
+--------------
+
+PowerShell Cmdlets
+------------------
+
 CLI Tools
 =========
 
-File System navigation
-======================
+The PATH
+--------
+
+Package Managers
+----------------
+
+Cross-Platform Tools
+--------------------
+
+Common Operations
+=================
+
+File System Navigation
+----------------------
 
 Piping
-======
+------
 
 Scripting
 =========
+
