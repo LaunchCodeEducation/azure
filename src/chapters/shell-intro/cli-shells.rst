@@ -39,23 +39,27 @@ Shell Command Languages
 
 In the context software development the term Shell is used as a shorthand for CLI Shells. From this point forward we will refer to CLI Shells as just Shells. 
 
-Shells use **Command Languages** to interpret text-based commands at runtime. Command Languages are interpreted like other scripting languages. They share the same need for dynamic execution rather than pre-compiled instructions. While Command Languages are similar to scripting languages such as JavaScript or Python they are specialized for sending commands directly to the OS. 
+Shells use **Command Languages** to interpret text-based commands at runtime. Command Languages are interpreted like other scripting languages. They share the same need for dynamic execution rather than pre-compiled instructions. While Command Languages are similar to scripting languages such as JavaScript or Python they are specialized for communicating directly with the OS. 
 
 These days there are hundreds languages available for use as a Shell. But the two most popular Shells used in modern development are **BASH** (Linux) and **PowerShell** (Windows).
 
 BASH
 ----
 
-BASH is an acronym for the **B**\ourne **A**\gain **SH**\ell language. It was the successor of the Bourne Shell (``sh``) that it was extended from. On Linux machines BASH is used as the **Login Shell** for most distributions. A Login Shell is the default Shell that is started when the machine boots up its OS. Using BASH developers can interact with nearly every aspect of the machine. 
+BASH is an acronym for the **B**\ourne **A**\gain **SH**\ell language. On Linux machines BASH is used as the **Login Shell** for most distributions. A Login Shell is the default Shell that is started when the machine boots up its OS. Using BASH developers can interact with nearly every aspect of the machine. 
 
-Because BASH is designed to integrate with the GNU/Linux OS it follows the Linux *everything is a file* `design pattern <https://opensource.com/life/15/9/everything-is-a-file>`_. In the same vein of design the BASH built-in and extended tools do not have a concept of different data types like ``string``, ``number`` and ``boolean``. 
+Every aspect of Linux is designed around minimalism and modularity. Because BASH is designed to integrate with the Linux OS and Kernel it aligns with the Linux *everything is a file* `design <https://opensource.com/life/15/9/everything-is-a-file>`_.  Following this philosophy the BASH built-in and extended tools do not have a concept of different data types like ``string``, ``number`` and ``boolean``. 
 
 Instead, **all inputs and outputs are treated as strings of characters**. While this can seem foreign at times, especially when coming from other languages, it is an integral aspect of its flexibility. This design is one of the most fundamental differences between BASH and PowerShell.
 
 PowerShell
 ----------
 
-PowerShell is a more recent development in the Microsoft ecosystem. 
+PowerShell is a more recent Shell offering by Microsoft. Whereas BASH was released over 30 years ago, PowerShell was made available in 2006. Because of its more recent development it blended many of the features of BASH with modern conveniences and power. PowerShell is more of a scripting language than a Command Language because it does not communicate directly with the OS like BASH does.
+
+PowerShell commands are interpreted by the .NET Framework which operates as an additional layer of abstraction `between the commands and the OS <https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet-framework#architecture>`_. Although it was originally designed just for machines running Windows, the latest release of PowerShell Core is a cross-platform tool. PowerShell Core is built on the .NET Core Framework which allows it to integrate with all of the modern OS choices like Windows, Linux and OSX. We will be using PowerShell Core and refer to is as PowerShell for the duration of this course.
+
+In contrast with Linux, Windows is a more complex and Object-Oriented operating system. As a result the design of PowerShell is itself Object-Oriented and **treats all inputs and outputs as objects of distinct types**. PowerShell can use any of the .NET and C# `class libraries <https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview>`_. In addition, PowerShell allows you to extend or implement your own classes for deeply customizable development.
 
 Terminal Emulators
 ===================
