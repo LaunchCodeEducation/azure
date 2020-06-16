@@ -55,14 +55,61 @@ Instead, **all inputs and outputs are treated as strings of characters**. While 
 PowerShell
 ----------
 
-PowerShell is a more recent Shell offering by Microsoft. Whereas BASH was released over 30 years ago, PowerShell was made available in 2006. Because of its more recent development it blended many of the features of BASH with modern conveniences and power. PowerShell is more of a scripting language than a Command Language because it does not communicate directly with the OS like BASH does.
+PowerShell is a more recent Shell offering created by Microsoft. Whereas BASH was released over 30 years ago, PowerShell was made available in 2006. Because of its more recent development it blended many of the features of BASH with modern conveniences and power. PowerShell is more of a scripting language than a Command Language because it does not communicate directly with the OS like BASH does.
 
-PowerShell commands are interpreted by the .NET Framework which operates as an additional layer of abstraction `between the commands and the OS <https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet-framework#architecture>`_. Although it was originally designed just for machines running Windows, the latest release of PowerShell Core is a cross-platform tool. PowerShell Core is built on the .NET Core Framework which allows it to integrate with all of the modern OS choices like Windows, Linux and OSX. We will be using PowerShell Core and refer to is as PowerShell for the duration of this course.
+PowerShell commands are interpreted by the .NET Framework which operates as an additional layer of abstraction `between the commands and the OS <https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet-framework#architecture>`_. Although it was originally designed just for machines running Windows, the latest release of PowerShell Core is a cross-platform tool. PowerShell Core is built on the .NET Core Framework which allows it to integrate 
+with all of the modern OS choices like Windows, Linux and OSX. 
 
-In contrast with Linux, Windows is a more complex and Object-Oriented operating system. As a result the design of PowerShell is itself Object-Oriented and **treats all inputs and outputs as objects of distinct types**. PowerShell can use any of the .NET and C# `class libraries <https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview>`_. In addition, PowerShell allows you to extend or implement your own classes for deeply customizable development.
+.. admonition:: note
+
+   We will be using PowerShell Core and refer to is as PowerShell for the duration of this course.
+
+In contrast with Linux, Windows is a more complex and Object-Oriented operating system. As a result the design of PowerShell is itself Object-Oriented and **treats all inputs and outputs as objects of distinct types**. PowerShell can use any of the .NET and C# `class libraries <https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview>`_. In addition, PowerShell allows you to extend these classes or implement your own for deeply customizable development.
+
+BASH vs. PowerShell
+-------------------
+
+We will not be entertaining the strict allegiance and *near-religious battles* that some developers have when discussing the choice of OS or Shell. Instead we encourage an understanding and appreciation for how each of them are designed and the areas they sometimes specialize in.
+
+Throughout this course we will explore both Linux with BASH and Windows with PowerShell. Although PowerShell *can be used* on Linux machines and BASH *can be used* on Windows machines (through the Linux subsystem) we will defer to the default Shells for each of them depending on which machine we are working with.
 
 Terminal Emulators
 ===================
+
+Years ago humans interacted with computers using Terminal screens which translated keyboard input signals into commands and displayed output as plain text. Today the CLI uses programs called **Terminal Emulators** which *emulate* the behavior of the original Terminals. Terminal Emulators are basic, text-based, applications that are used to interact with the CLI Shell of the machine.
+
+.. admonition:: note
+
+   We will refer to the Terminal Emulator programs as Terminals going forward for brevity.
+
+Shell REPL
+----------
+
+A REPL is a **R**\ead **E**\valuate **P**\rint and **L**\oop environment for interacting with a Shell.
+
+A REPL environment first presents a **prompt** for the user to input a command. It then **R**\eads the command that is entered. Once it has parsed the input it **E**\valuates the command to compute or perform the requested task. Any output from the command (a response from the OS or another program) is then **P**\rinted out in the Terminal. Finally, the process repeats itself by **L**\ooping back to the prompt for the next command to be entered.
+
+When you open a Terminal application a REPL of the Login Shell will begin automatically. While we will primarily be working with the BASH and PowerShell REPLs they also exist for other languages like MySQL, JavaScript (NodeJS) and Python.
+
+.. admonition:: note
+
+   CLI documentation traditionally uses the ``$`` and ``>`` characters to represent the input prompt for BASH and PowerShell respectively. Every line that begins with one of these characters **should be treated as an individual command** to be entered into the Terminal. 
+   
+   Some commands will be the same in both Shells. For others we will make it clear which OS and Shell we are referring to.
+
+   Linux and BASH examples will be labeled as ``Linux/BASH`` and use the ``$`` symbol:
+
+   .. sourcecode:: bash
+      :caption: Linux/BASH
+   
+      $ command
+
+   Windows and PowerShell examples will be labeled as ``Windows/PowerShell`` and use the ``>`` symbol:
+
+   .. sourcecode:: powershell
+      :caption: Windows/PowerShell
+   
+      > command
 
 I/O Streams
 -----------
@@ -75,9 +122,6 @@ STDOUT
 
 STDERR
 ^^^^^^
-
-Shell REPL
-----------
 
 Gnome Terminal
 --------------
