@@ -2,31 +2,31 @@
 Shell Fundamentals
 ==================
 
-Working with Shells like PowerShell and BASH revolves around interactive REPL usage and scripting. We will begin by learning about individual commands that are entered one at a time in the Terminal. Then we will discuss how multiple commands can be composed into automated scripts. This lesson is an overview of Shell usage as a whole. In the following lessons we will explore the Shell-specific syntax used by BASH and PowerShell.
+Working with Shells like PowerShell and BASH revolves around interactive REPL usage and scripting. We will begin by learning about using the REPL for issuing individual commands in Terminal. Then we will discuss how multiple commands can be composed into automated scripts. This lesson is an overview of Shell usage as a whole. In the following lessons we will explore the Shell-specific syntax used by BASH and PowerShell.
 
 The File System
 ===============
 
 The most fundamental aspect of working with a Shell is the **file system**. Up until now you likely know the files of your machine through a File Explorer program. These programs expose the file system in a GUI with folders and files. Navigating through the file system of a machine is a process of clicking around to reach and interact with a file or folder.
 
-In the Shell the file system is accessible in a much more direct and concise way. The way a file system is organized is based on the OS design but all of them share the concepts of **directories** (folders) and **files**. We describe the location of files and directories based on their **path**. 
+In the Shell the file system is accessible in a much more direct manner. The way a file system is organized is based on the OS design but all of them share the concepts of **directories** (folders) and **files**. In the Shell we can describe the directions to the location of files and directories through text rather than graphics. 
 
 Paths
 -----
 
-Imagine a stranger at the street corner you are walking on asks for directions. How would you begin to provide them? You need a **reference point** to start from. In that context you would give directions *relative to* the corner you are both on. We can see that giving directions must be based on a reference, or starting, point. 
+Imagine a stranger at the street corner you are walking on asks for directions. How would you begin to provide them? You need a **reference point** to start from. It would make the most sense to give the directions *relative to* the corner you are both on. Without a reference, or starting point, it is not possible to provide useful directions.
 
-A path is like the directions of how to reach a location in the file system. It can be described in two ways:
+A **path** is how we describe the directions to a location in the file system using the Shell. There are two types of paths:
 
-- **relative path**: the directions relative to the *current directory*  you are in as a starting point
-- **absolute path**: the directions relative to a fixed, or *absolute*, starting point
+- **relative path**: the directions *relative to the current directory* as a starting point
+- **absolute path**: the directions from a fixed, or *absolute*, starting point
 
 Relative Paths
 ^^^^^^^^^^^^^^
 
-When you open your File Explorer program it defaults to a *starting point* of your user **home directory**:
+When you open your File Explorer program it defaults to a *starting point* of your user **home directory**. The same is true when you open your Shell in the Terminal. The home directory can be described by the following paths:
 
-.. sourcecode:: bash
+.. sourcecode:: powershell
 
    # Windows file system separates directories with a '\'
    C:\Users\YourUsername
@@ -36,9 +36,9 @@ When you open your File Explorer program it defaults to a *starting point* of yo
 
 We call the directory you are currently in the **current working directory (CWD)**. The CWD changes depending on which directory you navigate to, whether you do that by clicking around in the File Explorer or by *changing directories* in the Shell.
 
-Imagine you wanted to provide directions to a file called ``notes.txt`` that you downloaded to your user's``Downloads`` directory. You could say that your CWD is the home directory. From *this particular* CWD you could describe the relative path to the file as:
+Imagine you wanted to provide directions to a file called ``notes.txt`` that you downloaded to your user's ``Downloads`` directory. If you have just opened your Terminal then your CWD is the home directory. From *this particular* CWD you could describe the relative path to the file as:
 
-.. sourcecode:: bash
+.. sourcecode:: powershell
 
    # Windows
    Downloads\notes.txt
@@ -59,11 +59,11 @@ On Linux machines the root directory is simply ``/``. Whereas on Windows machine
 
 .. admonition:: tip
 
-   An absolute path is just a relative path from a constant starting point instead of the variable CWD.
+   An absolute path is just a relative path from a **constant starting point** instead of a variable CWD.
 
 Let's consider how we could describe the ``notes.txt`` location using an absolute path this time. We begin with the fixed starting point of the root directory. From the root as a reference we provide the relative directions through all the directories that lead to the ``notes.txt`` file location:
 
-.. sourcecode:: bash
+.. sourcecode:: powershell
 
    # Windows
    C:\Users\YourUsername\Downloads\notes.txt
@@ -76,7 +76,7 @@ Absolute paths are verbose but precise. They may take longer to write out but th
 Basic Navigation
 ----------------
 
-In the File Explorer program you used sidebars and your mouse to navigate through directories. In the Shell we use a concept called **changing directories** to change our CWD from one location to another. There are three important commands to learn when navigating the file system. We will show their basic usage here before learning more details about Shell commands:
+In the File Explorer program you used sidebars and your mouse to navigate through directories. In the Shell we use a concept called **changing directories** to change our CWD from one location to another. There are three fundamental commands needed to navigate the file system from a Shell. We will show their basic usage here before digging into Shell commands in greater detail:
 
 - ``pwd``: print the CWD to see where you are currently
 - ``ls``: list the contents of a directory
@@ -84,23 +84,27 @@ In the File Explorer program you used sidebars and your mouse to navigate throug
 
 .. admonition:: note
 
-   These commands originated in BASH but were included in PowerShell as aliases (like a nick-name) for their native PowerShell cmdlet names.
+   These commands originated in BASH but were included in PowerShell as aliases (like a nick-name) for their native PowerShell cmdlet names. We will explore what cmdlets are later, but you should be able to understand them based on how declarative their names are:
 
-When you enter the ``pwd`` command into your Terminal it will print the absolute path of your CWD. Just like the File Explorer the Shell will by default open to your home directory:
+   - ``pwd``: alias for ``Get-Location`` cmdlet
+   - ``ls``: alias for ``Get-ChildItem`` cmdlet
+   - ``cd``: alias for ``Set-Location`` cmdlet
+
+When you enter the ``pwd`` command into your Terminal it will print the absolute path of your CWD. Just like the File Explorer the Shell will open to your home directory by default:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > pwd
-   # C:\Users\YourUsername
+   C:\Users\YourUsername
 
 .. sourcecode:: bash
    :caption: Linux/BASH
 
    $ pwd
-   # /home/YourUsername
+   /home/YourUsername
 
-If you wanted to view the contents of the CWD you can use the ``ls`` command:
+If you want to view the contents of the CWD you are in you can use the ``ls`` command:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -114,70 +118,132 @@ If you wanted to view the contents of the CWD you can use the ``ls`` command:
    $ ls
    # contents of home directory 
 
-Finally you can use ``cd`` to change directories. Say you wanted to go from your home directory to the ``Downloads`` directory like our previous example. You can provide the relative path to the ``cd`` command to get there:
+Finally you can use ``cd`` to change directories to a new CWD. Say you wanted to go from your home directory to the ``Downloads`` directory like our previous example. You can provide the relative path to the ``cd`` command to get there:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > cd Downloads
+
    > pwd
-   # C:\Users\YourUsername\Downloads
+   C:\Users\YourUsername\Downloads
+
+   > ls
+   notes.txt
 
 .. sourcecode:: bash
    :caption: Linux/BASH
 
    $ cd Downloads
-   $ pwd
-   # /home/YourUsername/Downloads 
 
-You can also provide the absolute path if you were starting from a different CWD and didn't know the relative path:
+   $ pwd
+   /home/YourUsername/Downloads 
+  
+   $ ls
+   notes.txt
+
+You can also provide the absolute path to reach the directory from any CWD:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > cd C:\Users\YourUsername\Downloads
+
    > pwd
-   # C:\Users\YourUsername\Downloads
+   C:\Users\YourUsername\Downloads
 
 .. sourcecode:: bash
    :caption: Linux/BASH
 
-   $ cd /home/YourUsername/Downloads 
+   $ cd /home/YourUsername/Downloads
+
    $ pwd
-   # /home/YourUsername/Downloads
+   /home/YourUsername/Downloads
 
 File System Operations
 ------------------------
 
-Remember that the Shell CLI can do anything a GUI offers and more. There are many other commands available for interacting with the file system like you have grown accustomed to in a File Explorer. We will cover all of the file system operations in the BASH and PowerShell syntax lessons. As a preview, these commands include creating, reading, moving, copying and deleting files and directories.  
+Remember that the Shell can do everything the GUI of an OS offers and more. There are many other commands available for interacting with the file system just like those you have grown accustomed to using in a File Explorer. We will cover creating, reading, moving, copying and deleting files and directories in the BASH and PowerShell syntax lessons.  
 
 Commands
 ========
 
-When using the Shell REPL in a Terminal the first step is to type a **command** into the prompt. After hitting the ``enter`` key the REPL process of Reading, Evaluating, and Printing begins. Commands are Evaluated by executing a CLI program that either comes included with the Shell or is installed later.
+We saw a preview of how to use some fundamental file system commands. Let's break down how commands work in more detail. When using the Shell REPL in a Terminal the first step is to type a **command** into the prompt. After hitting the ``enter`` key the REPL process of Reading, Evaluating, and Printing begins. Commands are Evaluated by executing a CLI program that either comes included with the Shell or is installed later.
 
 Calling Commands
 ----------------
 
-Shell commands are similar to functions. They have a name, input arguments and a behavior they perform. But unlike functions their behavior can be range from a simple text output to direct control over the OS or other programs. Calling, or executing, a command begins with the name of a **program** (function) followed by **parameters** and **options** (arguments).
+Shell commands are similar to functions. They have a name, input arguments and behavior they perform. But unlike functions their behavior can be range from a simple text output to direct control over the OS, file system or even other programs.
 
-.. admonition:: note
+Calling, or executing, a command begins with the name of a CLI **program** followed by **positional arguments** and **options** (modifiers) used by the program. 
 
-   We will use the terms **command**, **program** and **command program** interchangeably in the context of working with a Shell.
+For example let's consider the ``pwd`` or ``ls`` commands we saw. Both of these only needed their name to be called:
 
-BASH Builtins
---------------
+.. sourcecode:: bash
 
-Earlier you saw examples of 
+   $ pwd
+   $ ls
 
-PowerShell Cmdlets
-------------------
+   # in general terms
+   $ program
 
-Getting Help
-------------
+Arguments
+^^^^^^^^^
 
-- bash ``help`` and ``man``
-- posh ``Get-Help`` ``Update-Help`` or (cmdlet only) ``<cmdlet> -?``
+What about the ``cd`` command to change directories? This time we did provide a positional argument, the relative or absolute path to the directory we wanted to switch to:
+
+.. sourcecode:: bash
+
+   $ cd Downloads
+
+   # in general terms
+   $ program [Argument]
+
+We saw that the ``ls`` command, when called without arguments, will default to listing the contents of the CWD. But if we provide it with a path as an argument we can list the contents of a different directory:
+
+.. sourcecode:: bash
+
+   # a relative path
+   $ ls Downloads
+   notes.txt
+
+   # an absolute path
+   $ ls /home/YourUsername/Downloads
+   notes.txt
+
+Options
+^^^^^^^
+
+Options allow you to fine-tune the behavior of a command. While it is not enforced in third party CLI programs, the convention for using options is:
+
+- ``--option``: a double ``--`` dash with the full name of the option
+- ``-x``: a single ``-`` dash with a single ``x`` letter as a shorthand
+
+The most common option you can expect across CLI programs is access to the help documentation. Traditionally this is available using either the long ``--help`` or shorthand ``-h`` option after the command name. The output from using this option should list details about the command and how to use its arguments and options.
+
+Some options can have their own arguments. For example you will soon begin using the ``dotnet`` CLI tool to manage your .NET projects. Without having seen the following command before you may be able to understand what it is doing based on its arguments and options:
+
+.. sourcecode:: bash
+
+   $ dotnet new webapp --name MyApp --output /home/YourUsername/projects/MyApp
+
+If you are stumped don't worry. While this looks complex it can be broken down methodically to make sense of it:
+
+- **program**: ``dotnet``
+- **first argument**: ``new`` (the argument for creating new projects)
+- **second argument**: ``webapp`` (a sub-argument for defining what type of project to create)
+- **first option**: ``--name`` (option to define the name of the new project)
+- **first option argument**: ``MyApp`` (the value for the name option)
+- **second option**: ``--output`` (option to define the path where the project files should be created)
+- **second option argument**: ``/home/YourUsername/projects/MyApp`` (the path value for the output option)
+
+Here is another view to see how everything aligns:
+
+.. sourcecode:: bash
+
+   # program [argument 1] [argument 1 sub-argument] --[option 1] [option 1 argument] --[option 2] [option 2 argument]
+   $ dotnet new webapp --name MyApp --output /home/YourUsername/projects/MyApp
+   
 
 CLI Tools
 =========
