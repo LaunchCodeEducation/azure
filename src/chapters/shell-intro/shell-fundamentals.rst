@@ -264,7 +264,7 @@ Package Managers
 
    CLI **packages** (installed commands) can range from simple tools to more complex programs like compilers, interpreters and even full-fledged Web Servers.
 
-Windows packages are handled by the `Chocolatey package manager <>`_ or ``choco`` as it goes by when used in PowerShell. On OSX the `HomeBrew <>`_ (``brew``) package manager has cornered the market. In the Linux space there are many package managers that the different Linux Distributions (OS variants over the core Linux Kernel) are built around. In this class we will use the `Advanced Package Tool <>`_ (``apt``) that comes installed in the Ubuntu Distribution. 
+Windows packages are handled by the `Chocolatey package manager <https://chocolatey.org/>`_ or ``choco`` as it goes by when used in PowerShell. On OSX the `HomeBrew <https://brew.sh/>`_ (``brew``) package manager has cornered the market. In the Linux space there are many package managers that the different Linux Distributions (OS variants over the core Linux Kernel) are built around. In this class we will use the `Advanced Package Tool <https://linuxhint.com/apt_package_manager_ubuntu/>`_ (``apt``) that comes installed in the Ubuntu Distribution. 
 
 Package managers automate the entire process of downloading, installing, configuring and updating the Shell programs you use. These tools are stored in **package repositories** that host the packages for searching and downloading. Package managers come with some default repositories from trusted package maintainers. But unlike the App Stores on your phone or PC the repositories list can be updated to add additional public or private corporate sources. 
 
