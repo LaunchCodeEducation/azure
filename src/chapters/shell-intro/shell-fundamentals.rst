@@ -223,7 +223,7 @@ Options allow you to fine-tune the behavior of a command. While it is not enforc
 
 The most common option you can expect across CLI programs is access to the help documentation. Traditionally this is available using either the long ``--help`` or shorthand ``-h`` option after the command name. If available, the output lists details about the command and how to use its arguments and options.
 
-Some options can have their own arguments. For example you will soon begin using the ``dotnet CLI`` tool to manage your .NET projects from the command-line. Without having seen the following command before you may be able to understand what it is doing based on its arguments and options:
+Some options can have their own arguments. For example you will soon begin using the ``dotnet CLI`` tool to manage your .NET projects from the Terminal. Without having seen the following command before you may be able to understand what it is doing based on its arguments and options:
 
 .. sourcecode:: bash
 
@@ -235,7 +235,7 @@ If you are stumped don't worry. While this may look complex it can be broken dow
 - **first argument**: ``new`` (the argument for creating new projects)
 - **second argument**: ``webapp`` (a sub-argument of ``new`` for defining what type of project to create)
 - **option**: ``--name`` (option to define the name of the new project)
-- **option argument**: ``MyApp`` (the value for the name option)
+- **option argument**: ``MyApp`` (the value for the ``name`` option)
 
 Here is another view to see how everything aligns:
 
@@ -243,6 +243,41 @@ Here is another view to see how everything aligns:
 
    # program [argument] [argument sub-argument] --[option] [option argument]
    $ dotnet     new            webapp             --name         MyApp
+
+CLI Tools
+=========
+
+The built-in commands of BASH and PowerShell are like the GUI applications that come installed on your OS. They are a set of tools for the essentials of interacting with your machine. For handling more specific tasks you can install 3rd party tools -- or even write your own! While the market for GUI applications is primarily designed for consumers, the world of CLI tools is tailored for developers.
+
+Shell programs can be installed in a variety of ways. Some developers prefer to *build from source* which involves manually assembling the dependencies and source code of a tool. While this process provides you with the greatest control and security over the programs on your machine it can be a lengthy process. 
+
+The next alternative involves installing the pre-built **binaries** (executable files that don't need to be interpreted). This is similar to installing a desktop application from a website using a downloaded installer program. The downside of this approach is that it requires you to move the program files to the correct location for your Shell to recognize them.
+
+Most developers turn to special tools specifically designed for downloading and managing the installation process automatically.
+
+Package Managers
+----------------
+
+**Package managers** are the CLI equivalent of an App Store. They allow you to search for and install open-source CLI programs for nearly every use case a developer can imagine. While we will use Shell package managers in this class the same term applies to language-based package managers like ``npm`` (for JavaScript) and ``pip`` (for Python).
+
+.. admonition:: note
+
+   CLI **packages** (installed commands) can range from simple tools to more complex programs like compilers, interpreters and even full-fledged Web Servers.
+
+Windows packages are handled by the `Chocolatey package manager <>`_ or ``choco`` as it goes by when used in PowerShell. On OSX the `HomeBrew <>`_ (``brew``) package manager has cornered the market. In the Linux space there are many package managers that the different Linux Distributions (OS variants over the core Linux Kernel) are built around. In this class we will use the `Advanced Package Tool <>`_ (``apt``) that comes installed in the Ubuntu Distribution. 
+
+Package managers automate the entire process of downloading, installing, configuring and updating the Shell programs you use. These tools are stored in **package repositories** that host the packages for searching and downloading. Package managers come with some default repositories from trusted package maintainers. But unlike the App Stores on your phone or PC the repositories list can be updated to add additional public or private corporate sources. 
+
+We will learn how to install and use these tools in the BASH and PowerShell syntax lessons. As a developer you can use them for configuring your development machines. Later we will learn how to write scripts that use package managers to set up our own Servers in the cloud!
+
+Tools used in this class
+------------------------
+
+In this class we will spend the majority of our time working in the Terminal. In addition to getting comfortable using the Shell built-ins we will learn how to use many other tools including:
+
+- ``dotnet``: used to create, manage and run .NET projects
+- ``az``: the Azure CLI for provisioning and managing resources in the cloud
+- ``git``: the version control CLI tool
 
 The PATH
 ========
