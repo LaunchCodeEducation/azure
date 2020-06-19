@@ -190,14 +190,16 @@ For example let's consider the ``pwd`` or ``ls`` commands we saw. Both of these 
 Arguments
 ^^^^^^^^^
 
-What about the ``cd`` command to change directories? This time we did provide a positional argument, the relative or absolute path to the directory we wanted to switch to:
+Arguments are positional values used to define the main behavior of a command. Like JavaScript or C# the arguments have a specific order they must be provided in. While some commands like ``pwd`` or ``ls`` have *default arguments*, most will require some additional input from you. The command documentation will describe what arguments, their order and any default values that apply to them.
+
+Let's consider the ``cd`` command we saw that was used to change directories. This time we did provide a positional argument, the relative or absolute path to the directory we wanted to switch to:
 
 .. sourcecode:: bash
 
    $ cd Downloads
 
    # in general terms
-   $ program [Argument]
+   $ program [argument]
 
 We saw that the ``ls`` command, when called without arguments, will default to listing the contents of the CWD. But if we provide it with a path as an argument we can list the contents of a different directory:
 
@@ -217,90 +219,105 @@ Options
 Options allow you to fine-tune the behavior of a command. While it is not enforced in third party CLI programs, the convention for using options is:
 
 - ``--option``: a double ``--`` dash with the full name of the option
-- ``-x``: a single ``-`` dash with a single ``x`` letter as a shorthand
+- ``-x``: a single ``-`` dash with the first option letter ``x`` as a shorthand
 
-The most common option you can expect across CLI programs is access to the help documentation. Traditionally this is available using either the long ``--help`` or shorthand ``-h`` option after the command name. The output from using this option should list details about the command and how to use its arguments and options.
+The most common option you can expect across CLI programs is access to the help documentation. Traditionally this is available using either the long ``--help`` or shorthand ``-h`` option after the command name. If available, the output lists details about the command and how to use its arguments and options.
 
-Some options can have their own arguments. For example you will soon begin using the ``dotnet`` CLI tool to manage your .NET projects. Without having seen the following command before you may be able to understand what it is doing based on its arguments and options:
+Some options can have their own arguments. For example you will soon begin using the ``dotnet CLI`` tool to manage your .NET projects from the command-line. Without having seen the following command before you may be able to understand what it is doing based on its arguments and options:
 
 .. sourcecode:: bash
 
-   $ dotnet new webapp --name MyApp --output /home/YourUsername/projects/MyApp
+   $ dotnet new webapp --name MyApp
 
-If you are stumped don't worry. While this looks complex it can be broken down methodically to make sense of it:
+If you are stumped don't worry. While this may look complex it can be broken down methodically:
 
 - **program**: ``dotnet``
 - **first argument**: ``new`` (the argument for creating new projects)
-- **second argument**: ``webapp`` (a sub-argument for defining what type of project to create)
-- **first option**: ``--name`` (option to define the name of the new project)
-- **first option argument**: ``MyApp`` (the value for the name option)
-- **second option**: ``--output`` (option to define the path where the project files should be created)
-- **second option argument**: ``/home/YourUsername/projects/MyApp`` (the path value for the output option)
+- **second argument**: ``webapp`` (a sub-argument of ``new`` for defining what type of project to create)
+- **option**: ``--name`` (option to define the name of the new project)
+- **option argument**: ``MyApp`` (the value for the name option)
 
 Here is another view to see how everything aligns:
 
 .. sourcecode:: bash
 
-   # program [argument 1] [argument 1 sub-argument] --[option 1] [option 1 argument] --[option 2] [option 2 argument]
-   $ dotnet new webapp --name MyApp --output /home/YourUsername/projects/MyApp
-   
-
-CLI Tools
-=========
-
-General CLI Tool Usage
-----------------------
-
-- program arguments options option-arguments
-- use git examples for something they can relate to
-- use dotnet examples for preview of what they will see the next day
-
-Package Managers
-----------------
-
-- manage downloading, installing/building and configuring tools for easy updates and cleanup relative to manual approach
-- ubuntu: apt
-- windows: chocolatey
-
-Cross-Platform Tools
---------------------
-
-- tools used in this course
-   - dotnet
-   - az
-   - git
-   - mysql
-
-Environment Variables
-=====================
-
-System Variables
-----------------
-
-- shell profile files
-- affects all Shell sessions
+   # program [argument] [argument sub-argument] --[option] [option argument]
+   $ dotnet     new            webapp             --name         MyApp
 
 The PATH
---------
+========
 
-- where to look and in what order to look for CLI programs
-- draw parallel with .exe applications. show screenshot of where they are installed and called from
-- tip: when "command not found" check PATH
-- how to view and set the PATH explained more detail in individual Shell lessons
+The big difference between the functions you are familiar with and commands in a Shell is how they are referenced. Think about how you reference functions in your projects. They can either be referenced by their name (if in the same file) or they must be imported from another file in your code.
 
+Command programs must also be referenced. But instead of being defined in your codebase they are **executable files** that are installed on your machine. Command programs can exist in standard locations, according to the OS and Shell (built-in commands), or in a custom location defined by the user during installation. 
 
-The big difference between the functions you are familiar with and commands in a Shell is how they are referenced. Instead of a being able to reference a function defined in your source code, command programs are **executable** files that are installed on your machine. Commands programs exist in standard locations depending on the OS and Shell(built-in commands), or customized by the user during installation. 
+Because commands can be installed anywhere in your machine the Shell needs to know where to find it before it can execute it. In other words the Shell needs to know the absolute path to the executable file in order to use it. 
+   
+Clearly it would be inefficient to reference commands by their absolute paths. As you have now seen in the examples of both built-in and installed commands like ``dotnet`` we are able to reference them using just the program's name. How does the Shell know where to find the executable program files when we call a command by its name rather than its absolute path?
 
-Because commands can be installed in different locations in your machine the Shell needs to know where to find it before it can execute it. We call this location the **file path**, or **path**, to the program file. On Linux the BASH built-in commands are installed by default at the path ``/usr/bin/<program name>``. Whereas on Windows you could find built-in PowerShell programs, called **cmdlets**, at the ``C:\Windows\System32\WindowsPowerShell\<cmdlet name>`` path.
+Shell Environment Variables
+---------------------------
 
-The *unique name* of a program, like that of a function, is its full path. The full path is referred to as an **absolute path** and in some cases can be verbose. Working from the command-line is supposed to be concise and direct. It would be inefficient to have to type out the absolute path every time you want to issue a command. For this reason Shells have a mechanism for registering base paths (like ``/usr/bin/`` or ``C:\Windows\System32\WindowsPowerShell\``)
+All Shells share the concept of a **Shell environment**. The environment holds **environment variables** that configure aspects of the Shell's behavior. They apply to every new Shell process that is started. Many variables are set by default but others can be customized by the user.
+
+BASH and PowerShell each handle environment variables differently. Managing the environment is outside of the scope of this class but is important to understand. Interactions with Shell environments are conceptually very similar. But because Linux and BASH are inherently simpler to understand, compared to the more modern and complex Windows and PowerShell, we will provide examples from the BASH perspective.
+
+The HOME Variable
+^^^^^^^^^^^^^^^^^
+
+For example, consider the default behavior we discussed earlier that causes a Shell to set the CWD to the home directory when first starting up. How does the Shell know what the home directory path is? An environment variable called ``$HOME`` (Linux/BASH) or ``$Env:HOMEPATH`` (Windows/PowerShell) holds the value that the Shell uses:
+
+By default this value will be the path to the user directory for the logged in user. You can view them using the ``echo`` (print output) command:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > echo "$Env:HOMEPATH"
+   C:\Users\YourUsername
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ echo "$HOME"
+   /home/YourUsername
+
+The PATH Variable
+^^^^^^^^^^^^^^^^^
+
+So how do environment variables relate to calling programs by their name rather than their absolute path? There is a special variable called ``$PATH`` (Linux/BASH) or ``$Env:Path`` (Windows/PowerShell) which holds the answer. We will refer to these using the general term PATH variable.
+
+The PATH variable holds a collection of base paths that the Shell should look in when evaluating a command. When a command is called the Shell will look in each of the base paths until it finds an executable file with the same name. Then it combines the matching base path with the command name to form the absolute path of the file to execute.
+
+For example, in BASH the base directory that the built-in commands are stored in is ``/usr/bin``. BASH includes this base directory in its PATH variable by default. When we call the ``cd`` command it is actually referencing the executable program file at the ``/usr/bin/cd`` path. 
+
+Let's assume a PATH variable with 4 base directories in its list (separated by ``:`` characters):
+
+.. sourcecode:: bash
+
+   /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+
+The process looks something like:
+
+#. read the program name (``cd``)
+#. recognize that it is a program name and not a path to an executable
+#. check each directory in the PATH list for a file with the name of the command (``cd``)
+
+It first checks ``/usr/local/sbin`` but is unable to find the ``cd`` program file. It then checks ``/usr/local/bin`` and ``/usr/sbin`` but still fails to find it. Finally it finds the ``cd`` file in ``/usr/bin`` directory.
+
+The command is then executed by combining the matching base path (``/usr/bin``) with the command name (``cd``) into the absolute path ``/usr/bin/cd``. If it reaches the end of the PATH list then it will output a *command not found* error. 
+
+.. admonition:: note
+
+   One of the most common issues beginners face when working with a Shell is encountering a *command not found* error. Assuming the command is not misspelled, this indicates that the command's file is in a directory that is not registered in the PATH list. 
+
+   If you are able to call the command by providing its absolute path then all you need to do is add the base path of the file to the PATH variable.
+
+You will likely not need to update the PATH yourself unless you install CLI programs *manually* in locations that are not already on the PATH. Fortunately, package managers use a consistent installation directory and add that directory to the PATH automatically!
 
 Piping
 ======
 
-- feeding output of one command as the input into the next
-- data pipeline for transformation
-- pipe ``|`` operator
+Piping, or pipelining, is the process of chaining together multiple commands. The term comes from the idea of a **data pipeline** which is used to transform or operate on data in a concise way. 
 
 Scripting
 =========
