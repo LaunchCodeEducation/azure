@@ -317,12 +317,36 @@ You will likely not need to update the PATH yourself unless you install CLI prog
 Piping
 ======
 
-Piping, or pipelining, is the process of chaining together multiple commands. The term comes from the idea of a **data pipeline** which is used to transform or operate on data in a concise way. 
+**Piping**, or **pipelining**, is the process of chaining together multiple commands by using the output of one as the input to the next. The term comes from the idea of a **data pipeline** which is used to transform or operate on data in a concise way. You can think of it as a *stream of operations* flowing through a pipe of commands from the first to the last. 
+
+The idea behind piping is simple but its capability is powerful. The first command in the pipeline is executed and produces an output. But rather than printing the command's output to the Terminal it is instead used as an input to the next command in the pipeline. This process repeats until reaching the end of the pipeline and outputting the final result.
+
+We will get into the syntax of piping in the BASH and PowerShell specific lessons. In general terms piping involves 2 or more commands each separated by the ``|`` pipe character (just above the ``enter`` key on your keyboard).
+
+
+.. todo:: too heavy to give example. leave it light
+
+.. Imagine you have a file where each line contains a name, a number and an email address each separated by a comma (``name,number,email``). This is called a CSV (comma-separated values) file.
+
+.. You have been given the task of creating a new file that has the name and email for all the contacts with a ``@microsoft.com`` address. In pseudocode your steps would look like this:
+
+.. #. print the contents of the original file
+.. #. filter the addresses ending in ``@microsoft.com``
+.. #. take the first value (``name``) and last value (``email``) of the CSV line
+.. #. write the ``name: email`` pair into a new file
+
+.. Your pipeline would then look like this:
+
+.. #. start: print command -> output contents
+.. #. input contents -> filter command -> output filtered contents
+.. #. input filtered contents -> extract valu
 
 Scripting
 =========
 
-- shortcuts for automating common tasks
-- automated configuration of machines
-- fundamentals of programming available (vars [local], DS, loops, conditionals, functions)
+Scripting is the end goal of working with Shells. In simple terms it is the process of composing multiple commands together in a single file to complete a larger task. Instead of entering the commands individually the script file can be executed to automate the behavior.
+
+Script files can be written in many scripting languages like Python and JavaScript. However, these scripting languages require a runtime to interpret them that must be installed on the machine executing the script. 
+
+The benefit of writing scripts in a native Shell like BASH or PowerShell is that they come pre-installed as the default Shells for Ubuntu and Windows. We will cover how to read, write and execute BASH and PowerShell scripts in later lessons. Learning how to create and use scripts is an integral part of working in operations.
 
