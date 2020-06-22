@@ -16,9 +16,9 @@ Setup
 
 .. If you are on the latest version of OSX it may print ``/usr/bin/zsh`` which is an alternative Shell to BASH. Z-Shell (ZSH) and BASH 
 
-Windows machines can not natively run BASH because of their OS incompatibility. However, Microsoft has released the **Windows Subsystem for Linux** (WSL) which simulates the Linux Kernel. The WSL is a type of **Virtual Machine** (VM) which, as the name implies, is a virtual computer that runs within a **Physical Machine** host like your laptop.
+Windows machines can not run BASH natively because of their OS incompatibility. However, Microsoft has released the **Windows Subsystem for Linux** (WSL) which simulates the Linux Kernel. The WSL is a type of **Virtual Machine** (VM) which, as the name implies, is a virtual computer that runs within a **Physical Machine** such as your laptop.
 
-Once WSL is enabled you can install a Linux Distribution like Ubuntu and use it as if they were a real machine. In order to enable WSL and begin using Ubuntu and BASH you will need to complete the following steps.
+Once WSL is enabled you can install a Linux Distribution like Ubuntu and use it as if it were a physical machine. In order to enable WSL and begin using Ubuntu and BASH you will need to complete the following steps.
 
 Enable WSL
 ----------
@@ -28,12 +28,12 @@ The first step requires you to open the PowerShell Terminal in **admin mode**. Y
 .. image:: /_static/images/cli-shells/powershell-taskbar-search.png
    :alt: Search for PowerShell in Windows taskbar
 
-From your taskbar right-click on the pinned icon and select **open as administrator**:
+From your taskbar right-click on the pinned icon and select **run as administrator**:
 
 .. image:: /_static/images/cli-shells/powershell-open-as-admin.png
    :alt: Open PowerShell as admin
 
-Opening PowerShell directly will open it in with restricted User privileges for your security. When you run a Shell as an admin you have **elevated privileges** that allow you to control the OS without restriction. In order to enable WSL we will need these elevated privileges.
+Opening PowerShell normally will open it with User privileges with security restrictions. When you run a Shell as an admin you have **elevated privileges** that allow you to control the OS without restriction. In order to enable WSL we will need these elevated privileges.
 
 .. admonition:: warning
 
@@ -53,17 +53,20 @@ With PowerShell open as an admin copy and paste the following commands. Recall t
 
    > dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 
-Now **restart your machine** before continuing to the following steps.
+This command will invoke the Deployment Image Servicing and Management (``dism``) tool to enable the WSL feature. Once it has finished you need to **restart your machine** before continuing to the following steps.
 
 Setup Ubuntu
 ------------
 
-Next enter the following commands to install the **Ubuntu 18.04 LTS** version. Each line beginning with ``>`` is its own command:
+Next enter the following commands to install Ubuntu (the **18.04 LTS** version). As a reminder, each line beginning with ``>`` is its own command:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
+   # download the Ubuntu OS installer and save it as Ubuntu.appx
    > Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
+
+   # execute the Ubuntu installer application file
    > .\Ubuntu.appx
 
 A dialog box will ask you to confirm the installation:
@@ -91,25 +94,64 @@ You can set up any number of VMs and customize them to your needs. However, for 
 
 .. admonition:: note
 
-   Make sure to use these exact values. Note that when pasting or typing the password the characters will be hidden.
+   When pasting or typing the password the characters will be hidden. Make sure to use these exact values:
 
    - **username**: ``student``
    - **password**: ``launchcode``
 
-You will then be presented with the BASH shell running on the Ubuntu Terminal!
+You will then be presented with BASH running on the Ubuntu Terminal!
 
 .. image:: /_static/images/cli-shells/ubuntu-bash-terminal.png
    :alt: Ubuntu BASH Terminal
 
-As you likely noticed, this version of Ubuntu is **headless** meaning it only includes a Terminal GUI running the BASH Shell. While Ubuntu also comes in a Desktop edition with the full GUI Shell it is only used for consumers. When working with Linux VMs in the cloud we will always use headless OS installations and work exclusively from the Terminal. We will get some practice with a *local* VM before venturing into *remote* VMs in the cloud. 
+As you likely noticed, this version of Ubuntu is **headless** meaning it only includes a Terminal GUI running BASH. While Ubuntu also comes in a Desktop edition with the full GUI Shell it is only used for consumers. When working with Linux VMs in the cloud we will always use headless OS installations and work exclusively from the Terminal. We will first get some practice with a *local* VM before venturing into *remote* VMs in the cloud. 
 
-When you want to close the Ubuntu VM just type ``exit`` into the prompt. The ``exit`` command exits the active Shell process. Because we are using a headless Ubuntu VM closing the Shell is the equivalent of choosing **shut down** from the Desktop. You can practice this now and then re-open it from the pinned taskbar icon:
+When you want to close the Ubuntu VM just type ``exit`` into the prompt. The ``exit`` command exits the active Shell process. While this appears to shut down Ubuntu, WSL will continue to run the VM in the background.
+
+You can practice this now and then re-open it from the pinned taskbar icon:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
 
    $ exit
 
+.. admonition:: note
+
+   WSL is designed to manage any number of VMs. Each VM uses an **image** which contains the OS files that the machine will run on. In the context of Linux, WSL refers to these images as distributions. You can view the available WSL distributions installed on your machine by using the ``--list`` option:
+
+   .. sourcecode:: powershell
+      :caption: Windows/PowerShell
+   
+      # list all the installed VM distributions
+      > wsl --list
+
+      # list just the running VMs
+      > wsl --list --running
+
+   You can also enter the Shell of the VM directly from the PowerShell Terminal rather than using the Ubuntu Terminal GUI. This feature is convenient as it does not require you switch between application windows.
+   
+   You can use the ``--distribution`` option followed by the name of the VM's distribution (one that is installed from the ``--list`` output) to enter the Shell directly:
+
+   .. sourcecode:: powershell
+      :caption: Windows/PowerShell
+
+      # start the machine in the PowerShell Terminal (instead of using the taskbar icon)
+      > wsl --distribution Ubuntu-18.04
+      # shorthand -d
+      > wsl -d Ubuntu-18.04
+
+   The same concept of using the BASH ``exit`` command applies but will now return you to the PowerShell Terminal instead of closing the Ubuntu Terminal application.
+
+   You can completely shut down a VM (rather than just exiting its Shell session) from the PowerShell Terminal by using the ``--terminate`` option followed by the name of the VM's distribution (``Ubuntu-18.04``):
+
+   .. sourcecode:: powershell
+      :caption: Windows/PowerShell
+
+      # shut down the machine
+      > wsl --terminate Ubuntu-18.04
+      # shorthand -t
+      > wsl -t Ubuntu-18.04
+   
 Working with BASH
 =================
 
@@ -119,7 +161,7 @@ This article is a guide for the fundamentals of working with BASH. Like other pr
 
 - **everything is a file**: There are 7 *types of files*. We will only work with regular files and directories (``d`` files) but you can read about the others `in this article <https://linuxconfig.org/identifying-file-types-in-linux>`_.
 - **everything is a string**: There are no data types in BASH. All of the inputs and outputs of BASH commands are strings of characters.
-- **file extensions don't matter**: All regular files in Linux are treated the same -- just a collection of characters (in a `character encoding <https://en.wikipedia.org/wiki/Character_encoding>`_. It is up to the consumer of a file (a program) to decide how to interpret the characters in it. In other words, *the OS is not opinionated about how a file is used*. A file extension is nothing more than a note for the user to choose a program that will use the file.
+- **file extensions don't matter**: All regular files in Linux are treated the same -- just a collection of characters (in a `character encoding <https://en.wikipedia.org/wiki/Character_encoding>`_). It is up to the consumer of a file (a program) to decide how to interpret the characters in it. In other words, *the Linux OS is not opinionated about how a file is used*, unlike what you are familiar with in Windows. In Linux land a file extension is not required and only serves as a note for the user to choose a program that will interpret the file.
 
 File System
 ===========
