@@ -161,9 +161,20 @@ This article is a guide for the fundamentals of working with BASH. Like other pr
 
 While learning about and practicing these commands some will seem foreign to you if you come from a Windows background. Keep in mind the following aspects of Linux and BASH to help you understand why things work the way they do:
 
-- **everything is a file**: There are 7 *types of files*. We will only work with regular files and directories (``d`` files) but you can read about the others `in this article <https://linuxconfig.org/identifying-file-types-in-linux>`_.
-- **everything is a string**: There are no data types in BASH. All of the inputs and outputs of BASH commands are strings of characters.
-- **file extensions don't matter**: All regular files in Linux are treated the same -- just a collection of characters (in a `character encoding <https://en.wikipedia.org/wiki/Character_encoding>`_). It is up to the consumer of a file (a program) to decide how to interpret the characters in it. In other words, *the Linux OS is not opinionated about how a file is used*, unlike what you are familiar with in Windows. In Linux land a file extension is not required and only serves as a note for the user to choose a program that will interpret the file.
+   **Everything is a file**
+
+There are 7 `types of files <https://linuxconfig.org/identifying-file-types-in-linux>`_ in Linux. The majority of the time you will be working with:
+
+- **regular files**: individual text files (denoted by ``-``)
+- **directory files**: container files (denoted by ``d``).
+
+   **Everything is a string**
+   
+There are **no data types** in BASH. All of the inputs and outputs of BASH commands are strings of characters.
+
+   **File extensions don't matter**
+
+All regular files in Linux are treated the same -- just a collection of characters (in a `character encoding <https://en.wikipedia.org/wiki/Character_encoding>`_). It is up to the consumer of a file (a program) to decide how to interpret the characters in it. In other words, *the Linux OS is not opinionated about how a file is used*, unlike what you are familiar with in Windows. In Linux-land a file extension is not required and only serves as a note for the user to choose a program that will interpret the file.
 
 File System
 ===========
@@ -559,14 +570,91 @@ In our case the directories are all empty and will be deleted immediately:
 File Operations
 ---------------
 
+As we move from directory to file operations consider one of the core tenants of Linux:
+
+   **Everything is a file**
+
+Why is this valuable to consider? Because most of the commands used for directory operations are identical for regular files! When dealing with regular files the ``-r`` (recursive) option is no longer needed since it is an *individual file* rather than a container like a directory:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ mv path/to/target/file path/to/destination/file
+
+   $ cp path/to/target/file path/to/destination/file
+
+   $ rm path/to/target/file
+
 Create
 ^^^^^^
+
+In BASH you can create a file in several different ways. BASH and Linux users are accustomed to using **CLI text editors** `like VIM <https://www.vim.org/>`_ for creating and modifying files. Whereas on Windows the preference is for using a GUI based editor like ``notepad``.
+
+BASH also includes `redirection operators <https://www.guru99.com/linux-redirection.html>`_ which can be used to *redirect* the output of a command into a new location -- like a new file or new lines on an existing file.
+
+Unfortunately, due to the scope of this class, we will not be covering CLI editors or the redirect operators but you can use the links above to learn more about them. Instead, we will introduce a much simpler command.
+
+The ``touch`` command can be used to create an empty file. It takes a relative or absolute path ending in the file's name as an argument:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ touch path/to/file-name
+
+.. admonition:: fun fact
+
+   Technically the ``touch`` command is used for updating the last time the file was *touched* (the last-accessed or modified timestamp). But most of the time it is used for its *side-effect* of creating the file if it doesn't already exist to be touched!
+
+Let's create a file called ``my-file`` in a directory called ``my-files``:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   $ mkdir my-files
+   $ touch my-files/my-file
+
+   $ ls my-files
+   my-file
 
 View contents
 ^^^^^^^^^^^^^
 
-Move, Copy & Delete
-^^^^^^^^^^^^^^^^^^^
+Although *everything is a file* not every file can be *interpreted the same way*. Directories, as container files, naturally need a mechanism for listing their contents -- the ``ls`` command. But regular files are just collections of characters. Listing those out would be a mess!
+
+When viewing the contents of a file we can use the ``cat`` command. The ``cat`` command stands for *concatenate* and serves to combine strings of characters. Just like ``touch`` it is often used for the side effect of printing out the contents of a file. In other words it is concatenating the contents of the file with *nothing* resulting in just the contents being displayed.
+
+You can use the ``cat`` command to print the contents of a file by providing the absolute or relative path to that file. Let's try viewing the contents of the hidden file ``.bash_history`` which shows a history of all the commands you have entered recently:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   $ cat .bash_history
+   # your command history!
+
+Sometimes printing the *entire contents* to the Terminal is too verbose. This would be like viewing a 50 page book all at once. Instead we can use the ``less`` command to show *less* at one time -- similar to scrolling through pages instead. 
+
+The ``less`` command works the same way, by providing it an absolute or relative path. Once the program opens you can navigate using the following keyboard keys. Some terminals also allow scrolling with the mouse wheel:
+
+- ``J``: scroll down one line
+- ``K``: scroll up one line
+- ``Q``: quit the ``less`` program and return to the Shell
+
+Let's try viewing the ``.bashrc`` file this time. If the contents of this file look terrifying don't worry! You won't need to write or edit any of it. But it serves as a lengthy file to practice scrolling with ``less``:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   $ less .bashrc
+   # less program opens the file, use J and K to scroll and Q to quit
 
 CLI Tools
 =========
