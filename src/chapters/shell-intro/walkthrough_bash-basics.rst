@@ -159,20 +159,25 @@ From this point forward all of the commands and examples will be in BASH and nee
 
 This article is a guide for the fundamentals of working with BASH. Like other programming languages BASH has more depth than can be covered as an introduction. The topics covered here will give you a foundation to build the rest of your learning on top of. 
 
-While learning about and practicing these commands some will seem foreign to you if you come from a Windows background. Keep in mind the following aspects of Linux and BASH to help you understand why things work the way they do:
+Core Tenants
+------------
 
-   **Everything is a file**
+While learning BASH and Linux some commands and behaviors will seem foreign to you if you come from a Windows background. Keep in mind the following aspects of Linux and BASH to help you understand why things work the way they do:
 
+Everything is a file
+^^^^^^^^^^^^^^^^^^^^
 There are 7 `types of files <https://linuxconfig.org/identifying-file-types-in-linux>`_ in Linux. The majority of the time you will be working with:
 
 - **regular files**: individual text files (denoted by ``-``)
-- **directory files**: container files (denoted by ``d``).
+- **directory files**: container files (denoted by ``d``)
 
-   **Everything is a string**
-   
+Everything is a string
+^^^^^^^^^^^^^^^^^^^^^^
+
 There are **no data types** in BASH. All of the inputs and outputs of BASH commands are strings of characters.
 
-   **File extensions don't matter**
+File extensions are arbitrary
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All regular files in Linux are treated the same -- just a collection of characters (in a `character encoding <https://en.wikipedia.org/wiki/Character_encoding>`_). It is up to the consumer of a file (a program) to decide how to interpret the characters in it. In other words, *the Linux OS is not opinionated about how a file is used*, unlike what you are familiar with in Windows. In Linux-land a file extension is not required and only serves as a note for the user to choose a program that will interpret the file.
 
