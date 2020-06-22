@@ -157,7 +157,9 @@ Working with BASH
 
 From this point forward all of the commands and examples will be in BASH and need to be entered into the Ubuntu Terminal. As mentioned previously, we will distinguish BASH commands from PowerShell commands by using the ``$`` symbol instead of ``>``. 
 
-This article is a guide for the fundamentals of working with BASH. Like other programming languages BASH has more depth than can be covered as an introduction. The topics covered here will give you a foundation to build the rest of your learning on top of. Keep in mind the following aspects of Linux and BASH:
+This article is a guide for the fundamentals of working with BASH. Like other programming languages BASH has more depth than can be covered as an introduction. The topics covered here will give you a foundation to build the rest of your learning on top of. 
+
+While learning about and practicing these commands some will seem foreign to you if you come from a Windows background. Keep in mind the following aspects of Linux and BASH to help you understand why things work the way they do:
 
 - **everything is a file**: There are 7 *types of files*. We will only work with regular files and directories (``d`` files) but you can read about the others `in this article <https://linuxconfig.org/identifying-file-types-in-linux>`_.
 - **everything is a string**: There are no data types in BASH. All of the inputs and outputs of BASH commands are strings of characters.
@@ -166,36 +168,394 @@ This article is a guide for the fundamentals of working with BASH. Like other pr
 File System
 ===========
 
+Everything in the File System (FS) and operations done to it are based around relative and absolute paths. Refer to the previous article for a more detailed explanation. Below is a practical refresher:
+
+- **relative path**: relative to a variable location, your current working directory (CWD)
+- **absolute path**: relative to a constant directory (root, ``/``, in Linux)
+
+You will notice that most of the FS related commands make use of path arguments that can be written as relative or absolute paths.
+
 Navigation Essentials
 ---------------------
+
+Let's begin by reviewing the essential commands for navigating the FS from the command-line. Take some time to practice using these to navigate around your machine.
 
 Show the CWD
 ^^^^^^^^^^^^
 
+In order to navigate *relative* to where you are you need to identify your working directory (CWD). The ``pwd`` (print working directory) command will give you the absolute path of your current location in the FS:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+If you are in a new Shell session it will default to a CWD of ``/home/<username>``.
+
+.. admonition:: note
+
+   If you entered BASH through PowerShell (``wsl -d Ubuntu-18.04``) rather than the Ubuntu taskbar icon it will default to a different directory like ``/mnt/c/Users/<username>``. This is *not your home directory* but is a default when entering through PowerShell.
+
+   This behavior can be changed by creating a ``.bash_profile`` file. You can read more about it `in this article <https://www.thegeekdiary.com/what-is-the-purpose-of-bash_profile-file-under-user-home-directory-in-linux/>`_ but it falls outside of the scope of this class. 
+
+
 Change directories
 ^^^^^^^^^^^^^^^^^^
+
+The ``cd`` (change directory) command takes one argument -- the relative or absolute path of where you want to go:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   # relative paths begin with a './'
+   $ cd ./path/name
+   # or just the path name with no leading '/'
+   $ cd path/name
+
+   # absolute paths always begin from the root (/) directory
+   cd /home/student/path/name
+
+If you want to change to a directory using a relative path that is *under* your CWD this is straightforward. But what if you need to refer to a relative path *above* your CWD? For this BASH includes two special characters for relative references:
+
+- `.` character: a single dot means *this directory*
+- `..` characters: a double dot means *up one directory*
+
+We will discuss the use of the *this directory* character (``.``) soon. For now consider an example about the **up directory** characters. Imagine the following scenario:
+
+.. sourcecode:: bash
+
+   /home/student
+      /Downloads
+         /album
+      /Media <-- your target
+         /Videos <-- your CWD
+
+If you want to move to the `Media` directory *relative* to `Videos` you need to go *up one directory* level:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student/Media/Videos
+
+   $ cd ../
+
+   # for going up one directory only you can leave off the trailing '/'
+   $ cd ..
+   
+   $ pwd
+   /home/student/Media
+
+What if you again start inside ``Videos`` and you want to switch to the ``album`` directory? 
+
+.. sourcecode:: bash
+
+   /home/student
+      /Downloads
+         /album <-- your target
+      /Media
+         /Videos <-- your CWD
+
+Relative to where you are, you need to:
+
+- go up one level where ``Media`` and ``Downloads`` are: ``../``
+- down a level into ``Downloads``: ``../Downloads``
+- then down another level into ``album``: ``../Downloads/album``
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student/Media/Videos
+
+   $ cd ../Downloads/album
+
+   $ pwd
+   /home/student/Downloads/album
+
+This process can be repeated for going up (``../``) or down (``/``) as many times as needed to create the proper relative path. When in doubt check your CWD!
+
+There are also two useful shorthands for quickly navigating around:
+
+- ``~``: the tilda (next to the ``1`` key) is a shorthand for the home directory of the logged in user (relies on the ``$HOME`` environment variable) 
+- ``-``: the dash character (next to the ``0`` key) is a shorthand for returning to the *previous* CWD (thanks to the ``$OLDPWD`` environment variable)
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student/Media
+
+   $ cd ~
+   $ pwd
+   /home/student
+
+   $ cd -
+   $ pwd
+   /home/student/Media
+
+The ``~`` shorthand can also be used as a base *relative to HOME* path:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student/Media
+
+   $ cd ~/Downloads/album
+   $ pwd
+   /home/student/Downloads/album
+
 
 List the CWD contents
 ^^^^^^^^^^^^^^^^^^^^^
 
+Our final essential command is ``ls`` (list contents). As mentioned previously ``ls`` can be used with no arguments to view the contents of the CWD:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   $ ls
+   # contents of CWD ("empty" for a new user)
+
+But ``ls`` can also be used to view the contents of another directory via a relative or absolute path:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   # absolute path
+   $ ls /usr/bin
+   # contents of the user binaries directory
+
+   # relative path
+   $ ls ../../usr/bin
+
+You can also provide options to ``ls`` to change the output. The ``-a`` option means *all* and shows both regular and **hidden files**. Hidden files are special configuration files that are hidden to prevent accidental changes to them.
+
+While the home directory appeared empty earlier it actually contained several hidden files:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   $ ls -a
+   # hidden files like .bashrc, .profile
+
+The ``-l`` option outputs in *long form* which shows additional details about the contents. In the following example it is combined with ``-a`` to see detailed information about the hidden files in the home directory:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   # or shorthand: ls -al
+   $ ls -a -l
+
+In this output you can view details like the `file type and access mode <http://linuxcommand.org/lc3_lts0090.php>`_ as well as the `user and group <https://www.linode.com/docs/tools-reference/linux-users-and-groups/>`_ that owns the file. We will not go into permission modes and ownership in this class. However, it is worth knowing that regular files are denoted by a ``-`` character and directory files by the ``d`` character (on the far left of each file's information).
+
+.. admonition:: fun fact
+
+   Notice how the ``.`` and ``..`` are actually listed as *directory files* (the first ``d`` in the long output). The ``.`` and ``..`` are actually treated as *files* (because *everything is a file*). They refer to the *current directory file* and *up directory file* respectively.
+
 Directory Operations
 --------------------
+
+Now that we have the navigating essentials let's practice some common directory operations. We will learn these through a simple example. While the example is silly, the concepts and commands will apply to all of the directory work you do in the future.
 
 Create
 ^^^^^^
 
+The ``mkdir`` (make directory) command creates directories using a relative or absolute path argument. If just the name of a directory is given then it is created *relative to* the CWD. If the absolute path is provided the directory is created at that *exact* location.
+
+By convention Linux directories do not use spaces in them. Space characters (`` ``) can conflict with the spaces between command arguments so they are avoided. In order to create a multi-word directory name the convention uses dashes (``-``) to separate the words. 
+
+Let's create a ``parent-dir`` and ``child-dir`` using ``mkdir``:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   # relative to the CWD
+   $ mkdir parent-dir
+
+   # an absolute path in the /tmp (temporary) directory
+   $ mkdir /tmp/child-dir
+
+   # mkdir can create multiple (space-separated) dirs at once
+   $ mkdir parent-dir /tmp/child-dir
+
 View contents
 ^^^^^^^^^^^^^
+
+Now if we list the contents of the CWD (home dir) and the ``/tmp`` dir we should see our new directories:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   $ ls
+   parent-dir
+
+   $ ls /tmp
+   # trimmed output
+   child-dir
+
+We can also see that both the new directories themselves are empty:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   # relative path
+   $ ls parent-dir
+   # empty contents
+
+   # absolute path
+   $ ls /tmp/child-dir
+   # empty contents
 
 Move
 ^^^^
 
+We can move a directory to a new location using the ``mv`` command. Once again, its arguments accept relative or absolute paths. The ``mv`` command takes a target and destination path as its first and second arguments:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ mv <path to target> <path to destination>
+
+Let's move the ``child-dir`` from its current parent directory (``/tmp``) to the new one we made:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   # from absolute path (target) to relative path (destination)
+   $ mv /tmp/child-dir parent-dir/child-dir
+   
+   $ ls /tmp
+   # the child-dir no longer exists at this location
+
+   $ ls parent-dir
+   child-dir
+
+
+
+.. admonition:: warning
+
+   There is no *rename* command in BASH. Instead the act of moving a file (remember directories are files) defines its new name in the destination path. 
+
+   When renaming files you **must be careful**. If a file of the same name exists at the destination path you provide **the existing file will be overwritten permanently**.
+
+   For example if we create another directory called ``child-dir`` and want to move it into ``parent-dir`` we can *rename it during the move* to not overwrite the existing directory file with the same name:
+
+   .. sourcecode:: bash
+      :caption: Linux/BASH
+
+      $ pwd
+      /home/student
+
+      $ mkdir /tmp/child-dir
+      
+      $ ls parent-dir
+      child-dir
+
+      # rename in the new destination path
+      $ mv /tmp/child-dir parent-dir/child-dir-2
+
+      $ ls parent-dir
+      child-dir
+      child-dir-2
+
 Copy
 ^^^^
+
+Copying files uses the ``cp`` command. The ``cp`` command behaves nearly identically to the ``mv`` command except it *copies* instead of *moving* the file(s). Just like the move command you can copy *any file* whether it is a regular or directory file.
+
+However, to copy a directory is not as simple as copying a single file. A directory inherently can contain contents including other directories and regular files. For this reason the ``-r`` (recursive) option is used.
+
+The recursive option instructs the ``cp`` command to copy the directory *recursively*. It does this by recursing into each nested directory and copying its contents as well.
+
+Let's move our ``parent-dir`` to the ``/tmp`` dir:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ pwd
+   /home/student
+
+   $ ls
+   parent-dir
+   
+   $ ls parent-dir
+   child-dir
+   child-dir-2
+
+   $ cp -r parent-dir /tmp/parent-dir
+
+Now let's confirm the move by checking the ``/tmp`` dir:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ ls /tmp
+   parent-dir
+
+   $ ls /tmp/parent-dir
+   child-dir
+   child-dir-2
+
+Notice how it copied the ``parent-dir`` and *recursed* into it to copy all of the sub-directories as well.
 
 Delete
 ^^^^^^
 
+.. admonition:: warning
+
+   The command to delete files is **not to be taken lightly**. When you delete a file or directory through the GUI it will conveniently store the deleted contents in a recycling bin where they can be recovered.
+
+   In the Shell a **deletion is permanent** and nearly **instantaneous**. For this reason it is imperative that the command **always use an absolute path** to be explicit and prevent mistakes.
+   
+   While we stressed being cautious before we will repeat in bold this time:
+
+   **DO NOT STRAY FROM THE FOLLOWING COMMAND DIRECTIONS**
+
+The command for deleting, or *removing*, files is ``rm``. When deleting a directory, just like ``cp``, the ``-r`` option will instruct it to do so *recursively*.
+
+Let's clean up the directories we created using the remove command. We will use the ``rm`` command with the default prompt option enabled. This will force you to explicitly confirm before each file is deleted if its contents are not empty.
+
+In our case the directories are all empty and will be deleted immediately:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ ls /tmp/parent-dir
+   child-dir
+   child-dir-2
+
+   $ rm -r /tmp/parent-dir
+
+   $ ls /tmp/parent-dir
+   ls: cannot access '/tmp/parent-dir': No such file or directory
+   
 File Operations
 ---------------
 
