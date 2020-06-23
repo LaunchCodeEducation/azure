@@ -166,7 +166,8 @@ While learning BASH and Linux some commands and behaviors will seem foreign to y
 
 Everything is a file
 ^^^^^^^^^^^^^^^^^^^^
-There are 7 `types of files <https://linuxconfig.org/identifying-file-types-in-linux>`_ in Linux. The majority of the time you will be working with:
+
+There are 7 `types of files <https://linuxconfig.org/identifying-file-types-in-linux>`_ in Linux and they *don't refer to file extensions*. The majority of the time you will be working with:
 
 - **regular files**: individual text files (denoted by ``-``)
 - **directory files**: container files (denoted by ``d``)
@@ -174,7 +175,7 @@ There are 7 `types of files <https://linuxconfig.org/identifying-file-types-in-l
 Everything is a string
 ^^^^^^^^^^^^^^^^^^^^^^
 
-There are **no data types** in BASH. All of the inputs and outputs of BASH commands are strings of characters.
+There are **no data types** in BASH. All of the inputs and outputs of BASH commands are strings of characters. 
 
 File extensions are arbitrary
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -556,9 +557,7 @@ Delete
 
 The command for deleting, or *removing*, files is ``rm``. When deleting a directory, just like ``cp``, the ``-r`` option will instruct it to do so *recursively*.
 
-Let's clean up the directories we created using the remove command. We will use the ``rm`` command with the default prompt option enabled. This will force you to explicitly confirm before each file is deleted if its contents are not empty.
-
-In our case the directories are all empty and will be deleted immediately:
+Let's clean up the directories we created using the remove command. We will also include the ``-i`` (interactive) option as a safety measure. This will require us to explicitly confirm the removal of each file before it is deleted by entering the ``y`` character at each prompt:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
@@ -567,7 +566,8 @@ In our case the directories are all empty and will be deleted immediately:
    child-dir
    child-dir-2
 
-   $ rm -r /tmp/parent-dir
+   $ rm -i -r /tmp/parent-dir
+   # for each prompt type y and hit enter (for yes)
 
    $ ls /tmp/parent-dir
    ls: cannot access '/tmp/parent-dir': No such file or directory
@@ -667,8 +667,161 @@ CLI Tools
 Package Manager
 ---------------
 
-Installing Class Tools
-----------------------
+The Ubuntu Distribution comes pre-installed with the Advanced Packaging Tool (``apt``) program for managing packages. There are many arguments and options available in the ``apt`` command. However, we will focus on those that are used most frequently. Like most CLI programs you can view more details about how to use ``apt`` by using the ``--help`` option.
+
+You will typically see ``apt`` used with the ``-y`` option added to the command. This option skips the confirmation prompt for the actions you are taking to speed up the process. 
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ apt <action argument> -y
+
+SUDO
+^^^^
+
+Recall that APT, like all system-wide package managers, must have control over your machine to download, install and configure the packages you need. Because it operates on packages stored above the ``/home/<username>`` directory (closer to the root dir) it is considered *outside of the user space* and requires the use of admin privileges:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ sudo apt <action argument> -y
+
+The ``sudo`` command is the equivalent of opening the PowerShell Terminal in admin mode. It is an acronym for **s**uper **u**ser **do** the command to the right of it. The first time you use ``sudo`` *per Shell session* you will be prompted for the admin password of your account (``launchcode`` in our case). This means that once you have authenticated you will not have to re-authenticate unless you close the Shell (ending the session) or you open a new Shell in a different window. This is similar to how logins work on the internet such as a banking websites that only remain authenticated while in an active session.
+
+
+Updating
+^^^^^^^^
+
+Any time you are going to use ``apt`` you should begin by updating. An ``apt update`` will download information about installed packages (like pending updates) as well as refresh the package source lists. The latter half  of the update ensures that when you search and install packages you are always getting the latest additions and versions from your package source repositories.
+
+ Below you can see the most ubiquitous ``apt`` command in use:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ sudo apt update -y
+   # update information output
+
+Installing Tools
+----------------
+
+After you have updated you can search for and install package tools on your machine. The ``search`` argument can be used to scan the source repositories for a package. It accepts a search term as a sub-argument which it will use to search the title and descriptions of all the available packages within your group of sources.
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   # always run apt update before searching or installing!
+   $ sudo apt search <search term>
+
+If the search results contains your package you can install it using the ``install`` argument. The sub-argument is the **exact package name** of the tool you want to install. You can skip the installation prompts (like confirmation dialog boxes in a GUI) using the ``-y`` option:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ sudo apt install <package name> -y
+
+Let's practice by searching for the amusing little tool ``cowsay``. First let's search for the package. This playful package is available within the default set of source repositories and should show up as the first result:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ sudo apt update -y
+
+   # searching doesn't require elevated privileges
+   $ apt search cowsay
+
+   Sorting... Done
+   Full Text Search... Done
+   cowsay/focal,focal 3.03+dfsg2-7 all
+   configurable talking cow
+
+   cowsay-off/focal,focal 3.03+dfsg2-7 all
+   configurable talking cow (offensive cows)
+
+   presentty/focal,focal 0.2.1-1.1 all
+   Console-based presentation software
+
+   xcowsay/focal 1.5-1 amd64
+   Graphical configurable talking cow
+
+   # you can also search for "talking cow" which will match the description
+   $ apt search talking cow
+
+The package that we want is the first one, ``cowsay``. Notice that the search will check both the package name and description. Let's install it:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   # installing controls your machine and requires sudo
+   $ sudo apt install cowsay -y
+
+In the command output you can see that ``apt`` downloads, unpacks and installs the package automatically . You can now try out the newly installed tool!
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ cowsay Hello World!
+   _____________
+   < Hello World >
+   -------------
+         \   ^__^
+            \  (oo)\_______
+               (__)\       )\/\
+                  ||----w |
+                  ||     ||
+
+
+
+Adding Sources
+--------------
+
+The default list of sources contains a nearly endless collection of open-source tools from trusted package hosts. But in many cases you will need to install additional sources to download packages from. Additional sources can range from private repositories hosted by a company for internal use to self-hosted repositories like the Microsoft tools. 
+
+These custom repositories often require both the repository and a **signing key** to be installed. Anyone is able to host a repository of packages. This is why it is important to only install source repositories, and packages from those repositories, from trusted sources. As an additional measure repositories include a signing key to check that downloaded packages are authentic, from the trusted source, before being installed. 
+
+.. admonition:: note
+
+   The topics of Public Key Infrastructure (PKI), which includes signing keys, and custom repositories extends outside the scope of this course. You can read more about how these work `in this repository article <https://wiki.debian.org/DebianRepository>`_ and `this repository signing key article <https://wiki.debian.org/SecureApt>`_. Both of these articles offer a relatively high-level overview of the mechanisms.
+
+Let's see what this process looks like using the ``dotnet CLI`` installation as an example.
+
+The first step is to install the official Microsoft package repository. This installation includes both the repository and the signing key. This is a one-time process and future installations of Microsoft tools will be available and trusted automatically:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   # install the repository source package (includes the repo and signing key)
+   $ sudo wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+
+   # unpack and install the repository and trust the signing key
+   $ sudo dpkg -i packages-microsoft-prod.deb
+
+Now we will install a utility called ``apt-transport-https`` which, as the name implies, is used to download over HTTPS. Microsoft only serves their packages over secure connections:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   # always update before other commands
+   $ sudo apt update -y
+
+   $ sudo apt install apt-transport-https -y
+   
+Finally with the repository, signing key, and HTTPS tooling installed we can install the ``dotnet`` package we were after. We will install the .NET Core SDK which includes both the SDK (standard library, compiler and runtime) as well as the ``dotnet`` CLI tool itself:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ sudo apt update -y
+   $ sudo apt install dotnet-sdk-3.1 -y
+
+Once again notice all of the work that ``apt`` does for us automatically. Imagine doing all of that downloading, unpacking and configuration manually!
+
+You can confirm the installation was successful by viewing the ``--help`` output of ``dotnet``. Viewing the help output of a command program is an easy way to get acquainted with it right from the command-line. We will work with this tool in later lessons but feel free to poke around with it in the mean time.
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ dotnet --help
 
 Piping
 ======
