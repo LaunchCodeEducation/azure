@@ -1,156 +1,6 @@
 ===============================
 Walkthrough: Hands-On With BASH
 ===============================
-
-Setup
-=====
-
-
-.. do we want to support macs or have them work from a VM for consistency? apt wont work on mac but everything else will
-.. If you are on a UNIX machine (Macs running OSX or a Linux machine) you will already have BASH and a Terminal available. Search for and open your Terminal application. Once in the terminal enter the following command:
-
-.. .. sourcecode:: bash
-
-..    $ echo "$SHELL"
-..    # /usr/bin/bash
-
-.. If you are on the latest version of OSX it may print ``/usr/bin/zsh`` which is an alternative Shell to BASH. Z-Shell (ZSH) and BASH 
-
-Windows machines can not run BASH natively because of their OS incompatibility. However, Microsoft has released the **Windows Subsystem for Linux** (WSL) which simulates the Linux Kernel. The WSL is a type of **Virtual Machine** (VM) which, as the name implies, is a virtual computer that runs within a **Physical Machine** such as your laptop.
-
-Once WSL is enabled you can install a Linux Distribution like Ubuntu and use it as if it were a physical machine. In order to enable WSL and begin using Ubuntu and BASH you will need to complete the following steps.
-
-Enable WSL
-----------
-
-The first step requires you to open the PowerShell Terminal in **admin mode**. You can find PowerShell by searching from your taskbar. Before opening it right-click the icon and select **pin to taskbar** so it is easier to reach in the future:
-
-.. image:: /_static/images/cli-shells/powershell-taskbar-search.png
-   :alt: Search for PowerShell in Windows taskbar
-
-From your taskbar right-click on the pinned icon and select **run as administrator**:
-
-.. image:: /_static/images/cli-shells/powershell-open-as-admin.png
-   :alt: Open PowerShell as admin
-
-Opening PowerShell normally will open it with User privileges with security restrictions. When you run a Shell as an admin you have **elevated privileges** that allow you to control the OS without restriction. In order to enable WSL we will need these elevated privileges.
-
-.. admonition:: warning
-
-   When operating a Shell with admin privileges you **must be careful with the actions you take**. While it is unlikely, you **can do irreparable damage** from the command-line by controlling areas of your machine that the Desktop GUI would normally prevent you from accessing. 
-   
-   All of the instructions provided in this class are safe **as long as you follow them exactly**. While we encourage you to research and practice outside of class we can not help you with anything harmful you do to your machine when straying from the directions we provide. Use common sense and don't run scripts or commands you find on the internet without knowing exactly what they do!
-
-You will be prompted to confirm this decision as a security measure:
-
-.. image:: /_static/images/cli-shells/powershell-admin-prompt.png
-   :alt: PowerShell admin security prompt 
-
-With PowerShell open as an admin copy and paste the following commands. Recall that the ``>`` symbol is used to designate **a single PowerShell command** (the contents to the right of it) that you need to copy and paste into your Terminal.
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-
-This command will invoke the Deployment Image Servicing and Management (``dism``) tool to enable the WSL feature. Once it has finished you need to **restart your machine** before continuing to the following steps.
-
-Setup Ubuntu
-------------
-
-Next enter the following commands to install Ubuntu (the **18.04 LTS** version). As a reminder, each line beginning with ``>`` is its own command:
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   # download the Ubuntu OS installer and save it as Ubuntu.appx
-   > Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
-
-   # execute the Ubuntu installer application file
-   > .\Ubuntu.appx
-
-A dialog box will ask you to confirm the installation:
-
-.. image:: /_static/images/cli-shells/ubuntu-install-dialog.png
-   :alt: Install Ubuntu dialog
-
-The Ubuntu VM should now open automatically. It will then take a few minutes to complete the installation.
-
-.. admonition:: note
-
-   If you have any issues with the installation you likely forgot to restart your machine after enabling WSL. For resolving other issues refer to `this troubleshooting article <https://docs.microsoft.com/en-us/windows/wsl/install-win10#troubleshooting-installation>`_.
-
-While waiting for it to install right click on its icon and pin it to your taskbar:
-
-.. image:: /_static/images/cli-shells/ubuntu-pin-taskbar.png
-   :alt: Pin Ubuntu VM to taskbar
-
-After installation it will prompt you to enter a username and password for your Ubuntu user account:
-
-.. image:: /_static/images/cli-shells/ubuntu-setup-user.png
-   :alt: Ubuntu first time setup user account
-
-You can set up any number of VMs and customize them to your needs. However, for this class we will use the following values to make troubleshooting and helping you more consistent.
-
-.. admonition:: note
-
-   When pasting or typing the password the characters will be hidden. Make sure to use these exact values:
-
-   - **username**: ``student``
-   - **password**: ``launchcode``
-
-You will then be presented with BASH running on the Ubuntu Terminal!
-
-.. image:: /_static/images/cli-shells/ubuntu-bash-terminal.png
-   :alt: Ubuntu BASH Terminal
-
-As you likely noticed, this version of Ubuntu is **headless** meaning it only includes a Terminal GUI running BASH. While Ubuntu also comes in a Desktop edition with the full GUI Shell it is only used for consumers. When working with Linux VMs in the cloud we will always use headless OS installations and work exclusively from the Terminal. We will first get some practice with a *local* VM before venturing into *remote* VMs in the cloud. 
-
-When you want to close the Ubuntu VM just type ``exit`` into the prompt. The ``exit`` command exits the active Shell process. While this appears to shut down Ubuntu, WSL will continue to run the VM in the background.
-
-You can practice this now and then re-open it from the pinned taskbar icon:
-
-.. sourcecode:: bash
-   :caption: Linux/BASH
-
-   $ exit
-
-.. admonition:: note
-
-   WSL is designed to manage any number of VMs. Each VM uses an **image** which contains the OS files that the machine will run on. In the context of Linux, WSL refers to these images as distributions. You can view the available WSL distributions installed on your machine by using the ``--list`` option:
-
-   .. sourcecode:: powershell
-      :caption: Windows/PowerShell
-   
-      # list all the installed VM distributions
-      > wsl --list
-
-      # list just the running VMs
-      > wsl --list --running
-
-   You can also enter the Shell of the VM directly from the PowerShell Terminal rather than using the Ubuntu Terminal GUI. This feature is convenient as it does not require you switch between application windows.
-   
-   You can use the ``--distribution`` option followed by the name of the VM's distribution (one that is installed from the ``--list`` output) to enter the Shell directly:
-
-   .. sourcecode:: powershell
-      :caption: Windows/PowerShell
-
-      # start the machine in the PowerShell Terminal (instead of using the taskbar icon)
-      > wsl --distribution Ubuntu-18.04
-      # shorthand -d
-      > wsl -d Ubuntu-18.04
-
-   The same concept of using the BASH ``exit`` command applies but will now return you to the PowerShell Terminal instead of closing the Ubuntu Terminal application.
-
-   You can completely shut down a VM (rather than just exiting its Shell session) from the PowerShell Terminal by using the ``--terminate`` option followed by the name of the VM's distribution (``Ubuntu-18.04``):
-
-   .. sourcecode:: powershell
-      :caption: Windows/PowerShell
-
-      # shut down the machine
-      > wsl --terminate Ubuntu-18.04
-      # shorthand -t
-      > wsl -t Ubuntu-18.04
    
 Working with BASH
 =================
@@ -172,6 +22,14 @@ There are 7 `types of files <https://linuxconfig.org/identifying-file-types-in-l
 - **regular files**: individual text files (denoted by ``-``)
 - **directory files**: container files (denoted by ``d``)
 
+File System
+^^^^^^^^^^^
+
+The Linux File System (FS) has the following design:
+
+- file paths are separated by forward slashes (``/``)
+- there is a single root directory, absolute paths are written relative to **root** with the path ``/``
+
 Everything is a string
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -180,7 +38,9 @@ There are **no data types** in BASH. All of the inputs and outputs of BASH comma
 File extensions are arbitrary
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-All regular files in Linux are treated the same -- just a collection of characters (in a `character encoding <https://en.wikipedia.org/wiki/Character_encoding>`_). It is up to the consumer of a file (a program) to decide how to interpret the characters in it. In other words, *the Linux OS is not opinionated about how a file is used*, unlike what you are familiar with in Windows. In Linux-land a file extension is not required and only serves as a note for the user to choose a program that will interpret the file.
+All regular files in Linux are treated the same -- just a string of characters (in a `character encoding <https://en.wikipedia.org/wiki/Character_encoding>`_). It is up to the consumer of a file (a program) to decide how to interpret the characters in it. 
+
+In other words, *the Linux OS is not opinionated about how a file is used*, unlike what you may be familiar with in Windows. In Linux-land a file extension is not required and only serves as a note for the user to choose a program that will interpret its contents.
 
 File System
 ===========
@@ -686,8 +546,9 @@ Recall that APT, like all system-wide package managers, must have control over y
 
    $ sudo apt <action argument> -y
 
-The ``sudo`` command is the equivalent of opening the PowerShell Terminal in admin mode. It is an acronym for **s**uper **u**ser **do** the command to the right of it. The first time you use ``sudo`` *per Shell session* you will be prompted for the admin password of your account (``launchcode`` in our case). This means that once you have authenticated you will not have to re-authenticate unless you close the Shell (ending the session) or you open a new Shell in a different window. This is similar to how logins work on the internet such as a banking websites that only remain authenticated while in an active session.
+The ``sudo`` command is the equivalent of opening the PowerShell Terminal in admin mode. It is an acronym for **S**\uper **U**\ser **DO** the command to the right of it. The first time you use ``sudo`` *per Shell session* you will be prompted for the admin password of your account (``launchcode`` in our case). Any commands after ``sudo`` are run as the ``root`` user -- a special super user account type.
 
+This means that once you have authenticated you will not have to re-authenticate unless you close the Shell (ending the session) or you open a new Shell in a different Terminal window (a new session). You can liken this behavior to how PowerShell requires you to right-click and open as an admin for each Shell that requires elevated privileges.
 
 Updating
 ^^^^^^^^
@@ -755,33 +616,33 @@ The package that we want is the first one, ``cowsay``. Notice that the search wi
    # installing controls your machine and requires sudo
    $ sudo apt install cowsay -y
 
-In the command output you can see that ``apt`` downloads, unpacks and installs the package automatically . You can now try out the newly installed tool!
+In the command output you can see that ``apt`` downloads, unpacks and installs the package automatically . You can now try out the newly installed tool! Use the command program ``cowsay`` and enter a message as its arguments:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
 
    $ cowsay Hello World!
-   _____________
-   < Hello World >
-   -------------
-         \   ^__^
-            \  (oo)\_______
-               (__)\       )\/\
-                  ||----w |
-                  ||     ||
 
+It is okay to leave ``cowsay`` installed. But if you would like to remove it you can use ``apt`` to cleanly uninstall it:
 
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ sudo apt uninstall cowsay -y
 
 Adding Sources
 --------------
 
-The default list of sources contains a nearly endless collection of open-source tools from trusted package hosts. But in many cases you will need to install additional sources to download packages from. Additional sources can range from private repositories hosted by a company for internal use to self-hosted repositories like the Microsoft tools. 
+The default list of package repositories provides access to a large collection of open-source tools from package hosts trusted by the open source community. But in many cases you will need to install additional sources to download packages from. Additional sources can range from private repositories hosted by a company, for internal use, to independently-hosted repositories like the Microsoft packages repository. 
 
-These custom repositories often require both the repository and a **signing key** to be installed. Anyone is able to host a repository of packages. This is why it is important to only install source repositories, and packages from those repositories, from trusted sources. As an additional measure repositories include a signing key to check that downloaded packages are authentic, from the trusted source, before being installed. 
+These custom repositories often require both the repository and a **signing key** to be installed. Anyone is able to host a repository of packages. This is why it is important to only install source repositories, and packages from those repositories, from trusted sources. As an additional security measure, trusted repositories include a signing key to check that downloaded packages are authentic (from a trusted source) before being installed. 
 
 .. admonition:: note
 
-   The topics of Public Key Infrastructure (PKI), which includes signing keys, and custom repositories extends outside the scope of this course. You can read more about how these work `in this repository article <https://wiki.debian.org/DebianRepository>`_ and `this repository signing key article <https://wiki.debian.org/SecureApt>`_. Both of these articles offer a relatively high-level overview of the mechanisms.
+   The topics of Public Key Infrastructure (PKI), which includes signing keys, and custom repositories extends outside the scope of this course. You can read more about how these work `in this repository article <https://wiki.debian.org/DebianRepository>`_ and `this repository signing key article <https://wiki.debian.org/SecureApt>`_. Both of these articles offer an overview of the mechanisms involved from a relatively high level.
+
+Installing .NET
+^^^^^^^^^^^^^^^
 
 Let's see what this process looks like using the ``dotnet CLI`` installation as an example.
 
@@ -814,7 +675,7 @@ Finally with the repository, signing key, and HTTPS tooling installed we can ins
    $ sudo apt update -y
    $ sudo apt install dotnet-sdk-3.1 -y
 
-Once again notice all of the work that ``apt`` does for us automatically. Imagine doing all of that downloading, unpacking and configuration manually!
+From the output you can see all of the work that ``apt`` does automatically. Imagine doing all of that downloading, unpacking and configuration manually!
 
 You can confirm the installation was successful by viewing the ``--help`` output of ``dotnet``. Viewing the help output of a command program is an easy way to get acquainted with it right from the command-line. We will work with this tool in later lessons but feel free to poke around with it in the mean time.
 
@@ -826,11 +687,96 @@ You can confirm the installation was successful by viewing the ``--help`` output
 Piping
 ======
 
+Recall that piping is the mechanism for taking the output of one command and using it as the input of the second command. It involves two or more commands separated by the pipe operator symbol (``|``, under the ``backspace`` key). In a general sense this is how piping works:
+
+.. sourcecode:: bash
+
+   a-command -> a-command output | -> b-command <a-command output as argument> -> b-command output ...   
+
+Grep
+----
+
+Because all of the inputs and outputs of BASH commands are strings it follows that a tools for working with these strings would be developed. Grep is part of a suite of tools that are pre-installed on most Linux Distributions. The suite includes ``grep``, ``awk`` and ``sed``. The former of which is designed for *searching* while the latter two are used for *processing*, or transforming, text strings. They work on the text contents of files but really shine when used in piping.
+
+While these tools are powerful and worth learning they fall well outside of the scope of this course. However, searching with ``grep`` is a valuable tool whose basic behaviors are simple to understand. 
+
+In its simplest form ``grep`` uses two arguments -- a search term and a text input source. The text input can be an absolute or relative path to a file you want to search the contents of. Grep will search line-by-line and output any lines that have a match for the search term. If there are no matches the output of ``grep`` will be an empty line:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ grep '<search term>' path/to/file
+
+For example what if we wanted to see all of the conditional statements in the ``.bashrc`` file we looked at earlier? We could have ``grep`` search that file for ``if`` and output the search results to us. 
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ grep 'if' ~/.bashrc
+   # all of the lines that include 'if' in them
+
+   # recall ~ is a shorthand for /home/<username of logged in user>
+   # the following command is identical in behavior
+   $ grep 'if' /home/student/.bashrc
+
+We will cover ``grep`` behavior when used in piping next. For more detailed information you can always check the help or manual outputs:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   # concise help output (usually available)
+   $ grep --help
+
+   # manual for a command (not always available)
+   $ man grep 
+   
+   # opens in the "less" program
+   # use the J and K keys to scroll and Q to quit
+
 Filtering with grep
 -------------------
 
+Consider a scenario where you want to *search for* one file out of many within a directory. You could ``ls`` the contents and search through it by hand. Or even use a GUI File Explorer to visualize the files. But what if there were dozens, hundreds or thousands of files? Clearly it is impractical to do this work by hand.
+
+What if instead of letting the contents output of ``ls`` be sent to the Terminal we used it as an input to a tool designed for performing searches? This is what piping and ``grep`` are made for!
+
+When only a search term argument is given to ``grep`` (when used in piping) it will use the output of the previous command as the text to search. Essentially it treats the output the same as the contents of a file when given a file path argument. You can picture it like this:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ <command> | grep '<search term>' <output from command>
+
+We can *pipe* the output of ``ls`` (directory contents as a string) as the string input used by ``grep`` to filter just the results we need. Our pipeline would look like this:
+
+.. sourcecode:: bash
+
+   $ ls --> dir contents string | --> grep 'search term' <dir contents string> --> search results string
+
+What if we wanted to check for details about the ``dotnet`` program by using the long form ``ls`` output:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ ls -l /usr/bin | grep 'dotnet'
+   lrwxrwxrwx 1 root   root           22 May 20 15:37 dotnet -> ../share/dotnet/dotnet
+
+You can pipe to and from many CLI programs thanks to the standard use of strings as outputs and inputs. As a final example let's search through the help output of ``dotnet`. If you were to view the help output directly you would end up scrolling through many lines.
+
+What if you just want to know how to publish a project (something we will soon cover)? We can use piping to automate the process of searching through the lines manually:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ dotnet --help | grep 'publish'
+   publish           Publish a .NET project for deployment.
+
 Scripting
 =========
+
+Shell scripting is the process of automating a series of commands. The key to automation is to understand the logical steps needed to perform a task manually. In this course we will use scripting to automate operational tasks for Azure resources. 
+
+Early in the course we will provide you with scripts that you will be encouraged to read but not expected to write. It's important to 
 
 Essentials
 ----------
