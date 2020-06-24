@@ -9,7 +9,7 @@ Before we deploy our application we want to first learn how to secure sensitive 
 Look Over Code
 ==============
 
-For this walkthrough we will be deploying the same project, but we will each have to fork the project, because we are each going to have to make use our own unique Key vault name. So to start this walkthrough fork `this repository <https://github.com/pdmxdd/dotnet-user-secrets-az-keyvault>`_ to your own GitHub account.
+For this walkthrough we will be deploying the same project, but we will each have to fork the project, because we are each going to have to make use our own unique Key vault name. So to start this walkthrough fork `this repository <https://github.com/LaunchCodeEducation/dotnet-user-secrets-az-keyvault>`_ to your own GitHub account.
 
 After you fork this project clone your new repository to your machine.
 
@@ -299,6 +299,8 @@ To publish we will need to be in the root directory of our project, and run the 
    cd /home/student/dotnet-user-secrets-az-keyvault
    dotnet publish -c Release -r linux-x64 -p:PublishSingleFile=true
 
+.. image:: /_static/images/secrets-and-backing/dotnet-publish.png
+
 Deploy
 ======
 
@@ -308,6 +310,8 @@ Deploy
    export HOME=/home/student
    cd /home/student/dotnet-user-secrets-az-keyvault
    ASPNETCORE_URLS="http://*:80" ./bin/Release/netcoreapp3.1/linux-x64/publish/api-user-secrets
+
+.. image:: /_static/images/secrets-and-backing/dotnet-deploy.png
 
 VM Security Groups
 ==================
