@@ -94,11 +94,33 @@ You should see a new folder named ``dotnet-user-secrets-az-keyvault`` which will
 Create KeyVault
 ===============
 
+When we deploy our application we will be using KeyVault to access our secrets. So we will first need to setup an Azure KeyVault in our Resource Group.
+
+Search for the KeyVault blade.
+
+.. image:: /_static/images/secrets-and-backing/keyvault-search.png
+
+Looking at the main page we will want to add a new KeyVault. Click the add button, which will take you to a form to create your new keyvault follow this pattern for your name ``yourname-kv-secrets``.
+
+After completing the form click create
+
+.. image:: /_static/images/secrets-and-backing/create-keyvault.png
+
 Add Credentials to KeyVault
 ===========================
+
+Now that we have a KeyVault we will need to add our secret to this KeyVault. Our application is expecting a key value pair of ``Name=yourname``.
+
+Create a new credential in your KeyVault.
 
 Update Code to Access KeyVault
 ==============================
 
+Finally we will need to change the code of our project to point to our newly minted KeyVault.
+
+You will need to change your code locally, create a new GitHub respository with your changed code, and then finally clone that repository on your VM.
+
 Run Project
 ===========
+
+Finally to use the KeyVault instead of user-secrets you will need to publish your project so that it is in a production environment which will trigger our app to use KeyVault instead of user-secrets.
