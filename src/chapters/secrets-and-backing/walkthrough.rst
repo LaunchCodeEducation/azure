@@ -25,7 +25,7 @@ There are three files we are interested in.
 
 .. image:: /_static/images/secrets-and-backing/secretcontroller-cs.png
 
-``appsettings.json`` is the settings file that will contain the information about the Key vault we are connecting to. You will notice a key value pair with the key ``Key vaultName`` and the value ``kv-secrets``. For today's example we will all provision a Key vault with the same name, however in practice usually your Key vault name will be unique.
+``appsettings.json`` is the settings file that will contain the information about the Key vault we are connecting to. You will notice a key value pair with the key ``Key vaultName`` and the value is empty. Everyone will need to have a globally unique Key vault name. So we can't fill that for you. After creating our Key vault we will each need to enter in our own unique Key vault names.
 
 .. image:: /_static/images/secrets-and-backing/appsettings-json.png
 
@@ -170,7 +170,15 @@ Looking at the main page we will want to add a new Key vault. Click the add butt
 
 This will take you to the Key vault creation wizard.
 
-After completing the form click create
+.. note::
+
+   Key vault names must be globally unique. This means you may have to try a few different Key vault names to get it to work. However, your source code must match the Key vault name you choose. So take note of your Key vault name as we will be referencing it later.
+
+Fill out the form with your resource group name ``yourname-rg-secrets`` and your Key vault name we recommend using a pattern like ``yourname-kv-secrets``, but you may need to make some changes to your Key vault name since all Key vault names are globally unique.
+
+.. image:: /_static/images/secrets-and-backing/keyvault-form.png
+
+After completing the form click create.
 
 .. image:: /_static/images/secrets-and-backing/create-keyvault.png
 
