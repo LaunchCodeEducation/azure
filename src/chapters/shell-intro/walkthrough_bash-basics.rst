@@ -761,7 +761,7 @@ What if we wanted to check for details about the ``dotnet`` program by using the
    $ ls -l /usr/bin | grep 'dotnet'
    lrwxrwxrwx 1 root   root           22 May 20 15:37 dotnet -> ../share/dotnet/dotnet
 
-You can pipe to and from many CLI programs thanks to the standard use of strings as outputs and inputs. As a final example let's search through the help output of ``dotnet`. If you were to view the help output directly you would end up scrolling through many lines.
+You can pipe to and from many CLI programs thanks to the standard use of strings as outputs and inputs. As a final example let's search through the help output of ``dotnet``. If you were to view the help output directly you would end up scrolling through many lines.
 
 What if you just want to know how to publish a project (something we will soon cover)? We can use piping to automate the process of searching through the lines manually:
 
@@ -771,15 +771,34 @@ What if you just want to know how to publish a project (something we will soon c
    $ dotnet --help | grep 'publish'
    publish           Publish a .NET project for deployment.
 
+.. todo:: section on variables / substitution / in-line evaluation?
+
 Scripting
 =========
 
-Shell scripting is the process of automating a series of commands. The key to automation is to understand the logical steps needed to perform a task manually. In this course we will use scripting to automate operational tasks for Azure resources. 
+Shell scripting is the process of automating a series of commands. The key to automation is to understand the logical steps needed to perform a task manually. In this course we will use scripting to automate operational tasks like provisioning and managing cloud resources on Azure. 
 
-Early in the course we will provide you with scripts that you will be encouraged to read but not expected to write. It's important to 
+Early in the course we will provide you with scripts that you will be encouraged to read but not expected to write. After getting comfortable with the manual steps you will learn how to write and use your own scripts. 
 
 Essentials
 ----------
 
-Executing
+Commands in scripts are executed as the *user who executes the script*. This means that if you (``student``) run a script then all of those commands will be issued by the ``student`` user and be subject to the permissions of that user. If you need to run privileged commands you must run it using a super user account. 
+
+If you tried to use ``sudo`` in the script a prompt would require you to authenticate -- a manual step that would defeat the purpose! Fortunately in the cloud the scripts we execute will run as ``root`` and will not require the use of ``sudo``. 
+
+Aside from this restriction you can use any command in a script that you are able to issue manually in the Shell. Scripts are written in a file with each independent command occupying a single line.
+
+Because file extensions are arbitrary in Linux, a script file can have any extension (or none at all). However, it is customary to use the ``.sh`` extension as a note to signify that the script should be interpreted as BASH commands.
+
+Variables
 ---------
+
+Declaring variables
+^^^^^^^^^^^^^^^^^^^
+
+In-line Evaluation
+------------------
+
+Executing scripts
+-----------------
