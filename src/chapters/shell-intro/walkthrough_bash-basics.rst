@@ -48,7 +48,7 @@ File System
 Everything in the File System (FS) and operations done to it are based around relative and absolute paths. Refer to the previous article for a more detailed explanation. Below is a practical refresher:
 
 - **relative path**: relative to a variable location, your current working directory (CWD)
-- **absolute path**: relative to a constant directory (root, ``/``, in Linux)
+- **absolute path**: relative to a constant location, the root directory (``/``)
 
 You will notice that most of the FS related commands make use of path arguments that can be written as relative or absolute paths.
 
@@ -448,7 +448,7 @@ Why is this valuable to consider? Because most of the commands used for director
 
    $ cp path/to/target/file path/to/destination/file
 
-   $ rm path/to/target/file
+   $ rm -i path/to/target/file
 
 Create
 ^^^^^^
@@ -581,7 +581,7 @@ If the search results contains your package you can install it using the ``insta
 
    $ sudo apt install <package name> -y
 
-Let's practice by searching for the amusing little tool ``cowsay``. First let's search for the package. This playful package is available within the default set of source repositories and should show up as the first result:
+Let's practice by searching for the amusing little tool called Cow Say. First let's search for the package by its name, ``cowsay``. This package is available within the default set of source repositories and should show up as the first result:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
@@ -1040,4 +1040,4 @@ Learn More
 
 This has been an introduction to the practical fundamentals of BASH. You are *not expected to have memorized all of it* by any means. Feel free to refer back to this article throughout the course to refresh your memory.
 
-If you want to learn more advanced usage this ``BASH cheat-sheet from DevHints <https://devhints.io/bash>``_ will get you up to speed quickly. DevHints is an open source site filled with cheat-sheets for many languages and frameworks written by the open source community.
+If you want to learn more advanced usage this `BASH cheat-sheet from DevHints <https://devhints.io/bash>`_ will get you up to speed quickly. DevHints is an open source site filled with quick-reference guides for many languages and frameworks written by the open source community.
