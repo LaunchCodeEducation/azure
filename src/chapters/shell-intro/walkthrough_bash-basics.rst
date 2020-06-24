@@ -898,10 +898,10 @@ Referencing a variable is straightforward. But in most cases this process is don
 
 For example, consider this simple script that creates and moves a directory using variables to hold the paths. Above each command is a comment showing what the command looks like when its variables have been substituted.
 
-Create a directory called ``bash-examples`` in your home (``~``) directory and open a new file called ``variables.sh`` within it. You can use any editor you would like to paste in the contents below.
+Create a directory called ``bash-examples`` in your home (``~``) directory and open a new file called ``variable-substitution.sh`` within it. You can use any editor you would like to paste in the contents below.
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption:  ~/bash-examples/variable-substitution.sh
 
    target_path=/tmp/dir-name
 
@@ -918,12 +918,12 @@ Create a directory called ``bash-examples`` in your home (``~``) directory and o
    # ls /home/<username>
    ls "$HOME" 
 
-You should now have a file with the path ``~/bash-examples/variables.sh``. Execute that file to see that the script worked:
+You should now have a file with the path ``~/bash-examples/variable-substitution.sh`` that you can execute using ``bash`` as the interpreter:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
 
-   $ bash ~/bash-examples/variables.sh
+   $ bash ~/bash-examples/variable-substitution.sh
 
 You likely noticed that the variables are contained in double-quotes (``""``) when used in commands. This is a best practice when working with substitutions as it can prevent unintended behavior caused by spaces or special characters. This is especially true when scripts receive user input which, as you now know, should never be trusted!
 
@@ -960,12 +960,12 @@ This command would be evaluated in the following order:
 #. next level: ``$(sub-command <output of sub-sub-command>)``
 #. outermost level: ``command <output of sub-command>``
 
-This is particularly useful in scripts when you want to capture the output of a command in a variable. Because in-line evaluation is a more advanced topic we will return to it later in a context that necessitates it. For now consider the following contrived example where we store our "history" of CWDs in variables to navigate around.
+This is particularly useful in scripts when you want to capture the output of a command in a variable. Because in-line evaluation is a more advanced topic we will return to it later in a context that necessitates it. For now consider the following contrived example where we store our "history" of working directories (WD) in variables to navigate around.
 
 In your ``bash-examples`` directory create another file called ``command-substitution.sh`` and paste in the following contents. We will use the ``echo`` command to print out our CWD throughout the script:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: ~/bash-examples/command-substitution.sh
 
    # in-line evaluation in a string message
    echo "CWD is: $(pwd)"
@@ -1005,7 +1005,7 @@ Then execute the script the same way as before:
    As a good programmer you are likely miffed by the copy and pasting of an identical statement. Although we won't be getting into BASH functions you should be able to make sense of it. Here is a cleaner approach to help you sleep at night!
 
    .. sourcecode:: bash
-      :caption: Linux/BASH
+      :caption: ~/bash-examples/command-substitution.sh
    
       print_cwd() {
          echo "CWD is: $(pwd)"
