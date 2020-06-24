@@ -2,33 +2,43 @@
 Walkthrough: dotnet user-secrets & Azure KeyVault
 =================================================
 
-In our walkthrough today we will be deploying an application that accesses sensitive data locally via ``dotnet user secrets`` and remotely via ``Azure KeyVault``.
+In our walkthrough today we will be deploying an application to a VM that uses Azure KeyVault to manage sensitive data in our production environment (remote).
 
-We will accomplish this using an Ubuntu VM.
+Before we deploy our application we want to first learn how to secure sensitive data locally on our machine, we will do this first and will use ``dotnet user-secrets`` to manage sensitive data in our development environment (local).
 
 Look Over Code
 ==============
 
-On your local machine clone the following repository
+On your local machine clone the following repository.
 
 .. sourcecode:: bash
 
    git clone https://github.com/pdmxdd/dotnet-user-secrets-az-keyvault
 
-With dotnet locally you would use ``dotnet user-secrets`` to manage sensitive data which we will do first.
+There are three files we are interested in.
+
+``Startup.cs`` is the file in which we access our secret manager, ``dotnet user-secrets`` is loaded as the default, but can be overridden for specific environments and a different secret manager can be used. We are storing our secret in the static variable named ``Startup.secret``.
+
+``SecretController.cs`` is the controller file where our secret is used. You will notice it is stored as a static variable named ``Startup.secret``.
+
+``appsettings.json`` is the settings file that will contain the information about the KeyVault we are connecting to. You will notice an empty key-value pair with the key ``KeyVaultName`` after we create our Azure KeyVault we will need to add the name to this file, so our project will know which KeyVault to get our secrets from.
+
+Before we make any changes to our code let's go ahead and run our project locally to see how it works.
 
 Change into the directory you just cloned ``/dotnet-user-secrets-az-keyvault``. Go ahead and run your application with ``dotnet run`` and then navigate to ``http://localhost:8000/secret``.
 
-You should see nothing as we haven't configured our user secret yet.
+You should see a line that says ``null``. This is what we expect for now because we haven't yet configured one of our secret managers, we will do that in the next step.
 
 .. image:: /_static/images/secrets-and-backing/no-user-secrets.png
 
-dotnet user-secrets
-===================
+Development Environment secret manager
+======================================
+
+The CLI tool ``dotnet user-secrets`` will be the secret manager we use in our development environment. It is convient to work with because it can be managed easily from the CLI, and is loaded automatically into .NET projects.
 
 In order to change our webpage so that it no longer says ``null`` we will need to enter a user secret for this project.
 
-In your terminal navigate to the project directory ``/dotnet-user-secrets-az-keyvault``. From here enter ``dotnet user-secrets --help`` which will show us the help page for this tool. You will notice it is the User Secrets Manager. This will allow us to create and manage secrets per project.
+In your terminal navigate to the project directory ``/dotnet-user-secrets-az-keyvault``. From here enter ``dotnet user-secrets --help`` which will show us the help page for this tool. You will notice it is the User Secrets Manager. This will allow us to create and manage secrets per project in our development environment.
 
 Let's create our first secret from the terminal in the project directory enter ``dotnet user-secrets set name yourname``. This creates a new user secret for your project with the key value pair of "name=yourname". This can now be accessed by our locally running web app. Rerun your project with ``dotnet run``.
 
@@ -42,7 +52,7 @@ However, we are going to change ``yourname`` to your actual name. We can achieve
 
 Using dotnet user-secrets is a way to keep sensitive data safe from your application, and keep yourself from accidently committing your secrets to Version Control (like git).
 
-dotnet user-secrets is typically only used in a development environment for a production environment like when we are deploying our applications we would use a different tool, specifically the Azure KeyVault. The remainder of this walkthrough will show you how to work with Azure KeyVault.
+``dotnet user-secrets`` is typically only used in a development environment for a production environment like when we are deploying our applications we would use a different tool, specifically the Azure KeyVault. The remainder of this walkthrough will show you how to work with Azure KeyVault.
 
 Spin up RG and VM
 =================
