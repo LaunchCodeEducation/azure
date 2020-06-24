@@ -15,11 +15,11 @@ After you fork this project clone your new repository to your machine.
 
 .. sourcecode:: bash
 
-   git clone https://github.com/YOURUSERNAME/dotnet-user-secrets-az-keyvault
+   git clone https://github.com/<YOURUSERNAME>/dotnet-user-secrets-az-keyvault
 
 .. note::
 
-   If you got an error trying to clone your project make sure you replaced ``YOURUSERNAME`` with your actual GitHub username after you forked the repo listed above.
+   If you got an error trying to clone your project make sure you replaced ``<YOURUSERNAME>`` with your actual GitHub username after you forked the repo listed above.
 
 There are three files we are interested in. Let's take a look at them.
 
@@ -255,18 +255,18 @@ Get Source Code
 
 The project we want to deploy is the same repository you created on GitHub just a couple of steps ago. You need to deploy the project on your repository since it contains the source code that references your unique Key vault. Once you have the URL for that repository you will need to replace the URL in the following source code block with the URL to your repository.
 
-Clone it to your Virtual Machine with the following bash commands in the RunCommand section of the Azure Portal making sure to replace ``YOUR-GITHUB-REPO-URL`` with your actual GitHub repo URL:
+Clone it to your Virtual Machine with the following bash commands in the RunCommand section of the Azure Portal making sure to replace ``<YOURUSERNAME>`` with your actual GitHub repo URL:
 
 .. note::
 
-   If you forked the repository your GitHub URL will look something like this ``https://github.com/YOUR-GH-USERNAME/dotnet-user-secrets-az-keyvault``. Double check that you reference the URL correctly or it won't work in the Azure RunCommand.
+   If you forked the repository your GitHub URL will look something like this ``https://github.com/<YOURUSERNAME>/dotnet-user-secrets-az-keyvault``. Double check that you reference the URL correctly or it won't work in the Azure RunCommand.
 
 .. sourcecode:: bash
 
    export DOTNET_CLI_HOME=/home/student
    export HOME=/home/student
    cd /home/student
-   git clone YOUR-GITHUB-REPO-URL
+   git clone https://github.com/<YOURUSERNAME>/dotnet-user-secrets-az-keyvault
    ls /home/student
 
 .. note::
