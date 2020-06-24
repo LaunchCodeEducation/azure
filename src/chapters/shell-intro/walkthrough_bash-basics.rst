@@ -771,8 +771,6 @@ What if you just want to know how to publish a project (something we will soon c
    $ dotnet --help | grep 'publish'
    publish           Publish a .NET project for deployment.
 
-.. todo:: section on variables / substitution / in-line evaluation?
-
 Scripting
 =========
 
@@ -783,22 +781,263 @@ Early in the course we will provide you with scripts that you will be encouraged
 Essentials
 ----------
 
-Commands in scripts are executed as the *user who executes the script*. This means that if you (``student``) run a script then all of those commands will be issued by the ``student`` user and be subject to the permissions of that user. If you need to run privileged commands you must run it using a super user account. 
+Commands
+^^^^^^^^
 
-If you tried to use ``sudo`` in the script a prompt would require you to authenticate -- a manual step that would defeat the purpose! Fortunately in the cloud the scripts we execute will run as ``root`` and will not require the use of ``sudo``. 
+You can use any command in a script that you are able to issue manually in the Shell REPL. Unlike the REPL which will prompt you for the next command, scripts are written in a file with each independent command or statement occupying a single line.
 
-Aside from this restriction you can use any command in a script that you are able to issue manually in the Shell. Scripts are written in a file with each independent command occupying a single line.
+A statement, like other languages, is an independent instruction like defining a variable or constructing a loop. We distinguish these from commands which refer to actual CLI programs like those you would call from the Shell REPL.
+
+.. admonition:: note
+
+   When providing code samples for scripts we will remove the ``$`` character used in REPL examples. Each separate line is its own command or statement.
+
+Script File Extensions
+^^^^^^^^^^^^^^^^^^^^^^
 
 Because file extensions are arbitrary in Linux, a script file can have any extension (or none at all). However, it is customary to use the ``.sh`` extension as a note to signify that the script should be interpreted as BASH commands.
+
+Comments
+^^^^^^^^
+
+One other note is on comments. In a BASH script you can write comments by preceding them with a ``#`` symbol. Anything after ``#`` is ignored by the BASH interpreter. Comments are a valuable addition to any script, especially when they get complex. Remember that comments should serve to explain the *why* not to dictate the *how* which the code already describes.
+
+Executing a script
+^^^^^^^^^^^^^^^^^^
+
+The act of executing a script is the same evaluating a command entered into the REPL. An interpreter is needed to understand and execute the contents. In the REPL the interpreter is implied by the Shell -- BASH in our case. The Shell is actually a BASH REPL process that is listening for, interpreting and executing commands.
+
+Recall that files in Linux are just strings of characters. It is **up to the program that interprets it** to decide what to do with its contents. When executing a script we have to define what program, like BASH or Python, that will interpret it. This can be done explicitly or implicitly. 
+
+Explicit execution is when we use the interpreter program (``bash``) as a command and provide it with the path to the script file as an argument. For example if we had a BASH script file in our home (``~``) directory we can execute it like this:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ bash ~/my-script.sh
+
+In other words when we want to execute a script explicitly we (the user) define the program we want to interpret it -- one of the core tenants covered earlier. As another example if we had a Python script we would naturally use the ``python`` interpreter to execute it:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ python ~/my-python-script.py
+
+If we try to execute a script with the wrong interpreter it will, expectedly, fail. It would be like handing an English-speaking person a book in Japanese and asking them to interpret it!
+
+.. admonition:: note
+
+   Implicit execution is when the interpreter is defined inside the script using a special line at the top of the script file called a `shebang <https://linuxize.com/post/bash-shebang/>`_. 
+   
+   Implicit execution is more advanced but is the standard approach when working with scripts professionally. We will not be covering implicit execution at this time as it involves some other steps that are best covered when you are more comfortable with scripting and BASH in general.
+
+The Executing User
+^^^^^^^^^^^^^^^^^^
+
+Commands in scripts are executed by the *user who executes the script*. While this might seem intuitive it does have an important implication. 
+
+This means that if you (``student``) run a script then all of those commands will be issued by the ``student`` user and be *subject to the permissions of that user*. If you need to run privileged commands you must run it using a super user account. 
+
+However, if you try to use ``sudo`` in the script a prompt would require you to authenticate as soon as it is executed -- a manual step that would defeat the purpose! Fortunately in the cloud the scripts we execute will run as ``root`` automatically and will not require the use of ``sudo``. 
 
 Variables
 ---------
 
-Declaring variables
-^^^^^^^^^^^^^^^^^^^
+Earlier we discussed environment variables -- variables that affect every command and script executed in the Shell. You can also have variables that are only available within a script. In relatable programming terms, script variables are scoped to the script, whereas environment variables are globally scoped to the whole Shell.
 
-In-line Evaluation
-------------------
+Defining variables
+^^^^^^^^^^^^^^^^^^
 
-Executing scripts
------------------
+When defining variables in a script the convention is to use lowercase letters and separate words with underscores (``_``). Environment variables are written in all capital letters so they are easy to distinguish from script variables. 
+
+Because BASH does not have any data types a variable is simple to declare and assign. First you define the name of the variable followed by an assignment symbol (``=``) and the string value of it on the right side.
+
+.. admonition:: note
+
+   Spaces are use to delimit, or distinguish, different parts of a command called **tokens**. Token splitting is what allows BASH to see a command along with its arguments and options as individual units to be evaluated -- each separated by a space. 
+
+When defining a variable **there can be no spaces between the variable declaration and assignment**:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+   
+   # correct: no spaces
+   variable_name=value
+
+   # wrong: spaces between declaration and assignment
+   variable_name = value
+
+When the value of a variable does not have any spaces it can be written as shown above. When you need to have spaces you can put single-quotes (`''`) around the value. These serve to group the whole string value together including the spaces:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   variable_name='a longer value'
+
+Substituting variables
+^^^^^^^^^^^^^^^^^^^^^^
+
+Once a variable has been defined (either in the script or a global environment variable) it can be referenced by prefixing a ``$`` symbol before it:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   # define the variable
+   my_variable='hello world'
+
+   # reference the script variable
+   $my_variable
+
+   # reference a global variable
+   $PATH
+
+Variable Substitution
+^^^^^^^^^^^^^^^^^^^^^
+
+Referencing a variable is straightforward. But in most cases this process is done *inside* of a command, referencing in the open as we have done above has no effect. For this behavior BASH has a mechanism called **variable substitution**.
+
+For example, consider this simple script that creates and moves a directory using variables to hold the paths. Above each command is a comment showing what the command looks like when its variables have been substituted.
+
+Create a directory called ``bash-examples`` in your home (``~``) directory and open a new file called ``variables.sh`` within it. You can use any editor you would like to paste in the contents below.
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   target_path=/tmp/dir-name
+
+   # ~ is a shorthand for /home/<username>
+   destination_path=~/dir-name
+
+   # mkdir /tmp/dirname
+   mkdir "$target_path"
+
+   # mv /tmp/dir-name ~/dir-name
+   mv "$target_path" "$destination_path"
+
+   # $HOME is an environment variable with a value of /home/<username>
+   # ls /home/<username>
+   ls "$HOME" 
+
+You should now have a file with the path ``~/bash-examples/variables.sh``. Execute that file to see that the script worked:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ bash ~/bash-examples/variables.sh
+
+You likely noticed that the variables are contained in double-quotes (``""``) when used in commands. This is a best practice when working with substitutions as it can prevent unintended behavior caused by spaces or special characters. This is especially true when scripts receive user input which, as you now know, should never be trusted!
+
+.. admonition:: note
+
+   You can read more about the behavior of `escape characters and single and double quotes <https://linux.101hacks.com/bash-scripting/quotes-inside-shell-script/>`_ in this article. If it goes over your head it's okay, just follow the best practice to stay safe and come back to understanding the *why* later.
+
+Command Substitution
+--------------------
+
+**Command substitution**, as the name implies, is just like variable substitution but for commands. It allows you to execute a command within another command. We will see many examples of its usage throughout this course but for now consider the basic aspects of it.
+
+We will refer to command substitutions interchangeably with **in-line evaluations** as they are evaluations performed *in the line* of a command being executed. An in-line evaluation allows you to *embed* a command within another like this:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ command $(sub-command)
+
+In this example the ``sub-command`` will first be evaluated (in-line), then the main ``command`` will be evaluated. When the ``command`` is evaluated the output of ``$(sub-command)`` will *substituted in* as its argument. 
+
+You can treat in-line evaluations as you would any other command, with arguments and options. The only difference is that, like all programming languages, commands are evaluated from the inside out. Any in-line evaluations will first be evaluated before stepping outwards and substituting their output.
+
+Consider a more complicated example to understand how it works:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ command $(sub-command $(sub-sub-command))
+
+This command would be evaluated in the following order:
+
+#. innermost level: ``$(sub-sub-command)``
+#. next level: ``$(sub-command <output of sub-sub-command>)``
+#. outermost level: ``command <output of sub-command>``
+
+This is particularly useful in scripts when you want to capture the output of a command in a variable. Because in-line evaluation is a more advanced topic we will return to it later in a context that necessitates it. For now consider the following contrived example where we store our "history" of CWDs in variables to navigate around.
+
+In your ``bash-examples`` directory create another file called ``command-substitution.sh`` and paste in the following contents. We will use the ``echo`` command to print out our CWD throughout the script:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   # in-line evaluation in a string message
+   echo "CWD is: $(pwd)"
+
+   # in-line evaluation to assign the value
+   first_wd=$(pwd)
+
+   cd /tmp
+   echo "CWD is: $(pwd)"
+
+   second_wd=$(pwd)
+
+   cd /usr/bin
+   echo "CWD is: $(pwd)"
+
+   third_wd=$(pwd)
+
+   # return to the first
+   echo "returning to first WD"
+   cd "$first_wd"
+   echo "CWD is: $(pwd)"
+
+   # jump to the second
+   echo "jumping to second WD"
+   cd "$second_wd"
+   echo "CWD is: $(pwd)"
+
+Then execute the script the same way as before:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ bash ~/bash-examples/command-substitution.sh
+
+.. admonition:: note
+
+   As a good programmer you are likely miffed by the copy and pasting of an identical statement. Although we won't be getting into BASH functions you should be able to make sense of it. Here is a cleaner approach to help you sleep at night!
+
+   .. sourcecode:: bash
+      :caption: Linux/BASH
+   
+      print_cwd() {
+         echo "CWD is: $(pwd)"
+      }
+
+      print_cwd
+
+      first_wd=$(pwd)
+
+      cd /tmp
+      print_cwd
+
+      second_wd=$(pwd)
+
+      cd /usr/bin
+      print_cwd
+
+      third_wd=$(pwd)
+
+      # return to the first
+      echo "returning to first WD"
+      cd "$first_wd"
+      print_cwd
+
+      # jump to the second
+      echo "jumping to second WD"
+      cd "$second_wd"
+      print_cwd
+
+Learn More
+==========
+
+This has been an introduction to the practical fundamentals of BASH. You are *not expected to have memorized all of it* by any means. Feel free to refer back to this article throughout the course to refresh your memory.
+
+If you want to learn more advanced usage this ``BASH cheat-sheet from DevHints <https://devhints.io/bash>``_ will get you up to speed quickly. DevHints is an open source site filled with cheat-sheets for many languages and frameworks written by the open source community.
