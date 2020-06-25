@@ -29,6 +29,8 @@ There are three files we are interested in. Let's take a look at them.
 
 .. image:: /_static/images/secrets-and-backing/appsettings-json.png
 
+.. image:: /_static/images/secrets-and-backing/program-cs.png
+
 Before we make any changes to our code let's go ahead and run our project locally to see how it works.
 
 Change into the directory you just cloned ``/dotnet-user-secrets-az-keyvault``. Then run
