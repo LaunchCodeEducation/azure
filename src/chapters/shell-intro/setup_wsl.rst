@@ -2,16 +2,6 @@
 Setting up Linux and BASH with WSL
 ==================================
 
-.. do we want to support macs or have them work from a VM for consistency? apt wont work on mac but everything else will
-.. If you are on a UNIX machine (Macs running OSX or a Linux machine) you will already have BASH and a Terminal available. Search for and open your Terminal application. Once in the terminal enter the following command:
-
-.. .. sourcecode:: bash
-
-..    $ echo "$SHELL"
-..    # /usr/bin/bash
-
-.. If you are on the latest version of OSX it may print ``/usr/bin/zsh`` which is an alternative Shell to BASH. Z-Shell (ZSH) and BASH 
-
 Windows Subsytem for Linux
 ==========================
 
@@ -19,13 +9,21 @@ Windows machines can not run BASH natively because of their OS incompatibility. 
 
 Once WSL is enabled you can install a Linux Distribution like Ubuntu and use it as if it were a physical machine. In order to enable WSL and begin using Ubuntu and BASH you will need to complete the following steps.
 
+.. admonition:: warning
+
+   The WSL is only available for machines running Windows 10. Specifically you must be on **Version 2004, Build 19041** or higher. You can check what version you are on by following the `instructions in this article <https://support.microsoft.com/en-us/help/13443/windows-which-version-am-i-running>`_.
+
 Enable WSL
 ==========
 
-The first step requires you to open the PowerShell Terminal in **admin mode**. You can find PowerShell by searching from your taskbar. Before opening it right-click the icon and select **pin to taskbar** so it is easier to reach in the future:
+The first step requires you to open the PowerShell Terminal in **admin mode**. You can find PowerShell by searching from your taskbar. 
 
-.. image:: /_static/images/cli-shells/powershell-taskbar-search.png
-   :alt: Search for PowerShell in Windows taskbar
+.. admonition:: tip
+
+   Before opening it right-click the icon and select **pin to taskbar** so it is easier to reach in the future:
+
+   .. image:: /_static/images/cli-shells/powershell-taskbar-search.png
+      :alt: Search for PowerShell in Windows taskbar
 
 From your taskbar right-click on the pinned icon and select **run as administrator**:
 
@@ -103,50 +101,69 @@ You will then be presented with BASH running on the Ubuntu Terminal!
 .. image:: /_static/images/cli-shells/ubuntu-bash-terminal.png
    :alt: Ubuntu BASH Terminal
 
-As you likely noticed, this version of Ubuntu is **headless** meaning it only includes a Terminal GUI running BASH. While Ubuntu also comes in a Desktop edition with the full GUI Shell it is only used for consumers. When working with Linux VMs in the cloud we will always use headless OS installations and work exclusively from the Terminal. We will first get some practice with a *local* VM before venturing into *remote* VMs in the cloud. 
+As you likely noticed, this version of Ubuntu is **headless** meaning it only includes a Terminal GUI running BASH. While Ubuntu also comes in a Desktop edition with the full GUI Shell it is only used for consumers. When working with Linux VMs in the cloud we will always use headless OS installations and work exclusively from the Terminal. We will first get some practice with a *local* VM before venturing into *remote* VMs in the cloud.
 
-When you want to close the Ubuntu VM just type ``exit`` into the prompt. The ``exit`` command exits the active Shell process. While this appears to shut down Ubuntu, WSL will continue to run the VM in the background.
+Managing the Ubuntu VM
+======================
 
-You can practice this now and then re-open it from the pinned taskbar icon:
+When you want to close the Ubuntu VM just type ``exit`` into the prompt. The ``exit`` command exits the active Shell process. While this appears to shut down Ubuntu, WSL will continue to run the VM in the background so that it starts up quickly the next time you need it.
+
+You can practice this now by entering the following command:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
 
    $ exit
 
-.. admonition:: note
+To re-open Ubuntu just select the taskbar icon that you pinned earlier.
 
-   WSL is designed to manage any number of VMs. Each VM uses an **image** which contains the OS files that the machine will run on. In the context of Linux, WSL refers to these images as distributions. You can view the available WSL distributions installed on your machine by using the ``--list`` option:
+Working with WSL
+================
 
-   .. sourcecode:: powershell
-      :caption: Windows/PowerShell
-   
-      # list all the installed VM distributions
-      > wsl --list
+WSL is designed to manage any number of VMs. Each VM uses a **system image** which contains the OS files used by the virtual machine. In the context of Linux, WSL refers to these images as **distributions**. 
 
-      # list just the running VMs
-      > wsl --list --running
+Viewing available distributions
+-------------------------------
 
-   You can also enter the Shell of the VM directly from the PowerShell Terminal rather than using the Ubuntu Terminal GUI. This feature is convenient as it does not require you switch between application windows.
-   
-   You can use the ``--distribution`` option followed by the name of the VM's distribution (one that is installed from the ``--list`` output) to enter the Shell directly:
+You can view the available WSL distributions installed on your machine by using the ``--list`` option:
 
-   .. sourcecode:: powershell
-      :caption: Windows/PowerShell
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
 
-      # start the machine in the PowerShell Terminal (instead of using the taskbar icon)
-      > wsl --distribution Ubuntu-18.04
-      # shorthand -d
-      > wsl -d Ubuntu-18.04
+   # list all the installed VM distributions
+   > wsl --list
 
-   The same concept of using the BASH ``exit`` command applies but will now return you to the PowerShell Terminal instead of closing the Ubuntu Terminal application.
+   # list just the running VMs
+   > wsl --list --running
 
-   You can completely shut down a VM (rather than just exiting its Shell session) from the PowerShell Terminal by using the ``--terminate`` option followed by the name of the VM's distribution (``Ubuntu-18.04``):
+Entering a VM Shell directly
+----------------------------
 
-   .. sourcecode:: powershell
-      :caption: Windows/PowerShell
+You can also enter the Shell of the VM directly from the PowerShell Terminal rather than using the Ubuntu Terminal GUI. This feature is convenient as it does not require you switch between application windows.
 
-      # shut down the machine
-      > wsl --terminate Ubuntu-18.04
-      # shorthand -t
-      > wsl -t Ubuntu-18.04
+You can use the ``--distribution`` option followed by the name of the VM's distribution (one that is installed from the ``--list`` output) to enter the Shell directly:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   # start the machine in the PowerShell Terminal (instead of using the taskbar icon)
+   > wsl --distribution Ubuntu-18.04
+   # shorthand -d
+   > wsl -d Ubuntu-18.04
+
+The same concept of using the BASH ``exit`` command applies but will now return you to the PowerShell Terminal instead of closing the Ubuntu Terminal application.
+
+Shutting down a VM
+------------------
+
+In some cases you want to completely shut down a VM rather than just exiting the active Shell session. For example, you may find that your computer is running slow and want to free up some memory. Unless you need to free up resources it is fine to leave the Ubuntu VM running in the background. 
+
+You can shut down a VM from the PowerShell Terminal by using the ``--terminate`` option followed by the name of the VM's distribution (``Ubuntu-18.04``):
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   # shut down the machine
+   > wsl --terminate Ubuntu-18.04
+   # shorthand -t
+   > wsl -t Ubuntu-18.04
