@@ -7,7 +7,7 @@ Introduction to CLI Shells
 
    intro
    shell-fundamentals
-   bash-fundamentals
+   setup_wsl
    walkthrough_bash-basics
    powershell-fundamentals
    walkthrough_powershell-basics
