@@ -1,29 +1,23 @@
-==================================================
-Walkthrough: dotnet user-secrets & Azure Key vault
-==================================================
+==============================================
+Walkthrough: Local & Remote Secrets Management
+==============================================
 
-In our walkthrough today we will be deploying an application to a VM that uses Azure Key vault to manage sensitive data in our production environment (remote).
+In our walkthrough today we will be working with a sample application to learn about secrets management. We will use the ``dotnet user-secrets`` to manage the secrets on our local machine. When we deploy the application we will be using Azure Key vault as a remote secrets manager. 
 
-Before we deploy our application we want to first learn how to secure sensitive data locally on our machine, we will do this first and will use ``dotnet user-secrets`` to manage sensitive data in our development environment (local).
+Explore Starter Code
+====================
 
-Look Over Code
-==============
+To begin this walkthrough we will each need to fork the project on GitHub. We are each going to have to set up our own unique Key vault that must be configured in our application settings. First fork `this repository <https://github.com/LaunchCodeEducation/dotnet-user-secrets-az-keyvault>`_ to your own GitHub account.
 
-For this walkthrough we will be deploying the same project, but we will each have to fork the project, because we are each going to have to make use our own unique Key vault name. So to start this walkthrough fork `this repository <https://github.com/LaunchCodeEducation/dotnet-user-secrets-az-keyvault>`_ to your own GitHub account.
-
-After you fork this project clone your new repository to your machine.
+After you fork this project clone your new repository to your local machine. Be sure to replace ``<YOURUSERNAME>`` with your own GitHub username.
 
 .. sourcecode:: bash
 
    git clone https://github.com/<YOURUSERNAME>/dotnet-user-secrets-az-keyvault
 
-.. note::
-
-   If you got an error trying to clone your project make sure you replaced ``<YOURUSERNAME>`` with your actual GitHub username after you forked the repo listed above.
-
 There are three files we are interested in. Let's take a look at them.
 
-``Startup.cs`` is the file in which we access our secret manager, ``dotnet user-secrets`` is loaded as the default, but can be overridden for specific environments and a different secret manager can be used. We are storing our secret in the static variable named ``Startup.secret``.
+``Startup.cs`` is the file in which we access our secrets manager, ``dotnet user-secrets`` is loaded as the default, but can be overridden for specific environments and a different secrets manager can be used. We are storing our secret in the static variable named ``Startup.secret``.
 
 .. image:: /_static/images/secrets-and-backing/startup-cs.png
 
@@ -47,14 +41,14 @@ Change into the directory you just cloned ``/dotnet-user-secrets-az-keyvault``. 
 
 Then navigate to `<https://localhost:5001/secret>`_.
 
-You should see a line that says ``null``. This is what we expect for now because we haven't yet configured one of our secret managers, we will do that in the next step.
+You should see a line that says ``null``. This is what we expect for now because we haven't yet configured one of our secrets managers, we will do that in the next step.
 
 .. image:: /_static/images/secrets-and-backing/no-user-secrets.png
 
 Development Environment Secret Manager
 ======================================
 
-The CLI tool ``dotnet user-secrets`` will be the secret manager we use in our development environment. It is convient to work with because it can be managed easily from the CLI, and is loaded automatically into .NET projects.
+The CLI tool ``dotnet user-secrets`` will be the secrets manager we use in our development environment. It is convient to work with because it can be managed easily from the CLI, and is loaded automatically into .NET projects.
 
 In order to change our webpage so that it no longer says ``null`` we will need to enter a user secret for this project.
 
