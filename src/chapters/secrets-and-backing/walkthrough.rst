@@ -197,18 +197,18 @@ In this case our secret isn't very sensitive. However, this process is represent
 Remote: How it Works
 --------------------
 
-It would be a pain to configure dotnet user-secrets for every VM that may run our project, luckily MS provides us with a different way to manage user secrets in a way that is much more scalable. Enter Azure Key vault. 
+It would be a pain to configure dotnet user-secrets for every VM that hosts our project. Microsoft provides us with a more scalable solution for managing secrets called Azure Key vault. 
 
-Azure Key vault is a secrets manager with the same responsiblities as dotnet user-secrets, however since it lives in the cloud it can be accessed by any application that has internet access. So instead of configuring each VM to use their own local secrets manager, why don't we setup one global secrets manager that any VM that has authorization can access? That's what we will do with Azure Key vault! 
+Azure Key vault is a cloud-based secrets manager which can be accessed remotely unlike the ``dotnet user-secrets`` which is only available locally. Instead of configuring each VM to use their own local secrets manager, we can setup one global secrets manager that any authorized VM can access.
 
-Before we can do this we need to configure our application to know when to use a local secrets manager, and when to use a remote secrets manager.
+Before we can do this we need to configure our application to know when to use a local secrets manager and when to use a remote secrets manager.
 
 Application Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-We have run into a dilemma. We want to use our local secrets manager when we are coding our project, but want to use our remote secrets manager when we deploy our application. We will need to introduce some logic into our application that will allow it to use our local secrets manager when it detects a development environment, and allow it to use a remote secrets manager when it detects a production environment.
+We want to use our local secrets manager when we are developing our project, but want to use our remote secrets manager when we deploy our application. There are two different environments our application runs in: development (local) and production (remote). We will need to introduce some logic into our application that will allow it to use our local secrets manager when it detects a development environment, and allow it to use a remote secrets manager when it detects a production environment.
 
-Let's take a look at the ``Program.cs`` file.
+The logic for this needs to occur at the entry point of .NET applications, ``Program.cs``.
 
 .. sourcecode:: csharp
    :caption: Program.cs
