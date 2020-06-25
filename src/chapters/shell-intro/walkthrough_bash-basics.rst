@@ -442,9 +442,7 @@ Let's clean up the directories we created using the remove command. We will also
 File Operations
 ---------------
 
-As we move from directory to file operations consider one of the core tenets of Linux:
-
-   **Everything is a file**
+As we move from directory to file operations consider one of the core tenets of Linux -- **everything is a file**.
 
 Why is this valuable to consider? Because most of the commands used for directory operations are identical for regular files! When dealing with regular files the ``-r`` (recursive) option is no longer needed since it is an *individual file* rather than a container like a directory:
 
@@ -564,7 +562,7 @@ Updating repository sources
 
 Any time you are going to use ``apt`` you should begin by updating the metadata in the repository sources. An ``apt update`` will download information about installed packages (like pending upgrades) as well as refresh the package source lists. The latter half  of the update ensures that when you search and install packages you are always getting the latest additions and versions from your package source repositories.
 
- Below you can see the most ubiquitous ``apt`` command in use:
+Below you can see the most ubiquitous ``apt`` command in use:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
