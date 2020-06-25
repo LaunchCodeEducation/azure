@@ -9,43 +9,43 @@ From this point forward all of the commands and examples will be in BASH and nee
 
 This article is a guide for the fundamentals of working with BASH. Like other programming languages BASH has more depth than can be covered as an introduction. The topics covered here will give you a foundation to build the rest of your learning on top of. 
 
-Core Tenants
-------------
+Core Tenets
+-----------
 
 While learning BASH and Linux some commands and behaviors will seem foreign to you if you come from a Windows background. Keep in mind the following aspects of Linux and BASH to help you understand why things work the way they do:
 
-Everything is a file
-^^^^^^^^^^^^^^^^^^^^
-
-There are 7 `types of files <https://linuxconfig.org/identifying-file-types-in-linux>`_ in Linux and they *don't refer to file extensions*. The majority of the time you will be working with:
-
-- **regular files**: individual text files (denoted by ``-``)
-- **directory files**: container files (denoted by ``d``)
-
-File System
-^^^^^^^^^^^
+File System Paths
+^^^^^^^^^^^^^^^^^
 
 The Linux File System (FS) has the following design:
 
 - file paths are separated by forward slashes (``/``)
 - there is a single root directory, absolute paths are written relative to **root** with the path ``/``
 
+Everything is a file*
+^^^^^^^^^^^^^^^^^^^^
+
+In Linux *everything is a file descriptor*. This means that everything including regular text files, directories, devices and even processes are all treated as files. There are 7 `types of files <https://linuxconfig.org/identifying-file-types-in-linux>`_ in Linux and they *don't refer to file extensions*. The majority of the time you will be working with:
+
+- **regular files**: individual text files (denoted by ``-``)
+- **directory files**: container files (denoted by ``d``)
+
 Everything is a string
 ^^^^^^^^^^^^^^^^^^^^^^
 
-There are **no data types** in BASH. All of the inputs and outputs of BASH commands are strings of characters. 
+There are **no data types** in BASH. All of the inputs and outputs of BASH commands are strings of characters. This concept also applies to the contents of files. 
 
 File extensions are arbitrary
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All regular files in Linux are treated the same -- just a string of characters (in a `character encoding <https://en.wikipedia.org/wiki/Character_encoding>`_). It is up to the consumer of a file (a program) to decide how to interpret the characters in it. 
 
-In other words, *the Linux OS is not opinionated about how a file is used*, unlike what you may be familiar with in Windows. In Linux-land a file extension is not required and only serves as a note for the user to choose a program that will interpret its contents.
+In other words, *the Linux OS is not opinionated about how a file is used*. In Linux-land a file extension is not required and only serves as a note for the user to choose a program that will interpret its contents.
 
 File System
 ===========
 
-Everything in the File System (FS) and operations done to it are based around relative and absolute paths. Refer to the previous article for a more detailed explanation. Below is a practical refresher:
+Everything in the File System (FS) and commands that affect it are based around relative and absolute paths. Refer to the previous article for a more detailed explanation. Below is a practical refresher:
 
 - **relative path**: relative to a variable location, your current working directory (CWD)
 - **absolute path**: relative to a constant location, the root directory (``/``)
@@ -57,10 +57,26 @@ Navigation Essentials
 
 Let's begin by reviewing the essential commands for navigating the FS from the command-line. Take some time to practice using these to navigate around your machine.
 
+Getting Help
+^^^^^^^^^^^^
+
+Most commands will provide documentation through the ``--help`` option or a ``man`` (manual) entry. When you are unsure about a command or want to learn more about how it is used you can use get help like this:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ command --help
+   # prints help documentation
+
+   $ man <command name>
+   # enters a documentation viewer
+   # scroll up with J key, down with K key
+   # quit with Q key
+
 Show the CWD
 ^^^^^^^^^^^^
 
-In order to navigate *relative* to where you are you need to identify your working directory (CWD). The ``pwd`` (print working directory) command will give you the absolute path of your current location in the FS:
+The ``pwd`` (print working directory) command will give you the absolute path of your current working directory (CWD) in the FS:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
@@ -69,13 +85,6 @@ In order to navigate *relative* to where you are you need to identify your worki
    /home/student
 
 If you are in a new Shell session it will default to a CWD of ``/home/<username>``.
-
-.. admonition:: note
-
-   If you entered BASH through PowerShell (``wsl -d Ubuntu-18.04``) rather than the Ubuntu taskbar icon it will default to a different directory like ``/mnt/c/Users/<username>``. This is *not your home directory* but is a default when entering through PowerShell.
-
-   This behavior can be changed by creating a ``.bash_profile`` file. You can read more about it `in this article <https://www.thegeekdiary.com/what-is-the-purpose-of-bash_profile-file-under-user-home-directory-in-linux/>`_ but it falls outside of the scope of this class. 
-
 
 Change directories
 ^^^^^^^^^^^^^^^^^^
@@ -98,7 +107,7 @@ If you want to change to a directory using a relative path that is *under* your 
 - `.` character: a single dot means *this directory*
 - `..` characters: a double dot means *up one directory*
 
-We will discuss the use of the *this directory* character (``.``) soon. For now consider an example about the **up directory** characters. Imagine the following scenario:
+We will discuss the use of the *this directory* character (``.``) soon. Consider an example about using the **up directory** characters in the following scenario:
 
 .. sourcecode:: bash
 
@@ -188,7 +197,7 @@ The ``~`` shorthand can also be used as a base *relative to HOME* path:
 List the CWD contents
 ^^^^^^^^^^^^^^^^^^^^^
 
-Our final essential command is ``ls`` (list contents). As mentioned previously ``ls`` can be used with no arguments to view the contents of the CWD:
+Our final navigation command is ``ls`` (list contents). As mentioned previously ``ls`` can be used with no arguments to view the contents of the CWD:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
@@ -199,7 +208,7 @@ Our final essential command is ``ls`` (list contents). As mentioned previously `
    $ ls
    # contents of CWD ("empty" for a new user)
 
-But ``ls`` can also be used to view the contents of another directory via a relative or absolute path:
+But ``ls`` can also be used view the contents of another directory using a relative or absolute path as its argument:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
@@ -214,7 +223,7 @@ But ``ls`` can also be used to view the contents of another directory via a rela
    # relative path
    $ ls ../../usr/bin
 
-You can also provide options to ``ls`` to change the output. The ``-a`` option means *all* and shows both regular and **hidden files**. Hidden files are special configuration files that are hidden to prevent accidental changes to them.
+You can also provide options to ``ls`` to change the output. The ``-a`` option means *all* and shows both regular and **hidden files**. Hidden files are special configuration files that are hidden to prevent accidental changes to them from consumers. However, when working with CLI tools you will often use these **dot files** as a way of configuring the way your tools behave on your machine.
 
 While the home directory appeared empty earlier it actually contained several hidden files:
 
@@ -242,12 +251,12 @@ In this output you can view details like the `file type and access mode <http://
 
 .. admonition:: fun fact
 
-   Notice how the ``.`` and ``..`` are actually listed as *directory files* (the first ``d`` in the long output). The ``.`` and ``..`` are actually treated as *files* (because *everything is a file*). They refer to the *current directory file* and *up directory file* respectively.
+   Notice how the ``.`` and ``..`` are actually listed as *directory files* (the first ``d`` in the long output). The ``.`` and ``..`` are actually treated as *files* (because *everything is a file* in Linux). They refer to the *current directory file* and *up directory file* respectively.
 
 Directory Operations
 --------------------
 
-Now that we have the navigating essentials let's practice some common directory operations. We will learn these through a simple example. While the example is silly, the concepts and commands will apply to all of the directory work you do in the future.
+Now that we have the navigating essentials let's practice some common directory operations. We will learn these through a simple example. The concepts and commands will apply to all of the directory work you do in the future.
 
 Create
 ^^^^^^
@@ -291,7 +300,7 @@ Now if we list the contents of the CWD (home dir) and the ``/tmp`` dir we should
    # trimmed output
    child-dir
 
-We can also see that both the new directories themselves are empty:
+We can also see that both the new directories are empty:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
@@ -317,7 +326,7 @@ We can move a directory to a new location using the ``mv`` command. Once again, 
 
    $ mv <path to target> <path to destination>
 
-Let's move the ``child-dir`` from its current parent directory (``/tmp``) to the new one we made:
+Let's move the ``child-dir`` from its current parent directory (``/tmp``) into the new one we made:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
@@ -334,11 +343,9 @@ Let's move the ``child-dir`` from its current parent directory (``/tmp``) to the
    $ ls parent-dir
    child-dir
 
-
-
 .. admonition:: warning
 
-   There is no *rename* command in BASH. Instead the act of moving a file (remember directories are files) defines its new name in the destination path. 
+   The act of moving a file (remember directories are files) can be used to define a new name for it in the destination path. 
 
    When renaming files you **must be careful**. If a file of the same name exists at the destination path you provide **the existing file will be overwritten permanently**.
 
@@ -411,7 +418,7 @@ Delete
 
    In the Shell a **deletion is permanent** and nearly **instantaneous**. For this reason it is imperative that the command **always use an absolute path** to be explicit and prevent mistakes.
    
-   While we stressed being cautious before we will repeat in bold this time:
+   While we stressed being cautious before it is imperative to be **extra cautious** when deleting files using BASH:
 
    **DO NOT STRAY FROM THE FOLLOWING COMMAND DIRECTIONS**
 
@@ -435,7 +442,7 @@ Let's clean up the directories we created using the remove command. We will also
 File Operations
 ---------------
 
-As we move from directory to file operations consider one of the core tenants of Linux:
+As we move from directory to file operations consider one of the core tenets of Linux:
 
    **Everything is a file**
 
@@ -453,11 +460,11 @@ Why is this valuable to consider? Because most of the commands used for director
 Create
 ^^^^^^
 
-In BASH you can create a file in several different ways. BASH and Linux users are accustomed to using **CLI text editors** `like VIM <https://www.vim.org/>`_ for creating and modifying files. Whereas on Windows the preference is for using a GUI based editor like ``notepad``.
+In BASH you can create a file in several different ways. BASH and Linux users are accustomed to using **CLI text editors** for creating and modifying files. Whereas on Windows the preference is for using a GUI based editor like ``notepad``.
 
 BASH also includes `redirection operators <https://www.guru99.com/linux-redirection.html>`_ which can be used to *redirect* the output of a command into a new location -- like a new file or new lines on an existing file.
 
-Unfortunately, due to the scope of this class, we will not be covering CLI editors or the redirect operators but you can use the links above to learn more about them. Instead, we will introduce a much simpler command.
+Due to the scope of this class, we will not be covering CLI editors or the redirect operators but you can use the links above to learn more about them. Instead, we will introduce a much simpler command.
 
 The ``touch`` command can be used to create an empty file. It takes a relative or absolute path ending in the file's name as an argument:
 
@@ -502,24 +509,26 @@ You can use the ``cat`` command to print the contents of a file by providing the
    $ cat .bash_history
    # your command history!
 
-Sometimes printing the *entire contents* to the Terminal is too verbose. This would be like viewing a 50 page book all at once. Instead we can use the ``less`` command to show *less* at one time -- similar to scrolling through pages instead. 
+.. cut for now, intro to 'less'  
 
-The ``less`` command works the same way, by providing it an absolute or relative path. Once the program opens you can navigate using the following keyboard keys. Some terminals also allow scrolling with the mouse wheel:
+.. Sometimes printing the *entire contents* to the Terminal is too verbose. This would be like viewing a 50 page book all at once. Instead we can use the ``less`` command to show *less* at one time -- similar to scrolling through pages instead. 
 
-- ``J``: scroll down one line
-- ``K``: scroll up one line
-- ``Q``: quit the ``less`` program and return to the Shell
+.. The ``less`` command works the same way, by providing it an absolute or relative path. Once the program opens you can navigate using the following keyboard keys. Some terminals also allow scrolling with the mouse wheel:
 
-Let's try viewing the ``.bashrc`` file this time. If the contents of this file look terrifying don't worry! You won't need to write or edit any of it. But it serves as a lengthy file to practice scrolling with ``less``:
+.. - ``J``: scroll down one line
+.. - ``K``: scroll up one line
+.. - ``Q``: quit the ``less`` program and return to the Shell
 
-.. sourcecode:: bash
-   :caption: Linux/BASH
+.. Let's try viewing the ``.bashrc`` file this time. If the contents of this file look terrifying don't worry! You won't need to write or edit any of it. But it serves as a lengthy file to practice scrolling with ``less``:
 
-   $ pwd
-   /home/student
+.. .. sourcecode:: bash
+..    :caption: Linux/BASH
 
-   $ less .bashrc
-   # less program opens the file, use J and K to scroll and Q to quit
+..    $ pwd
+..    /home/student
+
+..    $ less .bashrc
+..    # less program opens the file, use J and K to scroll and Q to quit
 
 CLI Tools
 =========
@@ -527,7 +536,7 @@ CLI Tools
 Package Manager
 ---------------
 
-The Ubuntu Distribution comes pre-installed with the Advanced Packaging Tool (``apt``) program for managing packages. There are many arguments and options available in the ``apt`` command. However, we will focus on those that are used most frequently. Like most CLI programs you can view more details about how to use ``apt`` by using the ``--help`` option.
+The Ubuntu Distribution comes pre-installed with the Advanced Packaging Tool (``apt``) program for managing packages. We will focus on the commands that are used most frequently. Like most CLI programs you can view more details about how to use ``apt`` by using the ``--help`` option.
 
 You will typically see ``apt`` used with the ``-y`` option added to the command. This option skips the confirmation prompt for the actions you are taking to speed up the process. 
 
@@ -546,14 +555,14 @@ Recall that APT, like all system-wide package managers, must have control over y
 
    $ sudo apt <action argument> -y
 
-The ``sudo`` command is the equivalent of opening the PowerShell Terminal in admin mode. It is an acronym for **S**\uper **U**\ser **DO** the command to the right of it. The first time you use ``sudo`` *per Shell session* you will be prompted for the admin password of your account (``launchcode`` in our case). Any commands after ``sudo`` are run as the ``root`` user -- a special super user account type.
+The ``sudo`` command is the equivalent of opening the PowerShell Terminal in admin mode. It is an acronym for **S**\ubstitute **U**\ser to **DO** the command to the right of it. When used without specifying *which user to substitute* it will default to running the command to the right as the ``root`` user -- a special super user account type. The first time you use ``sudo`` *per Shell session* you will be prompted for the admin password of your account (``launchcode`` in our case). 
 
 This means that once you have authenticated you will not have to re-authenticate unless you close the Shell (ending the session) or you open a new Shell in a different Terminal window (a new session). You can liken this behavior to how PowerShell requires you to right-click and open as an admin for each Shell that requires elevated privileges.
 
-Updating
-^^^^^^^^
+Updating repository sources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Any time you are going to use ``apt`` you should begin by updating. An ``apt update`` will download information about installed packages (like pending updates) as well as refresh the package source lists. The latter half  of the update ensures that when you search and install packages you are always getting the latest additions and versions from your package source repositories.
+Any time you are going to use ``apt`` you should begin by updating the metadata in the repository sources. An ``apt update`` will download information about installed packages (like pending upgrades) as well as refresh the package source lists. The latter half  of the update ensures that when you search and install packages you are always getting the latest additions and versions from your package source repositories.
 
  Below you can see the most ubiquitous ``apt`` command in use:
 
@@ -561,7 +570,12 @@ Any time you are going to use ``apt`` you should begin by updating. An ``apt upd
    :caption: Linux/BASH
 
    $ sudo apt update -y
-   # update information output
+   # information about repository source updates
+
+.. admonition:: note
+
+   Updating the repository sources **only updates the metadata about packages**. The actual installed packages can be **upgraded to the latest version** using the ``apt upgrade`` command. 
+
 
 Installing Tools
 ----------------
@@ -574,7 +588,7 @@ After you have updated you can search for and install package tools on your mach
    # always run apt update before searching or installing!
    $ sudo apt search <search term>
 
-If the search results contains your package you can install it using the ``install`` argument. The sub-argument is the **exact package name** of the tool you want to install. You can skip the installation prompts (like confirmation dialog boxes in a GUI) using the ``-y`` option:
+If the search results contains your package you can install it using the ``install`` argument. The sub-argument is the **exact package name** of the tool you want to install. The installation prompts (like confirmation dialog boxes in a GUI) can be automatically accepted using the ``-y`` option:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
@@ -644,7 +658,11 @@ These custom repositories often require both the repository and a **signing key*
 Installing .NET
 ^^^^^^^^^^^^^^^
 
-Let's see what this process looks like using the ``dotnet CLI`` installation as an example.
+Let's see what this process looks like using the ``dotnet CLI`` installation as an example. 
+
+.. admonition:: tip
+
+   Like other 3rd party tool installations you can find the instructions on the package maintainer's site. For example, we will be following the instructions from this `Microsoft installation article <https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#1804->`_. 
 
 The first step is to install the official Microsoft package repository. This installation includes both the repository and the signing key. This is a one-time process and future installations of Microsoft tools will be available and trusted automatically:
 
@@ -684,92 +702,97 @@ You can confirm the installation was successful by viewing the ``--help`` output
 
    $ dotnet --help
 
-Piping
-======
+.. cut from this course but keep for later
 
-Recall that piping is the mechanism for taking the output of one command and using it as the input of the second command. It involves two or more commands separated by the pipe operator symbol (``|``, under the ``backspace`` key). In a general sense this is how piping works:
+.. Piping
+.. ======
 
-.. sourcecode:: bash
+.. Recall that piping is the mechanism for taking the output of one command and using it as the input of the second command. It involves two or more commands separated by the pipe operator symbol (``|``, under the ``backspace`` key). In a general sense this is how piping works:
 
-   a-command -> a-command output | -> b-command <a-command output as argument> -> b-command output ...   
+.. .. sourcecode:: bash
 
-Grep
-----
+..    a-command -> a-command output | -> b-command <a-command output as argument> -> b-command output ...   
 
-Because all of the inputs and outputs of BASH commands are strings it follows that a tools for working with these strings would be developed. Grep is part of a suite of tools that are pre-installed on most Linux Distributions. The suite includes ``grep``, ``awk`` and ``sed``. The former of which is designed for *searching* while the latter two are used for *processing*, or transforming, text strings. They work on the text contents of files but really shine when used in piping.
+.. Grep
+.. ----
 
-While these tools are powerful and worth learning they fall well outside of the scope of this course. However, searching with ``grep`` is a valuable tool whose basic behaviors are simple to understand. 
+.. Because all of the inputs and outputs of BASH commands are strings it follows that a tools for working with these strings would be developed. Grep is part of a suite of tools that are pre-installed on most Linux Distributions. The suite includes ``grep``, ``awk`` and ``sed``. The former of which is designed for *searching* while the latter two are used for *processing*, or transforming, text strings. They work on the text contents of files but really shine when used in piping.
 
-In its simplest form ``grep`` uses two arguments -- a search term and a text input source. The text input can be an absolute or relative path to a file you want to search the contents of. Grep will search line-by-line and output any lines that have a match for the search term. If there are no matches the output of ``grep`` will be an empty line:
+.. While ``sed`` and ``awk`` are powerful and worth learning they fall well outside of the scope of this course. However, searching with ``grep`` is a valuable tool whose basic behaviors are simple to understand. 
 
-.. sourcecode:: bash
-   :caption: Linux/BASH
+.. In its simplest form ``grep`` uses two arguments -- a search term and a text input source. The text input can be an absolute or relative path to a file you want to search the contents of. Grep will search line-by-line and output any lines that have a match for the search term. If there are no matches the output of ``grep`` will be an empty line:
 
-   $ grep '<search term>' path/to/file
+.. .. sourcecode:: bash
+..    :caption: Linux/BASH
 
-For example what if we wanted to see all of the conditional statements in the ``.bashrc`` file we looked at earlier? We could have ``grep`` search that file for ``if`` and output the search results to us. 
+..    $ grep '<search term>' path/to/file
 
-.. sourcecode:: bash
-   :caption: Linux/BASH
+.. For example what if we wanted to see all of the conditional statements in the ``.bashrc`` file we looked at earlier? We could have ``grep`` search that file for ``if`` and output the search results to us. 
 
-   $ grep 'if' ~/.bashrc
-   # all of the lines that include 'if' in them
+.. .. sourcecode:: bash
+..    :caption: Linux/BASH
 
-   # recall ~ is a shorthand for /home/<username of logged in user>
-   # the following command is identical in behavior
-   $ grep 'if' /home/student/.bashrc
+..    $ grep 'if' ~/.bashrc
+..    # all of the lines that include 'if' in them
 
-We will cover ``grep`` behavior when used in piping next. For more detailed information you can always check the help or manual outputs:
+..    # recall ~ is a shorthand for /home/<username of logged in user>
+..    # the following command is identical in behavior
+..    $ grep 'if' /home/student/.bashrc
 
-.. sourcecode:: bash
-   :caption: Linux/BASH
+.. We will cover ``grep`` behavior when used in piping next. For more detailed information you can always check the help or manual outputs:
 
-   # concise help output (usually available)
-   $ grep --help
+.. .. sourcecode:: bash
+..    :caption: Linux/BASH
 
-   # manual for a command (not always available)
-   $ man grep 
+..    # concise help output (usually available)
+..    $ grep --help
+
+..    # manual for a command (not always available)
+..    $ man grep 
    
-   # opens in the "less" program
-   # use the J and K keys to scroll and Q to quit
+..    # opens in the "less" program
+..    # use the J and K keys to scroll and Q to quit
 
-Filtering with grep
--------------------
+.. Filtering with grep
+.. -------------------
 
-Consider a scenario where you want to *search for* one file out of many within a directory. You could ``ls`` the contents and search through it by hand. Or even use a GUI File Explorer to visualize the files. But what if there were dozens, hundreds or thousands of files? Clearly it is impractical to do this work by hand.
+.. Consider a scenario where you want to *search for* one file out of many within a directory. You could ``ls`` the contents and search through it by hand. Or even use a GUI File Explorer to visualize the files. But what if there were dozens, hundreds or thousands of files? Clearly it is impractical to do this work by hand.
 
-What if instead of letting the contents output of ``ls`` be sent to the Terminal we used it as an input to a tool designed for performing searches? This is what piping and ``grep`` are made for!
+.. What if instead of letting the contents output of ``ls`` be sent to the Terminal we used it as an input to a tool designed for performing searches? This is what piping and ``grep`` are made for!
 
-When only a search term argument is given to ``grep`` (when used in piping) it will use the output of the previous command as the text to search. Essentially it treats the output the same as the contents of a file when given a file path argument. You can picture it like this:
+.. When only a search term argument is given to ``grep`` (when used in piping) it will use the output of the previous command as the text to search. Essentially it treats the output the same as the contents of a file when given a file path argument. You can picture it like this:
 
-.. sourcecode:: bash
-   :caption: Linux/BASH
+.. .. sourcecode:: bash
+..    :caption: Linux/BASH
 
-   $ <command> | grep '<search term>' <output from command>
+..    $ <command> | grep '<search term>' <output from command>
 
-We can *pipe* the output of ``ls`` (directory contents as a string) as the string input used by ``grep`` to filter just the results we need. Our pipeline would look like this:
+.. We can *pipe* the output of ``ls`` (directory contents as a string) as the string input used by ``grep`` to filter just the results we need. Our pipeline would look like this:
 
-.. sourcecode:: bash
+.. .. sourcecode:: bash
 
-   $ ls --> dir contents string | --> grep 'search term' <dir contents string> --> search results string
+..    $ ls --> dir contents string | --> grep 'search term' <dir contents string> --> search results string
 
-What if we wanted to check for details about the ``dotnet`` program by using the long form ``ls`` output:
+.. What if we wanted to check for details about the ``dotnet`` program by using the long form ``ls`` output:
 
-.. sourcecode:: bash
-   :caption: Linux/BASH
+.. .. sourcecode:: bash
+..    :caption: Linux/BASH
 
-   $ ls -l /usr/bin | grep 'dotnet'
-   lrwxrwxrwx 1 root   root           22 May 20 15:37 dotnet -> ../share/dotnet/dotnet
+..    $ ls -l /usr/bin | grep 'dotnet'
+..    lrwxrwxrwx 1 root   root           22 May 20 15:37 dotnet -> ../share/dotnet/dotnet
 
-You can pipe to and from many CLI programs thanks to the standard use of strings as outputs and inputs. As a final example let's search through the help output of ``dotnet``. If you were to view the help output directly you would end up scrolling through many lines.
+.. You can pipe to and from many CLI programs thanks to the standard use of strings as outputs and inputs. As a final example let's search through the help output of ``dotnet``. If you were to view the help output directly you would end up scrolling through many lines.
 
-What if you just want to know how to publish a project (something we will soon cover)? We can use piping to automate the process of searching through the lines manually:
+.. What if you just want to know how to publish a project (something we will soon cover)? We can use piping to automate the process of searching through the lines manually:
 
-.. sourcecode:: bash
-   :caption: Linux/BASH
+.. .. sourcecode:: bash
+..    :caption: Linux/BASH
 
-   $ dotnet --help | grep 'publish'
-   publish           Publish a .NET project for deployment.
+..    $ dotnet --help | grep 'publish'
+..    publish           Publish a .NET project for deployment.
+
+
+.. todo:: consider splitting scripting to own article 
 
 Scripting
 =========
@@ -800,7 +823,7 @@ Because file extensions are arbitrary in Linux, a script file can have any exten
 Comments
 ^^^^^^^^
 
-One other note is on comments. In a BASH script you can write comments by preceding them with a ``#`` symbol. Anything after ``#`` is ignored by the BASH interpreter. Comments are a valuable addition to any script, especially when they get complex. Remember that comments should serve to explain the *why* not to dictate the *how* which the code already describes.
+As you have seen throughout the previous examples, comments can be used to annotate your scripts. In a BASH script you can write comments by preceding them with a ``#`` symbol. Anything after ``#`` is ignored by the BASH interpreter. Comments are a valuable addition to any script, especially when they get complex. Remember that comments should serve to explain the *why* not to dictate the *how* which the code already describes.
 
 Executing a script
 ^^^^^^^^^^^^^^^^^^
@@ -816,14 +839,14 @@ Explicit execution is when we use the interpreter program (``bash``) as a comman
 
    $ bash ~/my-script.sh
 
-In other words when we want to execute a script explicitly we (the user) define the program we want to interpret it -- one of the core tenants covered earlier. As another example if we had a Python script we would naturally use the ``python`` interpreter to execute it:
+In other words when we want to execute a script explicitly we (the user) define the program we want to interpret it -- one of the core tenets covered earlier. As another example if we had a Python script we would naturally use the ``python`` interpreter to execute it:
 
 .. sourcecode:: bash
    :caption: Linux/BASH
 
    $ python ~/my-python-script.py
 
-If we try to execute a script with the wrong interpreter it will, expectedly, fail. It would be like handing an English-speaking person a book in Japanese and asking them to interpret it!
+If we try to execute a script with the wrong interpreter it will fail. It would be like handing an English-speaking person a book in Japanese and asking them to interpret it!
 
 .. admonition:: note
 
@@ -838,7 +861,11 @@ Commands in scripts are executed by the *user who executes the script*. While th
 
 This means that if you (``student``) run a script then all of those commands will be issued by the ``student`` user and be *subject to the permissions of that user*. If you need to run privileged commands you must run it using a super user account. 
 
-However, if you try to use ``sudo`` in the script a prompt would require you to authenticate as soon as it is executed -- a manual step that would defeat the purpose! Fortunately in the cloud the scripts we execute will run as ``root`` automatically and will not require the use of ``sudo``. 
+However, if you try to use ``sudo`` in the script a prompt would require you to authenticate as soon as it is executed -- a manual step that would defeat the purpose! 
+
+.. admonition:: fun fact
+
+   In the cloud the scripts we execute will run as ``root`` automatically and will not require the use of ``sudo``. 
 
 Variables
 ---------
@@ -1038,6 +1065,6 @@ Then execute the script the same way as before:
 Learn More
 ==========
 
-This has been an introduction to the practical fundamentals of BASH. You are *not expected to have memorized all of it* by any means. Feel free to refer back to this article throughout the course to refresh your memory.
+This has been an introduction to the practical fundamentals of BASH. You are *not expected to have memorized any of it* by any means. Feel free to refer back to this article throughout the course to refresh your memory. Learning BASH takes a lot of time. We covered a lot of ground today and will be revisiting the fundamentals regularly until they become second nature.
 
 If you want to learn more advanced usage this `BASH cheat-sheet from DevHints <https://devhints.io/bash>`_ will get you up to speed quickly. DevHints is an open source site filled with quick-reference guides for many languages and frameworks written by the open source community.
