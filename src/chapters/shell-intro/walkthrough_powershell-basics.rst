@@ -2,7 +2,7 @@
 Walkthrough: Hands-On With PowerShell
 =====================================
 
-After learning a programming language it is easier to learn others. The same is true for Shell languages with the addition of a new mental model of working from the command-line. Now that you have learned some fundamental Shell and BASH syntax you are ready to learn about PowerShell. Because many PowerShell features and behaviors were inspired by BASH you will find that much of the knowledge you gained can be directly applied to PowerShell.
+By now you have experienced that after learning a programming language it is easier to learn others. The same is true for Shell languages but with the added overhead of a new mental model for working from the command-line. Now that you have learned some fundamental Shell and BASH syntax you are ready to learn about PowerShell. Because many PowerShell features and behaviors were inspired by BASH you will find that much of the knowledge you gained will be applicable to this new material.
 
 Working with PowerShell
 =======================
@@ -15,37 +15,36 @@ Core Tenets
 File System Paths
 ^^^^^^^^^^^^^^^^^
 
-- C: as root
-- drive mounts
-- backslashes \ as path delimiters
+Windows treats each of its **drives** (devices managed by the OS) as independent file system trees. Each drive has a name and ends with a ``:`` character, like ``C:`` or ``D:``. The ``C:`` drive is your disk drive and serves as the default installation location of the Windows OS. For this reason the ``C:`` drive is typically considered the root directory.
 
-Everything is an object
-^^^^^^^^^^^^^^^^^^^^^^^
-
-- OO OS
-- data types
-- PS objects (C#, built-ins, custom)
-
-File extensions matter
-^^^^^^^^^^^^^^^^^^^^^^
-
-- thousands of file types / exts
-- common windows file types https://support.microsoft.com/en-us/help/4479981/windows-10-common-file-name-extensions
-- every file is bound to a registered file extension that enforces which program will interpret it
-- think of files as types of objects with specific properties / methods tied to an extension
+- paths are separated by back-slashes (``\``)
+- the ``C:\`` directory is used as the root directory for absolute paths 
 
 Framework Interpretation
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-- review points made in fundamentals article
+The .NET framework is used to interpret and translate PowerShell commands for the OS instead of the direct communication channel seen between BASH and Linux. The object-oriented *power* of PowerShell comes from this layer of abstraction between itself and the Windows OS. 
+
+Everything is an object
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Since Windows NT the Windows OS releases have all followed an object-oriented design. By extension, PowerShell treats all of its **inputs and outputs as distinct types of objects**. This departure from the string-based approach of BASH makes working with PowerShell a more *tangible* Shell experience. While PowerShell is still a CLI 
+
+PowerShell commands and scripts are able to work with a wide range of objects from those provided by the underlying .NET framework to custom-developed types. Like other object-oriented languages PowerShell objects contain properties and methods that make them intuitive to work with.
+
+File extensions matter
+^^^^^^^^^^^^^^^^^^^^^^
+
+File extensions are an integral aspect of how Windows works. There are thousands of file extensions built into the Windows OS but `there are only 10 common types <https://support.microsoft.com/en-us/help/4479981/windows-10-common-file-name-extensions>`_ that you will typically encounter. Every file is bound to one of these extensions that enforces what program will be used to interpret it. 
+
+You can think of a file in Windows like an object whose type is specified by its file extension. This file type, like an object type, defines the properties and methods used by programs that interact with it.
 
 Cmdlets, Functions & Modules
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- file extension differences
-- cmdlet: C#/.NET compiled binary (equiv /usr/bin) 
-- function: PowerShell 
-- module: manifest for bundling / exporting cmdlets and functions. just metadata pointing at bins and scripts 
+In PowerShell the commands you use are categorized as either a **cmdlet** or a **function**. Cmdlets are written in C#/.NET and as such must be compiled before they can be used. Functions on the other hand are written in PowerShell itself within a script file. 
+
+**Modules** are collections of cmdlets and functions that share a common theme of use. They are used to bundle together related functionality into a single package that can be shared.   
 
 File System
 ===========
