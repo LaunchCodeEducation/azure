@@ -2,14 +2,14 @@
 Shell Fundamentals
 ==================
 
-Working with Shells like PowerShell and BASH revolves around interactive REPL usage and scripting. We will begin by learning about using the REPL for issuing individual commands in Terminal. Then we will discuss how multiple commands can be composed into automated scripts. This lesson is an overview of Shell usage as a whole. In the following lessons we will explore the Shell-specific syntax used by BASH and PowerShell.
+Working with Shells like PowerShell and BASH revolves around interactive REPL usage and scripting. We will begin by learning about using the REPL for issuing individual commands in the Terminal. Then we will discuss how multiple commands can be composed into automated scripts. This lesson is an overview of Shell usage as a whole. In the following lessons we will explore the Shell-specific syntax used by BASH and PowerShell.
 
 The File System
 ===============
 
 The most fundamental aspect of working with a Shell is the **file system**. Up until now you likely know the files of your machine through a File Explorer program. These programs expose the file system in a GUI with folders and files. Navigating through the file system of a machine is a process of clicking around to reach and interact with a file or folder.
 
-In the Shell the file system is accessible in a much more direct manner. The way a file system is organized is based on the OS design but all of them share the concepts of **directories** (folders) and **files**. In the Shell we can describe the directions to the location of files and directories through text rather than graphics. 
+In the Shell the file system is accessible in a much more direct manner. The way a file system is organized is based on the OS design but all of them share the concept of a tree-like hierarchy made up of **directories** (folders) and **files**. In the Shell we can describe the directions to the location of files and directories through text rather than graphics. 
 
 Paths
 -----
@@ -118,7 +118,7 @@ If you want to view the contents of the CWD you are in you can use the ``ls`` co
    $ ls
    # contents of home directory 
 
-Finally you can use ``cd`` to change directories to a new CWD. Say you wanted to go from your home directory to the ``Downloads`` directory like our previous example. You can provide the relative path to the ``cd`` command to get there:
+Finally you can use ``cd`` to change directories to a new working directory which becomes the CWD. Say you wanted to go from your home directory to the ``Downloads`` directory like our previous example. You can provide the relative path to the ``cd`` command to get there:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -163,7 +163,7 @@ You can also provide the absolute path to reach the directory from any CWD:
 File System Operations
 ------------------------
 
-Remember that the Shell can do everything the GUI of an OS offers and more. There are many other commands available for interacting with the file system just like those you have grown accustomed to using in a File Explorer. We will cover creating, reading, moving, copying and deleting files and directories in the BASH and PowerShell syntax lessons.  
+All of the operations you have grown accustomed to using in a File Explorer are available from the command-line. We will cover creating, reading, moving, copying and deleting files and directories in the BASH and PowerShell syntax lessons. 
 
 Commands
 ========
@@ -173,11 +173,23 @@ We saw a preview of how to use some fundamental file system commands. Let's brea
 Calling Commands
 ----------------
 
-Shell commands are similar to functions. They have a name, input arguments and behavior they perform. But unlike functions their behavior can be range from a simple text output to direct control over the OS, file system or even other programs.
+Shell commands are similar to functions. They have a name, input arguments and behavior they perform. But unlike functions their behavior can range from a simple text output to direct control over the OS, file system or even other programs.
 
-Calling, or executing, a command begins with the name of a CLI **program** followed by **positional arguments** and **options** (modifiers) used by the program. 
+Calling, or executing, a command begins with the name of a CLI **program** followed by **positional arguments** and **options** (modifiers) used by the program.
 
-For example let's consider the ``pwd`` or ``ls`` commands we saw. Both of these only needed their name to be called:
+.. admonition:: note
+
+   In general terms executing a command looks like this:
+
+   .. sourcecode:: bash
+      :caption: Linux/BASH
+
+      $ program <argument(s)> [--option]
+
+   In command documentation required parameters are listed inside of ``<>`` symbols while optional parameters are shown inside of ``[]`` symbols. The term parameter here is used to describe arguments and options in a broader sense.
+
+
+For example let's consider the ``pwd`` or ``ls`` commands we saw. Both of these only needed the program name to be called:
 
 .. sourcecode:: bash
 
@@ -199,7 +211,7 @@ Let's consider the ``cd`` command we saw that was used to change directories. Th
    $ cd Downloads
 
    # in general terms
-   $ program [argument]
+   $ program <argument>
 
 We saw that the ``ls`` command, when called without arguments, will default to listing the contents of the CWD. But if we provide it with a path as an argument we can list the contents of a different directory:
 
@@ -219,7 +231,7 @@ Options
 Options allow you to fine-tune the behavior of a command. While it is not enforced in third party CLI programs, the convention for using options is:
 
 - ``--option``: a double ``--`` dash with the full name of the option
-- ``-x``: a single ``-`` dash with the first option letter ``x`` as a shorthand
+- ``-o``: a single ``-`` dash with the first option letter ``o`` as a shorthand
 
 The most common option you can expect across CLI programs is access to the help documentation. Traditionally this is available using either the long ``--help`` or shorthand ``-h`` option after the command name. If available, the output lists details about the command and how to use its arguments and options.
 
@@ -247,7 +259,7 @@ Here is another view to see how everything aligns:
 CLI Tools
 =========
 
-The built-in commands of BASH and PowerShell are like the GUI applications that come installed on your OS. They are a set of tools for the essentials of interacting with your machine. For handling more specific tasks you can install 3rd party tools -- or even write your own! While the market for GUI applications is primarily designed for consumers, the world of CLI tools is tailored for developers.
+The built-in commands of BASH and PowerShell are like the GUI applications that come installed on your OS. They are a set of tools for the essentials of interacting with your machine. For handling more specific tasks you can install 3rd party tools -- or even write your own! While the market for GUI applications is primarily designed for consumers, the world of CLI tools is tailored for users that need greater control over their machine.
 
 Shell programs can be installed in a variety of ways. Some developers prefer to *build from source* which involves manually assembling the dependencies and source code of a tool. While this process provides you with the greatest control and security over the programs on your machine it can be a lengthy process. 
 
@@ -258,15 +270,15 @@ Most developers turn to special tools specifically designed for downloading and 
 Package Managers
 ----------------
 
-**Package managers** are the CLI equivalent of an App Store. They allow you to search for and install open-source CLI programs for nearly every use case a developer can imagine. While we will use Shell package managers in this class the same term applies to language-based package managers like ``npm`` (for JavaScript) and ``pip`` (for Python).
+**Package managers** are the CLI equivalent of an App Store. They allow you to search for and install custom CLI programs that extend the behavior of the Shell. On Linux machines the package managers are even capable of extending the GUI Shell. While we will use Shell package managers in this class the same term applies to language-based package managers like ``npm`` (for JavaScript) and ``pip`` (for Python).
 
 .. admonition:: note
 
    CLI **packages** (installed commands) can range from simple tools to more complex programs like compilers, interpreters and even full-fledged Web Servers.
 
-Windows packages are handled by the `Chocolatey package manager <https://chocolatey.org/>`_ or ``choco`` as it goes by when used in PowerShell. On OSX the `HomeBrew <https://brew.sh/>`_ (``brew``) package manager has cornered the market. In the Linux space there are many package managers that the different Linux Distributions (OS variants over the core Linux Kernel) are built around. In this class we will use the `Advanced Package Tool <https://linuxhint.com/apt_package_manager_ubuntu/>`_ (``apt``) that comes installed in the Ubuntu Distribution. 
+Windows packages are handled by the `Chocolatey package manager <https://chocolatey.org/>`_ or ``choco`` as it is called when used in PowerShell. On OSX the `HomeBrew <https://brew.sh/>`_ (``brew``) package manager has cornered the market. In the Linux space there are many package managers that the different Linux Distributions (OS variants over the core Linux Kernel) are built around. In this class we will use the `Advanced Package Tool <https://linuxhint.com/apt_package_manager_ubuntu/>`_ (``apt``) that is the default package manager on Debian-based Distributions like Ubuntu. 
 
-Package managers automate the entire process of downloading, installing, configuring and updating the Shell programs you use. These tools are stored in **package repositories** that host the packages for searching and downloading. Package managers come with some default repositories from trusted package maintainers. But unlike the App Stores on your phone or PC the repositories list can be updated to add additional public or private corporate sources. 
+Package managers automate the entire process of downloading, installing, configuring and updating the Shell programs you use. These tools are stored in **package repositories** that host the packages on the web for searching and downloading. Package managers come with some default repository packages from trusted package maintainers that contain metadata for sourcing the hosted packages. But unlike the App Stores on your phone or PC the repositories list can be updated to add additional public or private sources. 
 
 We will learn how to install and use these tools in the BASH and PowerShell syntax lessons. As a developer you can use them for configuring your development machines. Later we will learn how to write scripts that use package managers to set up our own Servers in the cloud!
 
@@ -284,11 +296,9 @@ The PATH
 
 The big difference between the functions you are familiar with and commands in a Shell is how they are referenced. Think about how you reference functions in your projects. They can either be referenced by their name (if in the same file) or they must be imported from another file in your code.
 
-Command programs must also be referenced. But instead of being defined in your codebase they are **executable files** that are installed on your machine. Command programs can exist in standard locations, according to the OS and Shell (built-in commands), or in a custom location defined by the user during installation. 
+A command can be installed anywhere in your file system rather than just your codebase. The Shell needs to know where to find it before it can execute it. In other words the Shell needs to know the absolute path to the executable file in order to use it. 
 
-Because commands can be installed anywhere in your machine the Shell needs to know where to find it before it can execute it. In other words the Shell needs to know the absolute path to the executable file in order to use it. 
-   
-Clearly it would be inefficient to reference commands by their absolute paths. As you have now seen in the examples of both built-in and installed commands like ``dotnet`` we are able to reference them using just the program's name. How does the Shell know where to find the executable program files when we call a command by its name rather than its absolute path?
+How does the Shell know where to find the executable program files when we call a command by just its program name rather than its absolute path?
 
 Shell Environment Variables
 ---------------------------
@@ -300,7 +310,7 @@ BASH and PowerShell each handle environment variables differently. Managing the 
 The HOME Variable
 ^^^^^^^^^^^^^^^^^
 
-For example, consider the default behavior we discussed earlier that causes a Shell to set the CWD to the home directory when first starting up. How does the Shell know what the home directory path is? An environment variable called ``$HOME`` (Linux/BASH) or ``$Env:HOMEPATH`` (Windows/PowerShell) holds the value that the Shell uses:
+For example, consider the default behavior we discussed earlier that causes a Shell to set the CWD to the home directory when first starting up. How does the Shell know what the home directory path is? An environment variable called ``$HOME`` (Linux/BASH) or ``$Env:HOMEPATH`` (Windows/PowerShell) holds the value that the Shell uses.
 
 By default this value will be the path to the user directory for the logged in user. You can view them using the ``echo`` (print output) command:
 
@@ -352,11 +362,20 @@ You will likely not need to update the PATH yourself unless you install CLI prog
 Piping
 ======
 
-**Piping**, or **pipelining**, is the process of chaining together multiple commands by using the output of one as the input to the next. The term comes from the idea of a **data pipeline** which is used to transform or operate on data in a concise way. You can think of it as a *stream of operations* flowing through a pipe of commands from the first to the last. 
+**Piping**, or **pipelining**, is the process of chaining together multiple commands by using the output of one as the input to the next. The term comes from the idea of a **data pipeline** which is used to transform or operate on data in a concise way. You can think of it as a *stream of data* flowing through a *pipe of commands* from the first to the last. 
 
 The idea behind piping is simple but its capability is powerful. The first command in the pipeline is executed and produces an output. But rather than printing the command's output to the Terminal it is instead used as an input to the next command in the pipeline. This process repeats until reaching the end of the pipeline and outputting the final result.
 
 We will get into the syntax of piping in the BASH and PowerShell specific lessons. In general terms piping involves 2 or more commands each separated by the ``|`` pipe character (just above the ``enter`` key on your keyboard).
+
+.. admonition:: note
+
+   In a general sense this is what piping between two commands looks like. The output of the first command is used as the input (argument) to the second command in the pipeline. 
+
+   .. sourcecode:: bash
+      :caption: Linux/BASH
+
+      $ first-command | next-command <first-command output>
 
 
 .. todo:: too heavy to give example. leave it light
@@ -381,7 +400,7 @@ Scripting
 
 Scripting is the end goal of working with Shells. In simple terms it is the process of composing multiple commands together in a single file to complete a larger task. Instead of entering the commands individually the script file can be executed to automate the behavior.
 
-Script files can be written in many scripting languages like Python and JavaScript. However, these scripting languages require a runtime to interpret them that must be installed on the machine executing the script. 
+Script files can be written in many scripting languages like Python and JavaScript. However, these scripting languages require an interpreter program and runtime that must be installed on the machine executing the script. 
 
-The benefit of writing scripts in a native Shell like BASH or PowerShell is that they come pre-installed as the default Shells for Ubuntu and Windows. We will cover how to read, write and execute BASH and PowerShell scripts in later lessons. Learning how to create and use scripts is an integral part of working in operations.
+The benefit of writing scripts in a native Shell like BASH or PowerShell is that they come pre-installed as the default Shells for many Linux Distributions and Windows. Learning how to create and use scripts is an integral part of working in operations. We will cover how to read, write and execute BASH and PowerShell scripts in later lessons. 
 
