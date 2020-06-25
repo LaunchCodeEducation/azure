@@ -4,8 +4,11 @@ Walkthrough: Local & Remote Secrets Management
 
 In our walkthrough today we will be working with a sample application to learn about secrets management. We will use the ``dotnet user-secrets`` to manage the secrets on our local machine. When we deploy the application we will be using Azure Key vault as a remote secrets manager. 
 
-Explore Starter Code
-====================
+Explore Concepts
+================
+
+Get the Source Code
+-------------------
 
 To begin this walkthrough we will each need to fork the project on GitHub. We are each going to have to set up our own unique Key vault that must be configured in our application settings. First fork `this repository <https://github.com/LaunchCodeEducation/dotnet-user-secrets-az-keyvault>`_ to your own GitHub account.
 
@@ -15,21 +18,275 @@ After you fork this project clone your new repository to your local machine. Be 
 
    git clone https://github.com/<YOURUSERNAME>/dotnet-user-secrets-az-keyvault
 
-There are three files we are interested in. Let's take a look at them.
+Local: How it Works
+-------------------
 
-``Startup.cs`` is the file in which we access our secrets manager, ``dotnet user-secrets`` is loaded as the default, but can be overridden for specific environments and a different secrets manager can be used. We are storing our secret in the static variable named ``Startup.secret``.
+We already know what secrets are and that they are managed by secrets managers, but how do they work?
 
-.. image:: /_static/images/secrets-and-backing/startup-cs.png
+Locally, in our development environment, we will be using ``dotnet user-secrets`` as our secrets manager.
 
-``SecretController.cs`` is the controller file where our secret is used. You will notice it is stored as a static variable named ``Startup.secret``.
+Dotnet User-Secrets (Local Secrets)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: /_static/images/secrets-and-backing/secretcontroller-cs.png
+Our local secrets manager is ``dotnet user-secrets``. As you can see from by the command this is a tool built into the ``dotnet CLI``.
 
-``appsettings.json`` is the settings file that will contain the information about the Key vault we are connecting to. You will notice a key value pair with the key ``Key vaultName`` and the value is empty. Everyone will need to have a globally unique Key vault name. So we can't fill that for you. After creating our Key vault we will need to enter in our own unique Key vault names.
+Using the ``dotnet user-secrets`` command we can create and manage secrets for each unique project on our local machine. For each project when you create a new secret a new directory is created on your local machine that is located outside of your project root. This directory contains a JSON file that can contain any number of key-value pairs to represent your application secrets. Since all the secrets are separate from your project root there is no possiblity of committing your secrets to git because they are in a completely different location. Another benefit of the secrets being stored as JSON is they can easily be changed either through the ``dotnet user-secrets`` command from the terminal, or by simply editing the JSON file.
 
-.. image:: /_static/images/secrets-and-backing/appsettings-json.png
+.. admonition:: note
 
-.. image:: /_static/images/secrets-and-backing/program-cs.png
+   It is important to remember that each unique .NET project will have it's own directory of secrets contained in a JSON file.
+
+.. sourcecode:: bash
+   :caption: Example dotnet user-secrets usage
+
+   # make sure your CWD is your project root
+   dotnet user-secrets init --id walkthrough-secrets
+   dotnet user-secrets set Name <yourname>
+
+This command would create the key-value pair of {"Name": "<yourname>"} inside of the secrets.json of the secrets directory. We will setup a specific secret for our project in a later step.
+
+Application User-Secrets Integration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You may be wondering how our application knows just which directory contains this project's secret.json file? After all coding is very logical, it stands to reason we must provide our application with the location of our secrets folder. Lucky for us when using the ``dotnet user-secrets`` tool this is done automatically for us by modifying our project's ``api-user-secrets.csproj`` file. Let's take a look at what happened to this file when we created a new secret.
+
+.. sourcecode:: csharp
+   :caption: api-user-secrets.csproj
+   :lineno-start: 1
+   :emphasize-lines: 6
+
+   <?xml version="1.0" encoding="utf-8"?>
+   <Project Sdk="Microsoft.NET.Sdk.Web">
+   <PropertyGroup>
+      <TargetFramework>netcoreapp3.1</TargetFramework>
+      <RootNamespace>api_user_secrets</RootNamespace>
+      <UserSecretsId>walkthrough-secrets</UserSecretsId>
+   </PropertyGroup>
+   <ItemGroup>
+      <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.2" />
+   </ItemGroup>
+   </Project>
+
+When we initialized our user-secrets with the ``--id`` option and the ``walthrough-secrets`` as an argument the ``dotnet user-secrets`` tool automaticaly edited our ``api-user-secrets.csproj`` file to include the XML tag of ``UserSecretsId`` and name of ``walkthrough-secrets``.
+
+It is the ``.csproj`` file that is responsible for integrating our application and our local secrets manager.
+
+Now that our application can access the local secrets manager how can our code access specific secrets?
+
+Accessing Local Secrets
+^^^^^^^^^^^^^^^^^^^^^^^
+
+It's a new file that can gain access to the individual secrets in the local secrets manager. Look at our ``Startup.cs`` file.
+
+.. sourcecode:: csharp
+   :caption: Startup.cs
+   :lineno-start: 1
+   :emphasize-lines: 18,30
+
+   using System;
+   using System.Collections.Generic;
+   using System.Linq;
+   using System.Threading.Tasks;
+   using Microsoft.AspNetCore.Builder;
+   using Microsoft.AspNetCore.Hosting;
+   using Microsoft.AspNetCore.HttpsPolicy;
+   using Microsoft.AspNetCore.Mvc;
+   using Microsoft.Extensions.Configuration;
+   using Microsoft.Extensions.DependencyInjection;
+   using Microsoft.Extensions.Hosting;
+   using Microsoft.Extensions.Logging;
+
+   namespace api_user_secrets
+   {
+      public class Startup
+      {
+         public static string secret;
+         public Startup(IConfiguration configuration)
+         {
+               Configuration = configuration;
+         }
+
+         public IConfiguration Configuration { get; }
+
+         // This method gets called by the runtime. Use this method to add services to the container.
+         public void ConfigureServices(IServiceCollection services)
+         {
+               //accessing the Environment variables that .NET has loaded for us in Configuration
+               secret = Configuration["Name"];
+               services.AddSingleton<IConfiguration>(Configuration);
+               services.AddControllers();
+         }
+
+         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+         {
+               if (env.IsDevelopment())
+               {
+                  app.UseDeveloperExceptionPage();
+               }
+
+               app.UseHttpsRedirection();
+
+               app.UseRouting();
+
+               app.UseAuthorization();
+
+               app.UseEndpoints(endpoints =>
+               {
+                  endpoints.MapControllers();
+               });
+         }
+      }
+   }
+
+Looking at this file lines 18 and 30 are highlighted. On line 18 we are declaring a new public static variable. Public means it's available to classes outside of the Startup class. Static means an object doesn't have to be instantiated to access this property. So this ``Startup.secret`` variable will be available to any of our files.
+
+Line 30 sets the value of the ``Startup.secret`` variable to whatever value is contained in ``Configuration["Name"]``. That happends to be the key we used for our secret. When using ``dotnet user-secrets`` and having a properly configured ``.csproj`` file our .NET application will automatically load all of our user secrets into the Configuration variable. This allows us to access any of our secrets inside of this variable! Line 30 is simply assinging this secret to a variable that can be used outside of the Startup class.
+
+Out ``Startup.cs`` file simply makes the secret available to other files, where are we actually using our secret?
+
+Controller Using Startup.secret
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Check out our lone controller file ``SecretController.cs``.
+
+.. sourcecode:: csharp
+   :caption: SecretController.cs
+   :lineno-start: 1
+   :emphasize-lines: 25
+
+   using System;
+   using System.Collections.Generic;
+   using System.Linq;
+   using System.Threading.Tasks;
+   using Microsoft.AspNetCore.Mvc;
+   using Microsoft.Extensions.Logging;
+
+   namespace api_user_secrets.Controllers
+   {
+      [ApiController]
+      [Route("[controller]")]
+      public class SecretController : ControllerBase
+      {
+         
+         private readonly ILogger<SecretController> _logger;
+
+         public SecretController(ILogger<SecretController> logger)
+         {
+               _logger = logger;
+         }
+
+         [HttpGet]
+         public IEnumerable<string> Get()
+         {
+               return new string[] { Startup.secret };
+         }
+      }
+   }
+
+In our controller file there is one route for HTTP GET requests, it returns ``Startup.secret``. It's simply dumping out whatever value was paired with our ``Name`` key. 
+
+In this case our secret isn't very sensitive. It's simply our first name. However, the process is representive of how you can manage secrets locally. Typically your name wouldn't be considered senesitive data, but many things are sensitive like: API Keys, SSH Keys, VM names, DB connection information, IP addresses, passwords, etc.
+
+
+Remote: How it Works
+--------------------
+
+It would be a pain to configure dotnet user-secrets for every VM that may run our project, luckily MS provides us with a different way to manage user secrets in a way that is much more scalable. Enter Azure Key vault. 
+
+Azure Key vault is a secrets manager with the same responsiblities as dotnet user-secrets, however since it lives in the cloud it can be accessed by any application that has internet access. So instead of configuring each VM to use their own local secrets manager, why don't we setup one global secrets manager that any VM that has authorization can access? That's what we will do with Azure Key vault! 
+
+Before we can do this we need to configure our application to know when to use a local secrets manager, and when to use a remote secrets manager.
+
+Application Environments
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+We have run into a dilemma. We want to use our local secrets manager when we are coding our project, but want to use our remote secrets manager when we deploy our application. We will need to introduce some logic into our application that will allow it to use our local secrets manager when it detects a development environment, and allow it to use a remote secrets manager when it detects a production environment.
+
+Let's take a look at the ``Program.cs`` file.
+
+.. sourcecode:: csharp
+   :caption: Program.cs
+   :lineno-start: 1
+   :emphasize-lines: 22
+
+   using Microsoft.AspNetCore.Hosting;
+   using Microsoft.Extensions.Configuration;
+   using Microsoft.Extensions.Hosting;
+   using Microsoft.Azure.KeyVault;
+   using Microsoft.Azure.Services.AppAuthentication;
+   using Microsoft.Extensions.Configuration.AzureKeyVault;
+
+   namespace api_user_secrets
+   {
+      public class Program
+      {
+         public static void Main(string[] args)
+         {
+               CreateHostBuilder(args).Build().Run();
+         }
+
+         public static IHostBuilder CreateHostBuilder(string[] args) {
+         return Host.CreateDefaultBuilder(args)
+         .ConfigureAppConfiguration(
+            (context, config) => {
+               // if not in Production environment (dotnet run) don't setup KeyVault and use the default Secret Storage managed through dotnet user-secrets
+               if (!context.HostingEnvironment.IsProduction()) return;
+               
+               // if in Production environment (dotnet publish) setup KeyVault -- pull the KeyVault name from appsettings.json
+
+               var builtConfig = config.Build();
+
+               var azureServiceTokenProvider = new AzureServiceTokenProvider();
+               var keyVaultClient = new KeyVaultClient(
+               new KeyVaultClient.AuthenticationCallback(
+                  azureServiceTokenProvider.KeyVaultTokenCallback
+               )
+               );
+
+               config.AddAzureKeyVault(
+               $"https://{builtConfig["KeyVaultName"]}.vault.azure.net/",
+               keyVaultClient,
+               new DefaultKeyVaultSecretManager()
+               );
+            }
+         )
+         .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+         }
+      }
+   }
+
+Line 22 is a conditional statement. There are some comments explaining the different logical paths, but essentially the first path is that for a development environment that does nothing special and uses the default enabled ``dotnet user-secrets``. The second path that is for a production environment has some code that connects to an Azure Key vault and overrides ``DefaultKeyVaultSecretManager()`` to use the remote secrets manager.
+
+That still leads to the question: How does our application know which Key vault to use?
+
+Application Key vault Integration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You may have noticed in the ``Program.cs`` file it is trying to access ``KeyVaultName`` from the ``builtConfig`` on line 36. This references the ``appsettings.json`` file. Let's take a look at this file.
+
+.. sourcecode:: csharp
+   :caption: appsettings.json
+   :lineno-start: 1
+   :emphasize-lines: 10
+
+   {
+   "Logging": {
+      "LogLevel": {
+         "Default": "Information",
+         "Microsoft": "Warning",
+         "Microsoft.Hosting.Lifetime": "Information"
+      }
+   },
+   "AllowedHosts": "*",
+   "KeyVaultName": ""
+   }
+
+You will notice there is an empty key-value pair with the key ``KeyVaultName``. After we setup an Azure Key vault we will have to provide it's name as the value to this pair.
+
+Bringing it Together
+--------------------
 
 Before we make any changes to our code let's go ahead and run our project locally to see how it works.
 
@@ -43,7 +300,7 @@ Change into the directory you just cloned ``/dotnet-user-secrets-az-keyvault``. 
 
 Then navigate to `<https://localhost:5001/secret>`_.
 
-You should see a line that says ``null``. This is what we expect for now because we haven't yet configured one of our secrets managers, we will do that in the next step.
+You should see a line that says ``null``. This is what we expect for now because we haven't yet configured one of our secrets managers, we will do so in the following sections.
 
 .. image:: /_static/images/secrets-and-backing/no-user-secrets.png
 
@@ -233,7 +490,22 @@ Open ``appsettings.json`` with your editor of choice (Visual Studio, Visual Stud
 
 You will see a key-value pair with the key being ``KeyVaultName`` for the value enter the Key vault name you created in this walkthrough.
 
-.. image:: /_static/images/secrets-and-backing/edit-appsettings-json.png
+.. sourcecode:: csharp
+   :caption: appsettings.json
+   :lineno-start: 1
+   :emphasize-lines: 10
+
+   {
+   "Logging": {
+      "LogLevel": {
+         "Default": "Information",
+         "Microsoft": "Warning",
+         "Microsoft.Hosting.Lifetime": "Information"
+      }
+   },
+   "AllowedHosts": "*",
+   "KeyVaultName": "paul-kv-secrets"
+   }
 
 Now that we have made changes to this file, make sure to save your changes and then push these changes up to your repo. We will be pulling this repository from our VM, and we need it to have the change we just made so it can access our Key vault!
 
