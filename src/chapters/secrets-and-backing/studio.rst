@@ -17,21 +17,33 @@ RG
 VM
 --
 
+.. note::
+
+   Your VM will need to access a Key vault so make sure when you create the VM you set ``System assigned managed identity`` to ``On``! Also make sure you set the ``Authentication Type`` to ``Password`` and you create a username of ``student``.
+
 setup & dependencies
 
 MySQL docker container script
 
 MySQL setup script
 
+Configure Network Security Groups
+
 KeyVault
 --------
+
+create
+
+add connection string as secret
+
+grant VM access to KV through access policy
 
 Update Source Code
 ==================
 
 Pull down the source code and make the changes so that your project points to your Azure KeyVault.
 
-Push your code to a new Github repository.
+Push your code to a new Github repository under your control.
 
 Pull down your code from your VM.
 
