@@ -153,6 +153,12 @@ You can use the ``--distribution`` option followed by the name of the VM's distr
 
 The same concept of using the BASH ``exit`` command applies but will now return you to the PowerShell Terminal instead of closing the Ubuntu Terminal application.
 
+.. admonition:: note
+
+   When entering BASH through PowerShell rather than the Ubuntu taskbar icon it will open to a different starting directory like ``/mnt/c/Users/<username>``. This is *not the home directory* but is a default when entering through PowerShell.
+
+   This behavior can be changed by creating a ``.bash_profile`` file. You can read more about it `in this article <https://www.thegeekdiary.com/what-is-the-purpose-of-bash_profile-file-under-user-home-directory-in-linux/>`_ but it falls outside of the scope of this class. 
+
 Shutting down a VM
 ------------------
 
