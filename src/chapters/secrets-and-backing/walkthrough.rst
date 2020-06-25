@@ -37,7 +37,15 @@ There are three files we are interested in. Let's take a look at them.
 
 Before we make any changes to our code let's go ahead and run our project locally to see how it works.
 
-Change into the directory you just cloned ``/dotnet-user-secrets-az-keyvault``. Go ahead and run your application with ``dotnet run`` and then navigate to ``http://localhost:8000/secret``.
+Change into the directory you just cloned ``/dotnet-user-secrets-az-keyvault``. Then run
+
+.. sourcecode:: bash
+
+   dotnet run
+
+.. image:: /_static/images/secrets-and-backing/dotnet-run-local.png
+
+Then navigate to `<https://localhost:5001/secret>`_.
 
 You should see a line that says ``null``. This is what we expect for now because we haven't yet configured one of our secret managers, we will do that in the next step.
 
@@ -72,8 +80,12 @@ This creates a new user secret for your project with the key value pair of "name
 
 Our app is now accessing our user secret and it is being displayed in our running webapp!
 
-However, we are going to change ``yourname`` to your actual name. We can achieve this by overwriting the old user secret. ``dotnet user-secrets set name **yourname**``.
+However, we are going to change ``yourname`` to your actual name. We can achieve this by overwriting the old user secret. 
 
+.. sourcecode:: bash
+
+   dotnet user-secrets set name <yourname>
+   
 .. image:: /_static/images/secrets-and-backing/paul-user-secret.png
 
 Using dotnet user-secrets is a way to keep sensitive data safe from your application, and keep yourself from accidently committing your secrets to Version Control (like git).
@@ -108,9 +120,21 @@ You are probably starting to get the hang of provisioning VMs. Refer to the foll
 
 .. image:: /_static/images/secrets-and-backing/provision-vm2.png
 
+Make sure to select the correct image, change the Authentication Type to Password, and create a username ``student`` and password ``LaunchCode-@zure1``.
+
 .. image:: /_static/images/secrets-and-backing/provision-vm3.png
 
+As one additional step to previous VM provisioning we will need to change the ``System assigned managed identity`` to ``On``. You will find this option in the ``Management`` section of the VM creation wizard.
+
+.. image:: /_static/images/secrets-and-backing/provision-vm-system-identity.png
+
+Allowing ``System assigned managed identity`` allows the VM to search for other Azure resources like the Key vault we will be setting up soon!
+
 .. image:: /_static/images/secrets-and-backing/provision-vm4.png
+
+.. warning::
+
+   If you didn't change the Authentication Type to Password, and create a User name ``student`` you will run into issues later when trying to perform RunCommands. If you didn't change ``System assigned managed identity`` from ``Off`` to ``On`` you will have issues when your VM attempts to access the Key vault.
 
 After provisioning your VM move on to the next step.
 
@@ -224,6 +248,10 @@ After spinning up your VM inside a new Resource Group we will need to install th
 
 Remeber to run these bash commands you will need to go to your VM, and under Operations select RunCommand, and then select RunShellScript to access the RunCommand console.
 
+.. note::
+
+   Remember that using the RunCommand will take some time so after you hit ``Run`` give it a few minutes. This first RunCommand will take the longest as it's downloading and installing the dotnet CLI.
+
 .. sourcecode:: bash
 
    wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
@@ -253,7 +281,7 @@ After you have successfully installed dotnet move on to the next step.
 Get Source Code
 ===============
 
-The project we want to deploy is the same repository you created on GitHub just a couple of steps ago. You need to deploy the project on your repository since it contains the source code that references your unique Key vault. Once you have the URL for that repository you will need to replace the URL in the following source code block with the URL to your repository.
+The project we want to deploy is the same repository that we forked earlier. You need to deploy the project on your repository since it contains the source code that references your unique Key vault. Once you have the URL for that repository you will need to replace the URL in the following source code block with the URL to your repository.
 
 Clone it to your Virtual Machine with the following bash commands in the RunCommand section of the Azure Portal making sure to replace ``<YOURUSERNAME>`` with your actual GitHub repo URL:
 
@@ -278,6 +306,21 @@ You should see a new folder named ``dotnet-user-secrets-az-keyvault`` which will
 .. image:: /_static/images/secrets-and-backing/vm-clone.png
 
 Once you see ``dotnet-user-secrets-az-keyvault`` in the STDOUT section of your run command move on.
+
+VM Security Groups
+==================
+
+Before we deploy our application let's open our NSGs.
+
+From the VM select ``Networking`` under the Settings section.
+
+.. image:: /_static/images/secrets-and-backing/vm-nsg1.png
+
+Add new inbound and outbound rules for port 80.
+
+.. image:: /_static/images/secrets-and-backing/vm-nsg2.png
+
+.. image:: /_static/images/secrets-and-backing/vm-nsg3.png
 
 Publish
 =======
@@ -311,7 +354,10 @@ Deploy
    cd /home/student/dotnet-user-secrets-az-keyvault
    ASPNETCORE_URLS="http://*:80" ./bin/Release/netcoreapp3.1/linux-x64/publish/api-user-secrets
 
+This publish step will look like it's stuck if it's successful becuase the process attached itself to the running application. Just like the picture below.
+
 .. image:: /_static/images/secrets-and-backing/dotnet-deploy.png
 
-VM Security Groups
-==================
+However, if it looks hung, and you've opened your NSG for this VM you can access the running app by going to ``http://<YOURVMIP>/secret``.
+
+.. image:: /_static/images/secrets-and-backing/final-app.png
