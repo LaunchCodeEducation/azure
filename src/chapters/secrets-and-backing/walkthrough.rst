@@ -30,25 +30,33 @@ Dotnet User-Secrets (Local Secrets)
 
 Our local secrets manager is ``dotnet user-secrets``. As you can see from by the command this is a tool built into the ``dotnet CLI``.
 
-Using the ``dotnet user-secrets`` command we can create and manage secrets for each unique project on our local machine. For each project when you create a new secret a new directory is created on your local machine that is located outside of your project root. This directory contains a JSON file that can contain any number of key-value pairs to represent your application secrets. Since all the secrets are separate from your project root there is no possiblity of committing your secrets to git because they are in a completely different location. Another benefit of the secrets being stored as JSON is they can easily be changed either through the ``dotnet user-secrets`` command from the terminal, or by simply editing the JSON file.
+Using the ``dotnet user-secrets`` command we can create a secrets store. Each secrets store is unique to a .NET project. A secrets store is a directory on your local machine that the user-secrets manager creates to store your secrets. The secrets store directory is located separate from your project directory which means there is no chance it will be committed to git. Once a secrets store has been initialized in a project you can add and manage secrets using the ``dotnet user-secrets`` tool. Secrets are saved as key-value pairs within the secrets store.
 
-.. admonition:: note
+There are two commands we will be using:
 
-   It is important to remember that each unique .NET project will have it's own directory of secrets contained in a JSON file.
+- ``init``: intializes a new secrets store for the project
+- ``set``:  creates, or updates, a secret within the secrets store
+
+To work with a secrets store you should first navigate to the project directory.
 
 .. sourcecode:: bash
-   :caption: Example dotnet user-secrets usage
+   :caption: Initialize a secrets store
 
-   # make sure your CWD is your project root
+   cd dotnet-user-secrets-az-keyvault
    dotnet user-secrets init --id walkthrough-secrets
    dotnet user-secrets set Name <yourname>
 
-This command would create the key-value pair of {"Name": "<yourname>"} inside of the secrets.json of the secrets directory. We will setup a specific secret for our project in a later step.
+Once you have intialized your project's secrets store you can create a new secret with ``set``. The ``set`` command takes two arguments the first is the key, and the second argument is the value. For our project we will need a secret with a key of ``Name`` and a value of your first name.
+
+.. sourcecode:: bash
+
+   # make sure to do this within your project directory
+   dotnet user-secrets set Name <yourname>
 
 Application User-Secrets Integration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You may be wondering how our application knows just which directory contains this project's secret.json file? After all coding is very logical, it stands to reason we must provide our application with the location of our secrets folder. Lucky for us when using the ``dotnet user-secrets`` tool this is done automatically for us by modifying our project's ``api-user-secrets.csproj`` file. Let's take a look at what happened to this file when we created a new secret.
+You may be wondering how our application will know where to find the secrets store? We must provide our application with the id of our secrets store for it to be recognized. When we used ``dotnet user-secrets init`` the id we provided was registered in our ``api-user-secrets.csproj`` file automatically. 
 
 .. sourcecode:: csharp
    :caption: api-user-secrets.csproj
@@ -68,16 +76,12 @@ You may be wondering how our application knows just which directory contains thi
    </ItemGroup>
    </Project>
 
-When we initialized our user-secrets with the ``--id`` option and the ``walthrough-secrets`` as an argument the ``dotnet user-secrets`` tool automaticaly edited our ``api-user-secrets.csproj`` file to include the XML tag of ``UserSecretsId`` and name of ``walkthrough-secrets``.
+It is this entry in the ``.csproj`` file that is responsible for integrating our application and our local secrets manager. 
 
-It is the ``.csproj`` file that is responsible for integrating our application and our local secrets manager.
+Accessing the Secrets Store
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now that our application can access the local secrets manager how can our code access specific secrets?
-
-Accessing Local Secrets
-^^^^^^^^^^^^^^^^^^^^^^^
-
-It's a new file that can gain access to the individual secrets in the local secrets manager. Look at our ``Startup.cs`` file.
+Now that our application can access the secrets store how can our code access specific secrets? Let's take a look at our ``Startup.cs`` file to find out.
 
 .. sourcecode:: csharp
    :caption: Startup.cs
@@ -140,16 +144,16 @@ It's a new file that can gain access to the individual secrets in the local secr
       }
    }
 
-Looking at this file lines 18 and 30 are highlighted. On line 18 we are declaring a new public static variable. Public means it's available to classes outside of the Startup class. Static means an object doesn't have to be instantiated to access this property. So this ``Startup.secret`` variable will be available to any of our files.
+On line 18 we are declaring a new public static variable. Public means it's available to classes outside of the Startup class. Static means an object doesn't have to be instantiated to access this property. So this ``Startup.secret`` variable will be available to any of our files.
 
-Line 30 sets the value of the ``Startup.secret`` variable to whatever value is contained in ``Configuration["Name"]``. That happends to be the key we used for our secret. When using ``dotnet user-secrets`` and having a properly configured ``.csproj`` file our .NET application will automatically load all of our user secrets into the Configuration variable. This allows us to access any of our secrets inside of this variable! Line 30 is simply assinging this secret to a variable that can be used outside of the Startup class.
+When a secrets store is registered in a project its secrets will be automatically loaded into the ``Configuration`` object. We can access a specific secret by its key. Line 30 assigns the value of the secret ``Name`` to the static field ``Startup.secret``.
 
-Out ``Startup.cs`` file simply makes the secret available to other files, where are we actually using our secret?
+This static field allows any of the other files in our project to access the secret's value.
 
-Controller Using Startup.secret
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Using the Secret
+^^^^^^^^^^^^^^^^
 
-Check out our lone controller file ``SecretController.cs``.
+Where are we actually using our secret? Check out our lone controller file ``SecretController.cs``.
 
 .. sourcecode:: csharp
    :caption: SecretController.cs
@@ -185,9 +189,9 @@ Check out our lone controller file ``SecretController.cs``.
       }
    }
 
-In our controller file there is one route for HTTP GET requests, it returns ``Startup.secret``. It's simply dumping out whatever value was paired with our ``Name`` key. 
+In our controller file there is one route for HTTP GET request ``/secret``. This handler returns the value of the secret stored in the ``Startup.secret`` static field.
 
-In this case our secret isn't very sensitive. It's simply our first name. However, the process is representive of how you can manage secrets locally. Typically your name wouldn't be considered senesitive data, but many things are sensitive like: API Keys, SSH Keys, VM names, DB connection information, IP addresses, passwords, etc.
+In this case our secret isn't very sensitive. However, this process is representative of how you can use secrets in a project. Typically your name wouldn't be considered senesitive data, but many things are sensitive like a database connection string that includes a username and password.
 
 
 Remote: How it Works
