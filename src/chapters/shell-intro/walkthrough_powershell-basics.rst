@@ -67,11 +67,47 @@ PowerShell Cmdlet Equivalents
 Get CWD
 ^^^^^^^
 
+In PowerShell you can either use the BASH alias:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > pwd
+   # C:\Users\<username>
+
+Or its underlying cmdlet, ``Get-Location``:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Get-Location
+   # C:\Users\<username>
+
 Change directory
 ^^^^^^^^^^^^^^^^
 
 List directory contents
 ^^^^^^^^^^^^^^^^^^^^^^^
+
+In PowerShell you can either use the BASH alias:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > pwd
+   # C:\Users\<username>
+
+Or its underlying cmdlet, ``Get-Location``:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Get-Location
+   # C:\Users\<username>
+
+The ``Get-Contents`` cmdlet has the following options:
+
+- 
 
 Create a directory or file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -149,7 +185,23 @@ Objects
 =======
 
 - everything is an object
+
+Properties & Methods
+--------------------
+
 - dot notation access
+
+Access a property
+^^^^^^^^^^^^^^^^^
+
+Call a method
+^^^^^^^^^^^^^
+
+Grouping Expression Operator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Chaining Methods & Properties
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Properties
 ----------
