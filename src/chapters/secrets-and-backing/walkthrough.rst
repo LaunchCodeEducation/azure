@@ -213,7 +213,7 @@ The logic for this needs to occur at the entry point of .NET applications, ``Pro
 .. sourcecode:: csharp
    :caption: Program.cs
    :lineno-start: 1
-   :emphasize-lines: 22
+   :emphasize-lines: 24
 
    using Microsoft.AspNetCore.Hosting;
    using Microsoft.Extensions.Configuration;
@@ -231,35 +231,38 @@ The logic for this needs to occur at the entry point of .NET applications, ``Pro
                CreateHostBuilder(args).Build().Run();
          }
 
-         public static IHostBuilder CreateHostBuilder(string[] args) {
-         return Host.CreateDefaultBuilder(args)
-         .ConfigureAppConfiguration(
-            (context, config) => {
-               // if not in Production environment (dotnet run) don't setup KeyVault and use the default Secret Storage managed through dotnet user-secrets
-               if (!context.HostingEnvironment.IsProduction()) return;
-               
-               // if in Production environment (dotnet publish) setup KeyVault -- pull the KeyVault name from appsettings.json
+         public static IHostBuilder CreateHostBuilder(string[] args)
+         {
+         
+            return Host.CreateDefaultBuilder(args)
+               .ConfigureAppConfiguration(
+                  (context, config) => {
+                     // if not in Production environment (dotnet run) don't setup KeyVault and use the default Secret Storage managed through dotnet user-secrets
+                     if (!context.HostingEnvironment.IsProduction()) return;
+                     
+                     // if in Production environment (dotnet publish) setup KeyVault -- pull the KeyVault name from appsettings.json
 
-               var builtConfig = config.Build();
+                     var builtConfig = config.Build();
 
-               var azureServiceTokenProvider = new AzureServiceTokenProvider();
-               var keyVaultClient = new KeyVaultClient(
-               new KeyVaultClient.AuthenticationCallback(
-                  azureServiceTokenProvider.KeyVaultTokenCallback
+                     var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                     var keyVaultClient = new KeyVaultClient(
+                        new KeyVaultClient.AuthenticationCallback(
+                           azureServiceTokenProvider.KeyVaultTokenCallback
+                        )
+                     );
+
+                     config.AddAzureKeyVault(
+                        "https://{builtConfig["KeyVaultName"]}.vault.azure.net/",
+                        keyVaultClient,
+                        new DefaultKeyVaultSecretManager()
+                     );
+                  }
                )
-               );
-
-               config.AddAzureKeyVault(
-               $"https://{builtConfig["KeyVaultName"]}.vault.azure.net/",
-               keyVaultClient,
-               new DefaultKeyVaultSecretManager()
-               );
-            }
-         )
-         .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+               .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
          }
       }
    }
+
 
 Line 22 is a conditional statement. There are some comments explaining the different logical paths, but essentially the first path is that for a development environment that does nothing special and uses the default enabled ``dotnet user-secrets``. The second path that is for a production environment has some code that connects to an Azure Key vault and overrides ``DefaultKeyVaultSecretManager()`` to use the remote secrets manager.
 
