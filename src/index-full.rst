@@ -6,6 +6,7 @@ Chapters
    :maxdepth: 2
    :name: fulltoc
 
+   chapters/shell-intro/index
    chapters/azure-intro/index
    chapters/web-apis/index
    chapters/secrets-and-backing/index
