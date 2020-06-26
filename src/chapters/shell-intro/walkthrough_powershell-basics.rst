@@ -540,12 +540,35 @@ Essentially the group is treated as the resultant object where dot notation can 
 Call a method
 ^^^^^^^^^^^^^
 
-- getType()
-- specific to each object type
-- can discover through online documentation...or
+We can invoke a PowerShell method the same way we invoke a method in any objected oriented programming language by using dot notation. In PowerShell you can call any method that is associated with an object directly from the PowerShell terminal.
+
+In the following example we will access the ``getType()`` method attached to a ``String`` object.
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > "hello world".getType()
+
+ Not every object has the same methods, so not every method will be available for every object. You can use ``Get-Help`` or online documentation to discover an objects properties and methods, or we can utilize some of our new-found PowerShell skills to discover them for any given object.
 
 Discovering methods and properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following example will show how to access the properties and methods of any given object in PowerShell.
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Get-Member -InputObject <object>
+
+Let's use this pattern to view the available properties and methods of a common ``String`` object.
+
+.. sourcecode:: powershell
+   :caption: Windows/Powershell
+
+   > Get-Member -InputObject "a-string"
+
+Looking at the output we can see many things including a property name ``length`` and the handy ``String`` methods ``Split()``, ``Substring()``, ``IndexOf()`` and much more.
 
 While a property like 
 
