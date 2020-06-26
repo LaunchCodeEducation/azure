@@ -2,7 +2,7 @@
 Walkthrough: Hands-On With PowerShell
 =====================================
 
-By now you have experienced that after learning a programming language it is easier to learn others. The same is true for Shell languages but with the added overhead of a new mental model for working from the command-line. Now that you have learned some fundamental Shell and BASH syntax you are ready to learn about PowerShell. Because many PowerShell features and behaviors were inspired by BASH you will find that much of the knowledge you gained will be applicable to this new material.
+Now that you have learned some fundamental Shell and BASH syntax you are ready to learn about PowerShell. Because many PowerShell features and behaviors were inspired by BASH you will find that much of the knowledge you gained will be applicable to this new material.
 
 Working with PowerShell
 =======================
@@ -18,6 +18,7 @@ File System Paths
 Windows treats each of its **drives** (devices managed by the OS) as independent file system trees. Each drive has a name and ends with a ``:`` character, like ``C:`` or ``D:``. The ``C:`` drive is your disk drive and serves as the default installation location of the Windows OS. For this reason the ``C:`` drive is typically considered the root directory.
 
 - paths are separated by back-slashes (``\``)
+- file and directory names are not case-sensitive
 - the ``C:\`` directory is used as the root directory for absolute paths 
 
 Framework Interpretation
@@ -28,7 +29,7 @@ The .NET framework is used to interpret and translate PowerShell commands for th
 Everything is an object
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Since Windows NT the Windows OS releases have all followed an object-oriented design. By extension, PowerShell treats all of its **inputs and outputs as distinct types of objects**. This departure from the string-based approach of BASH makes working with PowerShell a more *tangible* Shell experience. While PowerShell is still a CLI 
+Since Windows NT the Windows OS releases have all followed an object-oriented design. By extension, PowerShell treats all of its **inputs and outputs as distinct types of objects**. This departure from the string-based approach of BASH makes working with PowerShell a more *tangible* Shell experience.
 
 PowerShell commands and scripts are able to work with a wide range of objects from those provided by the underlying .NET framework to custom-developed types. Like other object-oriented languages PowerShell objects contain properties and methods that make them intuitive to work with.
 
@@ -42,28 +43,36 @@ You can think of a file in Windows like an object whose type is specified by its
 Cmdlets, Functions & Modules
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In PowerShell the commands you use are categorized as either a **cmdlet** or a **function**. Cmdlets are written in C#/.NET and as such must be compiled before they can be used. Functions on the other hand are written in PowerShell itself within a script file. 
+In PowerShell the commands you use are categorized as either a **cmdlet** or a **function**. Cmdlets are written in a .NET supported language (like C#) and as such must be compiled before they can be used. Functions on the other hand are written in PowerShell within a script file. 
 
 **Modules** are collections of cmdlets and functions that share a common theme of use. They are used to bundle together related functionality into a single package that can be shared.   
 
 File System
 ===========
 
-- describe aliases
-- cover cmdlet analogs
+- describe aliases for the essentials
+   - cant use options because of aliases
+- cover cmdlet analogs and options
+   - cd: Set-Path
+- write to file?
 
 diffs
-- ~ and - for quick nav?
-- ..\ and .?
+- ~ and - for quick nav? -> only ~ is valid
+- cmdlets are Verb-Noun
+   - not case-sensitive
+- ..\ and .? -> both valid
 - creating files (notepad?)
 - viewing files (less, cat?)
 
 Getting Help
 ------------
 
-- --help
-- man equiv
+- --help -> not always available, prefer Get-Help
+- man equiv -> Get-Help
+- Get-Help
+   - `-Online`
 - updating help docs
+   - Update-Help
 
 CLI Tools
 =========
@@ -72,6 +81,15 @@ Package Manager
 ---------------
 
 - no sudo, must open as admin
+- unofficial but recognized by microsoft
+   - MS docs link?
+   - must be installed
+- install and set up choco
+   - https://chocolatey.org/install
+- basic choco commands
+   - install
+   - prompt options (-Force?)
+   - update?
 - adding sources https://chocolatey.org/docs/commands-sources
 
 Course Tools Installation
@@ -81,6 +99,29 @@ Course Tools Installation
 - az
 - git
 
+Objects
+=======
+
+- everything is an object
+- .NET https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview
+- custom
+
+show
+- dot notation access
+   - properties
+   - methods
+   - with inline evaluation
+- types
+   - json
+   - strings
+- Cmdlet input / output types
+   - view
+   - configure
+
+out of scope (get links)
+- interacting with .NET objects
+- custom objs
+
 Piping
 ======
 
@@ -89,29 +130,38 @@ Piping
 show
 - convert to / from json
 - convert between common DTs
-- grep equiv
-- sed / awk equiv
+- filter (grep equiv)
+- mutate (sed / awk equiv)
+- read / write file
 
 Scripting
 =========
 
 diffs
 - implicit vs explicit? (is it all implicit because of file exts?)
-- file extension differences (ps, ps1, psm etc)
+   - file extension differences (ps, ps1, psm etc)
 - environment variables as a dict
-- variable scoping 
-- do we need to set path at all?
+   - HomePath
+   - Path
+- variable scoping
+   - environment (system)
+   - user (profile)
+   - process (session)
+      - https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7#changing-environment-variables
 
 show
-- piping examples
-- functions
 - variables
+   - declare and use
+   - variable substitution
+   - command substitution
+- exercise from gist
+   - csv to json
+   - parse logs?
 
 out of scope (get links)
-- interacting with C# / .NET objects
+- writing functions
 - writing cmdlets
 - writing manifests
-- custom objs
 
 
 
