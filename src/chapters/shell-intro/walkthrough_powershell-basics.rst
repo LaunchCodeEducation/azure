@@ -358,30 +358,76 @@ CLI Tools
 Package Manager
 ---------------
 
-- unofficial but recognized by microsoft
-   - MS docs link?
-   - must be installed
+Windows has a pre-installed manager of Windows provided Features which can be installed by Powershell, however for third party tools we will need to install a package manager named ``Choclatey``.
+
+``Chocolatey`` is a non-native, but `Windows recognized package manager <https://devblogs.microsoft.com/commandline/join-us-for-a-hot-cup-o-chocolatey/>`_. Chocolatey's usage is similar to the Ubuntu package manager ``apt``.
+
+Since ``Chocolatey`` is non-native we will need to install ``Chocolatey`` before we can use it.
 
 Install Chocolatey
 ^^^^^^^^^^^^^^^^^^
 
-- install and set up choco
-   - no sudo, must open as admin
-   - https://chocolatey.org/install
+``Chocolatey`` is a recognized and widely used tool and you can find the installation instructions on the `Chocolatey installation article <https://chocolatey.org/install>`_.
+
+We will install ``Chocolatey`` in Powershell, however it will require elevated permissions to download and install. You will need to open a Powershell session *as an administrator* before running the following command.
+
+.. sourcecode:: powershell
+   :caption: Windows/Powershell Administrator
+
+   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+``Chocolatey`` is the full name of the package manager, but the name of the CLI tool is simply ``choco`` we will explore usage in the following sections. 
 
 .. Need Package Choco?!
+
+Getting Help
+^^^^^^^^^^^^
+
+After installing ``Chocolatey`` you can access help with the ``--help`` option.
+
+.. sourcecode:: powershell
+
+   choco --help
+
+An advantage of ``choco`` being well supported you can also find a lot of assistance with the `Chocolatey documentation <https://chocolatey.org/docs>`_.
 
 Install a package
 ^^^^^^^^^^^^^^^^^
 
-- prompt options (-Force?)
+``Chocolatey`` is modeled after many popular Linux package managers like ``apt`` for this reason it's usage is quite similar to ``apt``. The syntax for installing new packages in chocolatey looks familiar:
+
+.. sourcecode:: powershell
+
+   choco install dotnetcore-sdk
+
+``Chocolatey`` also supports a number of options like ``--yes`` or ``-y`` which skips confirmation prompts and automatically downloads and installs the package. To view more options view the `Chocolatey install command documentation <https://chocolatey.org/docs/commands-install>`_.
 
 Upgrade a package
 ^^^^^^^^^^^^^^^^^
 
-- choco upgrade <package> all
-note
-- adding sources https://chocolatey.org/docs/commands-sources
+Upgrading packages in ``Chocolatey`` is again a simple command named ``choco upgrade``.
+
+To upgrade the ``dotnetcore-sdk``:
+
+.. sourcecode:: powershell
+
+   choco upgrade dotnetcore-sdk
+
+``Chocolatey`` also supports upgrading all of the packages it downloaded and installed.
+
+.. sourcecode:: powershell
+
+   choco upgrade all
+
+The ``Chocolatey`` package manager is also responsible for keeping track of package repositories. When you download ``Chocolatey`` for the first time it automatically loads the ``Chocolatey`` hosted sources which contains a lot of common packages. In some instances you may need to install a package that is not a part of the ``Chocolatey`` hosted sources, in this case you would need to add a source.
+
+We will not be adding any sources beyond the default ``Chocolatey`` installation sources, but an example of the usage would follow this pattern:
+
+.. sourcecode:: powershell
+
+   choco source add <source-name>
+
+You can find more information about adding ``Chocolatey`` source by viewing the `Chocolatey sources documentation <https://chocolatey.org/docs/commands-sources>`_.
 
 Course Tools Installation
 -------------------------
