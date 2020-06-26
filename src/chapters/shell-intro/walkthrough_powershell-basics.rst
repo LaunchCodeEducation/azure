@@ -50,24 +50,55 @@ In PowerShell the commands you use are categorized as either a **cmdlet** or a *
 File System
 ===========
 
-- describe aliases for the essentials
-   - cant use options because of aliases
-- cover cmdlet analogs and options
-   - cd: Set-Path
-- write to file?
-
-diffs
+diffs note
 - ~ and - for quick nav? -> only ~ is valid
-- cmdlets are Verb-Noun
+
+Because PowerShell was created after BASH it adopted many of the essential BASH FS commands. However, because the *real* BASH commands are incompatible with Windows they were brought over as **aliases**. An alias is like a nickname for a command. The BASH FS commands are aliases for underlying PowerShell FS cmdlets.
+
+Because these aliases are not the real BASh command not all of their arguments and options are the same in PowerShell. Let's explore the essential cmdlets and common options used in them.
+
+PowerShell Cmdlet Equivalents
+-----------------------------
+
+- cmdlets Verb-Noun naming
    - not case-sensitive
-- ..\ and .? -> both valid
-- creating files (notepad?)
-- viewing files (less, cat?)
+   - declarative
+
+Get CWD
+^^^^^^^
+
+Change directory
+^^^^^^^^^^^^^^^^
+
+List directory contents
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Create a directory or file
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- touch -> New-Item
+
+Move a directory or file
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Copy a directory or file
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Delete a directory or file
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Reading and writing file contents
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- cat -> Get-Content
 
 Getting Help
 ------------
 
+no
 - --help -> not always available, prefer Get-Help
+
+yes
 - man equiv -> Get-Help
 - Get-Help
    - `-Online`
@@ -80,56 +111,103 @@ CLI Tools
 Package Manager
 ---------------
 
-- no sudo, must open as admin
 - unofficial but recognized by microsoft
    - MS docs link?
    - must be installed
+
+Install Chocolatey
+^^^^^^^^^^^^^^^^^^
+
 - install and set up choco
+   - no sudo, must open as admin
    - https://chocolatey.org/install
-- basic choco commands
-   - install
-   - prompt options (-Force?)
-   - update?
+
+.. Need Package Choco?!
+
+Install a package
+^^^^^^^^^^^^^^^^^
+
+- prompt options (-Force?)
+
+Upgrade a package
+^^^^^^^^^^^^^^^^^
+
+- choco upgrade <package> all
+note
 - adding sources https://chocolatey.org/docs/commands-sources
 
 Course Tools Installation
 -------------------------
 
 - dotnet
-- az
+   - should have
+   - if not: dotnetcore-sdk
 - git
+   - choco
 
 Objects
 =======
 
 - everything is an object
-- .NET https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview
-- custom
-
-show
 - dot notation access
-   - properties
-   - methods
-   - with inline evaluation
-- types
-   - json
-   - strings
-- Cmdlet input / output types
-   - view
-   - configure
 
-out of scope (get links)
-- interacting with .NET objects
-- custom objs
+Properties
+----------
+
+Methods
+-------
+
+- .GetType()
+
+Common Data Types
+-----------------
+
+- link to common data types
+- Get-Member to view type
+
+Strings
+^^^^^^^
+
+- single quote (literal)
+- double quote (substitution)
+
+JSON
+^^^^
+
+.Net Objects
+^^^^^^^^^^^^
+- .NET https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview
+
+Custom Objects
+^^^^^^^^^^^^^^
+
+Cmdlet Input & Output Types
+---------------------------
+- view
+- configure
+- segue to piping
+- cmdlets and objects
+   - https://docs.microsoft.com/en-us/dotnet/api/microsoft.powershell.commands?view=powershellsdk-1.1.0 
 
 Piping
 ======
 
 - much more time in this section
 
-show
+Expressions
+-----------
+
+- grouping
+- sub-expression
+- https://ss64.com/ps/syntax-operators.html
+
+Converting Types
+----------------
+
 - convert to / from json
 - convert between common DTs
+
+show
 - filter (grep equiv)
 - mutate (sed / awk equiv)
 - read / write file
