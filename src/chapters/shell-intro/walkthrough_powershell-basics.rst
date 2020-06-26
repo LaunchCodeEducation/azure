@@ -89,11 +89,6 @@ Because these aliases are not *the real BASH command* not all of their arguments
    - ``.\``: relative to *this directory* shorthand
    - ``..\``: *up directory* level shorthand
 
-Output Objects
---------------
-
-Although the outputs look similar to the BASH strings, all of the outputs from PowerShell commands are objects. When working with FS commands the outputs will (most of the time) be `Directory <https://docs.microsoft.com/en-us/dotnet/api/system.io.directory?view=netcore-3.1>`_ or `File <https://docs.microsoft.com/en-us/dotnet/api/system.io.file?view=netcore-3.1>`_ object types. We will discuss working with objects later in this walkthrough.
-
 PowerShell Cmdlet Equivalents
 -----------------------------
 
@@ -358,25 +353,28 @@ CLI Tools
 Package Manager
 ---------------
 
-Windows has a pre-installed manager of Windows provided Features which can be installed by Powershell, however for third party tools we will need to install a package manager named ``Choclatey``.
-
-``Chocolatey`` is a non-native, but `Windows recognized package manager <https://devblogs.microsoft.com/commandline/join-us-for-a-hot-cup-o-chocolatey/>`_. Chocolatey's usage is similar to the Ubuntu package manager ``apt``.
-
-Since ``Chocolatey`` is non-native we will need to install ``Chocolatey`` before we can use it.
+Windows has a pre-installed manager of Features and Services (native Windows applications and tools) which can be accessed through PowerShell. However, for third-party CLI tools we will need to install ``Chocolatey``, an open-source package manager for Windows. ``Chocolatey`` is not a native package manager like Ubuntu's pre-installed ``apt``, but is `recognized by Microsoft in as an industry standard <https://devblogs.microsoft.com/commandline/join-us-for-a-hot-cup-o-chocolatey/>`_. 
 
 Install Chocolatey
 ^^^^^^^^^^^^^^^^^^
 
-``Chocolatey`` is a recognized and widely used tool and you can find the installation instructions on the `Chocolatey installation article <https://chocolatey.org/install>`_.
+You can find the installation instructions on the `Chocolatey installation article <https://chocolatey.org/install>`_.
 
-We will install ``Chocolatey`` in Powershell, however it will require elevated permissions to download and install. You will need to open a Powershell session *as an administrator* before running the following command.
+We will install ``Chocolatey`` using PowerShell, however it will require elevated permissions to download and install. You will need to open a PowerShell session *as an administrator* before running the following command. Recall that you can open in admin mode by right-clicking the taskbar icon for PowerShell and selecting **run as administrator**:
+
+.. image:: /_static/images/cli-shells/powershell-open-as-admin.png
+   :alt: Open PowerShell as administrator from taskbar
+
+Once you have opened PowerShell in admin mode enter the following command:
 
 .. sourcecode:: powershell
-   :caption: Windows/Powershell Administrator
+   :caption: Windows/PowerShell admin mode
 
-   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+   > Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-``Chocolatey`` is the full name of the package manager, but the name of the CLI tool is simply ``choco`` we will explore usage in the following sections. 
+This command is lengthy but in summary it is setting a policy to allow the ``Chocolatey`` installation script to be executed and then downloading it by making a request with the .NET standard library ``WebClient`` object. Once the installation script has been downloaded it will automatically execute and install the package manager for you.
+
+``Chocolatey`` is the full name of the package manager, but the name of the CLI program used in PowerShell is simply ``choco``.
 
 .. Need Package Choco?!
 
@@ -386,21 +384,23 @@ Getting Help
 After installing ``Chocolatey`` you can access help with the ``--help`` option.
 
 .. sourcecode:: powershell
+   :caption: Windows/PowerShell
 
-   choco --help
+   > choco --help
 
-An advantage of ``choco`` being well supported you can also find a lot of assistance with the `Chocolatey documentation <https://chocolatey.org/docs>`_.
+An advantage of ``choco`` being open-source is that you can find a lot of assistance in online forums and the crowd-sourced `Chocolatey documentation <https://chocolatey.org/docs>`_.
 
 Install a package
 ^^^^^^^^^^^^^^^^^
 
-``Chocolatey`` is modeled after many popular Linux package managers like ``apt`` for this reason it's usage is quite similar to ``apt``. The syntax for installing new packages in chocolatey looks familiar:
+``Chocolatey`` is modeled after many popular Linux package managers like ``apt``. For this reason the syntax for chocolatey should look familiar:
 
 .. sourcecode:: powershell
+   :caption: Windows/PowerShell
 
-   choco install dotnetcore-sdk
+   > choco install <package name> -y
 
-``Chocolatey`` also supports a number of options like ``--yes`` or ``-y`` which skips confirmation prompts and automatically downloads and installs the package. To view more options view the `Chocolatey install command documentation <https://chocolatey.org/docs/commands-install>`_.
+``Chocolatey`` also supports a number of options like ``--yes`` or ``-y`` which, like the ``apt`` option, skips confirmation prompts, automatically downloads and installs the package. To view more options view the `Chocolatey install command documentation <https://chocolatey.org/docs/commands-install>`_.
 
 Upgrade a package
 ^^^^^^^^^^^^^^^^^
@@ -410,52 +410,110 @@ Upgrading packages in ``Chocolatey`` is again a simple command named ``choco upg
 To upgrade the ``dotnetcore-sdk``:
 
 .. sourcecode:: powershell
+   :caption: Windows/PowerShell
 
-   choco upgrade dotnetcore-sdk
+   > choco upgrade <package name> -y
 
 ``Chocolatey`` also supports upgrading all of the packages it downloaded and installed.
 
 .. sourcecode:: powershell
+   :caption: Windows/PowerShell
 
-   choco upgrade all
+   > choco upgrade all -y
 
-The ``Chocolatey`` package manager is also responsible for keeping track of package repositories. When you download ``Chocolatey`` for the first time it automatically loads the ``Chocolatey`` hosted sources which contains a lot of common packages. In some instances you may need to install a package that is not a part of the ``Chocolatey`` hosted sources, in this case you would need to add a source.
+Updating sources
+^^^^^^^^^^^^^^^^
 
-We will not be adding any sources beyond the default ``Chocolatey`` installation sources, but an example of the usage would follow this pattern:
+The ``Chocolatey`` package manager is also responsible for keeping track of package repository sources. When you download ``Chocolatey`` for the first time it automatically loads the ``Chocolatey`` trusted sources which host common packages. In some instances you may need to install a package that is not a part of the ``Chocolatey`` hosted sources, in this case you would need to add a custom source.
+
+We will not be adding any sources beyond the default ``Chocolatey`` sources, but an example of the usage would follow this pattern:
 
 .. sourcecode:: powershell
+   :caption: Windows/PowerShell
 
-   choco source add <source-name>
+   > choco add source <source target>
 
-You can find more information about adding ``Chocolatey`` source by viewing the `Chocolatey sources documentation <https://chocolatey.org/docs/commands-sources>`_.
+You can find more information about adding ``Chocolatey`` repository by viewing the `Chocolatey sources documentation <https://chocolatey.org/docs/commands-sources>`_.
 
 Course Tools Installation
 -------------------------
 
-- dotnet
-   - should have
-   - if not: dotnetcore-sdk
-- git
-   - choco
+Two of the CLI tools we will begin using this week are the ``dotnet CLI`` and the ``git`` version control system (VCS). Let's install them now before learning how to use them in the coming days.
+
+.. admonition:: note
+
+   Whenever you install a new CLI tool using ``choco`` you **must exit all PowerShell sessions** before they can be used. You can exit a PowerShell session by entering the ``exit`` command or by closing **all** of the open PowerShell Terminal windows.
+
+Install .NET SDK
+^^^^^^^^^^^^^^^^
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > choco install dotnetcore-sdk-3.1 -y
+
+Don't forget to close and re-open PowerShell before entering the following command to test the installation:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > dotnet --version
+   # dotnet version output
+
+Install Git VCS
+^^^^^^^^^^^^^^^
+
+You likely have been using the **Git BASH** program to access ``git`` and GitHub. What you may not have realized is that Git BASH is a Terminal that emulates basic BASH commands and ``git``. However, now that we are comfortable working from the command-line we can use ``git`` natively within PowerShell and BASH. Let's install ``git`` in PowerShell using ``choco``:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > choco install git -y
+
+After **closing and re-opening** PowerShell you can confirm the installation with the following command:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > git --version
+   # git version output
 
 Objects
 =======
 
-- everything is an object
+The outputs of the FS cmdlets looked just like the strings we saw in BASH. However, recall that *everything is an object* in Windows and PowerShell. All of the outputs from PowerShell commands are in fact objects! 
+
+For example, when working with many of the FS commands, most of the outputs will be `Directory <https://docs.microsoft.com/en-us/dotnet/api/system.io.directory?view=netcore-3.1>`_ or `File <https://docs.microsoft.com/en-us/dotnet/api/system.io.file?view=netcore-3.1>`_ object types. The nature of working with objects instead of basic text strings is tremendous. 
+ 
+Objects are more *tangible* than a flat string of characters and bring a new level of depth and efficiency when working from the command-line. They hold properties for quick-access to metadata and expose methods for common tasks that would require a pipeline of commands to perform in BASH. 
 
 Properties & Methods
 --------------------
 
-- dot notation access
+PowerShell is part of the .NET family of `Common Language System (CLS)-compliant languages <https://docs.microsoft.com/en-us/dotnet/standard/common-type-system>`_ it is able to access the full suite of .NET `class libraries <https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview>`_. 
+
+The .NET standard library is separated into different **namespaces** which are like modules of related classes.  The root namespace called the `System namespace <https://docs.microsoft.com/en-us/dotnet/api/system?view=netcore-3.1>`_ the base class definitions for fundamental object types like ``Strings`` or ``Arrays``.
+
+Because PowerShell and C# are both CLS-compliant languages you will find a lot of cross-over between how they are used. In both languages properties and methods can be accessed in the same way you are familiar with -- using the dot notation.
 
 Access a property
 ^^^^^^^^^^^^^^^^^
 
-Call a method
-^^^^^^^^^^^^^
+Let's consider one of the simplest object types, those belonging to the ``String`` `class <>`_. Strings have a ``length`` property that can be accessed like this:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > "dot notation works!".length
+   19
 
 Grouping Expression Operator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The **grouping expression operator** is a pair of parenthesis that wrap around an expression. After the express
+
+Call a method
+^^^^^^^^^^^^^
 
 Chaining Methods & Properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
