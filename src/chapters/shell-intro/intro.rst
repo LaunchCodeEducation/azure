@@ -58,12 +58,14 @@ Instead, **all inputs and outputs are treated as strings of characters**. While 
 PowerShell
 ----------
 
-PowerShell is a more recent Shell offering created by Microsoft. Whereas BASH was released over 30 years ago, PowerShell was made available in 2006. Because of its more recent development it blended many of the features of BASH with power and modern conveniences. PowerShell is more of a scripting language than a Command Language because it does not communicate directly with the OS like BASH does.
+PowerShell is a more recent Shell offering created by Microsoft. Whereas BASH was released over 30 years ago, PowerShell was made available in 2006. Because of its more recent development it blended many of the features of BASH with power and modern conveniences. 
 
-PowerShell commands are interpreted by the .NET Framework which operates as an additional layer of abstraction `between the Shell commands and the OS <https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet-framework#architecture>`_. Although it was originally designed just for machines running Windows, the latest release of PowerShell Core is a cross-platform tool. PowerShell Core is built on the .NET Core Framework which allows it to integrate 
+However, PowerShell is more of a scripting language than a Command Language because it does not communicate directly with the OS like BASH does.PowerShell commands are interpreted by the .NET Framework which operates as an additional layer of abstraction `between the Shell commands and the OS <https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet-framework#architecture>`_. 
+
+In contrast with Linux, Windows is a more complex and object-oriented operating system. As a result the design of PowerShell is itself object-oriented and **treats all inputs and outputs as objects of distinct types**. PowerShell can access any of the .NET `class libraries <https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview>`_. In addition, PowerShell allows you to extend these classes or implement your own for deeply customizable development.
+
+Although it was originally designed just for machines running Windows, the latest release called PowerShell Core is a cross-platform tool. PowerShell Core is built on the .NET Core Framework which allows it to integrate 
 with all of the modern OS choices like Windows, Linux and OSX. 
-
-In contrast with Linux, Windows is a more complex and Object-Oriented operating system. As a result the design of PowerShell is itself Object-Oriented and **treats all inputs and outputs as objects of distinct types**. PowerShell can use any of the .NET and C# `class libraries <https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview>`_. In addition, PowerShell allows you to extend these classes or implement your own for deeply customizable development.
 
 BASH vs. PowerShell
 -------------------
