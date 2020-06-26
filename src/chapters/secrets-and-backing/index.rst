@@ -6,4 +6,3 @@ Secrets Management & Backing Services
    :maxdepth: 3
 
    walkthrough
-   studio
