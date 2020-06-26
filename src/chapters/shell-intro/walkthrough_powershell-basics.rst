@@ -483,23 +483,23 @@ Objects
 
 The outputs of the FS cmdlets looked just like the strings we saw in BASH. However, recall that *everything is an object* in Windows and PowerShell. All of the outputs from PowerShell commands are in fact objects! 
 
-For example, when working with many of the FS commands, most of the outputs will be `Directory <https://docs.microsoft.com/en-us/dotnet/api/system.io.directory?view=netcore-3.1>`_ or `File <https://docs.microsoft.com/en-us/dotnet/api/system.io.file?view=netcore-3.1>`_ object types. The nature of working with objects instead of basic text strings is tremendous. 
+For example, when working with many of the FS commands, most of the outputs will be `Directory <https://docs.microsoft.com/en-us/dotnet/api/system.io.directory?view=netcore-3.1>`_ or `File <https://docs.microsoft.com/en-us/dotnet/api/system.io.file?view=netcore-3.1>`_ object types.
  
 Objects are more *tangible* than a flat string of characters and bring a new level of depth and efficiency when working from the command-line. They hold properties for quick-access to metadata and expose methods for common tasks that would require a pipeline of commands to perform in BASH. 
 
 Properties & Methods
 --------------------
 
-PowerShell is part of the .NET family of `Common Language System (CLS)-compliant languages <https://docs.microsoft.com/en-us/dotnet/standard/common-type-system>`_ it is able to access the full suite of .NET `class libraries <https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview>`_. 
+PowerShell is part of the .NET family of `CLS-compliant languages <https://docs.microsoft.com/en-us/dotnet/standard/common-type-system>`_. As a member of the Common Language System PowerShell is able to access the full suite of .NET `class libraries <https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview>`_. 
 
-The .NET standard library is separated into different **namespaces** which are like modules of related classes.  The root namespace called the `System namespace <https://docs.microsoft.com/en-us/dotnet/api/system?view=netcore-3.1>`_ the base class definitions for fundamental object types like ``Strings`` or ``Arrays``.
+The .NET standard library is separated into different **namespaces** which are like modules of related classes.  The root namespace called the `System namespace <https://docs.microsoft.com/en-us/dotnet/api/system?view=netcore-3.1>`_ contains the base class definitions for fundamental object types like ``Strings`` or ``Arrays``.
 
-Because PowerShell and C# are both CLS-compliant languages you will find a lot of cross-over between how they are used. In both languages properties and methods can be accessed in the same way you are familiar with -- using the dot notation.
+Because PowerShell and C# are both CLS-compliant languages you will find a lot of cross-over between how they are used. Despite some syntactical differences, in both languages properties and methods can be accessed in the same way you are familiar with -- using dot notation.
 
 Access a property
 ^^^^^^^^^^^^^^^^^
 
-Let's consider one of the simplest object types, those belonging to the ``String`` `class <>`_. Strings have a ``length`` property that can be accessed like this:
+Let's consider one of the simplest object types, those belonging to the ``String`` `class <https://docs.microsoft.com/en-us/dotnet/api/system.string?view=netcore-3.1>`_. Strings have a ``Length`` property that can be accessed like this:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -507,24 +507,68 @@ Let's consider one of the simplest object types, those belonging to the ``String
    > "dot notation works!".length
    19
 
+The equivalent in BASH requires piping through multiple commands:
+
+.. sourcecode:: bash
+   :caption: Linux/BASH
+
+   $ echo "dot notation works!" | wc -l
+
 Grouping Expression Operator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The **grouping expression operator** is a pair of parenthesis that wrap around an expression. After the express
+The **grouping expression operator** is a pair of parenthesis that wrap around a PowerShell expression. It behaves the same as parenthesis that group parts of a mathematical equation. Expressions are evaluated from the innermost groups outwards. 
+
+For example, ``(10 + 10) * 2`` would result in ``40``, while ``10 + 10 * 2`` would result in ``30``. Because the parenthesis group together an expression they are evaluated first before the outer expression of multiplying by ``2``.
+
+Consider a more complex example, ``((10 + 10) * 2) + 5`` would be evaluated in the following steps:
+
+- innermost grouping: ``(10 + 10) = 20``
+- moving outwards to the next grouping: the inner group's value ``(20)`` is substituted to evaluate the next grouping ``((20) * 2) = 40``
+- outermost level: once again the grouping's value ``(40)`` is substituted for the final calculation ``(40) + 5 = 45`` 
+
+The same principle applies to a PowerShell expression within the grouping operators. However, instead of evaluating to *numeric values* what is substituted is *the object output* by the grouped expression. 
+
+Essentially the group is treated as the resultant object where dot notation can be used on the closing parenthesis ``)``. In the following example our grouped expression *adds* (concatenates) two strings together and then evaluates the length of the resultant string output:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > ("hello " + "world").length
+   11
 
 Call a method
 ^^^^^^^^^^^^^
 
+- getType()
+- specific to each object type
+- can discover through online documentation...or
+
+Discovering methods and properties
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+While a property like 
+
+- sometimes properties / methods are intutitive
+- other times you need to look them up per object
+- can look at online or Get-Help docs
+- or can get list of props and methods using Get-Member
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Get-Member -InputObject <object>
+
 Chaining Methods & Properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Properties
-----------
-
-Methods
--------
-
+- (Get-Location).getType().Name -> PathInfo object type
 - .GetType()
+
+Working with JSON
+-----------------
+
+
 
 Common Data Types
 -----------------
@@ -555,6 +599,7 @@ Cmdlet Input & Output Types
 - segue to piping
 - cmdlets and objects
    - https://docs.microsoft.com/en-us/dotnet/api/microsoft.powershell.commands?view=powershellsdk-1.1.0 
+- Get-Member with grouping expression
 
 Piping
 ======
@@ -608,8 +653,11 @@ out of scope (get links)
 - writing cmdlets
 - writing manifests
 
+Learning More
+=============
 
-
+- link to devhints cheatsheet
+- discuss custom objects
 
 
 
