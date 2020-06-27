@@ -695,97 +695,58 @@ Remember no matter how complex an expression looks it can be broken down methodi
 Piping
 ======
 
-- chaining is restricted to a continuous path of aligned objects
-- piping order doesnt matter 
+key points
+- mechanism for multiple steps in a single expression
+- uses output of previous step as input to next step
+- primary argument to cmdlets is the piping input
+   - will not work for other arguments or options
+      - need to use grouped expressions / sub-expressions
+- note: not all cmdlets are compatible
 
-what differentiates?
-- grouping
-- chaining: one continuous statement
-- piping: 
+header for this section: piping in the file system
 
-common
-   - noun to noun
-   - piping and chaining
-      - order matters
-      - l2r order
-uncommon
-   - grouping
-      - inside out order
-      - source is an expression that evaluates to an object
-   - chaining
-      - source is an object
-      - restricted to methods or properties
-   - piping
-      - piping can transform between nouns
-      - multiple cmdlets
-      - Expressions are only allowed as the first element of a pipeline.
+- find a specific file or directory in a get-childitem from root (sorting and filtering) where-object sort-object
+   - show just filtering
+   - show just sorting
+   - show combo filtering then sorting
+- find a specific word in a file as an extension of what they just saw (filtering) where-object file object not a directory object -- conclusion all objects be used
+   - get-childitem -recurse -> files | where-object -> file | get-contents -> lines | where-object -> filtered lines
+   - find in file system
+   - find in file
+   - filter
+- fix all the misspellings of "get him do the dundees" in a file of 10000+ lines as an extension of what they just saw **FIND AND REPLACE IN STDOUT** as a preview
+   - previous examples started with collection outputs
+      - piping can be done on individual objects as well such as a file you want to edit
+   - start with get-contents of file (single object) -> collection of line objects
+   - iterate over lines collection with for-each
+      - introduce $_ (current element)
+      - replace
+   - did not change the file itself
+      - prove
+      - printed as a preview
+      - how can we actually edit the file?
 
-expression: grouping of single cmdlet or pipeline
+Piping Output Destinations
+--------------------------
 
-   
-- 1 cmdlet ().... () + ()
-- 2+ cmdlets cmd | cmd | cmd
+Terminal
+^^^^^^^^
 
-- az vm --something $(expression) 
-- 
+- all of previous commands printed to the Terminal
+- note / link to STD streams
 
-Expressions
------------
+File
+^^^^
 
-- grouping
-- sub-expression
-- https://ss64.com/ps/syntax-operators.html
+- third example bad without modifying the file
+- send destination to the file
+- prove editing success
 
-Working with JSON
------------------
+Final Example
+^^^^^^^^^^^^^
 
-Converting Types
-----------------
+request -> body | 
 
-show
-- convert
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > Get-ChildItem[0] | ConvertTo-Json
-
-
-- convert between common DTs
-- filter (grep equiv)
-- mutate (sed / awk equiv)
-- read / write file
-
-- outputs in tables are Arrays
-
-Scripting
-=========
-
-diffs
-- implicit vs explicit? (is it all implicit because of file exts?)
-   - file extension differences (ps, ps1, psm etc)
-- environment variables as a dict
-   - HomePath
-   - Path
-- variable scoping
-   - environment (system)
-   - user (profile)
-   - process (session)
-      - https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7#changing-environment-variables
-
-show
-- variables
-   - declare and use
-   - variable substitution
-   - command substitution
-- exercise from gist
-   - csv to json
-   - parse logs?
-
-out of scope (get links)
-- writing functions
-- writing cmdlets
-- writing manifests
 
 Learning More
 =============
@@ -795,11 +756,3 @@ links
 - devhints cheatsheet
 - 
 - custom objects
-
-
-
-
-
-
-
-
