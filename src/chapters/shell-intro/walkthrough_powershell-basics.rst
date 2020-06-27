@@ -709,11 +709,18 @@ header for this section: piping in the file system
    - show just filtering
    - show just sorting
    - show combo filtering then sorting
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   get-childItem | where-object -Property Name -eq "bin"
+
 - find a specific word in a file as an extension of what they just saw (filtering) where-object file object not a directory object -- conclusion all objects be used
    - get-childitem -recurse -> files | where-object -> file | get-contents -> lines | where-object -> filtered lines
    - find in file system
    - find in file
    - filter
+
 - fix all the misspellings of "get him do the dundees" in a file of 10000+ lines as an extension of what they just saw **FIND AND REPLACE IN STDOUT** as a preview
    - previous examples started with collection outputs
       - piping can be done on individual objects as well such as a file you want to edit
@@ -725,6 +732,14 @@ header for this section: piping in the file system
       - prove
       - printed as a preview
       - how can we actually edit the file?
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   (Get-Content -Path .\Notice.txt) |
+      ForEach-Object {$_ -Replace 'Warning', 'Caution'} |
+         Set-Content -Path .\Notice.txt
+   Get-Content -Path .\Notice.txt
 
 Piping Output Destinations
 --------------------------
