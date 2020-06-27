@@ -58,7 +58,7 @@ For example the cmdlets ``Get-Location`` and ``Set-Location`` both operate on yo
 
 .. admonition:: note
 
-   Cmdlets, like the rest of the Windows FS, are **not** case-sensitive. Neither are there arguments or options. Take ``Get-Location`` for example, you can use it just the same ``get-location``.
+   Cmdlets, like the rest of the Windows FS, are **not** case-sensitive. Neither are their arguments or options. Take ``Get-Location`` for example, you can use it just the same ``get-location``.
    
 One notable difference from BASH commands is that **options** are all written in long form (no single-letter shorthands) and use a single dash (``-``). For example the ``Get-Help`` cmdlet has an ``-Online`` option that will open the help documentation in your browser:
 
@@ -317,19 +317,19 @@ Getting Help
 
 PowerShell have many options -- we have only covered the most commonly used ones here. Many of the tasks that would require piping together multiple commands together in BASH can be accomplished using a single cmdlet and its associated options. 
 
-While the ``--help`` option is available for *some* CLI tools that we will use in the class, the primary mode of viewing documentation uses the ``Get-Help`` cmdlet. The ``Get-Help`` cmdlet uses a cmdlet name as its argument:
+While the ``--help`` option is available for *some* CLI tools that we will use in the class, the primary mode of viewing documentation uses the ``Get-Help`` cmdlet. 
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   > Get-Help <cmdlet name to get help for>
+   > Get-Help <cmdlet name>
 
-Get-Help by default will display the documentation for the given cmdlet directly in the PowerShell Terminal. However, using the ``-Online`` option will automatically open your browser to the online documentation:
+Get-Help by default will display the *summary documentation* for the given cmdlet directly in the PowerShell Terminal. To view the *full documentation* for a cmdlet you can add the ``-Full`` option:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   > Get-help <cmdlet name> -Online
+   > Get-Help <cmdlet name> -Full
 
 Another useful option for ``Get-Help`` is ``-Examples`` which will provide practical examples of using the cmdlet:
 
@@ -338,7 +338,19 @@ Another useful option for ``Get-Help`` is ``-Examples`` which will provide pract
 
    > Get-help <cmdlet name> -Examples
 
-PowerShell keeps commonly used documentation locally on your machine so it can be accessed more quickly and even offline. In some cases you will need to update your *local* documentation cache. You can update the local help documentation using the ``Update-Help`` cmdlet. 
+.. admonition:: note
+
+   If you prefer to use the browser, using the ``-Online`` option will automatically open your browser to the *full documentation*:
+
+   .. sourcecode:: powershell
+      :caption: Windows/PowerShell
+
+      > Get-help <cmdlet name> -Online
+
+Updating help documentation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+PowerShell keeps commonly used documentation locally on your machine so it can be accessed more quickly and offline. In some cases you will need to update your *local* documentation cache. You can update the local help documentation using the ``Update-Help`` cmdlet. 
 
 You can append the ``-Confirm`` option to auto-confirm the download and skip the prompt:
 
