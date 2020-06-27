@@ -523,9 +523,9 @@ For example, ``(10 + 10) * 2`` would result in ``40``, while ``10 + 10 * 2`` wou
 
 Consider a more complex example, ``((10 + 10) * 2) + 5`` would be evaluated in the following steps:
 
-- innermost grouping: ``(10 + 10) = 20``
-- moving outwards to the next grouping: the inner group's value ``(20)`` is substituted to evaluate the next grouping ``((20) * 2) = 40``
-- outermost level: once again the grouping's value ``(40)`` is substituted for the final calculation ``(40) + 5 = 45`` 
+#. innermost grouping: ``(10 + 10) = 20``
+#. moving outwards to the next grouping: the inner group's value ``(20)`` is substituted to evaluate the next grouping ``((20) * 2) = 40``
+#. outermost level: once again the grouping's value ``(40)`` is substituted for the final calculation ``(40) + 5 = 45`` 
 
 The same principle applies to a PowerShell expression within the grouping operators. However, instead of evaluating to *numeric values* what is substituted is *the object output* by the grouped expression. 
 
@@ -540,21 +540,39 @@ Essentially the group is treated as the resultant object where dot notation can 
 Call a method
 ^^^^^^^^^^^^^
 
-We can invoke a PowerShell method the same way we invoke a method in any objected oriented programming language by using dot notation. In PowerShell you can call any method that is associated with an object directly from the PowerShell terminal.
+We can invoke an object's method in PowerShell the same way as we would in C#. 
 
-In the following example we will access the ``getType()`` method attached to a ``String`` object.
+In the following example we will access the ``getType()`` method attached to a ``String`` object. The ``getType()`` method shows details about the object it is called on.
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > "hello world".getType()
 
- Not every object has the same methods, so not every method will be available for every object. You can use ``Get-Help`` or online documentation to discover an objects properties and methods, or we can utilize some of our new-found PowerShell skills to discover them for any given object.
+   IsPublic IsSerial Name                                     BaseType
+   -------- -------- ----                                     --------
+   True     True     String                                   System.Object
+
+In fact the ``getType()`` object method itself returns an object! The tabular view is a representation of its properties -- ``IsPublic``, ``IsSerial``, ``Name`` and ``BaseType``.
+
+What if you just wanted the ``Name`` of the object? We can use the grouping expression operator:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > ("hello world".getType()).Name
+   String
+
+.. admonition:: note
+
+   You can call ``getType()`` on any object in PowerShell. Like in C# every object extends the .NET ``System.Object`` class that provides the base implementation of ``getType()``. 
+
+While ``getType()`` can give you the type of an object how can we discover the other type-specific methods and properties that an object has? There is another useful tool built into PowerShell for just this use case.
 
 Discovering methods and properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example will show how to access the properties and methods of any given object in PowerShell.
+In the following example we use the ``Get-Member`` cmdlet to access the properties and methods of any given object in PowerShell.
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -568,61 +586,96 @@ Let's use this pattern to view the available properties and methods of a common 
 
    > Get-Member -InputObject "a-string"
 
-Looking at the output we can see many things including a property name ``length`` and the handy ``String`` methods ``Split()``, ``Substring()``, ``IndexOf()`` and much more.
+   TypeName: System.String
 
-While a property like 
+   Name                 MemberType            Definition
+   ----                 ----------            ----------
+   # ...trimmed
+   CopyTo               Method                void CopyTo(int sourceIndex, char[] destination, int destinationIndex, int count)
+   # ...trimmed
+   TrimStart            Method                string TrimStart(), string TrimStart(char trimChar), string TrimStart(Params char[] trimChars)
+   Chars                ParameterizedProperty char Chars(int index) {get;}
+   Length               Property              int Length {get;}
 
-- sometimes properties / methods are intutitive
-- other times you need to look them up per object
-- can look at online or Get-Help docs
-- or can get list of props and methods using Get-Member
+
+Looking at the output we can see many things including a property name ``Length`` and the handy ``String`` methods ``Split()``, ``Substring()``, ``IndexOf()`` among the others.
+
+Let's use ``Get-Member`` to discover the properties and methods of the object outputted by ``getType()``:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   > Get-Member -InputObject <object>
+   > Get-Member -InputObject ("hello world".getType())
+   
+   TypeName: System.RuntimeType
+
+   Name                           MemberType Definition
+   ----                           ---------- ----------
+   AsType                         Method     type AsType()
+   Clone                          Method     System.Object Clone(), System.Object ICloneable.Clone()
+   Equals                         Method     bool Equals(System.Object obj), bool Equals(type o)
+   # ...trimmed
+   ToString                       Method     string ToString()
+   Assembly                       Property   System.Reflection.Assembly Assembly {get;}
+   AssemblyQualifiedName          Property   string AssemblyQualifiedName {get;}
+   Attributes                     Property   System.Reflection.TypeAttributes Attributes {get;}
+   BaseType                       Property   type BaseType {get;}
+   # ...trimmed
+
+.. admonition:: tip
+
+   Between the object ``getType()`` method and the ``Get-Member`` cmdlet you can easily familiarize yourself with the objects you are working with. For someone new to PowerShell these are invaluable tools that you should use regularly. Especially when piping together multiple commands.
 
 Chaining Methods & Properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- (Get-Location).getType().Name -> PathInfo object type
-- .GetType()
+While methods and properties can be accessed one at a time they can also be chained together like you have seen in C# and JavaScript. 
 
-Working with JSON
------------------
+Recall that chaining is the process of using dot notation to access the property or method of the previous object outputted from each part of the chain. Method chaining is similar to piping where the output object of the previous method or property is used as the source object for the next dot notation access.
 
+For example if we wanted to get the object type ``Name`` of a directory object in a single command:
 
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
 
-Common Data Types
------------------
+   > (Get-Location).getType().Name
+   PathInfo
+   
 
-- link to common data types
-- Get-Member to view type
+Let's break down these steps to understand how chaining works:
 
-Strings
-^^^^^^^
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
 
-- single quote (literal)
-- double quote (substitution)
+   (Get-Location) # group to evaluate first, outputs the directory object
+      .getType() # evaluated as (directory object).getType()
+         .Name # evaluated as (getType output object).Name
 
-JSON
-^^^^
+.. admonition:: tip
+   
+   In a lot of ways chaining is similar to using multiple group expressions. If group expressions clicked with you you can think of the chain above as being evaluated like this:
 
-.Net Objects
-^^^^^^^^^^^^
-- .NET https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview
+   .. sourcecode:: powershell
+      :caption: Windows/PowerShell
+   
+      > ( ( Get-Location ).getType() ).Name
 
-Custom Objects
-^^^^^^^^^^^^^^
+As another more complex example consider the output of ``Get-ChildItem`` which lists the contents of a directory. The output of this cmdlet is an ``Array`` object filled with directory contents objects. Here is how we could discover the proper ``Name`` of one of these directory contents objects:
 
-Cmdlet Input & Output Types
----------------------------
-- view
-- configure
-- segue to piping
-- cmdlets and objects
-   - https://docs.microsoft.com/en-us/dotnet/api/microsoft.powershell.commands?view=powershellsdk-1.1.0 
-- Get-Member with grouping expression
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > (Get-ChildItem)[0].getType().Name
+   DirectoryInfo
+
+Remember no matter how complex an expression looks it can be broken down methodically:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > (Get-ChildItem)[0] # access the first element of the contents Array output
+   .getType() # evaluated as (first element object).getType()
+   .Name # evaluated as (getType output object).Name
 
 Piping
 ======
@@ -679,8 +732,11 @@ out of scope (get links)
 Learning More
 =============
 
-- link to devhints cheatsheet
-- discuss custom objects
+links
+
+- devhints cheatsheet
+- 
+- custom objects
 
 
 
