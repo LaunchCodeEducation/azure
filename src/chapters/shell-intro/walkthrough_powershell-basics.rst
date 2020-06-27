@@ -52,7 +52,7 @@ Using Cmdlets
 
 PowerShell cmdlets behave similarly to BASH commands. They begin with their name and follow with arguments and options. PowerShell cmdlets follow a **Verb-Noun** pattern. 
 
-Many of the cmdlets begin with the **Verbs** ``Get-`` and ``Set-`` followed by the **Noun** that the verb is reading or modifying. This declarative naming approach makes reading and writing PowerShell easier to understand.
+Cmdlets begin with **Verbs** like ``Get-`` and ``Set-`` followed by the **Noun** that the Verb is acting on. This declarative naming approach makes reading and writing PowerShell easier to understand.
 
 For example the cmdlets ``Get-Location`` and ``Set-Location`` both operate on your ``Location`` in the FS. The former to view your CWD and the latter to change directories.
 
@@ -622,6 +622,8 @@ Let's use ``Get-Member`` to discover the properties and methods of the object ou
    BaseType                       Property   type BaseType {get;}
    # ...trimmed
 
+We can see that the object outputted by a ``getType()`` method call is a special type of object called ``System.RuntimeType``. Its purpose is to manage metadata about the object it belongs to (the ``"hello world"`` ``String`` in this case).
+
 .. admonition:: tip
 
    Between the object ``getType()`` method and the ``Get-Member`` cmdlet you can easily familiarize yourself with the objects you are working with. For someone new to PowerShell these are invaluable tools that you should use regularly. Especially when piping together multiple commands.
@@ -631,9 +633,15 @@ Chaining Methods & Properties
 
 While methods and properties can be accessed one at a time they can also be chained together like you have seen in C# and JavaScript. 
 
-Recall that chaining is the process of using dot notation to access the property or method of the previous object outputted from each part of the chain. Method chaining is similar to piping where the output object of the previous method or property is used as the source object for the next dot notation access.
+Recall that chaining is the process of using dot notation to access the property or method of the previous object outputted from each part of the chain. Method chaining is similar to piping where the **output object** of the previous method or property is used as the **source object** for the next dot notation access.
 
-For example if we wanted to get the object type ``Name`` of a directory object in a single command:
+For example consider the following chain consisting of:
+
+#. a grouping expression
+#. a method call
+#. a property access
+
+.. todo:: can a better example be fit in (more practical / realistic)
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -647,9 +655,12 @@ Let's break down these steps to understand how chaining works:
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   (Get-Location) # group to evaluate first, outputs the directory object
-      .getType() # evaluated as (directory object).getType()
-         .Name # evaluated as (getType output object).Name
+   > (Get-Location).getType().Name
+
+   (Get-Location) # -output-> (directory object)
+      .getType() # -output-> (RuntimeType object)
+         .Name # -output-> (string object)
+            "PathInfo"
 
 .. admonition:: tip
    
@@ -658,9 +669,11 @@ Let's break down these steps to understand how chaining works:
    .. sourcecode:: powershell
       :caption: Windows/PowerShell
    
-      > ( ( Get-Location ).getType() ).Name
+      > ((Get-Location).getType()).Name
 
-As another more complex example consider the output of ``Get-ChildItem`` which lists the contents of a directory. The output of this cmdlet is an ``Array`` object filled with directory contents objects. Here is how we could discover the proper ``Name`` of one of these directory contents objects:
+As another more complex example consider the output of ``Get-ChildItem`` which lists the contents of a directory. The output of this cmdlet is an ``Array`` object filled with directory content objects. Here is how we could discover the proper ``Name`` of one of these directory content objects:
+
+.. todo:: better example man
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -673,14 +686,48 @@ Remember no matter how complex an expression looks it can be broken down methodi
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   > (Get-ChildItem)[0] # access the first element of the contents Array output
-   .getType() # evaluated as (first element object).getType()
-   .Name # evaluated as (getType output object).Name
+   > (Get-ChildItem)[0].getType().Name
 
+   (Get-ChildItem)[0] # -output-> (first element of the contents Array)
+      .getType() # -output-> (RunTime object)
+         .Name # -output-> (string object)
+            "DirectoryInfo"
 Piping
 ======
 
-- much more time in this section
+- chaining is restricted to a continuous path of aligned objects
+- piping order doesnt matter 
+
+what differentiates?
+- grouping
+- chaining: one continuous statement
+- piping: 
+
+common
+   - noun to noun
+   - piping and chaining
+      - order matters
+      - l2r order
+uncommon
+   - grouping
+      - inside out order
+      - source is an expression that evaluates to an object
+   - chaining
+      - source is an object
+      - restricted to methods or properties
+   - piping
+      - piping can transform between nouns
+      - multiple cmdlets
+      - Expressions are only allowed as the first element of a pipeline.
+
+expression: grouping of single cmdlet or pipeline
+
+   
+- 1 cmdlet ().... () + ()
+- 2+ cmdlets cmd | cmd | cmd
+
+- az vm --something $(expression) 
+- 
 
 Expressions
 -----------
@@ -689,16 +736,27 @@ Expressions
 - sub-expression
 - https://ss64.com/ps/syntax-operators.html
 
+Working with JSON
+-----------------
+
 Converting Types
 ----------------
 
-- convert to / from json
-- convert between common DTs
-
 show
+- convert
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Get-ChildItem[0] | ConvertTo-Json
+
+
+- convert between common DTs
 - filter (grep equiv)
 - mutate (sed / awk equiv)
 - read / write file
+
+- outputs in tables are Arrays
 
 Scripting
 =========
