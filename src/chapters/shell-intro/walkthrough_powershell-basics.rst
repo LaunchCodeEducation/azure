@@ -717,21 +717,60 @@ key points
 
 header for this section: piping in the file system
 
-- find a specific file or directory in a get-childitem from root (sorting and filtering) where-object sort-object
-   - show just filtering
-   - show just sorting
-   - show combo filtering then sorting
+
+Piping to sort directory contents
+---------------------------------
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   get-childItem | where-object -Property Name -eq "bin"
+   Get-ChildItem | Sort-Object -Property Name
+
+This expression has three steps:
+
+- ``Get-ChildItem``: an array of *DirectoryInfo* and *FileInfo* objects
+- ``|``: transfers the array to the next statement
+- ``Sort-Object -Property Name``: Sorts the array alphabetically by their *Name* property
+
+Piping to find a file
+---------------------
+
+Before we can see piping in action let's create a file in our home directory that we can search for with a pipe:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   new-item find-me.txt -Value "Hello.`nYou founxd me!"
+
+From your home directory run the next command to watch our PowerShell pipe Find the file by searching all the files and folders in your home directory.
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   Get-ChildItem | Where-Object -Property Name -eq "find-me.txt"
+
+This expression has three steps:
+
+#. ``Get-ChildItem``: an array of *DirectoryInfo* and *FileInfo* objects
+#. ``|``: transfers the array to the next statement
+#. ``Where-Object -Property Name -eq "find-me.txt"``: Searches the array of objects for the property *Name* that matches the value *find-me.txt*.
+
+Piping to determine if a file contains a substring
+--------------------------------------------------
 
 - find a specific word in a file as an extension of what they just saw (filtering) where-object file object not a directory object -- conclusion all objects be used
    - get-childitem -recurse -> files | where-object -> file | get-contents -> lines | where-object -> filtered lines
    - find in file system
    - find in file
    - filter
+
+   .. sourcecode:: powershell
+      :caption: Windows/PowerShell
+
+      (Get-ChildItem | Where-Object -Property Name -eq "find-me.txt" | Get-Content).contains("founxd")
+
+Piping to preview fixing a misspelling in a file
+------------------------------------------------
 
 - fix all the misspellings of "get him do the dundees" in a file of 10000+ lines as an extension of what they just saw **FIND AND REPLACE IN STDOUT** as a preview
    - previous examples started with collection outputs
