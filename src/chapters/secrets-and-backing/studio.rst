@@ -99,43 +99,89 @@ The line you will be looking for:
 
    "KeyVaultName": "<your-keyvault-name>"
 
+.. admonition:: warning
+
+   If you do not update your code and push it back to your GitHub repository your deployed application will fail when trying to launch because it won't know which Key vault to access!
+
 Configure VM & Deploy
 ---------------------
 
 We have been using the RunCommand tool to run BASH scripts on our Virtual Machine. This tool is handy, but not the most pleasant experience because of the delay. Instead of running multiple commands through the RunCommand let's put together one script that will do everything necessary to deploy our application. 
 
-.. admonition:: note
+.. admonition:: tip
 
-   After learning the specific steps of a deployment process it's almost always a good idea to put those steps together in a script.
+   After learning the specific steps of a deployment process it's almost always a good idea to put those steps together in a script. The more practice you get with Operations, the more saving steps in a script will become second nature. As added practice review previous walkthroughs and studios to combine all of the steps, fom each article, into one script.
 
 We will provide you with a starter script that installs and sets up MySQL. However, you will be responsible for piecing the rest of the script together yourself. 
 
-Take notice of the TODOs in the script below. After you have completed the script you will need to run it in the RunCommand section of your VM and your application will be deployed all in one step!
+Take notice of the ``TODOs`` in the script below. After you have completed the script you will need to run it in the RunCommand section of your VM and your application will be deployed all in one step!
 
 .. sourcecode:: bash
 
    # set HOME environment variable
    export HOME=/home/student
 
-   # download docker 
+   # update apt-get repositories
+   apt-get update
+
+   ### MySQL section START ###
+   # download the apt-get repository package
+   wget https://dev.mysql.com/get/mysql-apt-config_0.8.15-1_all.deb
+
+   # add the repository package to apt-get
+   dpkg -i mysql-apt-config_0.8.15-1_all.deb
+
+   # update apt-get now that it has the new repo
+   apt-get update
+
+   # set environment variables that are necessary for MySQL installation
+   debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password lc-password"
+   debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password lc-password"
+
+   # install MySQL in a noninteractive way since the environment variables set the necessary information for setup
+   sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
+
+   # create a setup.sql file which will create our database, our user, and grant our user privileges to the database
+   cat >> setup.sql << EOF
+   CREATE DATABASE coding_events;
+   CREATE USER 'coding_events'@'localhost' IDENTIFIED BY 'launchcode';
+   GRANT ALL PRIVILEGES ON coding_events.* TO 'coding_events'@'localhost';
+   FLUSH PRIVILEGES;
+   EOF
+
+   # using the mysql CLI run the setup.sql file as the root user in the mysql database
+   mysql -u root --password=lc-password mysql < setup.sql
+
+   ### MySQL section END ###
 
    # TODO: download and install the dotnet SDK
+   
 
    # TODO: set DOTNET_CLI_HOME environment variable
+   
 
    # TODO: clone your source code
+   
+
+   # TODO: change into project directory
+   
 
    # TODO: checkout the correct branch
+   
+
+   # TODO: change into CodingEventsAPI/
+   
 
    # TODO: publish source code
+   
 
-   # TODO: finish the deploy line by adding the absolute path to your executable
-   ASPNETCORE_URLS="http://*:80" home/student/<project-root>/bin/
+   # deploy application by running executable (this assumes your CWD is /home/student/coding-events-api/CodingEventsAPI)
+   ASPNETCORE_URLS="http://*:80" ./bin/Release/netcoreapp3.1/linux-x64/publish/CodingEventsAPI
 
 Connect to Application
 ----------------------
 
-Once you get your RunCommand script completed and run it your application will be deployed. You can access it at ``http://<YOUR-VM-IP>``.
+Once you complete and run your RunCommand script your application will be deployed assuming there were no errors with your script or application. You can access it at ``http://<YOUR-VM-IP>``. If you had errors in your RunCommand section double check the steps especially the ``Gotchas`` listed above.
 
 .. admonition:: note
 
