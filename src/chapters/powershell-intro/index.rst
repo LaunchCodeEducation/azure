@@ -10,7 +10,7 @@ Introduction to PowerShell
    fs-navigation
    cli-tools
    objects
-   expression-evaluation
+   expressions
    piping
    scripting
    studio_powershell-scripting
