@@ -1,71 +1,6 @@
 =====================================
 Walkthrough: Hands-On With PowerShell
-=====================================
-
-Now that you have learned some fundamental Shell and BASH syntax you are ready to learn about PowerShell. Because many PowerShell features and behaviors were inspired by BASH you will find that much of the knowledge you gained will be applicable to this new material.
-
-Working with PowerShell
-=======================
-
-Although BASH and PowerShell share many similarities there are some key distinctions between them. Just as before we will establish the core aspects of PowerShell and Windows to help rationalize the *why* behind their behavior. 
-
-Core Tenets
------------
-
-File System Paths
-^^^^^^^^^^^^^^^^^
-
-Windows treats each of its **drives** (devices managed by the OS) as independent file system trees. Each drive has a name and ends with a ``:`` character, like ``C:`` or ``D:``. The ``C:`` drive is your disk drive and serves as the default installation location of the Windows OS. For this reason the ``C:`` drive is typically considered the root directory.
-
-- paths are separated by back-slashes (``\``)
-- file and directory names are not case-sensitive
-- the ``C:\`` directory is used as the root directory for absolute paths 
-
-Framework Interpretation
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-The .NET framework is used to interpret and translate PowerShell commands for the OS instead of the direct communication channel seen between BASH and Linux. The object-oriented *power* of PowerShell comes from this layer of abstraction between itself and the Windows OS. 
-
-Everything is an object
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Since Windows NT the Windows OS releases have all followed an object-oriented design. By extension, PowerShell treats all of its **inputs and outputs as distinct types of objects**. This departure from the string-based approach of BASH makes working with PowerShell a more *tangible* Shell experience.
-
-PowerShell commands and scripts are able to work with a wide range of objects from those provided by the underlying .NET framework to custom-developed types. Like other object-oriented languages PowerShell objects contain properties and methods that make them intuitive to work with.
-
-File extensions matter
-^^^^^^^^^^^^^^^^^^^^^^
-
-File extensions are an integral aspect of how Windows works. There are thousands of file extensions built into the Windows OS but `there are only 10 common types <https://support.microsoft.com/en-us/help/4479981/windows-10-common-file-name-extensions>`_ that you will typically encounter. Every file is bound to one of these extensions that enforces what program will be used to interpret it. 
-
-You can think of a file in Windows like an object whose type is specified by its file extension. This file type, like an object type, defines the properties and methods used by programs that interact with it.
-
-Cmdlets, Functions & Modules
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-In PowerShell the commands you use are categorized as either a **cmdlet** or a **function**. Cmdlets are written in a .NET supported language (like C#) and as such must be compiled before they can be used. Functions on the other hand are written in PowerShell within a script file. 
-
-**Modules** are collections of cmdlets and functions that share a common theme of use. They are used to bundle together related functionality into a single package that can be shared. 
-
-Using Cmdlets
-=============
-
-PowerShell cmdlets behave similarly to BASH commands. They begin with their name and follow with arguments and options. PowerShell cmdlets follow a **Verb-Noun** pattern. 
-
-Cmdlets begin with **Verbs** like ``Get-`` and ``Set-`` followed by the **Noun** that the Verb is acting on. This declarative naming approach makes reading and writing PowerShell easier to understand.
-
-For example the cmdlets ``Get-Location`` and ``Set-Location`` both operate on your ``Location`` in the FS. The former to view your CWD and the latter to change directories.
-
-.. admonition:: note
-
-   Cmdlets, like the rest of the Windows FS, are **not** case-sensitive. Neither are their arguments or options. Take ``Get-Location`` for example, you can use it just the same ``get-location``.
-   
-One notable difference from BASH commands is that **options** are all written in long form (no single-letter shorthands) and use a single dash (``-``). For example the ``Get-Help`` cmdlet has an ``-Online`` option that will open the help documentation in your browser:
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > Get-Help <cmdlet to get help for> -Online
+===================================== 
 
 File System
 ===========
@@ -312,52 +247,7 @@ The ``Get-Content`` cmdlet will output an object based on the content in the fil
 
    The ``Get-Content`` cmdlet has a number of options that can be used to get certain lines of a file's contents or even filter the output. You can read more about the options `in this documentation article <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-content?view=powershell-7>`_ 
 
-Getting Help
-------------
 
-PowerShell have many options -- we have only covered the most commonly used ones here. Many of the tasks that would require piping together multiple commands together in BASH can be accomplished using a single cmdlet and its associated options. 
-
-While the ``--help`` option is available for *some* CLI tools that we will use in the class, the primary mode of viewing documentation uses the ``Get-Help`` cmdlet. 
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > Get-Help <cmdlet name>
-
-Get-Help by default will display the *summary documentation* for the given cmdlet directly in the PowerShell Terminal. To view the *full documentation* for a cmdlet you can add the ``-Full`` option:
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > Get-Help <cmdlet name> -Full
-
-Another useful option for ``Get-Help`` is ``-Examples`` which will provide practical examples of using the cmdlet:
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > Get-help <cmdlet name> -Examples
-
-.. admonition:: note
-
-   If you prefer to use the browser, using the ``-Online`` option will automatically open your browser to the *full documentation*:
-
-   .. sourcecode:: powershell
-      :caption: Windows/PowerShell
-
-      > Get-help <cmdlet name> -Online
-
-Updating help documentation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-PowerShell keeps commonly used documentation locally on your machine so it can be accessed more quickly and offline. In some cases you will need to update your *local* documentation cache. You can update the local help documentation using the ``Update-Help`` cmdlet. 
-
-You can append the ``-Confirm`` option to auto-confirm the download and skip the prompt:
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > Update-Help -Confirm
 
 CLI Tools
 =========
