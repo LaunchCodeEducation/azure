@@ -117,7 +117,7 @@ Another useful option for ``Get-Help`` is ``-Examples`` which will provide pract
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   > Get-help <cmdlet name> -Examples
+   > Get-Help <cmdlet name> -Examples
 
 .. admonition:: note
 
@@ -126,7 +126,7 @@ Another useful option for ``Get-Help`` is ``-Examples`` which will provide pract
    .. sourcecode:: powershell
       :caption: Windows/PowerShell
 
-      > Get-help <cmdlet name> -Online
+      > Get-Help <cmdlet name> -Online
 
 Updating help documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
