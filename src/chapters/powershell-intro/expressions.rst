@@ -92,19 +92,31 @@ Grouping expressions allows you to evaluate the group and then treat the group, 
 Subexpression Operator
 ======================
 
-Recall that in BASH we used the command substitution syntax ``$(command list)`` to perform in-line evaluations. In PowerShell same syntax is used but is referred to as a **subexpression operator**. 
+Recall that in BASH we used the command substitution syntax ``$(command)`` to execute in-line commands. In PowerShell the same syntax is used but is referred to as a **subexpression operator**. At first glance the subexpression operator looks similar to the grouping operator we just learned about.
 
-While the grouping operator is used to **group an expression** a subexpression can be used to **execute commands within an expression**. For example, if we wanted to print a string like this:
+Let's compare the purposes of each of these operators:
+
+- **grouping operator**: lets you control the **order of evaluation in an expression**
+- **subexpression operator**: lets you control **the execution of an expression within another**
+
+Let's see the difference in action by trying to print the length of the combined strings **inside another expression** (``Write-Output ...``). 
+
+First using a grouping operator:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    # the BASH 'echo' command can be used as an alias for Write-Output
-   > Write-Output "The length of the concatenated strings is: ("hello" + "world").length"
-   The length of the concatenated strings is: (
-   hello + world).length
+   > Write-Output "The length of the concatenated strings is: (("hello" + "world").length)"
 
-Notice that it printed the literal text inside the grouped expression rather than executing it. In addition, the quotes caused some unexpected line breaks. 
+   The length of the concatenated strings is: ((
+   hello + world).length)
+
+Notice that it printed the literal text inside the grouped expression rather than executing it. The quotes were in turn interpreted as literal quote characters leading to some unexpected line breaks. In other words, **the grouped expression did not get evaluated**.
+
+Why wasn't it evaluated? Because **evaluation only takes place during execution**. From PowerShell's perspective there was a single expression to be executed -- a ``Write-Output`` and a string as its argument.
+
+In order for us to execute an expression **within** the ``Write-Output`` expression we can use a subexpression:
 
 Let's try using a subexpression instead:
 
@@ -114,7 +126,7 @@ Let's try using a subexpression instead:
    > Write-Output "The length of the concatenated strings is: $(("hello" + "world").length)"
    The length of the concatenated strings is: 10
 
-This time the subexpression ``("hello" + "world").length`` is **executed** before its resulting value is substituted back in.
+This time the subexpression ``("hello" + "world").length`` is **executed**, evaluated to ``10`` and its resulting value is substituted into the string.
 
 We will see more examples of subexpressions and grouped expressions later in this course. They are valuable tools to understand for writing "one-liner" commands in the REPL. But they are even more useful when employed in pipelines and scripts.
 
@@ -124,5 +136,5 @@ We will see more examples of subexpressions and grouped expressions later in thi
 
    Use **subexpressions** when you need to **execute an expression** inside of another. In addition, only subexpressions `allow you to <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators?view=powershell-7#subexpression-operator-->`_:
 
-   - use **keywords** like ``for`` (for loops) and ``if`` (for conditional logic)
    - execute **multiple commands** as a single unit
+   - use **keywords** like ``for`` (for loops) and ``if`` (for conditional logic)
