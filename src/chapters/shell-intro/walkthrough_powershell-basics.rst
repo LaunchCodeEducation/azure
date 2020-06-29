@@ -526,29 +526,6 @@ The equivalent in BASH requires piping through multiple commands:
 
    $ echo "dot notation works!" | wc -l
 
-Grouping Expression Operator
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The **grouping expression operator** is a pair of parenthesis that wrap around a PowerShell expression. It behaves the same as parenthesis that group parts of a mathematical equation. Expressions are evaluated from the innermost groups outwards. 
-
-For example, ``(10 + 10) * 2`` would result in ``40``, while ``10 + 10 * 2`` would result in ``30``. Because the parenthesis group together an expression they are evaluated first before the outer expression of multiplying by ``2``.
-
-Consider a more complex example, ``((10 + 10) * 2) + 5`` would be evaluated in the following steps:
-
-#. innermost grouping: ``(10 + 10) = 20``
-#. moving outwards to the next grouping: the inner group's value ``(20)`` is substituted to evaluate the next grouping ``((20) * 2) = 40``
-#. outermost level: once again the grouping's value ``(40)`` is substituted for the final calculation ``(40) + 5 = 45`` 
-
-The same principle applies to a PowerShell expression within the grouping operators. However, instead of evaluating to *numeric values* what is substituted is *the object output* by the grouped expression. 
-
-Essentially the group is treated as the resultant object where dot notation can be used on the closing parenthesis ``)``. In the following example our grouped expression *adds* (concatenates) two strings together and then evaluates the length of the resultant string output:
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > ("hello " + "world").length
-   11
-
 Call a method
 ^^^^^^^^^^^^^
 
@@ -564,16 +541,6 @@ In the following example we will access the ``getType()`` method attached to a `
    IsPublic IsSerial Name                                     BaseType
    -------- -------- ----                                     --------
    True     True     String                                   System.Object
-
-In fact the ``getType()`` object method itself returns an object! The tabular view is a representation of its properties -- ``IsPublic``, ``IsSerial``, ``Name`` and ``BaseType``.
-
-What if you just wanted the ``Name`` of the object? We can use the grouping expression operator:
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > ("hello world".getType()).Name
-   String
 
 .. admonition:: note
 
@@ -612,100 +579,241 @@ Let's use this pattern to view the available properties and methods of a common 
 
 Looking at the output we can see many things including a property name ``Length`` and the handy ``String`` methods ``Split()``, ``Substring()``, ``IndexOf()`` among the others.
 
-Let's use ``Get-Member`` to discover the properties and methods of the object outputted by ``getType()``:
+.. todo:: too deep for now, keep for later if needed
 
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
+.. Let's use ``Get-Member`` to discover the properties and methods of the object outputted by ``getType()``:
 
-   > Get-Member -InputObject ("hello world".getType())
+.. .. sourcecode:: powershell
+..    :caption: Windows/PowerShell
+
+..    > Get-Member -InputObject ("hello world".getType())
    
-   TypeName: System.RuntimeType
+..    TypeName: System.RuntimeType
 
-   Name                           MemberType Definition
-   ----                           ---------- ----------
-   AsType                         Method     type AsType()
-   Clone                          Method     System.Object Clone(), System.Object ICloneable.Clone()
-   Equals                         Method     bool Equals(System.Object obj), bool Equals(type o)
-   # ...trimmed
-   ToString                       Method     string ToString()
-   Assembly                       Property   System.Reflection.Assembly Assembly {get;}
-   AssemblyQualifiedName          Property   string AssemblyQualifiedName {get;}
-   Attributes                     Property   System.Reflection.TypeAttributes Attributes {get;}
-   BaseType                       Property   type BaseType {get;}
-   # ...trimmed
+..    Name                           MemberType Definition
+..    ----                           ---------- ----------
+..    AsType                         Method     type AsType()
+..    Clone                          Method     System.Object Clone(), System.Object ICloneable.Clone()
+..    Equals                         Method     bool Equals(System.Object obj), bool Equals(type o)
+..    # ...trimmed
+..    ToString                       Method     string ToString()
+..    Assembly                       Property   System.Reflection.Assembly Assembly {get;}
+..    AssemblyQualifiedName          Property   string AssemblyQualifiedName {get;}
+..    Attributes                     Property   System.Reflection.TypeAttributes Attributes {get;}
+..    BaseType                       Property   type BaseType {get;}
+..    # ...trimmed
 
-We can see that the object outputted by a ``getType()`` method call is a special type of object called ``System.RuntimeType``. Its purpose is to manage metadata about the object it belongs to (the ``"hello world"`` ``String`` in this case).
+.. We can see that the object outputted by a ``getType()`` method call is a special type of object called ``System.RuntimeType``. Its purpose is to manage metadata about the object it belongs to (the ``"hello world"`` ``String`` in this case).
 
 .. admonition:: tip
 
-   Between the object ``getType()`` method and the ``Get-Member`` cmdlet you can easily familiarize yourself with the objects you are working with. For someone new to PowerShell these are invaluable tools that you should use regularly. Especially when piping together multiple commands.
+   Between the object ``getType()`` method and the ``Get-Member`` cmdlet you can discover all of the details about the objects you are working with. Knowing the type and capabilities of an object that cmdlets accept as inputs and produce as outputs will help you when writing more advanced commands and scripts.
+   
+   For someone new to PowerShell these are invaluable tools that you should use regularly to familiarize 
 
-Chaining Methods & Properties
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. Chaining Methods & Properties
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While methods and properties can be accessed one at a time they can also be chained together like you have seen in C# and JavaScript. 
+.. While methods and properties can be accessed one at a time they can also be chained together like you have seen in C# and JavaScript. 
 
-Recall that chaining is the process of using dot notation to access the property or method of the previous object outputted from each part of the chain. Method chaining is similar to piping where the **output object** of the previous method or property is used as the **source object** for the next dot notation access.
+.. Recall that chaining is the process of using dot notation to access the property or method of the previous object outputted from each part of the chain. Method chaining is similar to piping where the **output object** of the previous method or property is used as the **source object** for the next dot notation access.
 
-For example consider the following chain consisting of:
+.. For example consider the following chain consisting of:
 
-#. a grouping expression
-#. a method call
-#. a property access
+.. #. a grouping expression
+.. #. a method call
+.. #. a property access
 
-.. todo:: can a better example be fit in (more practical / realistic)
+.. .. todo:: can a better example be fit in (more practical / realistic)
 
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
+.. .. sourcecode:: powershell
+..    :caption: Windows/PowerShell
 
-   > (Get-Location).getType().Name
-   PathInfo
+..    > (Get-Location).getType().Name
+..    PathInfo
    
 
-Let's break down these steps to understand how chaining works:
+.. Let's break down these steps to understand how chaining works:
+
+.. .. sourcecode:: powershell
+..    :caption: Windows/PowerShell
+
+..    > (Get-Location).getType().Name
+
+..    (Get-Location) # -output-> (directory object)
+..       .getType() # -output-> (RuntimeType object)
+..          .Name # -output-> (string object)
+..             "PathInfo"
+
+.. .. admonition:: tip
+   
+..    In a lot of ways chaining is similar to using multiple group expressions. If group expressions clicked with you you can think of the chain above as being evaluated like this:
+
+..    .. sourcecode:: powershell
+..       :caption: Windows/PowerShell
+   
+..       > ((Get-Location).getType()).Name
+
+.. As another more complex example consider the output of ``Get-ChildItem`` which lists the contents of a directory. The output of this cmdlet is an ``Array`` object filled with directory content objects. Here is how we could discover the proper ``Name`` of one of these directory content objects:
+
+.. .. todo:: better example man
+
+.. .. sourcecode:: powershell
+..    :caption: Windows/PowerShell
+
+..    > (Get-ChildItem)[0].getType().Name
+..    DirectoryInfo
+
+.. Remember no matter how complex an expression looks it can be broken down methodically:
+
+.. .. sourcecode:: powershell
+..    :caption: Windows/PowerShell
+
+..    > (Get-ChildItem)[0].getType().Name
+
+..    (Get-ChildItem)[0] # -output-> (first element of the contents Array)
+..       .getType() # -output-> (RunTime object)
+..          .Name # -output-> (string object)
+..             "DirectoryInfo"
+
+Expression Evaluation
+=====================
+
+Expressions are the general term for syntactical instructions that must be **evaluated** to a **value**. Expressions can be anything from a simple variable assignment to a more complex command like executing a cmdlet.
+
+Programming languages are made up of rules for how different types of expressions are evaluated. In general, expressions are evaluated from left to right. But depending on the *operations used in an expression* there may be more specific rules that cause it to be evaluated differently.
+
+In the following sections we will explore two **operators** (symbols with special meaning) that are integral to working with PowerShell.
+
+Grouping Expression Operator
+----------------------------
+
+Understanding how grouping expressions works is best discovered through an example. Let's consider the following *arithmetic (math) expression*. 
+
+These types of expressions are evaluated from left to right unless some math operators (like ``+`` and ``*``) are used. Arithmetic expressions are evaluated following the mathematical rules defined in the `PEMDAS order of operations <https://www.purplemath.com/modules/orderops.htm>`_.
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   > (Get-Location).getType().Name
+   > 5 + 5
+   10
 
-   (Get-Location) # -output-> (directory object)
-      .getType() # -output-> (RuntimeType object)
-         .Name # -output-> (string object)
-            "PathInfo"
+On its own this is an expression (a set of instructions), not a value. It must first be evaluated (interpreted and computed) to its value of ``10``. 
+
+In the following example we want to add ``5 + 5`` and multiply *the resulting value* by ``2`` to make ``20``. The overall expression contains two expressions that need to be evaluated -- addition and multiplication.
+
+Would this expression evaluate to our goal of ``20``?:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > 5 + 5 * 2
+   15
+
+Expressions are evaluated with rules that depend on their context. For arithmetic expressions the PEMDAS rules cause ``5 * 2`` to be evaluated first with the resulting value of ``10`` then being added to ``5``. 
+
+However, we can control the **order of evaluation** by **grouping expressions** that we want to be evaluated first. In PowerShell the **Grouping Expression Operator** is a pair of parenthesis that wrap around any PowerShell expression. Just like in math, grouped expressions are evaluated from **the innermost group** to the **outermost (overall) expression**. 
+
+If we were to group the addition expression it would be evaluated first *then* its resulting value would be multiplied by ``2``:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > (5 + 5) * 2
+   20
+
+We can see that ``(5 + 5)`` was evaluated first, **then the group was replaced with the resulting value** of ``10`` before continuing evaluating the overall expression.
+
+Consider a more complex example with *nested* groups (a grouped expression inside another):
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > ((10 + 10) * 2) + 5
+
+The outermost (overall) expression would be evaluated in the following steps. From the inside out:
+
+#. innermost grouping: ``(10 + 10)``, a resulting value of ``20``
+#. moving outwards to the next grouping: the resulting value ``(20)`` is substituted and evaluated to ``((20) * 2)) = 40``
+#. outermost level: once again the grouping's value ``(40)`` is substituted for the final evaluation ``(40) + 5 = 45`` 
+
+The same principle applies to any PowerShell expression within the grouping operators. But PowerShell expressions go well beyond basic arithmetic! Instead of evaluating to just *numeric values* what is substituted for each grouped expression can be a *result object* of any type.
+
+Consider a simple scenario with string objects rather than numbers. Our goal is to combine (concatenate) two strings together and determine the length of the new string that is formed. *Without grouping* this would be our result:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > "hello" + "world".length
+   hello5
+
+The string ``"hello"`` is concatenated with the result of ``"world".length`` into the unexpected string ``"hello5"``. PowerShell tries to evaluate from left to right but can't combine a string (``"hello"``) with an *expression* (``"world".length``). It first evaluates the length to a value of ``5`` *and then* evaluates ``"hello" + 5"``.
+
+We can use grouping to enforce ``"hello" + "world"`` being evaluated first *and then* checking the ``length`` property of the resulting ``string`` object:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > ("hello" + "world").length
+   10
+
+In other words the evaluation and substitution looked like this:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > (string object).length
+
+Grouping expressions allows you to evaluate the group and then treat the group, on its closing ``)``, as an object. The object can then be used to access properties and methods directly from the group using dot notation. The group is first evaluated to its resulting object *then* dot notation access is evaluated.
+
+Subexpression Operator
+----------------------
+
+Recall that in BASH we used the command substitution syntax ``$(command list)`` to perform in-line evaluations. In PowerShell same syntax is used but is referred to as a **subexpression operator**. 
+
+While the grouping operator is used to **group an expression** a subexpression can be used to **execute commands within an expression**. For example, if we wanted to print a string like this:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   # the BASH 'echo' command can be used as an alias for Write-Output
+   > Write-Output "The length of the concatenated strings is: ("hello" + "world").length"
+   The length of the concatenated strings is: (
+   hello + world).length
+
+Notice that it printed the literal text inside the grouped expression rather than executing it. In addition, the quotes caused some unexpected line breaks. 
+
+Let's try using a subexpression instead:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Write-Output "The length of the concatenated strings is: $(("hello" + "world").length)"
+   The length of the concatenated strings is: 10
+
+This time the subexpression ``("hello" + "world").length`` is **executed** before its resulting value is substituted back in.
+
+We will see more examples of subexpressions and grouped expressions later in this course. They are valuable tools to understand for writing "one-liner" commands in the REPL. But they are even more useful when employed in pipelines and scripts.
 
 .. admonition:: tip
-   
-   In a lot of ways chaining is similar to using multiple group expressions. If group expressions clicked with you you can think of the chain above as being evaluated like this:
 
-   .. sourcecode:: powershell
-      :caption: Windows/PowerShell
-   
-      > ((Get-Location).getType()).Name
+   Use **grouping expressions** when you want to **control the order of evaluation** (from the inside out).
 
-As another more complex example consider the output of ``Get-ChildItem`` which lists the contents of a directory. The output of this cmdlet is an ``Array`` object filled with directory content objects. Here is how we could discover the proper ``Name`` of one of these directory content objects:
+   Use **subexpressions** when you need to **execute an expression** inside of another. In addition, only subexpressions `allow you to <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators?view=powershell-7#subexpression-operator-->`_:
 
-.. todo:: better example man
+   - use **keywords** like ``for`` (for loops) and ``if`` (for conditional logic)
+   - execute **multiple commands** as a single unit
 
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > (Get-ChildItem)[0].getType().Name
-   DirectoryInfo
-
-Remember no matter how complex an expression looks it can be broken down methodically:
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > (Get-ChildItem)[0].getType().Name
-
-   (Get-ChildItem)[0] # -output-> (first element of the contents Array)
-      .getType() # -output-> (RunTime object)
-         .Name # -output-> (string object)
-            "DirectoryInfo"
 Piping
 ======
+
+Chaining allows us to perform multiple steps by working **directly on an object**. Every step in the chain is dictated by the source object the dot notation is used on. 
+
+Piping differs from chaining in that it allows you to perform multiple steps **by transferring an object** between cmdlets. Recall that in a general sense piping allows you to transfer the output of one command to the input of the next step in the pipeline.
+
+Just as in BASH 
+
+Recall that piping is a mechanism for performing multiple steps in a single expression. 
 
 key points
 - mechanism for multiple steps in a single expression
