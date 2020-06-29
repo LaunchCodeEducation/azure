@@ -99,7 +99,7 @@ Let's compare the purposes of each of these operators:
 - **grouping operator**: lets you control the **order of evaluation in an expression**
 - **subexpression operator**: lets you control **the execution of an expression within another**
 
-Let's see the difference in action by trying to print the length of the combined strings **inside another expression** (``Write-Output ...``). 
+Let's see the difference in action by trying to print the length of the combined strings **inside another string expression**. 
 
 First using a grouping operator:
 
@@ -114,9 +114,9 @@ First using a grouping operator:
 
 Notice that it printed the literal text inside the grouped expression rather than executing it. The quotes were in turn interpreted as literal quote characters leading to some unexpected line breaks. In other words, **the grouped expression did not get evaluated**.
 
-Why wasn't it evaluated? Because **evaluation only takes place during execution**. From PowerShell's perspective there was a single expression to be executed -- a ``Write-Output`` and a string as its argument.
+Why wasn't it evaluated? Because **evaluation only takes place during execution**. From PowerShell's perspective there was a single expression to be executed -- the string expression.
 
-In order for us to execute an expression **within** the ``Write-Output`` expression we can use a subexpression:
+In order for us to execute the length calculating expression **within** the string expression we can use a subexpression instead:
 
 Let's try using a subexpression instead:
 
@@ -126,7 +126,7 @@ Let's try using a subexpression instead:
    > Write-Output "The length of the concatenated strings is: $(("hello" + "world").length)"
    The length of the concatenated strings is: 10
 
-This time the subexpression ``("hello" + "world").length`` is **executed**, evaluated to ``10`` and its resulting value is substituted into the string.
+This time the subexpression ``("hello" + "world").length`` is **executed**, evaluated to ``10`` and its resulting value is substituted into the string expression. The string expression is then itself evaluated to become the final string printed by ``Write-Output``.
 
 We will see more examples of subexpressions and grouped expressions later in this course. They are valuable tools to understand for writing "one-liner" commands in the REPL. But they are even more useful when employed in pipelines and scripts.
 
@@ -134,7 +134,9 @@ We will see more examples of subexpressions and grouped expressions later in thi
 
    Use **grouping expressions** when you want to **control the order of evaluation** (from the inside out).
 
-   Use **subexpressions** when you need to **execute an expression** inside of another. In addition, only subexpressions `allow you to <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators?view=powershell-7#subexpression-operator-->`_:
+   Use **subexpressions** when you need to **execute an expression** inside of another. In addition, only subexpressions allow you to:
 
    - execute **multiple commands** as a single unit
-   - use **keywords** like ``for`` (for loops) and ``if`` (for conditional logic)
+   - use **keywords** like ``for`` (for loops) and ``if`` (for conditional logic) 
+
+   For more information about the available operators you can visit the `PowerShell operators documentation <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators?view=powershell-7#subexpression-operator-->`_.
