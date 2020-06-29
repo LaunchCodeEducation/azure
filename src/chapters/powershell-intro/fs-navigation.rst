@@ -2,7 +2,7 @@
 Working With the File System
 ============================
 
-PowerShell brought over many of the essential BASH FS commands and behaviors. While several of the BASH commands are available in PowerShell they are incompatible with Windows and were brought over as **aliases**. 
+PowerShell brought over many of the essential BASH File System (FS) commands and behaviors. While several of the BASH commands are available in PowerShell they are incompatible with Windows and were brought over as **aliases**. 
 
 An alias is like a nickname for a command. The BASH FS commands, like ``pwd`` or ``cd``, are aliases for underlying PowerShell FS cmdlets, like ``Get-Location`` and ``Set-Location``.
 
