@@ -33,11 +33,11 @@ There are steps in this process that can be easily over-looked.
 As you work keep in mind:
 
 - Your VM must have the ``Authentication Type`` of ``Password``
-- Your VM must have a username of ``student``
+- Your VM must have a username of ``student`` and a home directory of ``/home/student``
 - Your VM property: ``System assigned managed identity`` must be set to: ``On``
 - Your Key vault must be configured to grant access to your VM
 - The source code you publish must be updated with your Key vault name
-- Your application will not be reachable until the VM network security groups have been opened
+- Your deployed application will not be reachable until the VM network security groups have been opened
 
 Planning
 ========
