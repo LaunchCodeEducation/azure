@@ -178,6 +178,8 @@ Take notice of the ``TODOs`` in the script below. After you have completed the s
    # deploy application by running executable (this assumes your CWD is /home/student/coding-events-api/CodingEventsAPI)
    ASPNETCORE_URLS="http://*:80" ./bin/Release/netcoreapp3.1/linux-x64/publish/CodingEventsAPI
 
+.. solution script can be found here: https://gist.github.com/pdmxdd/b0ac6b03d9b14e2ae955ce5837bb7cd6
+
 Connect to Application
 ----------------------
 
@@ -186,3 +188,7 @@ Once you complete and run your RunCommand script your application will be deploy
 .. admonition:: note
 
    If you cannot access your VM from your browser double check that you created inbound and outbound port rules for port 80.
+
+You will know you have succeeded when you can view the Swagger homepage from your browser:
+
+.. image:: /_static/images/secrets-and-backing/secrets-studio-final.png
