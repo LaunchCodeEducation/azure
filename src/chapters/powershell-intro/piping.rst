@@ -101,11 +101,14 @@ Now let's see how this can be accomplished with a simple pipeline. Notice that t
 
 In this pipeline the string ``"hello!"`` was *piped*, or carried over to, the ``Add-Content`` cmdlet. 
 
-When a command receives piped input it goes through the process of **parameter binding**. Parameter binding is PowerShell's mechanism of aligning the output object (as a value) or its properties (by their names) with the parameter names of the cmdlet receiving the piped input. This process is performed automatically but *how it binds* is controlled by the **binding type** of each parameter.
+When a command receives piped input it goes through the process of **parameter binding**. 
 
-There are two binding types available in piping, ``ByValue`` and ``ByPropertyName``. In the previous example the piped string input was successfully bound to the ``-Value`` option because it **accepts piped input** ``ByValue``
+Parameter binding is PowerShell's mechanism of aligning the output object (by its type) or its properties (by their names) with the parameter names of the cmdlet receiving it. This process is performed automatically but *how it binds* is controlled by the **binding type** of each parameter.
+
+There are two binding types available in piping, ``ByValue`` and ``ByPropertyName``. In the previous example the piped string object was successfully bound to the ``-Value`` option because it **accepts piped input** through the ``ByValue`` mechanism.
 
 .. admonition:: note
+
    ``ByValue`` does not mean the option name must be ``-Value``, in fact it means just the opposite! This is just an coincidence of this simplistic example.
 
 Binding ByValue
