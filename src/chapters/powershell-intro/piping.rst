@@ -22,12 +22,6 @@ We will start with some examples to get comfortable with the general *flow* of p
 Piping In Action
 ================
 
-.. PIPES VS GROUP EXPRESSION PARAM SUBSTITUTION:
-
-.. https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_pipelines?view=powershell-7#one-at-a-time-processing
-
-.. However, there's an important difference. When you pipe multiple objects to a command, PowerShell sends the objects to the command one at a time. When you use a command parameter, the objects are sent as a single array object. This minor difference has significant consequences
-
 Piping to sort directory contents
 ---------------------------------
 
@@ -38,9 +32,15 @@ Piping to sort directory contents
 
 This expression has three steps:
 
-- ``Get-ChildItem``: an ``Array`` of ``DirectoryInfo`` and ``FileInfo`` objects
-- ``|``: transfers the ``Array`` to the next statement
-- ``Sort-Object -Property Name``: Sorts the ``Array`` alphabetically by their *Name* property
+- ``Get-ChildItem``: outputs an ``Array`` of ``DirectoryInfo`` and ``FileInfo`` objects
+- ``|``: transfers the ``Array`` to the next command
+- ``Sort-Object -Property Name``: Sorts the input ``Array`` alphabetically by **each element's** ``Name`` property
+
+Traditionally when the ``Get-ChildItem`` command is executed it evaluates to an ``Array`` object. However, as you noticed the sorting step operated on **each element** that is *inside*, not the ``Array`` itself. This is a key aspect of how piping works when working with collections of objects, like an ``Array``. 
+
+When a collection of objects is piped to a command **the command receives and processes each object one at a time**. You can see more detailed examples of this behavior in this `Microsoft pipelining article <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_pipelines?view=powershell-7#one-at-a-time-processing>`_.
+
+Depending on the cmdlet that receives the collection the final output may itself be a collection, like the output of ``Sort-Object``.
 
 Finding a file
 --------------
@@ -114,7 +114,9 @@ There are two binding types available in piping, ``ByValue`` and ``ByPropertyNam
 Binding ByValue
 ---------------
 
-When a cmdlet's parameter accepts input ``ByValue`` it will bind based on the type of the piped object. PowerShell will only attempt parameter binding for parameters that haven't been assigned yet. Unassigned here means the positional or named parameters that haven't been explicitly set in the command or from previous binding process. 
+When a cmdlet's parameter accepts input ``ByValue`` it will bind **based on the type** of the piped object. 
+
+PowerShell will only attempt parameter binding for parameters that haven't been assigned yet. Unassigned here means the positional or named parameters that haven't been explicitly set in the command or from previous binding process. 
 
 The following steps are a simplified description of the ``ByValue`` binding process:
 
@@ -141,17 +143,9 @@ Parameter Discovery
 
 Before you can pipe between commands you need to check for compatibility between the piped object and next command's input parameters. The ``Get-Member`` cmdlet and the ``getType()`` method are two tools you have learned about for discovery of a command's output object. For understanding the requirements of the next command's inputs we can use the ``Get-Help`` cmdlet with an additional filtering option.
 
-The ``Get-Help`` cmdlet includes an option called ``-Parameter`` which will list the details about the parameter of the target cmdlet. When called without an argument (or ``*`` as a wildcard meaning *all*) it will list the details for all the parameters of the cmdlet.
+The ``Get-Help`` cmdlet includes an option called ``-Parameter`` which will list the details about the parameter of the target cmdlet. 
 
-Let's see the parameters of the ``Add-Content`` cmdlet:
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > Get-Help Add-Content -Parameter
-   # details of all parameters
-
-Now let's look at the ``-Value`` and ``-Path`` parameters in particular. In the parameter output you want to check first line, for its input type, and the **Accept pipeline input?** line, for its binding type(s):
+Let's look at the ``-Value`` and ``-Path`` parameters in particular. In the parameter output you want to check first line, for its input type, and the **Accept pipeline input?** line, for its binding type(s):
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -176,6 +170,16 @@ Now let's look at the ``-Value`` and ``-Path`` parameters in particular. In the 
       Parameter set name           Path
       Aliases                      None
       Dynamic?                     false
+
+.. admonition:: tip
+  
+   When the ``Get-Help`` option ``-Parameter`` is given a wildcard character (``*``) it will list the details for all the parameters of the cmdlet.
+
+   .. sourcecode:: powershell
+      :caption: Windows/PowerShell
+
+      > Get-Help Add-Content -Parameter *
+      # details of all parameters
 
 Pipeline Planning
 =================
