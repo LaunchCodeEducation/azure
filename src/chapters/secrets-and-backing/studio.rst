@@ -72,7 +72,7 @@ Configure Key vault
 
 Now that you have created all the resources we will need you will need to configure your key vault by granting access to your VM, and by creating a new secret.
 
-The script that will setup our database will be provided in a later step however we already know the database connection sting and can create a Key vault secret for it. The database connection string you will be using is . You will need to create a new secret name: ``db-connection-string`` with the value ``<db-connection-string>``.
+The script that will setup our database will be provided in a later step however we already know the database connection sting and can create a Key vault secret for it. The database connection string you will be using is . You will need to create a new secret name: ``ConnectionStrings--Default`` with the value ``server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode``.
 
 Update Code
 -----------
@@ -86,9 +86,35 @@ The line you will be looking for:
 .. sourcecode:: csharp
    :caption: appsettings.json
 
-   "AzureKeyVaultName": "<your-keyvault-name>"
+   "KeyVaultName": "<your-keyvault-name>"
 
 Configure VM & Deploy
 ---------------------
 
-The last step will be running a script in our VM RunCommand section. This will be a rather large script that does quite a few things for us. 
+We have been using the RunCommand tool to run BASH scripts on our Virtual Machine. This tool is handy, but not the most pleasant experience because of the delay. Instead of running multiple commands through the RunCommand let's put together one script that will do everything necessary to deploy our application.
+
+We will provide you with part of the script that does the part you have not seen before (downloading and setting up the database). However, you will be responsible for piecing the rest of the script together yourself. Take notice of the TODOs in the script below. After you have completed the script you will need to run it in the RunCommand section of your VM and your application will be deployed all in one step!
+
+.. admonition:: note
+
+   Since we are primarily focused on Operations work this week we will not explain the changes in the code. However, if you finish your studio early today you may be interested in looking at how this code-base accesses Key vault, and retrieves secrets. The syntax is slightly different.
+
+.. sourcecode:: bash
+
+   # set HOME environment variable
+   export HOME=/home/student
+
+   # download docker 
+
+   # TODO: download and install the dotnet SDK
+
+   # TODO: set DOTNET_CLI_HOME environment variable
+
+   # TODO: clone your source code
+
+   # TODO: checkout the correct branch
+
+   # TODO: publish source code
+
+   # TODO: finish the deploy line by adding the absolute path to your executable
+   ASPNETCORE_URLS="http://*:80" home/student/<project-root>/bin/
