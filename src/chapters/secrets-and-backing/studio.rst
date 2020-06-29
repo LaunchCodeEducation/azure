@@ -2,16 +2,16 @@
 Studio: Deploy API with KeyVault
 ================================
 
-In our Studio today we will be deploying with the CodingEventsAPI that uses Azure Key vault, and uses a MySQL database.
+In our Studio today we will be deploying the CodingEventsAPI that uses Azure Key vault, and uses a MySQL database.
 
-Today we will be using Azure KeyVault to manage our Database connection string.
+We will use Azure KeyVault to manage our Database connection string.
 
 We will also need to setup a database on the VM where our API lives. A script will be provided for you that will download and setup a MySQL database on your VM.
 
 Checklist
 =========
 
-Let's start by considering the steps that will needed to completed to deploy this application:
+Let's start by considering the steps that we will need to take to complete the deployment this application:
 
 - provision Resource Group
 - provision Virtual Machine
@@ -28,12 +28,14 @@ Let's start by considering the steps that will needed to completed to deploy thi
 Gotchas
 -------
 
-There are steps in this process that can be easily over-looked. As you work keep in mind:
+There are steps in this process that can be easily over-looked. 
+
+As you work keep in mind:
 
 - Your VM must have the ``Authentication Type`` of ``Password``
 - Your VM must have a username of ``student``
-- Your VM's ``System assigned managed identity`` must be set to ``On``
-- Your Key vault must be configured to grant access to the VM
+- Your VM property: ``System assigned managed identity`` must be set to: ``On``
+- Your Key vault must be configured to grant access to your VM
 - The source code you publish must be updated with your Key vault name
 - Your application will not be reachable until the VM network security groups have been opened
 
@@ -65,21 +67,30 @@ Replace <mmyy> with the digits for the month and year for example: March of 2020
 
 .. admonition:: note
 
-   Azure Key vault names must be globally unique. If you can't create your key vault attempt changing up the name you assign it.
+   Azure Key vault names must be globally unique. If you can't create your key vault attempt changing up the name you assign it. Make sure to keep track of your Key vault name as you will need to include it in your source code later.
 
 Configure Key vault
 -------------------
 
-Now that you have created all the resources we will need you will need to configure your key vault by granting access to your VM, and by creating a new secret.
+To configure your Key vault you will need to create a new secret and grant your VM access.
 
-The script that will setup our database will be provided in a later step however we already know the database connection sting and can create a Key vault secret for it. The database connection string you will be using is . You will need to create a new secret name: ``ConnectionStrings--Default`` with the value ``server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode``.
+The secret you create will need to be set to:
+
+- Name: ``ConnectionStrings--Default``
+- Value: ``server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode``
+
+Refer to the previous walkthrough to re-familiarize yourself with granting a VM access to a Key vault.
 
 Update Code
 -----------
 
-In the walkthrough we updated the code of our application by including the name of our Key vault. We will need to do the same thing now.
+You will need to do update your ``appsettings.json`` file to include the name of your Key vault.
 
-You will need to fork the project repository. Clone the code to your local machine. Switch to the `4-mysql`` branch. Make the Key vault name change to the ``appsettings.json`` file, and then commit, and push your code back to your GitHub repository.
+.. admonition:: note
+
+   This week is focused on Operations and not on Development, however if you look at the code base of the ``2-mysql-solution`` branch you will notice the Key vault, and secret are accessed in slightly different ways than we have seen before.
+
+You will need to fork the project repository. Clone the code to your local machine. Switch to the ``2-mysql-solution`` branch. Make the Key vault name change to the ``appsettings.json`` file, and then commit, and push your code back to your GitHub repository.
 
 The line you will be looking for:
 
@@ -91,13 +102,15 @@ The line you will be looking for:
 Configure VM & Deploy
 ---------------------
 
-We have been using the RunCommand tool to run BASH scripts on our Virtual Machine. This tool is handy, but not the most pleasant experience because of the delay. Instead of running multiple commands through the RunCommand let's put together one script that will do everything necessary to deploy our application.
-
-We will provide you with part of the script that does the part you have not seen before (downloading and setting up the database). However, you will be responsible for piecing the rest of the script together yourself. Take notice of the TODOs in the script below. After you have completed the script you will need to run it in the RunCommand section of your VM and your application will be deployed all in one step!
+We have been using the RunCommand tool to run BASH scripts on our Virtual Machine. This tool is handy, but not the most pleasant experience because of the delay. Instead of running multiple commands through the RunCommand let's put together one script that will do everything necessary to deploy our application. 
 
 .. admonition:: note
 
-   Since we are primarily focused on Operations work this week we will not explain the changes in the code. However, if you finish your studio early today you may be interested in looking at how this code-base accesses Key vault, and retrieves secrets. The syntax is slightly different.
+   After learning the specific steps of a deployment process it's almost always a good idea to put those steps together in a script.
+
+We will provide you with a starter script that installs and sets up MySQL. However, you will be responsible for piecing the rest of the script together yourself. 
+
+Take notice of the TODOs in the script below. After you have completed the script you will need to run it in the RunCommand section of your VM and your application will be deployed all in one step!
 
 .. sourcecode:: bash
 
@@ -118,3 +131,12 @@ We will provide you with part of the script that does the part you have not seen
 
    # TODO: finish the deploy line by adding the absolute path to your executable
    ASPNETCORE_URLS="http://*:80" home/student/<project-root>/bin/
+
+Connect to Application
+----------------------
+
+Once you get your RunCommand script completed and run it your application will be deployed. You can access it at ``http://<YOUR-VM-IP>``.
+
+.. admonition:: note
+
+   If you cannot access your VM from your browser double check that you created inbound and outbound port rules for port 80.
