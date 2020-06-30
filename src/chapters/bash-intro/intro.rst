@@ -4,7 +4,14 @@ Bash Fundamentals
 
 From this point forward all of the commands and examples will be in Bash and need to be entered into the Ubuntu Terminal. As mentioned previously, we will distinguish Bash commands from PowerShell commands by using the ``$`` symbol instead of ``>``. 
 
-This article covers some fundamental aspects of working with Bash. Like other programming languages Bash has more depth than can be covered as an introduction. The topics covered here will give you a foundation to build the rest of your learning on top of. 
+This chapter covers the fundamental aspects of working with Bash. Like other programming languages Bash has more depth than can be covered as an introduction. The topics covered here will give you a foundation to build the rest of your learning on top of. 
+
+.. admonition:: note
+
+   Because PowerShell was inspired by Bash they share many commonalities. This chapter will lay the foundation of working with Shells through the lens of Bash and Linux. In the PowerShell chapter we will focus more on PowerShell syntax rather than explaining the mental model of working from the command-line. 
+
+Core Tenets
+===========
 
 While learning Bash and Linux some commands and behaviors will seem foreign to you if you come from a Windows background. Keep in mind the following aspects of Linux and Bash to help you understand why things work the way they do:
 

@@ -7,10 +7,6 @@ Introduction to Bash
 
    intro
    cmdlets
-   fs-navigation
-   cli-tools
-   objects
-   expressions
-   piping
-   scripting
-   studio_powershell-scripting
+   walkthrough_1-fs-navigation
+   walkthrough_2-dirs-and-files
+   walkthrough_3-cli-tools
