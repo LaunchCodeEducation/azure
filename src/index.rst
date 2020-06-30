@@ -7,6 +7,7 @@ Chapters
    :name: chapterstoc
 
    chapters/shell-intro/index
+   chapters/powershell-intro/index
    chapters/azure-intro/index
    chapters/web-apis/index
    chapters/secrets-and-backing/index

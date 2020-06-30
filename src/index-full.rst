@@ -7,6 +7,7 @@ Chapters
    :name: fulltoc
 
    chapters/shell-intro/index
+   chapters/powershell/index  
    chapters/azure-intro/index
    chapters/web-apis/index
    chapters/secrets-and-backing/index
