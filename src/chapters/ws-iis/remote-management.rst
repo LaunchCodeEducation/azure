@@ -42,7 +42,7 @@ Using these RunCommand commands is the command-line equivalent of pasting the sc
 
   For Windows VMs you should use ``RunPowerShellScript`` and for Linux VMs use ``RunShellScript``. Note that **this is in reference to the remote VM you are interacting with**, not the OS of your local machine that is issuing the RunCommand. 
 
-Here is an example of issuing single shell commands that simply list files in the home directory of the VM. For Windows we use the PowerShell ``Get-ChildItem`` and for Linux, its BASH equivalent, ``ls``. 
+Here is an example of issuing single shell commands that simply list files in the home directory of the VM. For Windows we use the PowerShell ``Get-ChildItem`` and for Linux, its Bash equivalent, ``ls``. 
 
 .. sourcecode:: powershell
     :caption: assumes a default RG, location and VM have been configured
@@ -50,12 +50,12 @@ Here is an example of issuing single shell commands that simply list files in th
     # for a Windows VM run a PowerShell script (uses PowerShell in the VM)
     > az vm run-command invoke --command-id RunPowerShellScript --scripts "Get-ChildItem"
 
-    # for a Linux VM run a Shell script (uses the default shell of the VM, usually BASH)
+    # for a Linux VM run a Shell script (uses the default shell of the VM, usually Bash)
     > az vm run-command invoke --command-id RunShellScript --scripts "ls"
 
 For longer scripts than one-off commands like the examples above you will want to reference pre-written script files on your local machine. You can do this using the ``@/path/to/script`` syntax. 
 
-Here is an example that uses a script file located in the home (``~``) directory called ``myscript.<ext>`` with the appropriate extension for PowerShell or BASH corresponding to the CLI shell of the remote VM.
+Here is an example that uses a script file located in the home (``~``) directory called ``myscript.<ext>`` with the appropriate extension for PowerShell or Bash corresponding to the CLI shell of the remote VM.
 
 .. sourcecode:: powershell
     :caption: assumes a default RG, location and VM have been configured
@@ -63,7 +63,7 @@ Here is an example that uses a script file located in the home (``~``) directory
     # myscript.ps is a PowerShell script
     > az vm run-command invoke --command-id RunPowerShellScript --scripts @"~/myscript.ps"
 
-    # myscript.sh is a BASH script
+    # myscript.sh is a Bash script
     > az vm run-command invoke --command-id RunShellScript --scripts @"~/myscript.sh"
 
 After invoking the script it will output information about the result. By default the ``message`` property of the output object will show the ``stdout`` and ``stderr`` with newline characters (``\n``) between them. 

@@ -7,5 +7,4 @@ Introduction to CLI Shells
 
    intro
    shell-fundamentals
-   setup_wsl
-   walkthrough_bash-basics
+   walkthrough_setup-wsl

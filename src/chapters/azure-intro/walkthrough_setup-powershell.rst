@@ -1,7 +1,8 @@
+===========================================
+Walkthrough: Setup Your Development Machine
+===========================================
 
-=========
-CLI Tools
-=========
+In this walkthrough we will use PowerShell and a Windows package manager called Chocolatey to set up our local development machines. We will be exploring PowerShell in greater detail later in this course. However, to begin learning about operations we will first need to install the ``dotnet`` and ``git`` CLI tools.
 
 The Chocolatey Package Manager
 ==============================
@@ -116,7 +117,7 @@ Don't forget to close and re-open PowerShell before entering the following comma
 Install Git VCS
 ---------------
 
-You likely have been using the **Git BASH** program to access ``git`` and GitHub. What you may not have realized is that Git BASH is a Terminal that emulates basic BASH commands and ``git``. However, now that we are comfortable working from the command-line we can use ``git`` natively within PowerShell and BASH. Let's install ``git`` in PowerShell using ``choco``:
+You likely have been using the **Git Bash** program to access ``git`` and GitHub. What you may not have realized is that Git Bash is a Terminal that emulates basic Bash commands and ``git``. However, now that we are comfortable working from the command-line we can use ``git`` natively within PowerShell and Bash. Let's install ``git`` in PowerShell using ``choco``:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell

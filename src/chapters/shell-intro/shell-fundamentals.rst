@@ -2,7 +2,7 @@
 Shell Fundamentals
 ==================
 
-Working with Shells like PowerShell and BASH revolves around interactive REPL usage and scripting. We will begin by learning about using the REPL for issuing individual commands in the Terminal. Then we will discuss how multiple commands can be composed into automated scripts. This lesson is an overview of Shell usage as a whole. In the following lessons we will explore the Shell-specific syntax used by BASH and PowerShell.
+Working with Shells like PowerShell and Bash revolves around interactive REPL usage and scripting. We will begin by learning about using the REPL for issuing individual commands in the Terminal. Then we will discuss how multiple commands can be composed into automated scripts. This lesson is an overview of Shell usage as a whole. In the following lessons we will explore the Shell-specific syntax used by Bash and PowerShell.
 
 The File System
 ===============
@@ -84,7 +84,7 @@ In the File Explorer program you used sidebars and your mouse to navigate throug
 
 .. admonition:: note
 
-   These commands originated in BASH but were included in PowerShell as aliases (like a nick-name) for their native PowerShell cmdlet names. We will explore what cmdlets are later, but you should be able to understand them based on how declarative their names are:
+   These commands originated in Bash but were included in PowerShell as aliases (like a nick-name) for their native PowerShell cmdlet names. We will explore what cmdlets are later, but you should be able to understand them based on how declarative their names are:
 
    - ``pwd``: alias for ``Get-Location`` cmdlet
    - ``ls``: alias for ``Get-ChildItem`` cmdlet
@@ -99,7 +99,7 @@ When you enter the ``pwd`` command into your Terminal it will print the absolute
    C:\Users\YourUsername
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/YourUsername
@@ -113,7 +113,7 @@ If you want to view the contents of the CWD you are in you can use the ``ls`` co
    # contents of home directory
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ ls
    # contents of home directory 
@@ -132,7 +132,7 @@ Finally you can use ``cd`` to change directories to a new working directory whic
    notes.txt
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ cd Downloads
 
@@ -153,7 +153,7 @@ You can also provide the absolute path to reach the directory from any CWD:
    C:\Users\YourUsername\Downloads
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ cd /home/YourUsername/Downloads
 
@@ -163,7 +163,7 @@ You can also provide the absolute path to reach the directory from any CWD:
 File System Operations
 ------------------------
 
-All of the operations you have grown accustomed to using in a File Explorer are available from the command-line. We will cover creating, reading, moving, copying and deleting files and directories in the BASH and PowerShell syntax lessons. 
+All of the operations you have grown accustomed to using in a File Explorer are available from the command-line. We will cover creating, reading, moving, copying and deleting files and directories in the Bash and PowerShell syntax lessons. 
 
 Commands
 ========
@@ -182,7 +182,7 @@ Calling, or executing, a command begins with the name of a CLI **program** follo
    In general terms executing a command looks like this:
 
    .. sourcecode:: bash
-      :caption: Linux/BASH
+      :caption: Linux/Bash
 
       $ program <argument(s)> [--option]
 
@@ -259,7 +259,7 @@ Here is another view to see how everything aligns:
 CLI Tools
 =========
 
-The built-in commands of BASH and PowerShell are like the GUI applications that come installed on your OS. They are a set of tools for the essentials of interacting with your machine. For handling more specific tasks you can install 3rd party tools -- or even write your own! While the market for GUI applications is primarily designed for consumers, the world of CLI tools is tailored for users that need greater control over their machine.
+The built-in commands of Bash and PowerShell are like the GUI applications that come installed on your OS. They are a set of tools for the essentials of interacting with your machine. For handling more specific tasks you can install 3rd party tools -- or even write your own! While the market for GUI applications is primarily designed for consumers, the world of CLI tools is tailored for users that need greater control over their machine.
 
 Shell programs can be installed in a variety of ways. Some developers prefer to *build from source* which involves manually assembling the dependencies and source code of a tool. While this process provides you with the greatest control and security over the programs on your machine it can be a lengthy process. 
 
@@ -280,7 +280,7 @@ Windows packages are handled by the `Chocolatey package manager <https://chocola
 
 Package managers automate the entire process of downloading, installing, configuring and updating the Shell programs you use. These tools are stored in **package repositories** that host the packages on the web for searching and downloading. Package managers come with some default repository packages from trusted package maintainers that contain metadata for sourcing the hosted packages. But unlike the App Stores on your phone or PC the repositories list can be updated to add additional public or private sources. 
 
-We will learn how to install and use these tools in the BASH and PowerShell syntax lessons. As a developer you can use them for configuring your development machines. Later we will learn how to write scripts that use package managers to set up our own Servers in the cloud!
+We will learn how to install and use these tools in the Bash and PowerShell syntax lessons. As a developer you can use them for configuring your development machines. Later we will learn how to write scripts that use package managers to set up our own Servers in the cloud!
 
 Tools used in this class
 ------------------------
@@ -305,12 +305,12 @@ Shell Environment Variables
 
 All Shells share the concept of a **Shell environment**. The environment holds **environment variables** that configure aspects of the Shell's behavior. They apply to every new Shell process that is started. Many variables are set by default but others can be customized by the user.
 
-BASH and PowerShell each handle environment variables differently. Managing the environment is outside of the scope of this class but is important to understand. Interactions with Shell environments are conceptually very similar. But because Linux and BASH are inherently simpler to understand, compared to the more modern and complex Windows and PowerShell, we will provide examples from the BASH perspective.
+Bash and PowerShell each handle environment variables differently. Managing the environment is outside of the scope of this class but is important to understand. Interactions with Shell environments are conceptually very similar. But because Linux and Bash are inherently simpler to understand, compared to the more modern and complex Windows and PowerShell, we will provide examples from the Bash perspective.
 
 The HOME Variable
 ^^^^^^^^^^^^^^^^^
 
-For example, consider the default behavior we discussed earlier that causes a Shell to set the CWD to the home directory when first starting up. How does the Shell know what the home directory path is? An environment variable called ``$HOME`` (Linux/BASH) or ``$Env:HOMEPATH`` (Windows/PowerShell) holds the value that the Shell uses.
+For example, consider the default behavior we discussed earlier that causes a Shell to set the CWD to the home directory when first starting up. How does the Shell know what the home directory path is? An environment variable called ``$HOME`` (Linux/Bash) or ``$Env:HOMEPATH`` (Windows/PowerShell) holds the value that the Shell uses.
 
 By default this value will be the path to the user directory for the logged in user. You can view them using the ``echo`` (print output) command:
 
@@ -321,7 +321,7 @@ By default this value will be the path to the user directory for the logged in u
    C:\Users\YourUsername
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ echo "$HOME"
    /home/YourUsername
@@ -329,11 +329,11 @@ By default this value will be the path to the user directory for the logged in u
 The PATH Variable
 ^^^^^^^^^^^^^^^^^
 
-So how do environment variables relate to calling programs by their name rather than their absolute path? There is a special variable called ``$PATH`` (Linux/BASH) or ``$Env:Path`` (Windows/PowerShell) which holds the answer. We will refer to these using the general term PATH variable.
+So how do environment variables relate to calling programs by their name rather than their absolute path? There is a special variable called ``$PATH`` (Linux/Bash) or ``$Env:Path`` (Windows/PowerShell) which holds the answer. We will refer to these using the general term PATH variable.
 
 The PATH variable holds a collection of base paths that the Shell should look in when evaluating a command. When a command is called the Shell will look in each of the base paths until it finds an executable file with the same name. Then it combines the matching base path with the command name to form the absolute path of the file to execute.
 
-For example, in BASH the base directory that the built-in commands are stored in is ``/usr/bin``. BASH includes this base directory in its PATH variable by default. When we call the ``cd`` command it is actually referencing the executable program file at the ``/usr/bin/cd`` path. 
+For example, in Bash the base directory that the built-in commands are stored in is ``/usr/bin``. Bash includes this base directory in its PATH variable by default. When we call the ``cd`` command it is actually referencing the executable program file at the ``/usr/bin/cd`` path. 
 
 Let's assume a PATH variable with 4 base directories in its list (separated by ``:`` characters):
 
@@ -366,14 +366,14 @@ Piping
 
 The idea behind piping is simple but its capability is powerful. The first command in the pipeline is executed and produces an output. But rather than printing the command's output to the Terminal it is instead used as an input to the next command in the pipeline. This process repeats until reaching the end of the pipeline and outputting the final result.
 
-We will get into the syntax of piping in the BASH and PowerShell specific lessons. In general terms piping involves 2 or more commands each separated by the ``|`` pipe character (just above the ``enter`` key on your keyboard).
+We will get into the syntax of piping in the Bash and PowerShell specific lessons. In general terms piping involves 2 or more commands each separated by the ``|`` pipe character (just above the ``enter`` key on your keyboard).
 
 .. admonition:: note
 
    In a general sense this is what piping between two commands looks like. The output of the first command is used as the input (argument) to the second command in the pipeline. 
 
    .. sourcecode:: bash
-      :caption: Linux/BASH
+      :caption: Linux/Bash
 
       $ first-command | next-command <first-command output>
 
@@ -402,5 +402,5 @@ Scripting is the end goal of working with Shells. In simple terms it is the proc
 
 Script files can be written in many scripting languages like Python and JavaScript. However, these scripting languages require an interpreter program and runtime that must be installed on the machine executing the script. 
 
-The benefit of writing scripts in a native Shell like BASH or PowerShell is that they come pre-installed as the default Shells for many Linux Distributions and Windows. Learning how to create and use scripts is an integral part of working in operations. We will cover how to read, write and execute BASH and PowerShell scripts in later lessons. 
+The benefit of writing scripts in a native Shell like Bash or PowerShell is that they come pre-installed as the default Shells for many Linux Distributions and Windows. Learning how to create and use scripts is an integral part of working in operations. We will cover how to read, write and execute Bash and PowerShell scripts in later lessons. 
 

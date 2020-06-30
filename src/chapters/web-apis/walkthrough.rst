@@ -99,9 +99,9 @@ Navigate back to the Virtual Machine blade, then select the VM you just spun up 
 
 .. image:: /_static/images/web-apis/walkthrough-access-vm.png 
 
-Configuration can be done in many ways, and you will see a couple of them in this class. Today we will configure our VM by sending it BASH commands through the Run Command console of the Azure Portal.
+Configuration can be done in many ways, and you will see a couple of them in this class. Today we will configure our VM by sending it Bash commands through the Run Command console of the Azure Portal.
 
-When we enter commands here they will be run as if we were in the BASH terminal of the VM!
+When we enter commands here they will be run as if we were in the Bash terminal of the VM!
 
 To find the Run Command we need to look at the home page of our VM. Under operations select ``Run Command``.
 
@@ -109,7 +109,7 @@ To find the Run Command we need to look at the home page of our VM. Under operat
 
 From here you will be provided with a couple of options make sure to select ``RunShellScript``.
 
-From here a screen will pop out showing you a text box where we can send BASH commands to our VM.
+From here a screen will pop out showing you a text box where we can send Bash commands to our VM.
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-1.png
 
@@ -126,7 +126,7 @@ We need to install the ``dotnet CLI`` onto this Ubuntu machine which we can do b
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-2.png
 
-Then hit run to run the BASH command on the VM. It will take a couple of minutes to run. When the command is done the STDOUT of the terminal will be displayed in the output.\
+Then hit run to run the Bash command on the VM. It will take a couple of minutes to run. When the command is done the STDOUT of the terminal will be displayed in the output.\
 
 You should look over the output to make sure everything installed properly. Below is a picture showing a section of the output that shows the ``dotnet CLI`` was installed and is ready to be used.
 
@@ -154,7 +154,7 @@ We will again be using the Run Command to run our ``dotnet CLI`` commands.
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-4.png
 
-Breaking down the commands we sent to our VM we set a couple of environment variables for the BASH shell, namely DOTNET_CLI_HOME, and HOME. We have to perform this step because when you run commands from the Run Command operation in the Azure Portal the commands are always run as the root user, and not as the student user. 
+Breaking down the commands we sent to our VM we set a couple of environment variables for the Bash shell, namely DOTNET_CLI_HOME, and HOME. We have to perform this step because when you run commands from the Run Command operation in the Azure Portal the commands are always run as the root user, and not as the student user. 
 
 The root user does not have a home directory so it is not able to run the ``dotnet CLI``. 
 

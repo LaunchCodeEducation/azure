@@ -1,13 +1,13 @@
-==================================
-Setting up Linux and BASH with WSL
-==================================
+=========================================
+Walkthrough: Set Up Linux & Bash With WSL
+=========================================
 
 Windows Subsytem for Linux
 ==========================
 
-Windows machines can not run BASH natively because of their OS incompatibility. However, Microsoft has released the **Windows Subsystem for Linux** (WSL) which simulates the Linux Kernel. The WSL is a type of **Virtual Machine** (VM) which, as the name implies, is a virtual computer that runs within a **Physical Machine** such as your laptop.
+Windows machines can not run Bash natively because of their OS incompatibility. However, Microsoft has released the **Windows Subsystem for Linux** (WSL) which simulates the Linux Kernel. The WSL is a type of **Virtual Machine** (VM) which, as the name implies, is a virtual computer that runs within a **Physical Machine** such as your laptop.
 
-Once WSL is enabled you can install a Linux Distribution like Ubuntu and use it as if it were a physical machine. In order to enable WSL and begin using Ubuntu and BASH you will need to complete the following steps.
+Once WSL is enabled you can install a Linux Distribution like Ubuntu and use it as if it were a physical machine. In order to enable WSL and practice in the following chapter you will need to install Ubuntu and Bash through the following steps.
 
 .. admonition:: warning
 
@@ -96,12 +96,12 @@ You can set up any number of VMs and customize them to your needs. However, for 
    - **username**: ``student``
    - **password**: ``launchcode``
 
-You will then be presented with BASH running on the Ubuntu Terminal!
+You will then be presented with Bash running on the Ubuntu Terminal!
 
 .. image:: /_static/images/cli-shells/ubuntu-bash-terminal.png
-   :alt: Ubuntu BASH Terminal
+   :alt: Ubuntu Bash Terminal
 
-As you likely noticed, this version of Ubuntu is **headless** meaning it only includes a Terminal GUI running BASH. While Ubuntu also comes in a Desktop edition with the full GUI Shell it is only used for consumers. When working with Linux VMs in the cloud we will always use headless OS installations and work exclusively from the Terminal. We will first get some practice with a *local* VM before venturing into *remote* VMs in the cloud.
+As you likely noticed, this version of Ubuntu is **headless** meaning it only includes a Terminal GUI running Bash. While Ubuntu also comes in a Desktop edition with the full GUI Shell it is only used for consumers. When working with Linux VMs in the cloud we will always use headless OS installations and work exclusively from the Terminal. We will first get some practice with a *local* VM before venturing into *remote* VMs in the cloud.
 
 Managing the Ubuntu VM
 ======================
@@ -111,7 +111,7 @@ When you want to close the Ubuntu VM just type ``exit`` into the prompt. The ``e
 You can practice this now by entering the following command:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ exit
 
@@ -151,11 +151,11 @@ You can use the ``--distribution`` option followed by the name of the VM's distr
    # shorthand -d
    > wsl -d Ubuntu-18.04
 
-The same concept of using the BASH ``exit`` command applies but will now return you to the PowerShell Terminal instead of closing the Ubuntu Terminal application.
+The same concept of using the Bash ``exit`` command applies but will now return you to the PowerShell Terminal instead of closing the Ubuntu Terminal application.
 
 .. admonition:: note
 
-   When entering BASH through PowerShell rather than the Ubuntu taskbar icon it will open to a different starting directory like ``/mnt/c/Users/<username>``. This is *not the home directory* but is a default when entering through PowerShell.
+   When entering Bash through PowerShell rather than the Ubuntu taskbar icon it will open to a different starting directory like ``/mnt/c/Users/<username>``. This is *not the home directory* but is a default when entering through PowerShell.
 
    This behavior can be changed by creating a ``.bash_profile`` file. You can read more about it `in this article <https://www.thegeekdiary.com/what-is-the-purpose-of-bash_profile-file-under-user-home-directory-in-linux/>`_ but it falls outside of the scope of this class. 
 

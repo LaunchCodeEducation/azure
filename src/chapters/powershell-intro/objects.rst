@@ -2,11 +2,11 @@
 Working With Objects
 ====================
 
-The outputs of the FS cmdlets looked just like the strings we saw in BASH. However, recall that *everything is an object* in Windows and PowerShell. Although the Shell may format the way they are displayed, all of the outputs from PowerShell commands are in fact objects! 
+The outputs of the FS cmdlets looked just like the strings we saw in Bash. However, recall that *everything is an object* in Windows and PowerShell. Although the Shell may format the way they are displayed, all of the outputs from PowerShell commands are in fact objects! 
 
 For example, when working with many of the FS commands, most of the outputs will be `Directory <https://docs.microsoft.com/en-us/dotnet/api/system.io.directory?view=netcore-3.1>`_, `File <https://docs.microsoft.com/en-us/dotnet/api/system.io.file?view=netcore-3.1>`_ or `String (File contents) <https://docs.microsoft.com/en-us/dotnet/api/system.string?view=netcore-3.1>`_ object types.
  
-Objects are more *tangible* than a flat string of characters and bring a new level of depth and efficiency when working from the command-line with PowerShell. They hold properties for quick-access to metadata and expose methods for common tasks that would require a pipeline of commands to perform in BASH. 
+Objects are more *tangible* than a flat string of characters and bring a new level of depth and efficiency when working from the command-line with PowerShell. They hold properties for quick-access to metadata and expose methods for common tasks that would require a pipeline of commands to perform in Bash. 
 
 Properties & Methods
 --------------------
@@ -28,10 +28,10 @@ Let's consider one of the simplest object types, those belonging to the ``String
    > "dot notation works!".length
    19
 
-The equivalent in BASH requires piping through multiple commands:
+The equivalent in Bash requires piping through multiple commands:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ echo "dot notation works!" | wc -l
 

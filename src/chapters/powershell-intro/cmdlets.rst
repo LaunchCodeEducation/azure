@@ -2,14 +2,14 @@
 Cmdlet Basics
 ==============
 
-PowerShell cmdlets behave similarly to BASH commands. They begin with their name and are followed by arguments and options. PowerShell cmdlets follow a **Verb-Noun** pattern. 
+PowerShell cmdlets behave similarly to Bash commands. They begin with their name and are followed by arguments and options. PowerShell cmdlets follow a **Verb-Noun** pattern. 
 
 The Verb-Noun Pattern
 =====================
 
 Cmdlets begin with **Verbs** like ``Get-`` and ``Set-`` followed by the **Noun** that the Verb is acting on. This declarative naming approach makes reading and writing PowerShell easier to understand.
 
-For example the cmdlets ``Get-Location`` and ``Set-Location`` both operate on your ``Location`` in the FS. The former to view your CWD (equivalent to ``pwd`` in BASH) and the latter to change your CWD (equivalent to ``cd``).
+For example the cmdlets ``Get-Location`` and ``Set-Location`` both operate on your ``Location`` in the FS. The former to view your CWD (equivalent to ``pwd`` in Bash) and the latter to change your CWD (equivalent to ``cd``).
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -20,7 +20,7 @@ For example the cmdlets ``Get-Location`` and ``Set-Location`` both operate on yo
    > Set-Location /path/to/destination
    # changes CWD to destination path
 
-While a bit more verbose than BASH commands they are often more intuitive to reason with when read like a sentence. Every command you enter is like telling the Shell a statement of instructions for it to perform.
+While a bit more verbose than Bash commands they are often more intuitive to reason with when read like a sentence. Every command you enter is like telling the Shell a statement of instructions for it to perform.
 
 In general terms, there is a Verb, a Noun being acted on and a Subject.
 
@@ -49,7 +49,7 @@ The analogy of commands and sentences can not be generalized to a single formula
 Options & Arguments
 ===================
    
-PowerShell refers to the many types of inputs to cmdlets as `parameters <https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/cmdlet-parameters?view=powershell-7>`_. Like in BASH commands some of the parameters are positional or may even have default values. Options, or named parameters, are all written in long form (no single-letter shorthands) and use a single dash (``-``).
+PowerShell refers to the many types of inputs to cmdlets as `parameters <https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/cmdlet-parameters?view=powershell-7>`_. Like in Bash commands some of the parameters are positional or may even have default values. Options, or named parameters, are all written in long form (no single-letter shorthands) and use a single dash (``-``).
 
 For example the ``Get-Command`` cmdlet has a ``-Type`` option for filtering the results list by types like ``Cmdlet`` and ``Function``:
 
