@@ -7,8 +7,8 @@ Introduction to Bash
 
    intro
    cmdlets
-   walkthrough_1-fs-navigation
-   walkthrough_2-dirs-and-files
-   walkthrough_3-cli-tools
+   walkthrough_fs-navigation
+   walkthrough_dirs-and-files
    scripting
-   walkthrough_4-substitution-scripting
+   walkthrough_substitution-scripting
+   walkthrough_cli-tools
