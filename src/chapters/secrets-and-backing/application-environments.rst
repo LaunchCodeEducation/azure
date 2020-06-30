@@ -1,6 +1,6 @@
-========================================
-Application Environments & Configuration
-========================================
+=============================================
+Application Environments & Secrets Management
+=============================================
 
 Consider the application we have been deploying through out our Operations training: the CodingEventsAPI. We have used different strategies for running this application. On our local machines we run the application with ``dotnet run``. When we deploy the application to a VM we first run ``dotnet publish`` to create build artifacts and then deploy them.
 
@@ -24,43 +24,32 @@ Parity & Portability
 Parity
 ------
 
+- 
+
 Portability
 -----------
 
-- Dev
-- Test
-- Prod
-- Why the different envs?
-- Why do they have different configs?
-- How can we manage their configs?
-
-Sensitive Data
-==============
-
-External Configuration
-======================
-
-- public configs
-- secret configs
-
-Version Control
-===============
-
-Commit to VCS
--------------
-
-- source
-- public configs
-
-.gitignore
-----------
-
-- derived
-- sensitive configs
+- 
 
 Secrets Management
 ==================
 
-- dotnet tooling
+- intro lead in to sensitive data
+- application depends on sensitive data, but needs to be kept secret
+
+Sensitive Data
+--------------
+
+- data that cannot be made available to the public
+- dev: keep out of source code (VCS)
+    - .gitignore
+- dev&ops: external configuration
+    - public configs
+    - secret configs
+- ops: least privileged access
+- ops: infra only has what it needs
+
+
+- secrets management implementation
 - local: user-secrets
 - remote: key-vault
