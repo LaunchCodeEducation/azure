@@ -1,7 +1,8 @@
+===========================================
+Walkthrough: Setup Your Development Machine
+===========================================
 
-=========
-CLI Tools
-=========
+In this walkthrough we will use PowerShell and a Windows package manager called Chocolatey to set up our local development machines. We will be exploring PowerShell in greater detail later in this course. However, to begin learning about operations we will first need to install the ``dotnet`` and ``git`` CLI tools.
 
 The Chocolatey Package Manager
 ==============================

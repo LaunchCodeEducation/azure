@@ -8,7 +8,6 @@ Introduction to PowerShell
    intro
    cmdlets
    fs-navigation
-   cli-tools
    objects
    expressions
    piping
