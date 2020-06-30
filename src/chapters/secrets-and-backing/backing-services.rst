@@ -13,7 +13,7 @@ External Application Dependencies
 .. todo:: fit in
 
 Least-Privileged Access
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 The ``--secret-permissions`` argument accepts a space-separated list of permissions you would like to grant to the given resource object, our VM in this case. Of the many available permissions which should we choose to grant and why?
 
