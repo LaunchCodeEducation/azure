@@ -25,10 +25,15 @@ Piping In Action
 Piping to sort directory contents
 ---------------------------------
 
+Before entering the following pipeline into your PowerShell Terminal take a moment to read it out loud:
+
+   Get the ChildItem list from (the current directory) **then** take that list and sort it by each item's Name Property 
+
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   Get-ChildItem | Sort-Object -Property Name
+   > Get-ChildItem | Sort-Object -Property Name
+   # sorted directory contents
 
 This expression has three steps:
 
@@ -36,34 +41,60 @@ This expression has three steps:
 - ``|``: transfers the ``Array`` to the next command
 - ``Sort-Object -Property Name``: Sorts the input ``Array`` alphabetically by **each element's** ``Name`` property
 
-Traditionally when the ``Get-ChildItem`` command is executed it evaluates to an ``Array`` object. However, as you noticed the sorting step operated on **each element** that is *inside*, not the ``Array`` itself. This is a key aspect of how piping works when working with collections of objects, like an ``Array``. 
+When the ``Get-ChildItem`` cmdlet is executed it evaluates to an ``Array`` object. However, as you noticed the sorting step (``Sort-Object``) operated on **each element** that is *inside*, not the ``Array`` itself. This is a key aspect of how piping works when working with collections of objects, like an ``Array``. 
 
-When a collection of objects is piped to a command **the command receives and processes each object one at a time**. You can see more detailed examples of this behavior in this `Microsoft pipelining article <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_pipelines?view=powershell-7#one-at-a-time-processing>`_.
+.. admonition:: tip
 
-Depending on the cmdlet that receives the collection the final output may itself be a collection, like the output of ``Sort-Object``.
+   When a collection of objects is piped from a command **the next command receives and processes each object in the collection one at a time**. 
+   
+   You can see more detailed examples of this behavior in this `Microsoft pipelining article <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_pipelines?view=powershell-7#one-at-a-time-processing>`_.
 
-Finding a file
---------------
+Adding contents to a file
+---------------------------
 
-Searching file contents
+In this example we will add the contents of a string to a file using the ``Add-Content`` cmdlet. The ``Add-Content`` cmdlet will either add the content to the end of an existing file or create a new one and put the contents in it.
+
+First let's look at a traditional execution of the single command. Here we *explicitly* assign, or bind, the values for the ``-Value`` and ``-Path`` options:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Add-Content -Value "You found me!" -Path "find-me.txt"
+
+   # confirm addition
+   > Get-Content .\find-me.txt
+   You found me!
+
+   # remove the file
+   > Remove-Item .\find-me.txt
+
+Now let's see how this can be accomplished with a simple pipeline:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > "You found me!" | Add-Content -Path "find-me.txt"
+   > Get-Content .\find-me.txt
+   You found me!
+
+In this pipeline the string ``"You found me!"`` was *piped*, or carried over to, the ``Add-Content`` cmdlet. Notice, unlike the traditional execution, that the ``-Value`` parameter is **implicitly** bound to the string object, ``"You found me!"``.
+
+.. Replacing file contents
 -----------------------
 
-Replacing file contents
------------------------
+.. Piping Output Destinations
+.. ==========================
 
-Piping Output Destinations
---------------------------
+.. Terminal
+.. --------
 
-Terminal
-^^^^^^^^
+.. `the standard output stream <https://devblogs.microsoft.com/scripting/understanding-streams-redirection-and-write-host-in-powershell/>`_
 
-`the standard output stream <https://devblogs.microsoft.com/scripting/understanding-streams-redirection-and-write-host-in-powershell/>`_
+.. File
+.. ----
 
-File
-^^^^
-
-Program
-^^^^^^^
+.. Program
+.. -------
 
 Pipeline Parameter Binding
 ==========================
@@ -72,38 +103,18 @@ In BASH, because everything is a string, piping can be performed between any two
 
 Because PowerShell is object-oriented the command compatibility is shifted from string formats to the types of objects used as inputs and outputs. In PowerShell, piping between commands is a mechanism that requires, *at minimum*, for the next command to have parameters that **accept pipeline input**. 
 
-Before we discuss the mechanism in detail let's take look at two ways to write the contents of a string to a file using the ``Add-Content`` cmdlet. This cmdlet writes content to the end of an existing file or creates a new file and sets the content as its first line. 
-
-First by traditional execution. Here we *explicitly* assign, or bind, the values for the ``-Value`` and ``-Path`` options:
+Before we discuss the mechanism in detail let's explore the example we saw earlier:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   > Add-Content -Value "hello!" -Path "hello.txt"
+   > "You found me!" | Add-Content -Path "find-me.txt"
 
-   # confirm addition
-   > Get-Content .\hello.txt
-   hello!
-
-   # remove the file
-   > Remove-Item .\hello.txt
-
-Now let's see how this can be accomplished with a simple pipeline. Notice that this time the ``-Value`` parameter is **implicitly** bound to the string object ``"hello!"``.
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   > "hello!" | Add-Content -Path "hello.txt"
-   > Get-Content .\hello.txt
-   hello!
-
-   > Remove-Item .\hello.txt
-
-In this pipeline the string ``"hello!"`` was *piped*, or carried over to, the ``Add-Content`` cmdlet. 
+In this pipeline the string ``"You found me!"`` was *piped*, or carried over to, the ``Add-Content`` cmdlet. As mentioned earlier the ``-Value`` option was assigned **implicitly** as a piped input.
 
 When a command receives piped input it goes through the process of **parameter binding**. 
 
-Parameter binding is PowerShell's mechanism of aligning the output object (by its type) or its properties (by their names) with the parameter names of the cmdlet receiving it. This process is performed automatically but *how it binds* is controlled by the **binding type** of each parameter.
+Parameter binding is PowerShell's mechanism of aligning the output object (by its type) or its properties (by their names) with the parameters of the cmdlet receiving it. This process is performed automatically but *how it binds* is controlled by the **binding type** of each parameter.
 
 There are two binding types available in piping, ``ByValue`` and ``ByPropertyName``. In the previous example the piped string object was successfully bound to the ``-Value`` option because it **accepts piped input** through the ``ByValue`` mechanism.
 
@@ -121,22 +132,36 @@ PowerShell will only attempt parameter binding for parameters that haven't been 
 The following steps are a simplified description of the ``ByValue`` binding process:
 
 #. check the **type of the piped object**
-#. check the next **unassigned** cmdlet **parameter** for a one that **accepts piped input ByValue**
+#. check the next **unassigned** cmdlet **parameter** that **accepts piped input ByValue**
 #. check if this parameter **accepts the same type of object** (or can be easily converted to it, like a number to a string)
 #. **bind the piped object** to the matched parameter
 
 Binding ByPropertyName
 ----------------------
 
-Before we discuss ``ByPropertyName`` let's consider an example that shows its difference from ``ByValue`` binding. Here we attempt to provide the ``-Value`` with direct assignment and pass the ``-Path` as a piped input instead:
+Before we discuss ``ByPropertyName`` let's consider an example that shows its difference from ``ByValue`` binding. Here we attempt to assign the ``-Value`` option explicitly and pass the ``-Path`` as a piped input instead:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   > ".\hello.txt" | Add-Content -Value "hello!"
-   Add-Content: The input object cannot be bound to any parameters for the command either because the command does not take pipeline input or the input and its properties do not match any of the parameters that take pipeline input.
+   > ".\find-me.txt" | Add-Content -Value "You found me!"
+   Add-Content: The input object cannot be bound to any parameters for the command either
+   because the command does not take pipeline input or the input and its properties
+   do not match any of the parameters that take pipeline input.
 
-In this case the command fails because the ``-Path`` option only accepts input ``ByPropertyName``. A string does not have a property called ``Path`` that aligns with the named parameter ``-Path`` so it fails to bind.
+In this case the command error message gives us clues as to what went wrong, ``...the input and its properties do not match any of the parameters...``. 
+
+The ``-Path`` option does accept input binding, but it does so ``ByPropertyName`` not ``ByValue``. Given this information and clues from the error message can you think of how ``ByPropertyName`` binding works? It must have something to do with the **properties** of the piped object.
+
+``ByPropertyName`` binding **binds the property of the piped object** to the parameter with the same name. 
+
+PowerShell will first try to bind ``ByValue`` before going through the following simplified steps:
+
+#. check the next **unassigned** cmdlet **parameter** that **accepts piped input ByPropertyName**
+#. check the names for each property of the piped object
+#. **bind the piped object's property** with the same name as the parameter
+
+The error message from before indicated that the piped object could not satisfy a binding to the **required** parameter (like ``-Path``) of the next command. Our piped string does not have a property called ``Path`` that aligns with the named parameter ``-Path`` so the binding fails.
 
 Parameter Discovery
 -------------------
@@ -181,6 +206,61 @@ Let's look at the ``-Value`` and ``-Path`` parameters in particular. In the para
       > Get-Help Add-Content -Parameter *
       # details of all parameters
 
+Using pipelines to learn about pipelines!
+=========================================
+
+Searching file contents for a matching search term is a common operational task. For example, you may need to search through Server logs or other files for terms of interest. In this example we will introduce another utility cmdlet -- ``Where-Object``. As its name implies it is used to filter a collection **where [each] object** satisfies some criteria.
+
+When discovering the parameters of a cmdlet it is a tedious process to *manually search through* the results of all the parameters. To plan your pipeline you are most concerned with the parameters that accept pipeline input. We can use the ``Where-Object`` cmdlet to filter the list of parameters down to only those that can be piped to.
+
+Let's use ``Where-Object`` and piping to learn about the ``Where-Object`` cmdlet!
+
+First we need to see what properties are of the parameter help objects that the ``Get-Help`` command outputs. For this task we can pipe them into ``Get-Member`` and view the available properties and methods on the object:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+   :emphasize-lines: 
+
+   > Get-Help Where-Object -Parameter * | Get-Member
+
+   TypeName: MamlCommandHelpInfo#parameter
+
+   Name           MemberType   Definition
+   ----           ----------   ----------
+   # ...trimmed output
+   name           NoteProperty System.String name=CContains
+   pipelineInput  NoteProperty string pipelineInput=False
+   required       NoteProperty string required=true
+
+These are the property names that correspond to the table output you saw in the previous section. Our goal is to filter out all of the parameters that have a ``pipelineInput`` property with a value of ``true (Binding Type,...)``. Recall that the the ``(Binding Type,...)`` can be one or both of ``ByValue`` and ``ByPropertyName``. 
+
+We can generalize our search term to the string ``true`` followed by any other text to account for the 3 scenarios that could come after it. This is another use case for a wildcard. The expression ``true*`` matches the loose pattern of our search criteria. 
+
+When we are searching for something that is *like* a string we can use the ``-Like`` option of ``Where-Object``:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Get-Help Where-Object -Parameters * | Where-Object -Property pipelineInput -Like "true*"
+
+   -InputObject <PSObject>
+      Specifies the objects to be filtered. You can also pipe the objects to `Where-Object`.
+
+      When you use the InputObject parameter with `Where-Object`, instead of piping command results to `Where-Object`, the InputObject value is treated as a single object. 
+      This is true even if the value is a collection that is the result of a command, such as `-InputObject (Get-Process)`. Because InputObject cannot return individual 
+      properties from an array or collection of objects, we recommend that, if you use `Where-Object` to filter a collection of objects for those objects that have specific 
+      values in defined properties, you use `Where-Object` in the pipeline, as shown in the examples in this topic.
+
+      Required?                    false
+      Position?                    named
+      Default value                None
+      Accept pipeline input?       True (ByValue)
+      Accept wildcard characters?  false
+
+.. admonition:: tip
+   
+   You can read more about ``Where-Object`` and providing search criteria through **script blocks** `in its Microsoft documentation <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Core/Where-Object?view=powershell-7#description>`_. 
+
 Pipeline Planning
 =================
 
@@ -193,7 +273,7 @@ When designing a pipeline it can help to organize the commands and the path the 
 
 .. admonition:: tip
 
-   The cmdlets ``Where-Object``, ``Sort-Object`` and ``Select-Object`` that you saw in the examples utility cmdlets. They have a broader surface of use and can be used as transitions, or interjections, between steps to coordinate the behavior of a pipeline. 
+   The cmdlets ``Where-Object`` and ``Sort-Object`` that you saw in the examples are utility cmdlets. They can be used as transitions, or interjections between steps, to coordinate the behavior of a pipeline. 
    
    They make up a small part of the `PowerShell Utilities module <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/?view=powershell-7>`_. This module is a goldmine for piping with other utilities to help with steps like formatting, converting and mutating objects.
 
@@ -205,84 +285,3 @@ When designing a pipeline it can help to organize the commands and the path the 
 .. If you find that the same Noun is being used in a pipeline your complementary Verbs will work well together. For example,
 
 .. .. todo:: complete examples or cut from article (too long..)
-
-Piping to find a file
----------------------
-
-Before we can see piping in action let's create a file in our home directory that we can search for with a pipe:
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   new-item find-me.txt -Value "Hello.`nYou founxd me!"
-
-From your home directory run the next command to watch our PowerShell pipe Find the file by searching all the files and folders in your home directory.
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   Get-ChildItem | Where-Object -Property Name -eq "find-me.txt"
-
-This expression has three steps:
-
-#. ``Get-ChildItem``: an array of *DirectoryInfo* and *FileInfo* objects
-#. ``|``: transfers the array to the next statement
-#. ``Where-Object -Property Name -eq "find-me.txt"``: Searches the array of objects for the property *Name* that matches the value *find-me.txt*.
-
-Piping to determine if a file contains a substring
---------------------------------------------------
-
-- find a specific word in a file as an extension of what they just saw (filtering) where-object file object not a directory object -- conclusion all objects be used
-   - get-childitem -recurse -> files | where-object -> file | get-contents -> lines | where-object -> filtered lines
-   - find in file system
-   - find in file
-   - filter
-
-   .. sourcecode:: powershell
-      :caption: Windows/PowerShell
-
-      (Get-ChildItem | Where-Object -Property Name -eq "find-me.txt" | Get-Content).contains("founxd")
-
-Piping to preview fixing a misspelling in a file
-------------------------------------------------
-
-- fix all the misspellings of "get him do the dundees" in a file of 10000+ lines as an extension of what they just saw **FIND AND REPLACE IN STDOUT** as a preview
-   - previous examples started with collection outputs
-      - piping can be done on individual objects as well such as a file you want to edit
-   - start with get-contents of file (single object) -> collection of line objects
-   - iterate over lines collection with for-each
-      - introduce $_ (current element)
-      - replace
-   - did not change the file itself
-      - prove
-      - printed as a preview
-      - how can we actually edit the file?
-
-.. sourcecode:: powershell
-   :caption: Windows/PowerShell
-
-   (Get-Content -Path .\Notice.txt) |
-      ForEach-Object {$_ -Replace 'Warning', 'Caution'} |
-         Set-Content -Path .\Notice.txt
-   Get-Content -Path .\Notice.txt
-
-Piping Output Destinations
---------------------------
-
-Terminal
-^^^^^^^^
-
-- all of previous commands printed to the Terminal
-- note / link to STD streams
-
-File
-^^^^
-
-- third example bad without modifying the file
-- send destination to the file
-- prove editing success
-
-Final Example
-^^^^^^^^^^^^^
-
-request -> body | 
