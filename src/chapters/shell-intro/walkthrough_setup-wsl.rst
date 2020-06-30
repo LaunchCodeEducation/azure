@@ -1,13 +1,13 @@
-==================================
-Setting up Linux and Bash with WSL
-==================================
+=========================================
+Walkthrough: Set Up Linux & Bash With WSL
+=========================================
 
 Windows Subsytem for Linux
 ==========================
 
 Windows machines can not run Bash natively because of their OS incompatibility. However, Microsoft has released the **Windows Subsystem for Linux** (WSL) which simulates the Linux Kernel. The WSL is a type of **Virtual Machine** (VM) which, as the name implies, is a virtual computer that runs within a **Physical Machine** such as your laptop.
 
-Once WSL is enabled you can install a Linux Distribution like Ubuntu and use it as if it were a physical machine. In order to enable WSL and begin using Ubuntu and Bash you will need to complete the following steps.
+Once WSL is enabled you can install a Linux Distribution like Ubuntu and use it as if it were a physical machine. In order to enable WSL and practice in the following chapter you will need to install Ubuntu and Bash through the following steps.
 
 .. admonition:: warning
 
