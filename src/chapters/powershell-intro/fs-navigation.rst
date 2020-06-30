@@ -2,15 +2,15 @@
 Working With the File System
 ============================
 
-PowerShell brought over many of the essential BASH File System (FS) commands and behaviors. While several of the BASH commands are available in PowerShell they are incompatible with Windows and were brought over as **aliases**. 
+PowerShell brought over many of the essential Bash File System (FS) commands and behaviors. While several of the Bash commands are available in PowerShell they are incompatible with Windows and were brought over as **aliases**. 
 
-An alias is like a nickname for a command. The BASH FS commands, like ``pwd`` or ``cd``, are aliases for underlying PowerShell FS cmdlets, like ``Get-Location`` and ``Set-Location``.
+An alias is like a nickname for a command. The Bash FS commands, like ``pwd`` or ``cd``, are aliases for underlying PowerShell FS cmdlets, like ``Get-Location`` and ``Set-Location``.
 
-Because these aliases are not *the real BASH command* not all of their parameters are the same in PowerShell. Let's explore the underlying cmdlets and the common arguments used with them.
+Because these aliases are not *the real Bash command* not all of their parameters are the same in PowerShell. Let's explore the underlying cmdlets and the common arguments used with them.
 
 .. admonition:: note
 
-   Some of the navigation shorthands from BASH have changed:
+   Some of the navigation shorthands from Bash have changed:
 
    - ``~``: shorthand for the home directory still works
    - ``-``: shorthand for returning to the *previous* working directory **does not**
@@ -24,7 +24,7 @@ Because these aliases are not *the real BASH command* not all of their parameter
 Get the CWD
 ===========
 
-In PowerShell you can either use the BASH alias:
+In PowerShell you can either use the Bash alias:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -43,7 +43,7 @@ Or its underlying cmdlet, ``Get-Location``:
 Change directory
 ================
 
-The BASH command ``cd`` can still be used with an absolute or relative path:
+The Bash command ``cd`` can still be used with an absolute or relative path:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -64,7 +64,7 @@ It is an alias for the PowerShell cmdlet ``Set-Location`` which uses the same ar
 List directory contents
 =======================
 
-In BASH we used the ``ls`` command with or without a path to list the contents of a directory:
+In Bash we used the ``ls`` command with or without a path to list the contents of a directory:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -95,7 +95,7 @@ The ``Get-ChildItem`` cmdlet also uses an absolute or relative path of a directo
 Move a directory or file
 ========================
 
-The ``mv`` command can be used in BASH or PowerShell with an absolute or relative path for either of its arguments:
+The ``mv`` command can be used in Bash or PowerShell with an absolute or relative path for either of its arguments:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -112,7 +112,7 @@ The PowerShell cmdlet behind ``mv`` is the more declaratively named``Move-Item``
 Copy a directory or file
 ========================
 
-In PowerShell copying an Item can be done using the BASH ``cp``. Recall that we used the ``-r`` (recursive) option when copying a directory with its contents. Whereas for a file we could just use ``cp`` directly:
+In PowerShell copying an Item can be done using the Bash ``cp``. Recall that we used the ``-r`` (recursive) option when copying a directory with its contents. Whereas for a file we could just use ``cp`` directly:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -123,7 +123,7 @@ In PowerShell copying an Item can be done using the BASH ``cp``. Recall that we 
    # copy a file
    > cp path\to\target\file path\to\destination\file
 
-Its cmdlet equivalent ``Copy-Item`` can also be used for files or directories. When copying a directory the ``-Recurse`` option can be used like the BASH ``-r``:
+Its cmdlet equivalent ``Copy-Item`` can also be used for files or directories. When copying a directory the ``-Recurse`` option can be used like the Bash ``-r``:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -141,11 +141,11 @@ Delete a directory or file
 
    Be **very careful** when removing (deleting) items in PowerShell. Always use the interactive mode (``-Confirm`` option) to confirm each deletion!
 
-Previously we used the BASH ``rm`` command with the ``-i`` (interactive) option to remove files and directories. Just like ``cp`` we added the ``-r`` (recursive) option when deleting a directory and its contents. 
+Previously we used the Bash ``rm`` command with the ``-i`` (interactive) option to remove files and directories. Just like ``cp`` we added the ``-r`` (recursive) option when deleting a directory and its contents. 
 
 However, in PowerShell these options can not be used. Instead we will use the PowerShell ``Remove-Item`` cmdlet with the following options:
 
-- ``-Confirm``: confirm each item before being deleted (like ``-i`` interactive mode in BASH)
+- ``-Confirm``: confirm each item before being deleted (like ``-i`` interactive mode in Bash)
 - ``-Recurse``: when removing a directory and its contents recursively
 
 .. sourcecode:: powershell
@@ -160,7 +160,7 @@ However, in PowerShell these options can not be used. Instead we will use the Po
 Create a directory or file
 ==========================
 
-In BASH we used the ``mkdir`` command to create new directories. This alias is still available in PowerShell but its underlying cmdlet is much more powerful:
+In Bash we used the ``mkdir`` command to create new directories. This alias is still available in PowerShell but its underlying cmdlet is much more powerful:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -169,7 +169,7 @@ In BASH we used the ``mkdir`` command to create new directories. This alias is s
 
    > mkdir C:\absolute\path
 
-Recall that in BASH we used a side-effect of the ``touch`` command to create a new file. The ``touch`` alias **does not exist** in PowerShell.
+Recall that in Bash we used a side-effect of the ``touch`` command to create a new file. The ``touch`` alias **does not exist** in PowerShell.
 
 Instead of using a side-effect, PowerShell has a dedicated cmdlet for creating **Items** of any type -- such as a file or directory.
 
@@ -209,7 +209,7 @@ When creating a file you can use the ``-Value`` option to write content to the f
 Reading file contents
 =====================
 
-In BASH we learned about the ``cat`` (concatenate) command. We used the side-effect of ``cat`` to print the contents of a file to the Terminal. We *can* use ``cat`` in PowerShell as well:
+In Bash we learned about the ``cat`` (concatenate) command. We used the side-effect of ``cat`` to print the contents of a file to the Terminal. We *can* use ``cat`` in PowerShell as well:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell

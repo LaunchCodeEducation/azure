@@ -4,7 +4,7 @@ Studio: Deploy API with KeyVault
 
 In our Studio today we will be deploying the CodingEventsAPI to an Ubuntu VM. As part of the deployment we will provision an Azure Key vault to manage the database connection string of an embedded MySQL database server.
 
-In this studio you will be given a partially completed BASH script that will configure your VM. You will be responsible for applying what you have learned to complete the automation.
+In this studio you will be given a partially completed Bash script that will configure your VM. You will be responsible for applying what you have learned to complete the automation.
 
 
 .. admonition:: note
@@ -108,7 +108,7 @@ The line you will be looking for:
 Developing the Deployment Script
 ================================
 
-We have been using the RunCommand tool to run BASH scripts on our Virtual Machine. This tool is handy, but not the most pleasant experience because of its inherent processing delay. Instead of running multiple commands through the RunCommand let's put together a single script that will do everything necessary to deploy our application. 
+We have been using the RunCommand tool to run Bash scripts on our Virtual Machine. This tool is handy, but not the most pleasant experience because of its inherent processing delay. Instead of running multiple commands through the RunCommand let's put together a single script that will do everything necessary to deploy our application. 
 
 .. admonition:: tip
 

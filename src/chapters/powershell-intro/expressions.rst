@@ -92,7 +92,7 @@ Grouping expressions allows you to evaluate the group and then treat the group, 
 Subexpression Operator
 ======================
 
-Recall that in BASH we used the command substitution syntax ``$(command)`` to execute in-line commands. In PowerShell the same syntax is used but is referred to as a **subexpression operator**. At first glance the subexpression operator looks similar to the grouping operator we just learned about.
+Recall that in Bash we used the command substitution syntax ``$(command)`` to execute in-line commands. In PowerShell the same syntax is used but is referred to as a **subexpression operator**. At first glance the subexpression operator looks similar to the grouping operator we just learned about.
 
 Let's compare the purposes of each of these operators:
 
@@ -106,7 +106,7 @@ First using a grouping operator:
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   # the BASH 'echo' command can be used as an alias for Write-Output
+   # the Bash 'echo' command can be used as an alias for Write-Output
    > Write-Output "The length of the concatenated strings is: (("hello" + "world").length)"
 
    The length of the concatenated strings is: ((

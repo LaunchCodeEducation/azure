@@ -99,7 +99,7 @@ In this pipeline the string ``"You found me!"`` was *piped*, or carried over to,
 Pipeline Parameter Binding
 ==========================
 
-In BASH, because everything is a string, piping can be performed between any two commands. However, the *format* of those strings is often massaged through additional steps in the pipeline. 
+In Bash, because everything is a string, piping can be performed between any two commands. However, the *format* of those strings is often massaged through additional steps in the pipeline. 
 
 Because PowerShell is object-oriented the command compatibility is shifted from string formats to the types of objects used as inputs and outputs. In PowerShell, piping between commands is a mechanism that requires, *at minimum*, for the next command to have parameters that **accept pipeline input**. 
 

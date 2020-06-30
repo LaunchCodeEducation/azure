@@ -1,18 +1,18 @@
 ===============================
-Walkthrough: Hands-On With BASH
+Walkthrough: Hands-On With Bash
 ===============================
    
-Working with BASH
+Working with Bash
 =================
 
-From this point forward all of the commands and examples will be in BASH and need to be entered into the Ubuntu Terminal. As mentioned previously, we will distinguish BASH commands from PowerShell commands by using the ``$`` symbol instead of ``>``. 
+From this point forward all of the commands and examples will be in Bash and need to be entered into the Ubuntu Terminal. As mentioned previously, we will distinguish Bash commands from PowerShell commands by using the ``$`` symbol instead of ``>``. 
 
-This article is a guide for the fundamentals of working with BASH. Like other programming languages BASH has more depth than can be covered as an introduction. The topics covered here will give you a foundation to build the rest of your learning on top of. 
+This article is a guide for the fundamentals of working with Bash. Like other programming languages Bash has more depth than can be covered as an introduction. The topics covered here will give you a foundation to build the rest of your learning on top of. 
 
 Core Tenets
 -----------
 
-While learning BASH and Linux some commands and behaviors will seem foreign to you if you come from a Windows background. Keep in mind the following aspects of Linux and BASH to help you understand why things work the way they do:
+While learning Bash and Linux some commands and behaviors will seem foreign to you if you come from a Windows background. Keep in mind the following aspects of Linux and Bash to help you understand why things work the way they do:
 
 File System Paths
 ^^^^^^^^^^^^^^^^^
@@ -33,7 +33,7 @@ In Linux *everything is a file descriptor*. This means that everything including
 Everything is a string
 ^^^^^^^^^^^^^^^^^^^^^^
 
-There are **no data types** in BASH. All of the inputs and outputs of BASH commands are strings of characters. This concept also applies to the contents of files. 
+There are **no data types** in Bash. All of the inputs and outputs of Bash commands are strings of characters. This concept also applies to the contents of files. 
 
 File extensions are arbitrary
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -63,7 +63,7 @@ Getting Help
 Most commands will provide documentation through the ``--help`` option or a ``man`` (manual) entry. When you are unsure about a command or want to learn more about how it is used you can use get help like this:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ command --help
    # prints help documentation
@@ -79,7 +79,7 @@ Show the CWD
 The ``pwd`` (print working directory) command will give you the absolute path of your current working directory (CWD) in the FS:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -92,7 +92,7 @@ Change directories
 The ``cd`` (change directory) command takes one argument -- the relative or absolute path of where you want to go:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    # relative paths begin with a './'
    $ cd ./path/name
@@ -102,7 +102,7 @@ The ``cd`` (change directory) command takes one argument -- the relative or abso
    # absolute paths always begin from the root (/) directory
    cd /home/student/path/name
 
-If you want to change to a directory using a relative path that is *under* your CWD this is straightforward. But what if you need to refer to a relative path *above* your CWD? For this BASH includes two special characters for relative references:
+If you want to change to a directory using a relative path that is *under* your CWD this is straightforward. But what if you need to refer to a relative path *above* your CWD? For this Bash includes two special characters for relative references:
 
 - `.` character: a single dot means *this directory*
 - `..` characters: a double dot means *up one directory*
@@ -120,7 +120,7 @@ We will discuss the use of the *this directory* character (``.``) soon. Consider
 If you want to move to the `Media` directory *relative* to `Videos` you need to go *up one directory* level:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student/Media/Videos
@@ -150,7 +150,7 @@ Relative to where you are, you need to:
 - then down another level into ``album``: ``../Downloads/album``
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student/Media/Videos
@@ -168,7 +168,7 @@ There are also two useful shorthands for quickly navigating around:
 - ``-``: the dash character (next to the ``0`` key) is a shorthand for returning to the *previous* CWD (thanks to the ``$OLDPWD`` environment variable)
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student/Media
@@ -184,7 +184,7 @@ There are also two useful shorthands for quickly navigating around:
 The ``~`` shorthand can also be used as a base *relative to HOME* path:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student/Media
@@ -200,7 +200,7 @@ List the CWD contents
 Our final navigation command is ``ls`` (list contents). As mentioned previously ``ls`` can be used with no arguments to view the contents of the CWD:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -211,7 +211,7 @@ Our final navigation command is ``ls`` (list contents). As mentioned previously 
 But ``ls`` can also be used view the contents of another directory using a relative or absolute path as its argument:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -228,7 +228,7 @@ You can also provide options to ``ls`` to change the output. The ``-a`` option m
 While the home directory appeared empty earlier it actually contained several hidden files:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -239,7 +239,7 @@ While the home directory appeared empty earlier it actually contained several hi
 The ``-l`` option outputs in *long form* which shows additional details about the contents. In the following example it is combined with ``-a`` to see detailed information about the hidden files in the home directory:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -268,7 +268,7 @@ By convention Linux directories do not use spaces in them. Space characters (`` 
 Let's create a ``parent-dir`` and ``child-dir`` using ``mkdir``:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -288,7 +288,7 @@ View contents
 Now if we list the contents of the CWD (home dir) and the ``/tmp`` dir we should see our new directories:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -303,7 +303,7 @@ Now if we list the contents of the CWD (home dir) and the ``/tmp`` dir we should
 We can also see that both the new directories are empty:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -322,14 +322,14 @@ Move
 We can move a directory to a new location using the ``mv`` command. Once again, its arguments accept relative or absolute paths. The ``mv`` command takes a target and destination path as its first and second arguments:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ mv <path to target> <path to destination>
 
 Let's move the ``child-dir`` from its current parent directory (``/tmp``) into the new one we made:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -352,7 +352,7 @@ Let's move the ``child-dir`` from its current parent directory (``/tmp``) into t
    For example if we create another directory called ``child-dir`` and want to move it into ``parent-dir`` we can *rename it during the move* to not overwrite the existing directory file with the same name:
 
    .. sourcecode:: bash
-      :caption: Linux/BASH
+      :caption: Linux/Bash
 
       $ pwd
       /home/student
@@ -381,7 +381,7 @@ The recursive option instructs the ``cp`` command to copy the directory *recursi
 Let's move our ``parent-dir`` to the ``/tmp`` dir:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -398,7 +398,7 @@ Let's move our ``parent-dir`` to the ``/tmp`` dir:
 Now let's confirm the move by checking the ``/tmp`` dir:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ ls /tmp
    parent-dir
@@ -418,7 +418,7 @@ Delete
 
    In the Shell a **deletion is permanent** and nearly **instantaneous**. For this reason it is imperative that the command **always use an absolute path** to be explicit and prevent mistakes.
    
-   While we stressed being cautious before it is imperative to be **extra cautious** when deleting files using BASH:
+   While we stressed being cautious before it is imperative to be **extra cautious** when deleting files using Bash:
 
    **DO NOT STRAY FROM THE FOLLOWING COMMAND DIRECTIONS**
 
@@ -427,7 +427,7 @@ The command for deleting, or *removing*, files is ``rm``. When deleting a direct
 Let's clean up the directories we created using the remove command. We will also include the ``-i`` (interactive) option as a safety measure. This will require us to explicitly confirm the removal of each file before it is deleted by entering the ``y`` character at each prompt:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ ls /tmp/parent-dir
    child-dir
@@ -447,7 +447,7 @@ As we move from directory to file operations consider one of the core tenets of 
 Why is this valuable to consider? Because most of the commands used for directory operations are identical for regular files! When dealing with regular files the ``-r`` (recursive) option is no longer needed since it is an *individual file* rather than a container like a directory:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ mv path/to/target/file path/to/destination/file
 
@@ -458,16 +458,16 @@ Why is this valuable to consider? Because most of the commands used for director
 Create
 ^^^^^^
 
-In BASH you can create a file in several different ways. BASH and Linux users are accustomed to using **CLI text editors** for creating and modifying files. Whereas on Windows the preference is for using a GUI based editor like ``notepad``.
+In Bash you can create a file in several different ways. Bash and Linux users are accustomed to using **CLI text editors** for creating and modifying files. Whereas on Windows the preference is for using a GUI based editor like ``notepad``.
 
-BASH also includes `redirection operators <https://www.guru99.com/linux-redirection.html>`_ which can be used to *redirect* the output of a command into a new location -- like a new file or new lines on an existing file.
+Bash also includes `redirection operators <https://www.guru99.com/linux-redirection.html>`_ which can be used to *redirect* the output of a command into a new location -- like a new file or new lines on an existing file.
 
 Due to the scope of this class, we will not be covering CLI editors or the redirect operators but you can use the links above to learn more about them. Instead, we will introduce a much simpler command.
 
 The ``touch`` command can be used to create an empty file. It takes a relative or absolute path ending in the file's name as an argument:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ touch path/to/file-name
 
@@ -478,7 +478,7 @@ The ``touch`` command can be used to create an empty file. It takes a relative o
 Let's create a file called ``my-file`` in a directory called ``my-files``:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -499,7 +499,7 @@ When viewing the contents of a file we can use the ``cat`` command. The ``cat`` 
 You can use the ``cat`` command to print the contents of a file by providing the absolute or relative path to that file. Let's try viewing the contents of the hidden file ``.bash_history`` which shows a history of all the commands you have entered recently:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ pwd
    /home/student
@@ -520,7 +520,7 @@ You can use the ``cat`` command to print the contents of a file by providing the
 .. Let's try viewing the ``.bashrc`` file this time. If the contents of this file look terrifying don't worry! You won't need to write or edit any of it. But it serves as a lengthy file to practice scrolling with ``less``:
 
 .. .. sourcecode:: bash
-..    :caption: Linux/BASH
+..    :caption: Linux/Bash
 
 ..    $ pwd
 ..    /home/student
@@ -539,7 +539,7 @@ The Ubuntu Distribution comes pre-installed with the Advanced Packaging Tool (``
 You will typically see ``apt`` used with the ``-y`` option added to the command. This option skips the confirmation prompt for the actions you are taking to speed up the process. 
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ apt <action argument> -y
 
@@ -549,7 +549,7 @@ SUDO
 Recall that APT, like all system-wide package managers, must have control over your machine to download, install and configure the packages you need. Because it operates on packages stored above the ``/home/<username>`` directory (closer to the root dir) it is considered *outside of the user space* and requires the use of admin privileges:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ sudo apt <action argument> -y
 
@@ -565,7 +565,7 @@ Any time you are going to use ``apt`` you should begin by updating the metadata 
 Below you can see the most ubiquitous ``apt`` command in use:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ sudo apt update -y
    # information about repository source updates
@@ -581,7 +581,7 @@ Installing Tools
 After you have updated you can search for and install package tools on your machine. The ``search`` argument can be used to scan the source repositories for a package. It accepts a search term as a sub-argument which it will use to search the title and descriptions of all the available packages within your group of sources.
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    # always run apt update before searching or installing!
    $ sudo apt search <search term>
@@ -589,14 +589,14 @@ After you have updated you can search for and install package tools on your mach
 If the search results contains your package you can install it using the ``install`` argument. The sub-argument is the **exact package name** of the tool you want to install. The installation prompts (like confirmation dialog boxes in a GUI) can be automatically accepted using the ``-y`` option:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ sudo apt install <package name> -y
 
 Let's practice by searching for the amusing little tool called Cow Say. First let's search for the package by its name, ``cowsay``. This package is available within the default set of source repositories and should show up as the first result:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ sudo apt update -y
 
@@ -623,7 +623,7 @@ Let's practice by searching for the amusing little tool called Cow Say. First le
 The package that we want is the first one, ``cowsay``. Notice that the search will check both the package name and description. Let's install it:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    # installing controls your machine and requires sudo
    $ sudo apt install cowsay -y
@@ -631,14 +631,14 @@ The package that we want is the first one, ``cowsay``. Notice that the search wi
 In the command output you can see that ``apt`` downloads, unpacks and installs the package automatically . You can now try out the newly installed tool! Use the command program ``cowsay`` and enter a message as its arguments:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ cowsay Hello World!
 
 It is okay to leave ``cowsay`` installed. But if you would like to remove it you can use ``apt`` to cleanly uninstall it:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ sudo apt uninstall cowsay -y
 
@@ -665,7 +665,7 @@ Let's see what this process looks like using the ``dotnet CLI`` installation as 
 The first step is to install the official Microsoft package repository. This installation includes both the repository and the signing key. This is a one-time process and future installations of Microsoft tools will be available and trusted automatically:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    # install the repository source package (includes the repo and signing key)
    $ sudo wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
@@ -676,7 +676,7 @@ The first step is to install the official Microsoft package repository. This ins
 Now we will install a utility called ``apt-transport-https`` which, as the name implies, is used to download over HTTPS. Microsoft only serves their packages over secure connections:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    # always update before other commands
    $ sudo apt update -y
@@ -686,7 +686,7 @@ Now we will install a utility called ``apt-transport-https`` which, as the name 
 Finally with the repository, signing key, and HTTPS tooling installed we can install the ``dotnet`` package we were after. We will install the .NET Core SDK which includes both the SDK (standard library, compiler and runtime) as well as the ``dotnet`` CLI tool itself:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ sudo apt update -y
    $ sudo apt install dotnet-sdk-3.1 -y
@@ -696,7 +696,7 @@ From the output you can see all of the work that ``apt`` does automatically. Ima
 You can confirm the installation was successful by viewing the ``--help`` output of ``dotnet``. Viewing the help output of a command program is an easy way to get acquainted with it right from the command-line. We will work with this tool in later lessons but feel free to poke around with it in the mean time.
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ dotnet --help
 
@@ -714,21 +714,21 @@ You can confirm the installation was successful by viewing the ``--help`` output
 .. Grep
 .. ----
 
-.. Because all of the inputs and outputs of BASH commands are strings it follows that a tools for working with these strings would be developed. Grep is part of a suite of tools that are pre-installed on most Linux Distributions. The suite includes ``grep``, ``awk`` and ``sed``. The former of which is designed for *searching* while the latter two are used for *processing*, or transforming, text strings. They work on the text contents of files but really shine when used in piping.
+.. Because all of the inputs and outputs of Bash commands are strings it follows that a tools for working with these strings would be developed. Grep is part of a suite of tools that are pre-installed on most Linux Distributions. The suite includes ``grep``, ``awk`` and ``sed``. The former of which is designed for *searching* while the latter two are used for *processing*, or transforming, text strings. They work on the text contents of files but really shine when used in piping.
 
 .. While ``sed`` and ``awk`` are powerful and worth learning they fall well outside of the scope of this course. However, searching with ``grep`` is a valuable tool whose basic behaviors are simple to understand. 
 
 .. In its simplest form ``grep`` uses two arguments -- a search term and a text input source. The text input can be an absolute or relative path to a file you want to search the contents of. Grep will search line-by-line and output any lines that have a match for the search term. If there are no matches the output of ``grep`` will be an empty line:
 
 .. .. sourcecode:: bash
-..    :caption: Linux/BASH
+..    :caption: Linux/Bash
 
 ..    $ grep '<search term>' path/to/file
 
 .. For example what if we wanted to see all of the conditional statements in the ``.bashrc`` file we looked at earlier? We could have ``grep`` search that file for ``if`` and output the search results to us. 
 
 .. .. sourcecode:: bash
-..    :caption: Linux/BASH
+..    :caption: Linux/Bash
 
 ..    $ grep 'if' ~/.bashrc
 ..    # all of the lines that include 'if' in them
@@ -740,7 +740,7 @@ You can confirm the installation was successful by viewing the ``--help`` output
 .. We will cover ``grep`` behavior when used in piping next. For more detailed information you can always check the help or manual outputs:
 
 .. .. sourcecode:: bash
-..    :caption: Linux/BASH
+..    :caption: Linux/Bash
 
 ..    # concise help output (usually available)
 ..    $ grep --help
@@ -761,7 +761,7 @@ You can confirm the installation was successful by viewing the ``--help`` output
 .. When only a search term argument is given to ``grep`` (when used in piping) it will use the output of the previous command as the text to search. Essentially it treats the output the same as the contents of a file when given a file path argument. You can picture it like this:
 
 .. .. sourcecode:: bash
-..    :caption: Linux/BASH
+..    :caption: Linux/Bash
 
 ..    $ <command> | grep '<search term>' <output from command>
 
@@ -774,7 +774,7 @@ You can confirm the installation was successful by viewing the ``--help`` output
 .. What if we wanted to check for details about the ``dotnet`` program by using the long form ``ls`` output:
 
 .. .. sourcecode:: bash
-..    :caption: Linux/BASH
+..    :caption: Linux/Bash
 
 ..    $ ls -l /usr/bin | grep 'dotnet'
 ..    lrwxrwxrwx 1 root   root           22 May 20 15:37 dotnet -> ../share/dotnet/dotnet
@@ -784,7 +784,7 @@ You can confirm the installation was successful by viewing the ``--help`` output
 .. What if you just want to know how to publish a project (something we will soon cover)? We can use piping to automate the process of searching through the lines manually:
 
 .. .. sourcecode:: bash
-..    :caption: Linux/BASH
+..    :caption: Linux/Bash
 
 ..    $ dotnet --help | grep 'publish'
 ..    publish           Publish a .NET project for deployment.
@@ -816,31 +816,31 @@ A statement, like other languages, is an independent instruction like defining a
 Script File Extensions
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Because file extensions are arbitrary in Linux, a script file can have any extension (or none at all). However, it is customary to use the ``.sh`` extension as a note to signify that the script should be interpreted as BASH commands.
+Because file extensions are arbitrary in Linux, a script file can have any extension (or none at all). However, it is customary to use the ``.sh`` extension as a note to signify that the script should be interpreted as Bash commands.
 
 Comments
 ^^^^^^^^
 
-As you have seen throughout the previous examples, comments can be used to annotate your scripts. In a BASH script you can write comments by preceding them with a ``#`` symbol. Anything after ``#`` is ignored by the BASH interpreter. Comments are a valuable addition to any script, especially when they get complex. Remember that comments should serve to explain the *why* not to dictate the *how* which the code already describes.
+As you have seen throughout the previous examples, comments can be used to annotate your scripts. In a Bash script you can write comments by preceding them with a ``#`` symbol. Anything after ``#`` is ignored by the Bash interpreter. Comments are a valuable addition to any script, especially when they get complex. Remember that comments should serve to explain the *why* not to dictate the *how* which the code already describes.
 
 Executing a script
 ^^^^^^^^^^^^^^^^^^
 
-The act of executing a script is the same evaluating a command entered into the REPL. An interpreter is needed to understand and execute the contents. In the REPL the interpreter is implied by the Shell -- BASH in our case. The Shell is actually a BASH REPL process that is listening for, interpreting and executing commands.
+The act of executing a script is the same evaluating a command entered into the REPL. An interpreter is needed to understand and execute the contents. In the REPL the interpreter is implied by the Shell -- Bash in our case. The Shell is actually a Bash REPL process that is listening for, interpreting and executing commands.
 
-Recall that files in Linux are just strings of characters. It is **up to the program that interprets it** to decide what to do with its contents. When executing a script we have to define what program, like BASH or Python, that will interpret it. This can be done explicitly or implicitly. 
+Recall that files in Linux are just strings of characters. It is **up to the program that interprets it** to decide what to do with its contents. When executing a script we have to define what program, like Bash or Python, that will interpret it. This can be done explicitly or implicitly. 
 
-Explicit execution is when we use the interpreter program (``bash``) as a command and provide it with the path to the script file as an argument. For example if we had a BASH script file in our home (``~``) directory we can execute it like this:
+Explicit execution is when we use the interpreter program (``bash``) as a command and provide it with the path to the script file as an argument. For example if we had a Bash script file in our home (``~``) directory we can execute it like this:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ bash ~/my-script.sh
 
 In other words when we want to execute a script explicitly we (the user) define the program we want to interpret it -- one of the core tenets covered earlier. As another example if we had a Python script we would naturally use the ``python`` interpreter to execute it:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ python ~/my-python-script.py
 
@@ -850,7 +850,7 @@ If we try to execute a script with the wrong interpreter it will fail. It would 
 
    Implicit execution is when the interpreter is defined inside the script using a special line at the top of the script file called a `shebang <https://linuxize.com/post/bash-shebang/>`_. 
    
-   Implicit execution is more advanced but is the standard approach when working with scripts professionally. We will not be covering implicit execution at this time as it involves some other steps that are best covered when you are more comfortable with scripting and BASH in general.
+   Implicit execution is more advanced but is the standard approach when working with scripts professionally. We will not be covering implicit execution at this time as it involves some other steps that are best covered when you are more comfortable with scripting and Bash in general.
 
 The Executing User
 ^^^^^^^^^^^^^^^^^^
@@ -875,16 +875,16 @@ Defining variables
 
 When defining variables in a script the convention is to use lowercase letters and separate words with underscores (``_``). Environment variables are written in all capital letters so they are easy to distinguish from script variables. 
 
-Because BASH does not have any data types a variable is simple to declare and assign. First you define the name of the variable followed by an assignment symbol (``=``) and the string value of it on the right side.
+Because Bash does not have any data types a variable is simple to declare and assign. First you define the name of the variable followed by an assignment symbol (``=``) and the string value of it on the right side.
 
 .. admonition:: note
 
-   Spaces are use to delimit, or distinguish, different parts of a command called **tokens**. Token splitting is what allows BASH to see a command along with its arguments and options as individual units to be evaluated -- each separated by a space. 
+   Spaces are use to delimit, or distinguish, different parts of a command called **tokens**. Token splitting is what allows Bash to see a command along with its arguments and options as individual units to be evaluated -- each separated by a space. 
 
 When defining a variable **there can be no spaces between the variable declaration and assignment**:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
    
    # correct: no spaces
    variable_name=value
@@ -895,7 +895,7 @@ When defining a variable **there can be no spaces between the variable declarati
 When the value of a variable does not have any spaces it can be written as shown above. When you need to have spaces you can put single-quotes (`''`) around the value. These serve to group the whole string value together including the spaces:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    variable_name='a longer value'
 
@@ -905,7 +905,7 @@ Substituting variables
 Once a variable has been defined (either in the script or a global environment variable) it can be referenced by prefixing a ``$`` symbol before it:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    # define the variable
    my_variable='hello world'
@@ -919,7 +919,7 @@ Once a variable has been defined (either in the script or a global environment v
 Variable Substitution
 ^^^^^^^^^^^^^^^^^^^^^
 
-Referencing a variable is straightforward. But in most cases this process is done *inside* of a command, referencing in the open as we have done above has no effect. For this behavior BASH has a mechanism called **variable substitution**.
+Referencing a variable is straightforward. But in most cases this process is done *inside* of a command, referencing in the open as we have done above has no effect. For this behavior Bash has a mechanism called **variable substitution**.
 
 For example, consider this simple script that creates and moves a directory using variables to hold the paths. Above each command is a comment showing what the command looks like when its variables have been substituted.
 
@@ -946,7 +946,7 @@ Create a directory called ``bash-examples`` in your home (``~``) directory and o
 You should now have a file with the path ``~/bash-examples/variable-substitution.sh`` that you can execute using ``bash`` as the interpreter:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ bash ~/bash-examples/variable-substitution.sh
 
@@ -964,7 +964,7 @@ Command Substitution
 We will refer to command substitutions interchangeably with **in-line evaluations** as they are evaluations performed *in the line* of a command being executed. An in-line evaluation allows you to *embed* a command within another like this:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ command $(sub-command)
 
@@ -975,7 +975,7 @@ You can treat in-line evaluations as you would any other command, with arguments
 Consider a more complicated example to understand how it works:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ command $(sub-command $(sub-sub-command))
 
@@ -1021,13 +1021,13 @@ In your ``bash-examples`` directory create another file called ``command-substit
 Then execute the script the same way as before:
 
 .. sourcecode:: bash
-   :caption: Linux/BASH
+   :caption: Linux/Bash
 
    $ bash ~/bash-examples/command-substitution.sh
 
 .. admonition:: note
 
-   As a good programmer you are likely miffed by the copy and pasting of an identical statement. Although we won't be getting into BASH functions you should be able to make sense of it. Here is a cleaner approach to help you sleep at night!
+   As a good programmer you are likely miffed by the copy and pasting of an identical statement. Although we won't be getting into Bash functions you should be able to make sense of it. Here is a cleaner approach to help you sleep at night!
 
    .. sourcecode:: bash
       :caption: ~/bash-examples/command-substitution.sh
@@ -1063,6 +1063,6 @@ Then execute the script the same way as before:
 Learn More
 ==========
 
-This has been an introduction to the practical fundamentals of BASH. You are *not expected to have memorized any of it* by any means. Feel free to refer back to this article throughout the course to refresh your memory. Learning BASH takes a lot of time. We covered a lot of ground today and will be revisiting the fundamentals regularly until they become second nature.
+This has been an introduction to the practical fundamentals of Bash. You are *not expected to have memorized any of it* by any means. Feel free to refer back to this article throughout the course to refresh your memory. Learning Bash takes a lot of time. We covered a lot of ground today and will be revisiting the fundamentals regularly until they become second nature.
 
-If you want to learn more advanced usage this `BASH cheat-sheet from DevHints <https://devhints.io/bash>`_ will get you up to speed quickly. DevHints is an open source site filled with quick-reference guides for many languages and frameworks written by the open source community.
+If you want to learn more advanced usage this `Bash cheat-sheet from DevHints <https://devhints.io/bash>`_ will get you up to speed quickly. DevHints is an open source site filled with quick-reference guides for many languages and frameworks written by the open source community.

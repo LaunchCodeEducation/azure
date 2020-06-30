@@ -116,7 +116,7 @@ Don't forget to close and re-open PowerShell before entering the following comma
 Install Git VCS
 ---------------
 
-You likely have been using the **Git BASH** program to access ``git`` and GitHub. What you may not have realized is that Git BASH is a Terminal that emulates basic BASH commands and ``git``. However, now that we are comfortable working from the command-line we can use ``git`` natively within PowerShell and BASH. Let's install ``git`` in PowerShell using ``choco``:
+You likely have been using the **Git Bash** program to access ``git`` and GitHub. What you may not have realized is that Git Bash is a Terminal that emulates basic Bash commands and ``git``. However, now that we are comfortable working from the command-line we can use ``git`` natively within PowerShell and Bash. Let's install ``git`` in PowerShell using ``choco``:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell

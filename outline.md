@@ -40,7 +40,7 @@
   - options (configuring commands)
 - Piping (combining / controlling commands)
   - passing STDOUT to STDIN between commands
-  - BASH: Grep
+  - Bash: Grep
   - Powershell: Converting strings to objects, filtering, sorting
 - scripting
   - configuration of machines

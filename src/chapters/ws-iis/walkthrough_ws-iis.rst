@@ -14,7 +14,7 @@ Now that we have learned about remote access mechanisms and the IIS Manager it's
 
 .. admonition:: note
 
-   Some of the ``az CLI`` steps are shown in both Windows/PowerShell and Linux/BASH to illustrate the cross-platform nature of the tool with minor syntactical changes. However, to complete this walkthrough will **require a local Windows machine in order to use RDP**.
+   Some of the ``az CLI`` steps are shown in both Windows/PowerShell and Linux/Bash to illustrate the cross-platform nature of the tool with minor syntactical changes. However, to complete this walkthrough will **require a local Windows machine in order to use RDP**.
   
 Provision the VM
 ================
@@ -32,9 +32,9 @@ Notice how we use the ``--query`` Argument to have the output of the ``create`` 
   > az configure -d group=$(az group create -n <name>-ws-wt --query "name")
 
 .. sourcecode:: bash
-  :caption: Linux/BASH
+  :caption: Linux/Bash
 
-  # remember in BASH we have to output in tsv format to remove the default JSON quote characters
+  # remember in Bash we have to output in tsv format to remove the default JSON quote characters
   $ az configure -d group=$(az group create -n <name>-ws-wt -o tsv --query "name")
 
 Create a Windows Server VM
@@ -56,7 +56,7 @@ Let's assign this value to a variable:
   > $WsImageUrn=$(az vm image list --query "[? contains(urn, 'Windows') && contains(urn, '2019')] | [0].urn")
 
 .. sourcecode:: bash
-  :caption: Linux/BASH
+  :caption: Linux/Bash
 
   # don't forget to output in tsv format
   $ ws_image_urn=$(az vm image list -o tsv --query "[? contains(urn, 'Windows') && contains(urn, '2019')] | [0].urn")
@@ -73,7 +73,7 @@ To create our VM we will use most of the same Arguments as we did when creating 
   > az vm create -n ws-vm --size "Standard_B2s" --image "$WsImageUrn" --admin-username "student" --admin-password "LaunchCode-@zure1" --assign-identity
 
 .. sourcecode:: bash
-  :caption: Linux/BASH
+  :caption: Linux/Bash
 
   $ az vm create -n ws-vm --size "Standard_B2s" --image "$ws_image_urn" --admin-username "student" --admin-password "LaunchCode-@zure1" --assign-identity
 
@@ -110,7 +110,7 @@ Since we have set the VM as our default we can use the ``list-ip-addresses`` Com
   > $VmPublicIp=$(az vm list-ip-addresses --query "[0].virtualMachine.network.publicIpAddresses[0].ipAddress")
 
 .. sourcecode:: bash
-  :caption: Linux/BASH
+  :caption: Linux/Bash
 
   # output in tsv format
   $ vm_public_ip=$(az vm list-ip-addresses -o tsv --query "[0].virtualMachine.network.publicIpAddresses[0].ipAddress")

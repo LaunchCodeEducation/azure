@@ -2,12 +2,12 @@
 PowerShell Fundamentals
 =======================
 
-Now that you have learned some fundamental Shell and BASH syntax you are ready to learn about PowerShell. Because many PowerShell features and behaviors were inspired by BASH you will find that much of the knowledge you gained will be applicable to this new tool.
+Now that you have learned some fundamental Shell and Bash syntax you are ready to learn about PowerShell. Because many PowerShell features and behaviors were inspired by Bash you will find that much of the knowledge you gained will be applicable to this new tool.
 
 Core Tenets
 ===========
 
-Although BASH and PowerShell share many similarities there are some key distinctions between them. Just as before we will establish some core aspects of PowerShell and Windows to help rationalize the *why* behind their behavior.
+Although Bash and PowerShell share many similarities there are some key distinctions between them. Just as before we will establish some core aspects of PowerShell and Windows to help rationalize the *why* behind their behavior.
 
 File System Paths
 -----------------
@@ -21,12 +21,12 @@ Windows treats each of its **drives** (devices managed by the OS) as independent
 Framework Interpretation
 ------------------------
 
-The .NET framework is used to interpret and translate PowerShell commands for the OS instead of the direct communication channel seen between BASH and Linux. The object-oriented *power* of PowerShell comes from this layer of abstraction between itself and the Windows OS. 
+The .NET framework is used to interpret and translate PowerShell commands for the OS instead of the direct communication channel seen between Bash and Linux. The object-oriented *power* of PowerShell comes from this layer of abstraction between itself and the Windows OS. 
 
 Everything is an object
 -----------------------
 
-Since Windows NT the Windows OS releases have all followed an object-oriented design. By extension, PowerShell treats all of its **inputs and outputs as distinct types of objects**. This departure from the string-based approach of BASH makes working with PowerShell a more *tangible* Shell experience.
+Since Windows NT the Windows OS releases have all followed an object-oriented design. By extension, PowerShell treats all of its **inputs and outputs as distinct types of objects**. This departure from the string-based approach of Bash makes working with PowerShell a more *tangible* Shell experience.
 
 PowerShell commands and scripts are able to work with a wide range of objects from those provided by the underlying .NET framework to custom-developed types. Like other object-oriented languages PowerShell objects contain properties and methods that make them intuitive to work with.
 
