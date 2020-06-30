@@ -201,14 +201,14 @@ Now we can reference the URN by its variable name ``$ImageURN`` (PowerShell) or 
 
 .. admonition:: tip
 
-    You can make use of a slightly more advanced query and in-line evaluation to do this in one step. Below we use a filter on the list to only output objects whose URN property ``contains`` the string Ubuntu. Then we pipe the filtered list and assign the first element's URN value to the variable.
+    You can make use of a slightly more advanced query and in-line execution to do this in one step. Below we use a filter on the list to only output objects whose URN property ``contains`` the string Ubuntu. Then we pipe the filtered list and assign the first element's URN value to the variable.
 
     .. sourcecode:: powershell
         :caption: filtering the image list
 
         > az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn"
 
-    When we issue this command using in-line evaluation we can assign output directly to the variable:
+    When we issue this command using in-line execution we can assign output directly to the variable:
 
     .. sourcecode:: powershell
         :caption: Windows/PowerShell

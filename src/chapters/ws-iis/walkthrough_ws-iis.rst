@@ -24,7 +24,7 @@ Create a Resource Group
 
 As always we will begin by creating a resource group. This time we will combine creating and configuring it as the default group into one step! 
 
-Notice how we use the ``--query`` Argument to have the output of the ``create`` Command be just the name of the new RG. We perform all of this within an in-line evaluation so the output (the RG name) can be assigned as the default group value:
+Notice how we use the ``--query`` Argument to have the output of the ``create`` Command be just the name of the new RG. We perform all of this within an in-line execution so the output (the RG name) can be assigned as the default group value:
 
 .. sourcecode:: powershell
   :caption: Windows/PowerShell
