@@ -8,12 +8,9 @@ External Application Dependencies
 - Database
 - Logging
 - Caching
-- Ideally live on separate infrastructure
-
-.. todo:: fit in
 
 Least-Privileged Access
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 The ``--secret-permissions`` argument accepts a space-separated list of permissions you would like to grant to the given resource object, our VM in this case. Of the many available permissions which should we choose to grant and why?
 
@@ -35,3 +32,47 @@ In our case the API hosted by the VM only needs the ability to *read* from its K
 
 - ``list``: for accessing the names of secrets
 - ``get``: for accessing the individual secret values
+
+Databases
+---------
+
+Logging
+-------
+
+Azure DB Tooling
+================
+
+VM embedded Database
+--------------------
+
+- what we will use in this class
+- pros: easily setup, no need for additional networking
+- cons: on the same infrastructure
+    - breaks SRP of infrastructure best practice
+    - if the infrastructure fails both the application and it's data fail
+    - VM cannot be disposed until SQL data is extracted
+- cons: not accessible outside of the VM
+- cons: you are completely responsible for the data
+
+
+Azure SQL Databases
+-------------------
+
+- primary solution for DB management with Azure
+- pros: live on own infrastructure
+- pros: Azure backed for data backup
+- pros: highly configurable
+- pros: can be reachable from anywhere with internet connection, including other Azure resources
+- cons: more setup time than other Azure DB options
+
+Other Azure DB Options
+----------------------
+
+Azure dedicated MySQL, MSSQL, or PostgreSQL
+    - pros: very quick setup
+    - pros: accessible via internet, and to all Azure resources
+    - cons: less configuration
+various Azure dedicated NoSQL DBs
+    - pros: very quick setup
+    - 
+
