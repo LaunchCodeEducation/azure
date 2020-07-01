@@ -45,7 +45,44 @@ You can leave the Launchpad view open for now. We will explore Postman after set
 Clone the Coding Events API Source Code
 ---------------------------------------
 
-Throughout this course we will be using a modified version of the 
+Throughout this course we will be using a modified version of the MVC Coding Events application you created. The `Coding Events API <https://github.com/LaunchCodeEducation/coding-events-api/tree/1-sqlite>`_ is designed following the OpenAPI REST specification. Although they are implemented differently you will find that most of the features from the MVC application have been supported through endpoints in the API.
+
+.. admonition:: note
+
+   Our focus in this course is on operations and as such we will not be going into the development of the API. However, feel free to explore the source code if you are curious about the similarities and differences between the .NET MVC and API implementations.
+
+Let's begin by cloning the repo onto our machine:
+
+.. admonition:: note
+
+   If you just opened your PowerShell Terminal then it will default to a CWD of your ``HOME`` directory, ``C:\Users\<username>``. 
+   
+   If you want to clone the repo somewhere else make sure to change to that directory first.
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > git clone https://github.com/launchcodeeducation/coding-events-api
+
+For today's studio we will start with the first branch of the API codebase, ``1-sqlite``. This branch has an API with a single (``CodingEvent``) resource and a built-in SQLite database. 
+
+Let's change into the repo and switch to this branch:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   # cd is an alias (like a nick-name) for the Set-Location cmdlet in PowerShell
+   > cd coding-events-api
+
+   # check out the 1-sqlite branch
+   > git checkout 1-sqlite
+
+You can leave this PowerShell Terminal window open:
+
+.. image:: /_static/images/postman/powershell-in-repo-dir.png
+   :alt: PowerShell in coding-events-api repo directory on 1-sqlite branch
+
+We will return to it after exploring Postman.
 
 Postman UI
 ==========
