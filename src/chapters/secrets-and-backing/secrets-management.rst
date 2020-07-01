@@ -256,3 +256,28 @@ Azure Key vault
 
 In our remote production environment we will be using Azure Key vault to manage our secrets. Using the secrets will be shown in the following walkthrough, but we will show you how to create a new Key vault (secret store) and how to store secrets to the Key vault.
 
+Starting in the Azure portal you will need to search for the Key vault blade.
+
+.. image:: /_static/images/secrets-and-backing/keyvault-search.png
+
+Then from the home page you will need to click ``Add``.
+
+.. image:: /_static/images/secrets-and-backing/keyvault-add.png
+
+Then fill out the following form to create the Key vault.
+
+.. image:: /_static/images/secrets-and-backing/keyvault-form.png
+
+Which creates a new Key vault with the specified parameters selecting this Key vault you can add new secrets.
+
+.. image:: /_static/images/secrets-and-backing/keyvault-secrets.png
+
+Then by clicking ``Add`` again you fill out the form to create a new secret.
+
+.. image:: /_static/images/secrets-and-backing/keyvault-form-filled-out.png
+
+Which finally creates the secret.
+
+.. image:: /_static/images/secrets-and-backing/keyvault-secret-final.png
+
+The walkthrough will give further details on creating secrets with both ``dotnet user-secrets`` and with Azure Key vault.
