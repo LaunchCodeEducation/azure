@@ -156,16 +156,103 @@ We will discuss application environments in the next article, but before then le
 Secrets Management
 ------------------
 
-Our project has run in two different environments: locally on our personal machines, and remotely via Azure. For local development environments we will use the ``dotnet user-secrets`` tool. Remotely we will us Azure Key vault.
+There are many different applications that handle secrets management and although they all have slightly different implementations they are loosely based on the same basic principles.
+
+- a ``secrets store`` is a directory or location that houses secrets
+- secrets are contained in a text file
+- secrets are stored as strings consisting of key-value pairs
+- a secret's key refers to the name of the secret
+- a secret's value refers to the contents of the secret
+
+Our project has run in two different environments: locally on our personal machines, and remotely via Azure. For local development environments we will use the ``dotnet user-secrets`` tool to manage our secrets. In remote environments we will use Azure Key vault.
 
 dotnet user-secrets
 ^^^^^^^^^^^^^^^^^^^
 
 ``dotnet user-secrets`` is a CLI command of ``dotnet``. Like all ``dotnet`` commands you can use the ``--help`` option to learn more.
 
+When using ``dotnet user-secrets`` dotnet creates a ``secrets store`` for your current project in the hidden folder ``~/.microsoft/usersecrets/<project_id>``. The first time you create a new secret store ``dotnet`` will automatically create the secret store, and update your source code to point to the secret store.
+
+We can see this in action by creating a new temporary .NET project and printing out the .csproj file:
+
+.. sourcecode:: powershell
+	:caption: Windows/PowerShell
+
+	dotnet new console -n example-dotnet-user-secret
+	Set-Location ./example-dotnet-user-secret/
+	Get-Content ./example-dotnet-user-secret.csproj
+
+	<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<RootNamespace>example_dotnet_user_secret</RootNamespace>
+	</PropertyGroup>
+
+	</Project>
+
+This is the ``.csproj`` file for a standard dotnet project. Let's add a new secret store to this project using ``dotnet user-secrets init``.
+
+.. sourcecode:: powershell
+	:caption: Windows/PowerShell
+
+	Set-Location ./example-dotnet-user-secret/
+	dotnet user-secrets init --id example-dotnet-user-secret-store
+
+
+	Set UserSecretsId to 'example-dotnet-user-secret-store' for MSBuild project '/home/<username>/example-dotnet-user-secret/example-dotnet-user-secret.csproj'.
+
+This command did two things for us, it created a new secret store at ``/home/<username>/.microsoft/usersecrets/example-dotnet-user-secret`` and amended the ``.csproj`` file to let our project know the id of the secret store so it can load secrets at runtime.
+
+We can view the changed ``.csproj`` file with:
+
+.. sourcecode:: powershell
+	:caption: Windows/PowerShell
+	:lineno-start: 1
+	:emphasize-lines: 10
+	
+	Set-Location ./example-dotnet-user-secret/
+	Get-Content ./example-dotnet-user-secret.csproj
+
+	<?xml version="1.0" encoding="utf-8"?>
+	<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<RootNamespace>example_dotnet_user_secret</RootNamespace>
+		<UserSecretsId>example-dotnet-user-secret-store</UserSecretsId>
+	</PropertyGroup>
+	</Project>
+
+You can view the new secret store with:
+
+.. sourcecode:: powershell
+	:caption: Windows/PowerShell
+	
+	Get-ChildItem ./.microsoft/usersecrets/
+
+	Mode                 LastWriteTime         Length Name
+	----                 -------------         ------ ----
+	d----           6/30/2020  9:15 PM                example-dotnet-user-secret-store
+
+Now that our .NET project has an associated secret store we can add as many secrets as we want and they will be stored externally from our project source, and are loaded at runtime.
+
+Let's add a new secret:
+
+.. sourcecode:: powershell
+
+	Set-Location ./example-dotnet-user-secret
+	dotnet user-secrets set secret_name secret_value
+
+	Successfully saved secret_name = secret_value to the secret store.
+
+Setting our first secret associated with this project and secret store will have created a new ``secrets.json`` file. In this file a new key value pair was created that matches our ``dotnet user-secrets set`` statement. You can continue to add as many secrets as your project requires.
+
+At the start of the walkthrough we will see how to access the ``secret`` in our ``CodingEventsAPI``.
+
 Azure Key vault
 ^^^^^^^^^^^^^^^
 
-- secrets management implementation
-- local: user-secrets
-- remote: key-vault
+In our remote production environment we will be using Azure Key vault to manage our secrets. Using the secrets will be shown in the following walkthrough, but we will show you how to create a new Key vault (secret store) and how to store secrets to the Key vault.
+
