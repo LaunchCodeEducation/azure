@@ -8,8 +8,8 @@ Chapters
 
    chapters/shell-intro/index
    chapters/bash-intro/index
+   chapters/hosting/index
    chapters/azure-intro/index
-   chapters/web-apis/index
    chapters/secrets-and-backing/index
    chapters/powershell-intro/index
 
