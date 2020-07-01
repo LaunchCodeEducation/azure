@@ -152,9 +152,13 @@ In more terse terms we can describe this endpoint as:
 GET Single Coding Event
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-If you want to view the representation of a single entity you need to provide information to uniquely identify it in the collection. Since the entry point represents the collection it can be followed by an ``Id`` value to return the corresponding entity.
+If you want to view the representation of a single entity you need to provide information to uniquely identify it in the collection. Since the entry point represents the collection it can be followed by an ``Id`` value in the path to *look inside the collection* and return just the corresponding entity.
 
-When describing entity endpoints we use a path variable notation, ``{variableName}``, to symbolize where the value needs to be put in the path. We can describe this ``CodingEvent`` entity endpoint as:
+.. todo:: directory path analogy, collection/individual or collection/sub-collection/individual etc
+
+When describing entity endpoints we use a path variable notation, ``{variableName}``, to symbolize where the value needs to be put in the path. 
+
+We can describe this ``CodingEvent`` entity endpoint in shorthand as:
 
    ``GET /events/{codingEventId} -> CodingEvent``
 
@@ -163,16 +167,82 @@ If an entity with the given ``codingEventId`` is found we will get a single ``Co
 Create a Coding Event
 ^^^^^^^^^^^^^^^^^^^^^
 
+Think about what it means to *create* an entity. You need to provide the *required data* and the *collection it belongs to*. When we want to create a ``CodingEvent`` we are asking the API to *change the state* of the collection (the list of entities) so our path must be ``/events``.
+
+Recall that the **C** in **CRUD** stands for *create* and corresponds to the ``POST`` HTTP method in a RESTful API. Putting the resource and the action together we know we need to ``POST`` to the ``/events`` endpoint.
+
+Finally, as part of our ``POST`` request we will need to send a request body containing the data required to create the entity.
+
+The *shape* of the ``NewCodingEvent`` describes the JSON body that the endpoint expects:
+
+.. sourcecode:: json
+
+   NewCodingEvent {
+      Title: string
+      Description: string
+      Date: string (ISO 8601 date format)
+   }
+
+When making a request you would need to send a JSON body like this to satisfy the general shape:
+
+.. sourcecode:: json
+
+   {
+      "Title": "Consuming the Coding Events API With Postman",
+      "Description": "Learn how to use Postman to interact with the Coding Events API!",
+      "Date": "2020-10-31"
+   }
+
+.. admonition:: note
+
+   We only provide the *user editable* fields, not the unique ``Id`` which the API handles internally when saving to the database.
+
+Recall that when a ``POST`` request is successful the API should respond with the ``201``, or **Created**, status code. As part of the ``2XX`` *success status codes*, it indicates a particular type of successful response that will have an empty body and a special header.
+
+The OpenAPI REST spec states that when an entity is created the response should include both this status and the ``Location`` header that provides the URI of the new entity:
+
+.. sourcecode:: json
+
+   Location=<server origin>/events/<new entity Id>
+
+As an example:
+
+.. sourcecode:: json
+
+   Location=http://localhost:5000/events/1
+
+You could then issue a ``GET`` request to the ``Location`` header value and view the new entity! In shorthand format this endpoint can be described as:
+
+   ``POST /events (NewCodingEvent) -> 201``
+
+If the request fails because of a *user error* then it will respond with a ``400`` status code and a message about what went wrong. In ths case of ``CodingEvent`` entities the following validation criteria must be met:
+
+- ``Title``: 10-100 characters
+- ``Description``: less than 1000 characters
+
 Delete a Coding Event
 ^^^^^^^^^^^^^^^^^^^^^
+
+Deleting a ``CodingEvent`` resource means to operate on a single entity. This should make sense as it would be too powerful to expose the ability to delete the entire collection. Just like the endpoint for getting a single entity, this endpoint requires a ``codingEventId`` path variable.
+
+When an resource is deleted the OpenAPI spec expects the API to respond with a ``204`` status code. Similar to the ``201`` status, this code indicates a success with no response body or special headers. 
+
+The deletion endpoint can be described in shorthand as:
+
+   ``DELETE /events/{codingEventId} -> 204``
+
+If you attempt to delete a resource that doesn't exist (with an incorrect ``codingEventId``) then the endpoint will respond with an expected ``404`` status and message.
 
 Summary
 ^^^^^^^
 
-The following is the summary of our endpoints:
+Two endpoints at the entry point path, ``/events``, to interact with the collection as a whole:
 
 - **list Coding Events**: ``GET /events -> CodingEvent[]``
-- **create a Coding Event**: ``POST /events -> 201``
+- **create a Coding Event**: ``POST /events (NewCodingEvent) -> 201``
+
+And two that require a sub-path variable, ``/events/{codingEventId}``, to interact with a single entity:
+
 - **delete a Coding Event**: ``DELETE /events/{codingEventId} -> 201``
 - **find single Coding Event**: ``GET /events/{codingEventId} -> CodingEvent``
 
