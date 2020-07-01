@@ -87,4 +87,4 @@ You can setup  your own servers and configure them to always be on, and to have 
 
 Using Azure we can easily, quickly, and cheaply start up our own server that has a public IP address, is always on, and can be configured with a DNS.
 
-After creating a server, we will be able to copy over our Build Artifacts we created using ``dotnet publish``, and then run our application. It will then be accesible via the internet at a public IP address, and it will always be on and running. This allows our users to interface with our application. 
+After creating a server, we will be able to copy over our Build Artifacts we created using ``dotnet publish``, and then run our application. It will then be accessible via the internet at a public IP address, and it will always be on and running. This allows our users to interface with our application. 

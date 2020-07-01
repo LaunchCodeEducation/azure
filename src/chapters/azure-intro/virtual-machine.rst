@@ -1,6 +1,6 @@
-======================
-Azure Virtual Machines
-======================
+================================
+Introduction to Virtual Machines
+================================
 
 The first Azure Service we will be working with in this class is Azure Virtual Machines.
 
