@@ -8,7 +8,6 @@ Introduction to Web Hosting
    intro
    networking
    processes-ports
-   walkthrough_setup-powershell
    walkthrough
    studio
    studio-2
