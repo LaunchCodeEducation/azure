@@ -2,9 +2,11 @@
 Secrets Management
 ==================
 
-An application may need access to lots of different data. An application may make a request to a database to write or read crucial business information, to do this the application needs credentials to access the database, a database connection string.
+Modern web applications rely on access to one or more data sources. Most applications will need to make a request to at least one database to manage business data. To do this the application needs credentials to access the database, these can be written as a database connection string:
 
-Consider the fictionalized database connection string to connect a .NET web application to a MySQL database: ``server=257.28.162.111;port=3306;database=car_db;user=car_user;password=7p*RTY5g8i#WB@F8``.
+Consider the following fictionalized database connection string used to connect a .NET web application to a MySQL database:
+
+``server=172.28.162.111;port=3306;database=car_db;user=car_user;password=7p*RTY5g8i#WB@F8``.
 
 This string contains:
 
@@ -13,13 +15,15 @@ This string contains:
 - a database name 
 - a username and password that has access to the database
 
-That's essentially all the information anyone needs to gain access to your database server!
+That's all the information anyone needs to gain access to your database server! 
 
-All of the data in our database connection string is sensitive. **Sensitive data** is privileged data that we wouldn't want anyone accessing for any number of reasons. In the case of our database connection string, the sensitive data is data that could be used to compromise our application, data backing services, or infrastructure. 
+A database connection string is a type of **Secret**, a privileged piece of information that our application needs to operate. 
+
+Secrets can be used as the key to protect access to **Sensitive Data**.
 
 .. admonition:: note
 
-	Sensitive data could also include proprietary knowledge or Personal Identifying Information (PII). This sensitive data is usually secured within a data backing service. The data backing service credentials (database connection string) are what are guarded to ensure only individuals with authorization can access this sensitive data.
+	Sensitive data includes proprietary knowledge or Personal Identifying Information (PII). This sensitive data is usually secured within a data backing service. The data backing service credentials (database connection string) are guarded to ensure only individuals with authorization can access this sensitive data.
 
 Examples of PII:
 
@@ -37,18 +41,14 @@ Examples of Proprietary data:
 - results of internal research
 - patented or copyrighted materials
 
-In the wrong hands our database connection string could be used to compromise the data of our database, but this data needs to be included in our application so that it can access the necessary data.
+.. admonition:: note
 
-How do we give this data to the application and keep the sensitive data protected?
+	A secret is a subset of sensitive data. Proprietary knowledge and PII may be part of the underlying data an application uses, but they are not *necessary* for an application to function.
 
 Secrets
 -------
 
-**Secret** data is information that is required by an application to function, but is kept separate from the source code of the application. In other words a **secret** is information that is never made publicly available. A **secret** is only made available to individuals that can provide credentials that prove the correct level of authorization.
-
-.. admonition:: note
-
-	A secret is a subset of sensitive data. Proprietary knowledge and PII may be part of the underlying data an application uses, they are not *necessary* for an application to function.
+**Secret** data is information that is required by an application to function, but is kept separate from the source code of the application. In other words a **secret** is information that is never made publicly available.
 
 Examples of secrets:
 
@@ -65,7 +65,7 @@ There are a few things we must do to ensure our sensitive data is not exposed to
 
 - sensitive data stays out of VCS
 - application secrets are stored externally and loaded at runtime
-- infrastructure must be configured to give least privileged access
+- infrastructure must be configured to grant least privileged access
 - All PII and proprietary data is securely housed and requires authorization
 
 .. admonition:: warning
@@ -84,34 +84,34 @@ This feature is managed by the aptly name ``.gitignore`` file. Files, and direct
 Let's make a new temporary directory, initialize it as a local ``git`` repository and run the ``git status`` command.
 
 .. sourcecode:: powershell
-	:caption: Windows/Powershell
+   :caption: Windows/PowerShell
+   
+   > New-Item -ItemType "directory" -Name temp_directory
+   > Set-Location ./temp_directory/
+   > New-Item -ItemType "file" -Name new-file.txt -Value "hello world"
+   > git init
+   > git status
 
-	New-Item -ItemType "directory" -Name temp_directory
-	Set-Location ./temp_directory/
-	New-Item -ItemType "file" -Name new-file.txt -Value "hello world"
-	git init
-	git status
+   On branch master
 
-	On branch master
+   No commits yet
 
-	No commits yet
+   Untracked files:
+   (use "git add <file>..." to include in what will be committed)
+      new-file.txt
 
-	Untracked files:
-	(use "git add <file>..." to include in what will be committed)
-		new-file.txt
-
-	nothing added to commit but untracked files present (use "git add" to track)
+   nothing added to commit but untracked files present (use "git add" to track)
 
 As we expect when creating a new directory, file, and local git repository when we run the command ``git status`` the output shows us the *untracked files*. In this case our untracked file is ``new-file.txt``.
 
 Let's try adding a ``.gitignore`` file with the entry of ``new-file.txt`` and run the ``git status`` command again.
 
 .. sourcecode:: powershell
-	:caption: Windows/PowerShell
+   :caption: Windows/PowerShell
 
-	Set-Location ./temp_directory/
-	New-Item -ItemType "file" -Name .gitignore -Value "new-file.txt"
-	git status
+   > Set-Location ./temp_directory/
+   > New-Item -ItemType "file" -Name .gitignore -Value "new-file.txt"
+   > git status
 
 	On branch master
 
@@ -127,9 +127,15 @@ Our local ``git`` repository has detected a different change. It no long detects
 
 Our local ``git`` repository has detected that a new file is currently untracked: ``.gitignore``. We do want to stage, and commit this file because we can use it as a source of determining which files are not being tracked by ``git``.
 
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > git add .gitignore
+   > git commit -m "added .gitignore to protect sensitive data"
+
 .. admonition:: tip
 
-	When writing code you should always consider the data that is exposed in your source code. If you determine a file does have sensitive data in it you should add it to the ``.gitignore`` file right away.
+	When writing code you should always consider the data that is exposed in your source code. A best practice is to add a file (or a directory of files) to ``.gitignore`` that you know will contain sensitive data. By adding it before creating the file you can ensure secrets won't ever have a chance to be committed. If you determine a file does have sensitive data in it you should add it to the ``.gitignore`` file right away.
 
 We have only scratched the surface of ``.gitignore``. It is also used to ignore derived code like build artifacts, can ignore entire directories, understands wildcard syntax, and more. These aspects go beyond the scope of this course. However, you can `learn more here <https://git-scm.com/docs/gitignore>`_.
 
@@ -140,12 +146,12 @@ A best practice for handling secrets is to use ``external configuration`` files.
 
 You have already encountered *internal* project configuration files. In the ``CodingEventsAPI`` we have been deploying throughout this class has an ``appsettings.json`` file which contains various configuration properties.  However, when dealing with ``secrets`` we want to distance this data even further. As a reminder ``secrets`` are data required for applications to function, but the secrets need to be kept external to our project.
 
-``external configuration`` is the process of keeping configuration data outside of the source code of a project and loading the configuration values into the project at runtime. This keeps the ``secrets`` separate from the project completely. 
+``External configuration`` is the process of keeping configuration data outside of the source code of a project and loading the configuration values into the project at runtime. This keeps the ``secrets`` separate from the project completely. 
 
 Using ``external configuration`` files has two major benefits: 
 
 #. secrets are kept separate and safe from both the code, and running application
-#. an applications running across different environments can be configured in different ways
+#. an application running across different environments can be configured in different ways (like easily swapping a local and production database connection string)
 
 .. admonition:: note
 
@@ -156,105 +162,105 @@ We will discuss application environments in the next article, but before then le
 Secrets Management
 ------------------
 
-There are many different applications that handle secrets management and although they all have slightly different implementations they are loosely based on the same basic principles.
+There are many different applications that handle secrets management and although they all have slightly different implementations they are loosely based on the same basic principles. Generally speaking we refer to these services as **Secrets Managers**.
 
 - a ``secrets store`` is a directory or location that houses secrets
 - secrets are contained in a text file
 - secrets are stored as strings consisting of key-value pairs
 - a secret's key refers to the name of the secret
-- a secret's value refers to the contents of the secret
+- a secret's value refers to the contents of the secret (a string or a more complex object of data like JSON)
 
 Our project has run in two different environments: locally on our personal machines, and remotely via Azure. For local development environments we will use the ``dotnet user-secrets`` tool to manage our secrets. In remote environments we will use Azure Key vault.
 
+Secrets Managers
+================
+
 dotnet user-secrets
-^^^^^^^^^^^^^^^^^^^
+-------------------
 
-``dotnet user-secrets`` is a CLI command of ``dotnet``. Like all ``dotnet`` commands you can use the ``--help`` option to learn more.
+``dotnet user-secrets`` is an added module of the ``dotnet`` CLI. Like all ``dotnet`` commands you can use the ``--help`` option to learn more.
 
-When using ``dotnet user-secrets`` dotnet creates a ``secrets store`` for your current project in the hidden folder ``~/.microsoft/usersecrets/<project_id>``. The first time you create a new secret store ``dotnet`` will automatically create the secret store, and update your source code to point to the secret store.
+When using ``dotnet user-secrets`` dotnet creates a ``secrets store`` directory on your machine. When you *initialize* a ``secrets store`` in your project your project configuration file (``.csproj``) will automatically updated with its ID.
 
 We can see this in action by creating a new temporary .NET project and printing out the .csproj file:
 
 .. sourcecode:: powershell
-	:caption: Windows/PowerShell
+   :caption: Windows/PowerShell
 
-	dotnet new console -n example-dotnet-user-secret
-	Set-Location ./example-dotnet-user-secret/
-	Get-Content ./example-dotnet-user-secret.csproj
+   > dotnet new console -n example-dotnet-user-secret
+   > Set-Location ./example-dotnet-user-secret/
+   > Get-Content ./example-dotnet-user-secret.csproj
 
-	<Project Sdk="Microsoft.NET.Sdk">
+   <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Exe</OutputType>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<RootNamespace>example_dotnet_user_secret</RootNamespace>
-	</PropertyGroup>
+   <PropertyGroup>
+      <OutputType>Exe</OutputType>
+      <TargetFramework>netcoreapp3.1</TargetFramework>
+      <RootNamespace>example_dotnet_user_secret</RootNamespace>
+   </PropertyGroup>
 
-	</Project>
+   </Project>
 
-This is the ``.csproj`` file for a standard dotnet project. Let's add a new secret store to this project using ``dotnet user-secrets init``.
+This is the ``.csproj`` file for a standard dotnet project. Let's initialize a new secret store for this project using ``dotnet user-secrets init``.
 
 .. sourcecode:: powershell
-	:caption: Windows/PowerShell
+   :caption: Windows/PowerShell
 
-	Set-Location ./example-dotnet-user-secret/
-	dotnet user-secrets init --id example-dotnet-user-secret-store
+   > Set-Location ./example-dotnet-user-secret/
+   > dotnet user-secrets init --id example-secret-store-id
 
+   Set UserSecretsId to 'example-secret-store-id' for MSBuild project
+   '/home/<username>/example-dotnet-user-secret/example-dotnet-user-secret.csproj'.
 
-	Set UserSecretsId to 'example-dotnet-user-secret-store' for MSBuild project '/home/<username>/example-dotnet-user-secret/example-dotnet-user-secret.csproj'.
-
-This command did two things for us, it created a new secret store at ``/home/<username>/.microsoft/usersecrets/example-dotnet-user-secret`` and amended the ``.csproj`` file to let our project know the id of the secret store so it can load secrets at runtime.
+This command did two things for us, it created a new secret store and amended the ``.csproj`` file to let our project know the ID of the secret store.
 
 We can view the changed ``.csproj`` file with:
 
 .. sourcecode:: powershell
-	:caption: Windows/PowerShell
-	:lineno-start: 1
-	:emphasize-lines: 10
+   :caption: Windows/PowerShell
+   :emphasize-lines: 10
 	
-	Set-Location ./example-dotnet-user-secret/
-	Get-Content ./example-dotnet-user-secret.csproj
+   > Set-Location ./example-dotnet-user-secret/
+   > Get-Content ./example-dotnet-user-secret.csproj
 
-	<?xml version="1.0" encoding="utf-8"?>
-	<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<OutputType>Exe</OutputType>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<RootNamespace>example_dotnet_user_secret</RootNamespace>
-		<UserSecretsId>example-dotnet-user-secret-store</UserSecretsId>
-	</PropertyGroup>
-	</Project>
+   <?xml version="1.0" encoding="utf-8"?>
+   <Project Sdk="Microsoft.NET.Sdk">
+   <PropertyGroup>
+      <OutputType>Exe</OutputType>
+      <TargetFramework>netcoreapp3.1</TargetFramework>
+      <RootNamespace>example_dotnet_user_secret</RootNamespace>
+      <UserSecretsId>example-secret-store-id</UserSecretsId>
+   </PropertyGroup>
+   </Project>
 
-You can view the new secret store with:
-
-.. sourcecode:: powershell
-	:caption: Windows/PowerShell
-	
-	Get-ChildItem ./.microsoft/usersecrets/
-
-	Mode                 LastWriteTime         Length Name
-	----                 -------------         ------ ----
-	d----           6/30/2020  9:15 PM                example-dotnet-user-secret-store
-
-Now that our .NET project has an associated secret store we can add as many secrets as we want and they will be stored externally from our project source, and are loaded at runtime.
+Now that our .NET project has an associated secret store we can add as many secrets as we want. They will be stored externally from our project source and loaded at runtime.
 
 Let's add a new secret:
 
 .. sourcecode:: powershell
+   :caption: Windows/PowerShell
 
-	Set-Location ./example-dotnet-user-secret
-	dotnet user-secrets set secret_name secret_value
+   > Set-Location ./example-dotnet-user-secret
+   > dotnet user-secrets set secret_name secret_value
 
-	Successfully saved secret_name = secret_value to the secret store.
+   Successfully saved secret_name = secret_value to the secret store.
 
-Setting our first secret associated with this project and secret store will have created a new ``secrets.json`` file. In this file a new key value pair was created that matches our ``dotnet user-secrets set`` statement. You can continue to add as many secrets as your project requires.
+Setting our first secret associated with this project and secret store will have created a new ``secrets.json`` file. It will look something like this:
 
-At the start of the walkthrough we will see how to access the ``secret`` in our ``CodingEventsAPI``.
+.. sourcecode:: json
+
+   {
+      "secret_name": "secret_value"
+   }
+   
+You can safely discard this application. In the following walkthrough we will get hands-on practice with both local ``user-secrets`` and the Azure Key vault.
 
 Azure Key vault
-^^^^^^^^^^^^^^^
+---------------
 
-In our remote production environment we will be using Azure Key vault to manage our secrets. Using the secrets will be shown in the following walkthrough, but we will show you how to create a new Key vault (secret store) and how to store secrets to the Key vault.
+In our remote production environment we will be using Azure Key vault to manage our secrets. The Azure Key vault is a **remote secrets manager** that behaves like ``user-secrets`` but is managed externally from your machine.
+
+The following are the general steps of setting up a Key vault. In the following walkthrough we will cover these steps in greater detail.
 
 Starting in the Azure portal you will need to search for the Key vault blade.
 
@@ -279,5 +285,3 @@ Then by clicking ``Add`` again you fill out the form to create a new secret.
 Which finally creates the secret.
 
 .. image:: /_static/images/secrets-and-backing/keyvault-secret-final.png
-
-The walkthrough will give further details on creating secrets with both ``dotnet user-secrets`` and with Azure Key vault.
