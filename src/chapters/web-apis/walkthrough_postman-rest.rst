@@ -22,24 +22,24 @@ Installing Postman is easy thanks to its cross-platform nature. You can download
 
 Select the ``Windows x64`` installer download then run the installer:
 
-.. image:: /_static/images/web-apis/postman/download-installer.png
+.. image:: /_static/images/postman/download-installer.png
    :alt: Download Windows x64 Postman installer
 
 After installation Postman should open automatically. Making an account can be useful but if you do not want to create one you can select the **skip** link in grey at the bottom of the splash screen:
 
-.. image:: /_static/images/web-apis/postman/account.png
+.. image:: /_static/images/postman/account.png
    :alt: Postman splash screen for new account
 
 .. admonition:: tip
 
    Once installed you can right-click the Postman icon and pin it to your taskbar for easy access in the future:
 
-   .. image:: /_static/images/web-apis/postman/pin-taskbar.png
+   .. image:: /_static/images/postman/pin-taskbar.png
       :alt: Pin Postman application to taskbar on Windows
 
 You can leave the Launchpad view open for now. We will explore Postman after setting up our API server.
 
-.. image:: /_static/images/web-apis/postman/launchpad-view.png
+.. image:: /_static/images/postman/launchpad-view.png
    :alt: Postman Launchpad view
 
 Clone the Coding Events API Source Code
