@@ -21,15 +21,15 @@ There are a lot of differences between these two environments!
 
 Read further to learn about different application environments and their general purposes.
 
-Standard Application Environments
----------------------------------
+Application Environments
+========================
 
 Every project has it's own requirements and may utilize different application environments. However, most modern web development projects adopt their environments from the basic pattern:
 
 ``Local -> Development -> Production``
 
 Local
-^^^^^
+-----
 
 The ``local application environment`` is one we are already familiar with, your local development machine! This is the environment in which development work happens. 
 
@@ -40,7 +40,7 @@ When you think about the ``local application environment`` consider that each co
 Luckily, you only have to worry about your own local machine, because the next environment combines all of your teams collective work.
 
 Development
-^^^^^^^^^^^
+-----------
 
 The ``development application environment`` is the environment in which all of the work from individual ``local application environments`` are combined together. This is a crucial environment that usually runs a huge suite of automated tests. This environment is responsible for verifying that each contribution from a local environment passes its tests, and that the merged code doesn't affect any existing code.
 
@@ -49,29 +49,12 @@ Ideally this branch is completely automated. After a Pull Request is merged into
 We will not be using a ``development application environment`` in this class, but it is an important environment you will experience throughout your career.
 
 Production
-^^^^^^^^^^
+----------
 
-After all the testing
 
-- every computer in which your application runs is a different application environment
 
-- local
-    - your personal machine
-    - unique to each developer on the team
-    - all development work takes place in local environments
-    - automated unit tests run here
-- Development
-    - collaboration branch of all contributors code
-    - where stuff gets merged
-    - automated integration tests run here
-- Testing
-    - the Quality Assurance 
-    - internal bug reporting and patches
-- Staging
-    - live site beta
-    - simulation of the production (live) environment
-    - product/feature demos live on this branch
-    - one last env to visually check products/features before going live
+The final environment is the ``production application environment``. This is where the live application lives, and is how end users access the deployed application. This is the end goal of the web development code we write. Ultimately it needs to live in an environment that is accessible via the web. One of the benefits of passing through the previous environments is so that the deployed live application is relatively bug free when accessed by end users.
+
 - Production
     - live usable application
 
@@ -79,8 +62,11 @@ After all the testing
     - isn't moved between environments until it has successfully made it through each preceding environment
     - decreases the likelihood of breaking production
 
+Managing Application Environments
+=================================
+
 Parity
-======
+------
 
 *Keep development, staging, and production as similar as possible* -- straight from 12 factor
 
@@ -89,3 +75,6 @@ Parity
 - decrease time to deploy
 - decrease time to re-create environments
 - decrease time to tool a new worker
+
+External Configurations
+-----------------------
