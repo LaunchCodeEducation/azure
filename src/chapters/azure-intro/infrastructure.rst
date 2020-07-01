@@ -1,3 +1,5 @@
+.. todo:: consider integrating into azure-intro
+
 ===========================
 Infrastructure as a Service
 ===========================
