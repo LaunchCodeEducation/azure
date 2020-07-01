@@ -7,3 +7,4 @@ Secrets Management & Backing Services
 
    secrets-management
    walkthrough
+   studio

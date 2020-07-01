@@ -4,7 +4,7 @@
 Azure CLI Practical Fundamentals
 ================================
 
-The Azure CLI has been developed as an `open source <https://github.com/Azure/azure-cli>`_ cross-platform tool. Like the ``dotnet CLI`` it works the same whether you are executing it on Windows, Linux, or OSX through either BASH or PowerShell. While it does not have the graphical help menus of the web GUI it does have a well organized pattern that makes "headless" navigation more intuitive than you may expect.
+The Azure CLI has been developed as an `open source <https://github.com/Azure/azure-cli>`_ cross-platform tool. Like the ``dotnet CLI`` it works the same whether you are executing it on Windows, Linux, or OSX through either Bash or PowerShell. While it does not have the graphical help menus of the web GUI it does have a well organized pattern that makes "headless" navigation more intuitive than you may expect.
 
 Just as with the GUI web portal the CLI will translate your command into an HTTP request that is sent to the Azure REST API. By default the responses received from the API will be printed as formatted JSON. Every command will have an output "shape" relative to the action that was taken and will either be a JSON object or a JSON list of objects.
 
@@ -22,7 +22,7 @@ To install on Windows using PowerShell use the chocolatey package manager:
 
     > choco install az-cli -y
 
-Linux/BASH
+Linux/Bash
 ----------
 
 To install on Linux machines you should refer to the commands of the respective package manager for its distribution. On Ubuntu you can use the ``apt`` package manager:

@@ -19,7 +19,7 @@ This is a process you can carry with you as you continue to work with the ``az C
 
 .. note::
 
-    As a cross-platform tool all of the base commands will work the same on any OS or shell. In some cases we will utilize shell-specific syntax to accomplish our tasks. Where there are syntactical differences the commands for both Linux/BASH and Windows/PowerShell will be presented. Otherwise you can freely use the commands in either shell.
+    As a cross-platform tool all of the base commands will work the same on any OS or shell. In some cases we will utilize shell-specific syntax to accomplish our tasks. Where there are syntactical differences the commands for both Linux/Bash and Windows/PowerShell will be presented. Otherwise you can freely use the commands in either shell.
 
 Setup
 =====
@@ -193,32 +193,32 @@ From here we can see the URN we need for the Ubuntu image is ``"Canonical:Ubuntu
     > $ImageURN="Canonical:UbuntuServer:18.04-LTS:latest"
 
 .. sourcecode:: bash
-    :caption: on Linux/BASH
+    :caption: on Linux/Bash
 
     $ image_urn="Canonical:UbuntuServer:18.04-LTS:latest"
 
-Now we can reference the URN by its variable name ``$ImageURN`` (PowerShell) or ``image_urn`` (BASH) depending on your chosen shell.
+Now we can reference the URN by its variable name ``$ImageURN`` (PowerShell) or ``image_urn`` (Bash) depending on your chosen shell.
 
 .. admonition:: tip
 
-    You can make use of a slightly more advanced query and in-line evaluation to do this in one step. Below we use a filter on the list to only output objects whose URN property ``contains`` the string Ubuntu. Then we pipe the filtered list and assign the first element's URN value to the variable.
+    You can make use of a slightly more advanced query and in-line execution to do this in one step. Below we use a filter on the list to only output objects whose URN property ``contains`` the string Ubuntu. Then we pipe the filtered list and assign the first element's URN value to the variable.
 
     .. sourcecode:: powershell
         :caption: filtering the image list
 
         > az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn"
 
-    When we issue this command using in-line evaluation we can assign output directly to the variable:
+    When we issue this command using in-line execution we can assign output directly to the variable:
 
     .. sourcecode:: powershell
         :caption: Windows/PowerShell
 
         > $ImageURN="$(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn")" 
 
-    When using the BASH shell there is a known `issue <https://github.com/Azure/azure-cli/issues/8401>`_ with the default JSON format where it includes quote characters ``""`` around single string outputs. Unfortunately this can break commands and scripts in BASH so we need to request a TSV output format to correct it:
+    When using the Bash shell there is a known `issue <https://github.com/Azure/azure-cli/issues/8401>`_ with the default JSON format where it includes quote characters ``""`` around single string outputs. Unfortunately this can break commands and scripts in Bash so we need to request a TSV output format to correct it:
 
     .. sourcecode:: bash
-        :caption: Linux/BASH
+        :caption: Linux/Bash
 
         # -o: tsv sets the output to TSV format to remove the double quote characters
         $ image_urn="$(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn" -o tsv)" 
@@ -245,7 +245,7 @@ Let's create our VM! Note that this command will take some time to complete.
     > az vm create -n <name>-linux-vm --size "Standard_B2s" --image "$ImageURN" --admin-username "student" --assign-identity
 
 .. sourcecode:: bash
-    :caption: Linux/BASH
+    :caption: Linux/Bash
 
     $ az vm create -n <name>-linux-vm --size "Standard_B2s" --image "$image_urn" --admin-username "student" --assign-identity
 
@@ -403,7 +403,7 @@ Before issuing the command let's store the KeyVault name in a variable since we 
     > az keyvault create -n "$KeyVaultName"
 
 .. sourcecode:: bash
-    :caption: Linux/BASH
+    :caption: Linux/Bash
 
     $ keyvault_name="lc-20-<name>-kv"
     $ az keyvault create -n "$keyvault_name"
@@ -430,7 +430,7 @@ After the KeyVault has been provisioned let's set the connection string secret n
     > az keyvault secret set --vault-name "$KeyVaultName" -n "ConnectionStrings--Default" --value "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
 
 .. sourcecode:: bash
-    :caption: Linux/BASH
+    :caption: Linux/Bash
 
     $ az keyvault secret set --vault-name "$keyvault_name" -n "ConnectionStrings--Default" --value "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
 
@@ -454,7 +454,7 @@ We can capture this value in a variable by combining the VM ``show`` command wit
     > $VmObjectId="$(az vm show --query "identity.principalId")"
 
 .. sourcecode:: bash
-    :caption: Linux/BASH
+    :caption: Linux/Bash
 
     $ vm_object_id="$(az vm show --query "identity.principalId" -o tsv)"
 
@@ -483,7 +483,7 @@ It's now time to issue our final command:
     > az keyvault set-policy -n "$KeyVaultName" --object-id "$VmObjectId" --secret-permissions get list 
 
 .. sourcecode:: bash
-    :caption: Linux/BASH
+    :caption: Linux/Bash
 
     $ az keyvault set-policy -n "$keyvault_name" --object-id "$vm_object_id" --secret-permissions get list
 

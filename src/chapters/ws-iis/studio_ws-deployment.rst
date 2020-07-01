@@ -79,7 +79,7 @@ MySQL Setup
 
 The MySQL database Server will start up on its own after installation through ``choco``. However, you will need to configure the Coding Events database within the MySQL Server for your API to connect to and use. In the Linux deployment this was handled automatically through the setup scripts we ran. This time you will need to use the ``mysql CLI`` to set up the database, user and permissions.
 
-The ``mysql CLI`` will open a connection to the database server and start a MySQL shell session. This shell, like the BASH or PowerShell command-line shells, is a REPL where you can enter commands and have outputs printed to you. However, unlike the scripting shells, the MySQL shell naturally only accepts MySQL syntax!
+The ``mysql CLI`` will open a connection to the database server and start a MySQL shell session. This shell, like the Bash or PowerShell command-line shells, is a REPL where you can enter commands and have outputs printed to you. However, unlike the scripting shells, the MySQL shell naturally only accepts MySQL syntax!
 
 You can open the MySQL shell by issuing the following command from the PowerShell terminal in the VM:
 

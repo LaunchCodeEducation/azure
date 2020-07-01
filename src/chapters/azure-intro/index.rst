@@ -6,6 +6,7 @@ Introduction to Cloud Hosting, Azure, and VMs
    :maxdepth: 3
    
    networking
+   walkthrough_setup-powershell
    hosting
    azure
    virtual-machine
