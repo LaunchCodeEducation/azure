@@ -9,6 +9,5 @@ Introduction to Web APIs & REST
    rest
    swagger
    walkthrough_setup-powershell
-   walkthrough_setup-postman
-   studio_postman-rest
+   walkthrough_postman-rest
    
