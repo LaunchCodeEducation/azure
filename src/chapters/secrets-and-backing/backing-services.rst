@@ -13,18 +13,54 @@ As a best practice a backing service should always be external to the applicatio
 Examples of backing services:
 
 - Relational databases like MySQL, PSQL, MSSQL, etc
-- Non-relational databases like MongoDB, CouchDB, Elasticsearch, etc
+- Non-relational databases like MongoDB, CouchDB, etc
 - Caching services like Redis, Azure Caching, Memcached, etc
+- Logging services like Elasticsearch, Kibana, 
 
 .. admonition:: note
 
-    Both non-relational databases and caching are outside the scope of this course, but you will probably learn about them later in your career.
+    Non-relational databases, caching and logging are outside the scope of this course, but you will probably learn about them later in your career.
 
+External Backing Services
+=========================
 
-Local Backing Services
-======================
+define in simple terms
+
+go into sub headers
+
+dev env -- application running on your local machine, but it is connected to a DB on some other machine
+production env -- application running on a dedicated VM and would be connected a DB on different VM
+
+if the DB and application are running on the same machine it's internal
+if the DB and application are running on different machines it's external
+
+Dev
+---
+
+Prod
+----
+
+.. tip::
+
+    we won't be using any external baking services in this class but learn more here
+
+.. tip::
+
+    all Azure offerings will be external
+
+Internal Backing Services
+=========================
+
+define in simple terms
+
+go into sub headers
+
+dev env -- familiar with both exist on your local machine
+production env -- exists on the same VM
 
 You have already been exposed to a local backing service with ``MySQL server 8.0.20``. It runs on your local machine and is always listening for requests on port 3306. So all of your applications simply need to know 
+
+It runs on the same machine in parallel to the running application.
 
 Consider the information necessary for your application to access MySQL server:
 
@@ -32,43 +68,16 @@ Consider the information necessary for your application to access MySQL server:
 - DB name: *coding-events*
 - DB user: *coding_events_user
 
-Remote Backing Services
-=======================
+Dev
+---
 
-Azure DB Options
-----------------
+Prod
+----
 
-VM embedded Database
-^^^^^^^^^^^^^^^^^^^^
+.. tip::
 
-- what we will use in this class
-- pros: easily setup, no need for additional networking
-- cons: on the same infrastructure
-    - breaks SRP of infrastructure best practice
-    - if the infrastructure fails both the application and it's data fail
-    - VM cannot be disposed until SQL data is extracted
-- cons: not accessible outside of the VM
-- cons: you are completely responsible for the data
+    In a testing environment you would usually have an internal backing service so everything needed to run the tests exists in the same location
 
 
-Azure SQL Databases
-^^^^^^^^^^^^^^^^^^^
 
-- primary solution for DB management with Azure
-- pros: live on own infrastructure
-- pros: Azure backed for data backup
-- pros: highly configurable
-- pros: can be reachable from anywhere with internet connection, including other Azure resources
-- cons: more setup time than other Azure DB options
-
-Other Azure DB Options
-^^^^^^^^^^^^^^^^^^^^^^
-
-Azure dedicated MySQL, MSSQL, or PostgreSQL
-    - pros: very quick setup
-    - pros: accessible via internet, and to all Azure resources
-    - cons: less configuration
-various Azure dedicated NoSQL DBs
-    - pros: very quick setup
-    - 
-
+tie back into external configs, or secrets -- we can use our secret to protect our connection string which is sensitive data as well as seamlessly transition environments because it's an external config
