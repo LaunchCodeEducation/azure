@@ -24,6 +24,14 @@ Examples of backing services:
 Local Backing Services
 ======================
 
+You have already been exposed to a local backing service with ``MySQL server 8.0.20``. It runs on your local machine and is always listening for requests on port 3306. So all of your applications simply need to know 
+
+Consider the information necessary for your application to access MySQL server:
+
+- IP address: *localhost*
+- DB name: *coding-events*
+- DB user: *coding_events_user
+
 Remote Backing Services
 =======================
 
