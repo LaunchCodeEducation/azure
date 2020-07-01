@@ -171,33 +171,10 @@ Summary
 
 The following is the summary of our endpoints:
 
-- **create a Coding Event**: ``POST /events -> 201``
 - **list Coding Events**: ``GET /events -> CodingEvent[]``
+- **create a Coding Event**: ``POST /events -> 201``
 - **delete a Coding Event**: ``DELETE /events/{codingEventId} -> 201``
-- **single Coding Event**: ``GET /events/{codingEventId} -> CodingEvent``
-
-Configuring Postman Requests
-============================
-
-We will cover the basics of working with Postman here. Postman provides a fantastic `learning center <https://learning.postman.com/>`_ for discovering the many features and use cases it supports.
-
-Create a New Request
---------------------
-
-Setting the URL
----------------
-
-Setting the Method
-------------------
-
-Setting the Headers
--------------------
-
-Setting the Request Body
-------------------------
-
-Viewing the Response
----------------------
+- **find single Coding Event**: ``GET /events/{codingEventId} -> CodingEvent``
 
 Making Requests to the Coding Events API
 ========================================
@@ -235,14 +212,59 @@ If you cloned the repo into your ``HOME`` directory then the absolute path will 
    info: Microsoft.Hosting.Lifetime[0]
          Content root path: C:\Users\<username>\coding-events-api\CodingEventsAPI
 
+List the Coding Events
+----------------------
+
+Setting the URL
+^^^^^^^^^^^^^^^
+
+Setting the Method
+^^^^^^^^^^^^^^^^^^
+
+Setting the Headers
+^^^^^^^^^^^^^^^^^^^
+
+Setting the Request Body
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Viewing the Response
+^^^^^^^^^^^^^^^^^^^^
+
 Create a Coding Event
 ---------------------
 
-Get the Coding Events Collection
---------------------------------
+Send a bad body
+^^^^^^^^^^^^^^^
 
-Get a Single Coding Event Entity
---------------------------------
+Regular create
+^^^^^^^^^^^^^^
+
+Checking the Response headers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Get a Single Coding Event
+-------------------------
+
+Re-list the Coding Events
+-------------------------
 
 Delete a Coding Event
 ---------------------
+
+Find a Missing Coding Event 404
+-------------------------------
+
+Bonus
+=====
+
+Continue Creating, Finding, Deleting
+------------------------------------
+
+From CLI
+--------
+
+You can do this from the command line ``Invoke-RestMethod/Invoke-WebRequest`` and ``curl``.
+
+``Invoke-WebRequest`` similar to beautiful soup overwhelming for students
+
+``Invoke-RestMethod`` less output easier for students
