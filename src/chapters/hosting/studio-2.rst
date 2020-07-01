@@ -1,6 +1,6 @@
-===================================================
-Deploying & Connecting to a Machine on the same LAN
-===================================================
+====================================================================
+(Remote) Studio: Deploying & Connecting to a Machine on the same LAN
+====================================================================
 
 As an additional example, you will deploy your web app to your local machine that is connected to a LAN and then access the swagger front end using your phone, or another device you have connected to your LAN.
 

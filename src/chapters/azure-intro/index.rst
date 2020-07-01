@@ -1,15 +1,11 @@
-=============================================
-Introduction to Cloud Hosting, Azure, and VMs
-=============================================
+==========================================
+Introduction to Azure and Virtual Machines
+==========================================
 
 .. toctree::
    :maxdepth: 3
    
-   networking
-   walkthrough_setup-powershell
-   hosting
-   azure
+   intro
    virtual-machine
    walkthrough
    studio
-   studio-2
