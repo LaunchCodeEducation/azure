@@ -394,9 +394,12 @@ We will need to set the following request settings:
 #. the request header: (``Content-Type`` ``application/json``)
 #. the request body: a JSON ``NewCodingEvent`` object
 
-As a best practice we explicitly define that our request contains ``application/json`` data so that the API knows how to parse the incoming request body. In addition to the configurations you are familiar with setting we will need to define the request body.
+As a best practice we explicitly define that our request contains ``application/json`` data so that the API knows how to parse the incoming request body. 
 
-For this task you can select the **Body** tab that is next to **Headers**. 
+Configure the Request Body
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In addition to the configurations you are now familiar with setting we will need to define the request body. For this task you can select the **Body** tab that is next to **Headers**. 
 
 The body of the request must be in a **raw JSON** format. Once selecting this format enter the following JSON body:
 
@@ -441,26 +444,70 @@ You can see from the response that the API rejected the request due to **user er
 Get a Single Coding Event
 -------------------------
 
-Re-list the Coding Events
--------------------------
+For this step we will make a request for **the state of a single entity**. You can use the URL from the ``Location`` header of the previous request to complete this task. Remember to follow the steps you performed before, keeping in mind the shorthand for this request:
+
+   ``GET /api/events/{codingEventId} -> CodingEvent``
+
+#. create a new request named: ``get a single coding event``
+#. add it to the existing ``coding events API`` collection
+#. configure the URL of the endpoint: ``http://localhost:5000/api/events/1``
+#. configure the HTTP method of the endpoint: ``GET``
+#. configure the request header: (``Accept`` ``application/json``)
+
+You should get back the following JSON response body:
+
+.. sourcecode:: json
+
+   {
+      "id": 1,
+      "title": "Halloween Hackathon!",
+      "description": "A gathering of nerdy ghouls to work on GitHub Hacktoberfest contributions",
+      "date": "2020-10-31"
+   }
+
+Requesting a Non-Existent Entity
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Our REST API allows us to interact with the **state of its resources**. If we make a request for a resource that doesn't exist in this state we expect a ``404`` (not found) response. 
+
+Try issuing the request again with a non-existent ``codingEventId`` of ``100``. You should get back the following response:
+
+.. image:: /_static/images/postman/404-response.png
+   :alt: Postman 404 response for a non-existent resource
 
 Delete a Coding Event
 ---------------------
 
-Find a Missing Coding Event 404
--------------------------------
+In this final step we will issue a ``DELETE`` request. Before we make the request let's re-issue the request to list Coding Events. Now that we have added an entity we expect **the state of the Coding Events resource collection to have changed**. 
+
+Switch back to the ``list coding events`` request tab and re-issue the request. You should now get a response of with the collection's list representation containing the new entity! 
+
+To delete this entity, and therefore change the state of our resources, we will need to issue the following shorthand request:
+
+   ``DELETE /api/events/{codingEventId} -> 204``
+
+Once again go through the methodical process of setting up the request:
+
+#. create a new request named: ``delete a coding event``
+#. add it to the existing ``coding events API`` collection
+#. configure the URL of the endpoint: ``http://localhost:5000/api/events/1``
+#. configure the HTTP method of the endpoint: ``DELETE``
+
+Notice that for this request we do not need to set any request headers. A ``DELETE`` request should send back an empty (``no-content``) response body with its ``204`` status code. 
+
+.. image:: /_static/images/postman/delete-coding-event-response.png
+   :alt: Postman delete a coding event response
+
+As a final confirmation check the state of the Coding Events collection and notice that it has returned to its initial state. The representation of this state is shown in the empty list ``[]`` response body.
 
 Bonus
 =====
 
-Continue Creating, Finding, Deleting
-------------------------------------
+If you complete this walkthrough early and want some additional practice consider the following bonus missions:
 
-From CLI
---------
+- explore the API source code using your IDE debugger to step through the request and response process
+- try consuming the API from the command-line using the Bash `curl <https://linuxhint.com/curl_bash_examples/>`_ program or the PowerShell `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ cmdlet.
 
-You can do this from the command line ``Invoke-RestMethod/Invoke-WebRequest`` and ``curl``.
+.. admonition:: note
 
-``Invoke-WebRequest`` similar to beautiful soup overwhelming for students
-
-``Invoke-RestMethod`` less output easier for students
+   We will revisit command-line web requests in later lessons. If you are able to complete this bonus mission you are **well ahead** of what is expected of you! 
