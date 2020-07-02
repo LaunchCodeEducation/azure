@@ -2,85 +2,110 @@
 Backing Services
 ================
 
-A ``backing service`` is any service a deployed application consumes over a network as part of its normal operation. We have worked with MySQL throughout this course as the primary ``backing service`` for our applications. All business data is stored in this relational database and then is accessed as our application needs it. We will continue to use MySQL throughout this course however it is necessary to learn about ``backing services`` as a greater concept and to learn about some other options.
+We have worked with MySQL throughout this course as the primary database for our previous MVC applications. We used these databases to persist the business data that our applications operated on. In other words, we could say our MVC applications *required a database* to function. 
 
-Choosing a ``backing service`` is determined by application requirements. In some instances a project may require multiple or different types of ``backing services``. In the case of the application we have been deploying in this class a single relational database has been sufficient.
+In operations the general term used to describe any service an application needs to function is a ``backing service``.
 
-As a best practice in a ``production environment`` a backing service should be external to the deployed application.
+.. admonition:: note
+
+    The `12 Factor Manifesto defines <https://12factor.net/backing-services>`_ it as
+        
+        "A ``backing service`` is any service the app consumes over the network as part of its normal operation."
+
+Choosing ``backing services`` is determined by an application's requirements. For example, in our next deployment our application will require a MySQL database. In other cases a project may require multiple different types of ``backing services``.
 
 Examples of backing services:
 
 - Relational databases like MySQL, PSQL, MSSQL, etc
 - Non-relational databases like MongoDB, CouchDB, etc
 - Caching services like Redis, Azure Caching, Memcached, etc
-- Logging services like Elasticsearch, Kibana, etc
-
-.. admonition:: note
-
-    Non-relational databases, caching and logging are outside the scope of this course, but you will probably learn about them later in your career.
+- Secrets management like Azure Key vault
 
 External Backing Services
 =========================
 
-Simply stated an external ``backing service`` is a ``backing service`` hosted on a separate machine from the running application. An example of this would be to provision two VMs:
+As the name implies, an **external backing service** is a dependent service that runs *external* to the application. In other words, the backing service and the application run on different host machines and communicate over an *external network*. An example of this would be to provision two VMs:
 
-- first VM: only hosts the ``backing service``
-- second VM: only hosts the running application
+Let's explore examples of what the infrastructure of using an **external** backing service would look like over the three application environments we discussed in the previous article.
 
-The VMs would need to be able to communicate and therefore the running application would need to know the IP address and port of the VM hosting the ``backing service`` as well as any required credentials to gain access to the ``backing service``.
+.. list-table:: External Backing Services
+   :widths: 20 30 50
+   :header-rows: 1
 
-Let's explore further examples of what the infrastructure of using an external backing service would look like over the three application environments we disucssed in the previous article.
-
-Local
------
-
-
-
-Development
------------
-
-Production
-----------
-
-dev env -- application running on your local machine, but it is connected to a DB on some other machine
-production env -- application running on a dedicated VM and would be connected a DB on different VM
-
-if the DB and application are running on the same machine it's internal
-if the DB and application are running on different machines it's external
-
-.. tip::
-
-    we won't be using any external baking services in this class but learn more here
-
-.. tip::
-
-    all dedicated Azure offerings will be external
+   * - Environment
+     - Application Host
+     - Database Host
+   * - Local
+     - contributor's local machine
+     - a shared development database
+   * - Development
+     - CI controlled VM
+     - A high parity Azure Managed Database
+   * - Production
+     - Load balanced Azure VM
+     - A scalable Azure Managed Database
 
 Internal Backing Services
 =========================
 
-In this class we have only used internal ``backing services`` which is a ``backing service`` that is hosted on the same machine as the deployed application. An example of this would be running a C#.NET web application which connects to a MySQL database both of which are running on your local machine. A local application environment almost always uses an internal ``backing service``.
+An **internal backing service** is hosted on the same machine as the running application. In this class we have only used internal ``backing services``. An application running in a ``local environment`` almost always uses an internal ``backing service``.
 
-go into sub headers
+Let's look at a few examples of internal backing services.
 
-dev env -- familiar with both exist on your local machine
-production env -- exists on the same VM
+.. list-table:: Internal Backing Services
+   :widths: 30 30 30
+   :header-rows: 1
 
-You have already been exposed to a local backing service with ``MySQL server 8.0.20``. It runs on your local machine and is always listening for requests on port 3306. So all of your applications simply need to know 
+   * - Environment
+     - Application Host
+     - Database Host
+   * - Local
+     - contributor local machine
+     - local Database service
+   * - Development
+     - CI controlled VM
+     - Database embedded in the CI VM
+   * - Production (education purposes only)
+     - Azure VM 
+     - Database embedded in the Azure VM
 
-It runs on the same machine in parallel to the running application.
+Application Environment Best Practices
+======================================
 
-Consider the information necessary for your application to access MySQL server:
+In the previous tables you saw example configurations with both internal and external ``backing services``. Let's explore the best practices behind those examples.
 
-- IP address: *localhost*
-- DB name: *coding-events*
-- DB user: *coding_events_user
+Local
+-----
 
-Dev
----
+    a local environment should use an *internal* ``backing service``
 
-Prod
-----
+Local environments go through rapid change. As developers write code it is imperative for them to have immediate feedback from the ``backing services`` of the application. Keeping the ``backing service`` internal gives them full control over the service such as resetting a database or seeding test data.
+
+Development
+-----------
+
+    a development environment should use an *internal* ``backing service``
+
+Development environments are fully automated and only generate reports. Due to this automation an internal backing service makes more sense. Every time code gets merged into this environment the automation software (CI) sets up and runs the automated tools. Part of the CI responsibilities are to create and manage any necessary ``backing services``. Using an internal backing service increases the speed at which the automated tests complete. In addition an internal backing service is less expensive than one managed by a Cloud Service Provider.
+
+
+With heavy data processing projects it may make sense to use external ``backing services`` for your development environment. Since the nature of the project relies on knowing exactly how the ``backing services`` behave, the higher parity may be worth the increases in cost and speed. Like most best practices this is a trade off and not a concrete rule.
+
+Production
+----------
+
+    a production environment should use *external* ``backing service``
+
+Production environments are live environments. The production environment needs to be accessible to end users, sensitive data must be secured and infrastructure failure must be avoided at all costs. For these reasons it makes sense to separate our backing service from our deployed application. Now if there is infrastructure failure of the VM hosting the application the data stored in the ``backing service`` is safe from harm.
+
+
+.. admonition:: note
+
+    To achieve high parity one environment must setup all ``backing services`` in the exact same way as the production environment. Usually the environment at the highest level of parity is the staging environment. The staging environment will have an internal ``backing service`` only if the production environment also has an internal ``backing service``.
+
+.. tip::
+
+    all dedicated Azure offerings will be external
 
 .. tip::
 
