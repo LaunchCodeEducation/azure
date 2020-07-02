@@ -104,7 +104,7 @@ Install .NET SDK
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   > choco install dotnetcore-sdk-3.1 -y
+   > choco install dotnetcore-sdk -y
 
 Don't forget to close and re-open PowerShell before entering the following command to test the installation:
 
