@@ -121,10 +121,10 @@ An example of a real ``CodingEvent`` JSON response would look like this:
 .. sourcecode:: json
 
    {
-      "Id": 1,
-      "Title": "Consuming the Coding Events API With Postman",
-      "Description": "Learn how to use Postman to interact with the Coding Events API!",
-      "Date": "2020-10-31"
+      "id": 1,
+      "title": "Consuming the Coding Events API With Postman",
+      "description": "Learn how to use Postman to interact with the Coding Events API!",
+      "date": "2020-07-24"
    }
 
 Notice how this JSON is just a *representation of an instance* of the ``CodingEvent`` Model class. 
@@ -136,7 +136,7 @@ Endpoints
 
 This branch of the API has the following 4 endpoints. Recall that an endpoint is the made up of a **path** (to the resource) and a **method** (action to take on the resource). 
 
-They all share a common *entry point path* of ``/events``. Request and response bodies are all in JSON, or more specifically they have a ``Content-Type`` header value of ``application/json``.
+They all operate on Coding Events and share a common *entry point path* of ``/api/events``. Request and response bodies are all in JSON, or more specifically they have a ``Content-Type`` header value of ``application/json``.
 
 GET Coding Events
 ^^^^^^^^^^^^^^^^^
@@ -158,7 +158,7 @@ If the current state of the collection is empty then we will just get back an em
 
 In more terse terms we can describe this endpoint as:
 
-   ``GET /events -> CodingEvent[]``
+   ``GET /api/events -> CodingEvent[]``
 
 GET Single Coding Event
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -171,7 +171,7 @@ When describing entity endpoints we use a path variable notation, ``{variableNam
 
 We can describe this ``CodingEvent`` entity endpoint in shorthand as:
 
-   ``GET /events/{codingEventId} -> CodingEvent``
+   ``GET /api/events/{codingEventId} -> CodingEvent``
 
 If an entity with the given ``codingEventId`` is found we will get a single ``CodingEvent`` JSON object back. If it is not found we will receive a response with a ``404`` status code to indicate the failed lookup.
 
@@ -199,8 +199,8 @@ When making a request you would need to send a JSON body like this to satisfy th
 .. sourcecode:: json
 
    {
-      "Title": "Consuming the Coding Events API With Postman",
-      "Description": "Learn how to use Postman to interact with the Coding Events API!",
+      "Title": "Halloween Hackathon!",
+      "Description": "A gathering of nerdy ghouls to work on GitHub Hacktoberfest contributions",
       "Date": "2020-10-31"
    }
 
@@ -208,23 +208,23 @@ When making a request you would need to send a JSON body like this to satisfy th
 
    We only provide the *user editable* fields, not the unique ``Id`` which the API handles internally when saving to the database.
 
-Recall that when a ``POST`` request is successful the API should respond with the ``201``, or **Created**, status code. As part of the ``2XX`` *success status codes*, it indicates a particular type of successful response that will have an empty body and a special header.
+Recall that when a ``POST`` request is successful the API should respond with the ``201``, or **Created**, status code. As part of the ``2XX`` *success status codes*, it indicates a particular type of successful response with a special header.
 
 The OpenAPI REST spec states that when an entity is created the response should include both this status and the ``Location`` header that provides the URL of the new entity:
 
 .. sourcecode:: json
 
-   Location=<server origin>/events/<new entity Id>
+   Location=<server origin>/api/events/<new entity Id>
 
 As an example:
 
 .. sourcecode:: json
 
-   Location=http://localhost:5000/events/1
+   Location=http://localhost:5000/api/events/1
 
 You could then issue a ``GET`` request to the ``Location`` header value and view the new entity! In shorthand format this endpoint can be described as:
 
-   ``POST /events (NewCodingEvent) -> 201``
+   ``POST /api/events (NewCodingEvent) -> 201``
 
 If the request fails because of a *user error* then it will respond with a ``400`` status code and a message about what went wrong. In ths case of ``CodingEvent`` entities the following validation criteria must be met:
 
@@ -240,7 +240,7 @@ When an resource is deleted the OpenAPI spec expects the API to respond with a `
 
 The deletion endpoint can be described in shorthand as:
 
-   ``DELETE /events/{codingEventId} -> 204``
+   ``DELETE /api/events/{codingEventId} -> 204``
 
 If you attempt to delete a resource that doesn't exist (with an incorrect ``codingEventId``) then the endpoint will respond with an expected ``404`` status and message.
 
@@ -249,13 +249,13 @@ Summary
 
 Two endpoints at the entry point path, ``/events``, to interact with the collection as a whole:
 
-- **list Coding Events**: ``GET /events -> CodingEvent[]``
-- **create a Coding Event**: ``POST /events (NewCodingEvent) -> 201``
+- **list Coding Events**: ``GET /api/events -> CodingEvent[]``
+- **create a Coding Event**: ``POST /api/events (NewCodingEvent) -> 201``
 
 And two that require a sub-path variable, ``/events/{codingEventId}``, to interact with a single entity:
 
-- **delete a Coding Event**: ``DELETE /events/{codingEventId} -> 201``
-- **find single Coding Event**: ``GET /events/{codingEventId} -> CodingEvent``
+- **delete a Coding Event**: ``DELETE /api/events/{codingEventId} -> 201``
+- **find single Coding Event**: ``GET /api/events/{codingEventId} -> CodingEvent``
 
 Making Requests to the Coding Events API
 ========================================
@@ -333,7 +333,7 @@ Postman exposes an exhaustive set of tools for configuring every aspect of a req
 
 #. the URL of the endpoint: ``http://localhost:5000/api/events``
 #. the HTTP method of the endpoint: ``GET``
-#. the request headers: (``Accept`` ``application/json``)
+#. the request header: (``Accept`` ``application/json``)
 
 To the left of the URL bar is a dropdown selector for HTTP methods. It will default to ``GET`` but in the following requests you will need to select the appropriate method from this list. 
 
@@ -361,7 +361,7 @@ Below the request configuration you can see the response section has been popula
 .. image:: /_static/images/postman/list-coding-events-response.png
    :alt: Postman list coding events responses
 
-Since this is our first time running the application, the database is empty and we expected to get back the empty list ``[]``. 
+Since this is our first time running the application the database is empty. We expectedly received an empty JSON list ``[]`` which corresponds to the **empty representation of the Coding Events collection**.
 
 If you select the **headers** tab you can see the API respected our ``Accept`` request header and provided the response in ``application/json`` format.
 
@@ -378,16 +378,65 @@ If you select the **headers** tab you can see the API respected our ``Accept`` r
 Create a Coding Event
 ---------------------
 
+For our next request we will create a Coding Event. Repeat the steps you performed in the previous request:
 
+#. create a new request named: ``create coding event``
+#. add it to the existing ``coding events API`` collection
+
+This request will **change the state of the Coding Events collection** by adding a new entity to it. Recall that the shorthand for this request is:
+
+   ``POST /api/events (NewCodingEvent) -> 201``
+
+We will need to set the following request settings:
+
+#. the URL of the endpoint: ``http://localhost:5000/api/events``
+#. the HTTP method of the endpoint: ``POST``
+#. the request header: (``Content-Type`` ``application/json``)
+#. the request body: a JSON ``NewCodingEvent`` object
+
+As a best practice we explicitly define that our request contains ``application/json`` data so that the API knows how to parse the incoming request body. In addition to the configurations you are familiar with setting we will need to define the request body.
+
+For this task you can select the **Body** tab that is next to **Headers**. 
+
+The body of the request must be in a **raw JSON** format. Once selecting this format enter the following JSON body:
+
+.. sourcecode:: json
+
+   {
+      "Title": "Halloween Hackathon!",
+      "Description": "A gathering of nerdy ghouls to work on GitHub Hacktoberfest contributions",
+      "Date": "2020-10-31"
+   }
+
+Before sending the request check that yours matches the following configuration:
+
+.. image:: /_static/images/postman/create-coding-event-request.png
+   :alt: Postman create coding event request configuration
+
+Analyzing the Response
+^^^^^^^^^^^^^^^^^^^^^^
+
+You can see in the response that the API reflected back the new ``CodingEvent`` with a unique ``id`` assigned to it. Looking at the status code (``201``) and headers of the response we can see the API conformed to the OpenAPI spec. 
+
+The URL value of the ``Location`` header, ``http://localhost:5000/api/events/1``, can be used to view the individual ``CodingEvent`` entity that was created.
 
 Sending a Bad Request
 ^^^^^^^^^^^^^^^^^^^^^
 
-Making a Successful Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To illustrate the rejection of bad requests let's send one that violates the ``NewCodingEvent`` validation constraints. Send another request with the following JSON body:
 
-Checking the Response headers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. sourcecode:: json
+
+   {
+      "Title": "too short",
+      "Description": "A gathering of nerdy ghouls to work on GitHub Hacktoberfest contributions",
+      "Date": "2020-10-31"
+   }
+
+You can see from the response that the API rejected the request due to **user error**. The response had a **bad request** status of ``400`` and the body included information about what needs to be corrected to issue a successful request:
+
+.. image:: /_static/images/postman/create-coding-event-bad-request.png
+   :alt: Postman response of create coding event with a bad request body
 
 Get a Single Coding Event
 -------------------------
