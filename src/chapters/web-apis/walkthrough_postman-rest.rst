@@ -134,7 +134,7 @@ It has been converted *from a C# object representation* to a *JSON string repres
 Endpoints
 ---------
 
-This branch of the API has the following 4 endpoints. Recall that an endpoint is the made up of a **path** (to the resource) and a **method** (action to take on the resource). 
+This branch of the API has the following 4 endpoints. Recall that an endpoint is made up of a **path** (to the resource) and a **method** (action to take on the resource). 
 
 They all operate on Coding Events and share a common *entry point path* of ``/api/events``. Request and response bodies are all in JSON, or more specifically they have a ``Content-Type`` header value of ``application/json``.
 
@@ -178,9 +178,9 @@ If an entity with the given ``codingEventId`` is found we will get a single ``Co
 Create a Coding Event
 ^^^^^^^^^^^^^^^^^^^^^
 
-Think about what it means to *create* an entity. You need to provide the *required data* and the *collection it belongs to*. When we want to create a ``CodingEvent`` we are asking the API to *change the state* of the collection (the list of entities) so our path must be ``/events``.
+Think about what it means to *create* an entity. You need to provide the *required data* and the *collection it belongs to*. When we want to create a ``CodingEvent`` we are asking the API to *change the state* of the collection (the list of entities) so our path must be ``/api/events``.
 
-Recall that the **C** in **CRUD** stands for *create* and corresponds to the ``POST`` HTTP method in a RESTful API. Putting the resource and the action together we know we need to ``POST`` to the ``/events`` endpoint.
+Recall that the **C** in **CRUD** stands for *create* and corresponds to the ``POST`` HTTP method in a RESTful API. Putting the resource and the action together we know we need to ``POST`` to the ``/api/events`` endpoint.
 
 Finally, as part of our ``POST`` request we will need to send a request body containing the data required to create the entity.
 
@@ -208,7 +208,7 @@ When making a request you would need to send a JSON body like this to satisfy th
 
    We only provide the *user editable* fields, not the unique ``Id`` which the API handles internally when saving to the database.
 
-Recall that when a ``POST`` request is successful the API should respond with the ``201``, or **Created**, status code. As part of the ``2XX`` *success status codes*, it indicates a particular type of successful response with a special header.
+Recall that when a ``POST`` request is successful the API should respond with the ``201``, or **Created**, HTTP status code. As part of the ``2XX`` *HTTP success status codes*, it indicates a particular type of successful response with a special header.
 
 The OpenAPI REST spec states that when an entity is created the response should include both this status and the ``Location`` header that provides the URL of the new entity:
 
@@ -224,9 +224,9 @@ As an example:
 
 You could then issue a ``GET`` request to the ``Location`` header value and view the new entity! In shorthand format this endpoint can be described as:
 
-   ``POST /api/events (NewCodingEvent) -> 201``
+   ``POST /api/events (NewCodingEvent) -> 201, CodingEvent``
 
-If the request fails because of a *user error* then it will respond with a ``400`` status code and a message about what went wrong. In ths case of ``CodingEvent`` entities the following validation criteria must be met:
+If the request fails because of a *user error* then it will respond with a ``400`` status code and a message about what went wrong. In the case of ``CodingEvent`` entities the following validation criteria must be met:
 
 - ``Title``: 10-100 characters
 - ``Description``: less than 1000 characters
@@ -236,7 +236,7 @@ Delete a Coding Event
 
 Deleting a ``CodingEvent`` resource means to operate on a single entity. This should make sense as it would be too powerful to expose the ability to delete the entire collection. Just like the endpoint for getting a single entity, this endpoint requires a ``codingEventId`` path variable.
 
-When an resource is deleted the OpenAPI spec expects the API to respond with a ``204`` status code. Similar to the ``201`` status, this code indicates a success with no response body or special headers. 
+When a resource is deleted the OpenAPI spec expects the API to respond with a ``204`` status code. Similar to the ``201`` status, this code indicates a success with no response body or special headers. 
 
 The deletion endpoint can be described in shorthand as:
 
@@ -250,11 +250,11 @@ Summary
 Two endpoints at the entry point path, ``/events``, to interact with the collection as a whole:
 
 - **list Coding Events**: ``GET /api/events -> CodingEvent[]``
-- **create a Coding Event**: ``POST /api/events (NewCodingEvent) -> 201``
+- **create a Coding Event**: ``POST /api/events (NewCodingEvent) -> 201, CodingEvent``
 
 And two that require a sub-path variable, ``/events/{codingEventId}``, to interact with a single entity:
 
-- **delete a Coding Event**: ``DELETE /api/events/{codingEventId} -> 201``
+- **delete a Coding Event**: ``DELETE /api/events/{codingEventId} -> 201, CodingEvent``
 - **find single Coding Event**: ``GET /api/events/{codingEventId} -> CodingEvent``
 
 Making Requests to the Coding Events API
@@ -271,7 +271,9 @@ In your PowerShell Terminal enter the following commands to run the API from the
 
 We will need to change to the ``CodingEventsAPI`` project directory (inside the repo directory) to run the project. 
 
-If you cloned the repo into your ``HOME`` directory then the absolute path will be ``C:\Users\<username>\coding-events-api\CodingEventsAPI``.
+If you cloned the repo into your ``HOME`` directory then the absolute path will be:
+
+``C:\Users\<username>\coding-events-api\CodingEventsAPI``
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell, run from coding-events-repo directory
@@ -296,7 +298,7 @@ If you cloned the repo into your ``HOME`` directory then the absolute path will 
 List the Coding Events
 ----------------------
 
-Now that our API server is up we can make our first request from Postman. To create a new request select the **New** button in the top left corner:
+Now that our API server is running we can make our first request using Postman. To create a new request select the **New** button in the top left corner:
 
 .. image:: /_static/images/postman/new-button.png
    :alt: Postman New item button
@@ -304,7 +306,7 @@ Now that our API server is up we can make our first request from Postman. To cre
 Creating a New Request
 ^^^^^^^^^^^^^^^^^^^^^^
 
-With the new item dialog open select the **create new** tab (on the left) then select **Request** (under **building blocks**). 
+With the new item dialog open select the **create new** tab (on the left) then select **Request**. 
 
 .. image:: /_static/images/postman/new-item-dialog.png
    :alt: Postman New item dialog
@@ -316,7 +318,7 @@ This will open the new request dialog:
 
 Postman requests require a **name** and a **collection**. A collection is just a container to hold related requests. They make it easy to import and export *collections of requests* for portability across teams. For our first request enter the **name** ``list coding events``.
 
-At the bottom of the new request dialog you will see that the collections are empty. Select the orange **create collection** button then enter the name ``coding events API``. Now the new request dialog will change the button to say **Save to coding events API**:
+At the bottom of the new request dialog you will see that the collections are empty. Select the orange **create collection** button then enter the name ``coding events API``. The new request dialog button will change to say **Save to coding events API**:
 
 .. image:: /_static/images/postman/new-request-dialog-complete.png
    :alt: Postman New Request save to collection
@@ -329,22 +331,38 @@ After saving, a new request tab will be created where you can customize its beha
 Configuring the Request
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Postman exposes an exhaustive set of tools for configuring every aspect of a request. For this request we will need to define:
+Postman exposes an exhaustive set of tools for configuring every aspect of a request. Fortunately this request is relatively simple.
 
-#. the URL of the endpoint: ``http://localhost:5000/api/events``
-#. the HTTP method of the endpoint: ``GET``
-#. the request header: (``Accept`` ``application/json``)
+We want to request the **state of the Coding Events collection**, in shorthand:
+
+   ``GET /api/events -> CodingEvent[]``
+
+In Postman we can make this request by configuring the following settings:
+
+- the URL of the endpoint: ``http://localhost:5000/api/events``
+- the HTTP method of the endpoint: ``GET``
+- the request header: (``Accept`` ``application/json``)
+
+.. admonition:: note
+
+   Endpoint are described as *relative paths* with regards to a Server's origin.
+   
+   An API uses relative paths because its origin is defined by where it is hosted. Whether that is locally on your machine or in the cloud.
+   
+   For example, our *local* Server origin is ``http://localhost:5000`` which, when combined with the endpoint path, becomes our request URL:
+
+   ``http://localhost:5000/api/events`` 
 
 To the left of the URL bar is a dropdown selector for HTTP methods. It will default to ``GET`` but in the following requests you will need to select the appropriate method from this list. 
 
 .. image:: /_static/images/postman/http-method-selector.png
    :alt: Postman HTTP method selector
 
-Underneath the URL bar are tabs for other aspects of the request. Select the ``Headers`` tab to configure our header. This header lets the API know that we *accept responses* that are formatted as JSON. 
+Underneath the URL bar are tabs for other aspects of the request. Select the ``Headers`` tab to configure our header. The ``Accept`` header lets the API know that we *accept responses* that are formatted as JSON. 
 
 .. admonition:: note
 
-   In our context the API *only responds with JSON*. However, some APIs offer multiple `MIME types <https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types>`_ for their responses so it is a best practice to set this header explicitly to the content type your consuming application expects.
+   In our context the API *only responds with JSON*. However, some APIs offer multiple `MIME types <https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types>`_ for their responses. It is a best practice to set this header explicitly to the content type the consuming application expects.
 
 You can set multiple headers in this section. As you begin to type the name and value Postman will autocomplete them for you. After configuration your request should look like this:
 
@@ -356,14 +374,14 @@ To issue the request you can select the blue **Send** button or use the ``ctrl +
 Viewing the Response
 ^^^^^^^^^^^^^^^^^^^^
 
-Below the request configuration you can see the response section has been populated. From here you can see the response body along with the status code (top right) and headers:
+Below the request configuration you can see the response section has been populated. From here you can see the response body along with the status code (top right) and **Headers**:
 
 .. image:: /_static/images/postman/list-coding-events-response.png
    :alt: Postman list coding events responses
 
 Since this is our first time running the application the database is empty. We expectedly received an empty JSON list ``[]`` which corresponds to the **empty representation of the Coding Events collection**.
 
-If you select the **headers** tab you can see the API respected our ``Accept`` request header and provided the response in ``application/json`` format.
+If you select the **Headers** tab you can see the API satisfied our ``Accept`` *request header* and provided the response in ``application/json`` format.
 
 .. image:: /_static/images/postman/response-headers.png
    :alt: Postman response headers
@@ -385,7 +403,7 @@ For our next request we will create a Coding Event. Repeat the steps you perform
 
 This request will **change the state of the Coding Events collection** by adding a new entity to it. Recall that the shorthand for this request is:
 
-   ``POST /api/events (NewCodingEvent) -> 201``
+   ``POST /api/events (NewCodingEvent) -> 201, CodingEvent``
 
 We will need to set the following request settings:
 
@@ -394,7 +412,7 @@ We will need to set the following request settings:
 #. the request header: (``Content-Type`` ``application/json``)
 #. the request body: a JSON ``NewCodingEvent`` object
 
-As a best practice we explicitly define that our request contains ``application/json`` data so that the API knows how to parse the incoming request body. 
+As a best practice we explicitly define the ``Content-Type`` header. This header indicates that our request contains ``application/json`` data so that the API knows how to parse the incoming request body. 
 
 Configure the Request Body
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -411,7 +429,7 @@ The body of the request must be in a **raw JSON** format. Once selecting this fo
       "Date": "2020-10-31"
    }
 
-Before sending the request check that yours matches the following configuration:
+**Before sending the request check that your configuration matches the following image:**
 
 .. image:: /_static/images/postman/create-coding-event-request.png
    :alt: Postman create coding event request configuration
@@ -419,9 +437,13 @@ Before sending the request check that yours matches the following configuration:
 Analyzing the Response
 ^^^^^^^^^^^^^^^^^^^^^^
 
-You can see in the response that the API reflected back the new ``CodingEvent`` with a unique ``id`` assigned to it. Looking at the status code (``201``) and headers of the response we can see the API conformed to the OpenAPI spec. 
+You can see in the response that the API reflected back the representation of the new ``CodingEvent`` entity. Notice that a unique ``id`` has been assigned to it by the API. 
 
-The URL value of the ``Location`` header, ``http://localhost:5000/api/events/1``, can be used to view the individual ``CodingEvent`` entity that was created.
+Looking at the status code (``201``) and headers of the response we can see the API conformed to the OpenAPI spec. The URL value of the ``Location`` header
+
+``http://localhost:5000/api/events/1``
+
+can be used to view the individual ``CodingEvent`` entity that was created.
 
 Sending a Bad Request
 ^^^^^^^^^^^^^^^^^^^^^
@@ -480,7 +502,7 @@ Delete a Coding Event
 
 In this final step we will issue a ``DELETE`` request. Before we make the request let's re-issue the request to list Coding Events. Now that we have added an entity we expect **the state of the Coding Events resource collection to have changed**. 
 
-Switch back to the ``list coding events`` request tab and re-issue the request. You should now get a response of with the collection's list representation containing the new entity! 
+Switch back to the ``list coding events`` request tab and re-issue the request. You should get a response of the collection's list representation containing the new entity! 
 
 To delete this entity, and therefore change the state of our resources, we will need to issue the following shorthand request:
 
