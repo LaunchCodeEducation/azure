@@ -6,5 +6,6 @@ Secrets Management & Backing Services
    :maxdepth: 3
 
    secrets-management
+   application-environments
    walkthrough
    studio
