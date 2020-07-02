@@ -105,7 +105,16 @@ The *shape* of the ``CodingEvent`` resource describes the general form of its pr
       Date: string (ISO 8601 date format)
    }
 
-In our case the ``CodingEvent`` shape is just the properties and types (using portable `JSON types <https://json-schema.org/understanding-json-schema/reference/type.html>`_) defined in the ``CodingEvents`` Model class.
+In our case the ``CodingEvent`` shape is just the properties and types (translated to portable `JSON types <https://json-schema.org/understanding-json-schema/reference/type.html>`_) defined in the ``CodingEvents`` Model class.
+
+.. sourcecode:: csharp
+
+     public class CodingEvent {
+      public long Id { get; set; }
+      public string Title { get; set; }
+      public string Description { get; set; }
+      public DateTime Date { get; set; }
+   }
 
 An example of a real ``CodingEvent`` JSON response would look like this:
 
@@ -118,7 +127,9 @@ An example of a real ``CodingEvent`` JSON response would look like this:
       "Date": "2020-10-31"
    }
 
-Notice how this JSON is just a *representation* of an instance of the ``CodingEvent`` Model class. It has been converted from a C# object representation to a JSON string representation so it can be transported over HTTP. Recall that we perform this conversion, or serialization, so that our API can output data in a format that is language-agnostic.
+Notice how this JSON is just a *representation of an instance* of the ``CodingEvent`` Model class. 
+
+It has been converted *from a C# object representation* to a *JSON string representation* so it can be transported over HTTP. Recall that we perform this conversion, or serialization, so that our API can output data in a *portable format that is language-agnostic*.
 
 Endpoints
 ---------
@@ -199,7 +210,7 @@ When making a request you would need to send a JSON body like this to satisfy th
 
 Recall that when a ``POST`` request is successful the API should respond with the ``201``, or **Created**, status code. As part of the ``2XX`` *success status codes*, it indicates a particular type of successful response that will have an empty body and a special header.
 
-The OpenAPI REST spec states that when an entity is created the response should include both this status and the ``Location`` header that provides the URI of the new entity:
+The OpenAPI REST spec states that when an entity is created the response should include both this status and the ``Location`` header that provides the URL of the new entity:
 
 .. sourcecode:: json
 
@@ -258,7 +269,7 @@ In your PowerShell Terminal enter the following commands to run the API from the
 
    If you didn't leave your PowerShell window open make sure to navigate back to the ``coding-events-api`` repo directory before issuing the following commands.
 
-We will need to change to the ``CodingEventsAPI`` project directory (in the repo directory) to run the project. 
+We will need to change to the ``CodingEventsAPI`` project directory (inside the repo directory) to run the project. 
 
 If you cloned the repo into your ``HOME`` directory then the absolute path will be ``C:\Users\<username>\coding-events-api\CodingEventsAPI``.
 
@@ -285,29 +296,95 @@ If you cloned the repo into your ``HOME`` directory then the absolute path will 
 List the Coding Events
 ----------------------
 
-Setting the URL
-^^^^^^^^^^^^^^^
+Now that our API server is up we can make our first request from Postman. To create a new request select the **New** button in the top left corner:
 
-Setting the Method
-^^^^^^^^^^^^^^^^^^
+.. image:: /_static/images/postman/new-button.png
+   :alt: Postman New item button
 
-Setting the Headers
-^^^^^^^^^^^^^^^^^^^
+Creating a New Request
+^^^^^^^^^^^^^^^^^^^^^^
 
-Setting the Request Body
-^^^^^^^^^^^^^^^^^^^^^^^^
+With the new item dialog open select the **create new** tab (on the left) then select **Request** (under **building blocks**). 
+
+.. image:: /_static/images/postman/new-item-dialog.png
+   :alt: Postman New item dialog
+
+This will open the new request dialog:
+
+.. image:: /_static/images/postman/new-request-dialog.png
+   :alt: Postman New Request dialog
+
+Postman requests require a **name** and a **collection**. A collection is just a container to hold related requests. They make it easy to import and export *collections of requests* for portability across teams. For our first request enter the **name** ``list coding events``.
+
+At the bottom of the new request dialog you will see that the collections are empty. Select the orange **create collection** button then enter the name ``coding events API``. Now the new request dialog will change the button to say **Save to coding events API**:
+
+.. image:: /_static/images/postman/new-request-dialog-complete.png
+   :alt: Postman New Request save to collection
+
+After saving, a new request tab will be created where you can customize its behavior:
+
+.. image:: /_static/images/postman/empty-request-tab.png
+   :alt: Postman new request tab
+
+Configuring the Request
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Postman exposes an exhaustive set of tools for configuring every aspect of a request. For this request we will need to define:
+
+#. the URL of the endpoint: ``http://localhost:5000/api/events``
+#. the HTTP method of the endpoint: ``GET``
+#. the request headers: (``Accept`` ``application/json``)
+
+To the left of the URL bar is a dropdown selector for HTTP methods. It will default to ``GET`` but in the following requests you will need to select the appropriate method from this list. 
+
+.. image:: /_static/images/postman/http-method-selector.png
+   :alt: Postman HTTP method selector
+
+Underneath the URL bar are tabs for other aspects of the request. Select the ``Headers`` tab to configure our header. This header lets the API know that we *accept responses* that are formatted as JSON. 
+
+.. admonition:: note
+
+   In our context the API *only responds with JSON*. However, some APIs offer multiple `MIME types <https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types>`_ for their responses so it is a best practice to set this header explicitly to the content type your consuming application expects.
+
+You can set multiple headers in this section. As you begin to type the name and value Postman will autocomplete them for you. After configuration your request should look like this:
+
+.. image:: /_static/images/postman/list-coding-events-request.png
+   :alt: Postman list coding events request configured
+
+To issue the request you can select the blue **Send** button or use the ``ctrl + enter`` keyboard shortcut. 
 
 Viewing the Response
 ^^^^^^^^^^^^^^^^^^^^
 
+Below the request configuration you can see the response section has been populated. From here you can see the response body along with the status code (top right) and headers:
+
+.. image:: /_static/images/postman/list-coding-events-response.png
+   :alt: Postman list coding events responses
+
+Since this is our first time running the application, the database is empty and we expected to get back the empty list ``[]``. 
+
+If you select the **headers** tab you can see the API respected our ``Accept`` request header and provided the response in ``application/json`` format.
+
+.. image:: /_static/images/postman/response-headers.png
+   :alt: Postman response headers
+
+.. admonition:: note
+
+   If you get a **connection refused** error it means you likely forgot to start the API server or mistyped the URL. Check both of these before attempting the request again.
+
+   .. image:: /_static/images/postman/connection-refused.png
+      :alt: Postman request connection refused error
+
 Create a Coding Event
 ---------------------
 
-Send a bad body
-^^^^^^^^^^^^^^^
 
-Regular create
-^^^^^^^^^^^^^^
+
+Sending a Bad Request
+^^^^^^^^^^^^^^^^^^^^^
+
+Making a Successful Request
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Checking the Response headers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
