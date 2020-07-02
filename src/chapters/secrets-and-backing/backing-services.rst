@@ -78,6 +78,12 @@ Prod
 
     In a testing environment you would usually have an internal backing service so everything needed to run the tests exists in the same location
 
+.. tip::
 
+    Internal backing services are called *sidecars* in the Ops industry
+    
+.. note::
+
+    Internal is not scalable -- what are other pros and cons
 
 tie back into external configs, or secrets -- we can use our secret to protect our connection string which is sensitive data as well as seamlessly transition environments because it's an external config
