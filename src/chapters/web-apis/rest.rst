@@ -6,7 +6,15 @@ REST
 
     What must students know to get through the walkthrough?
 
-    - REST simple def
+    - REST simple def **spec/guideline? that provides rules for how a web API should behave.
+        - HTTP as the means of communication between client and server
+        - client makes requests to C,R,U,D resources
+        - server accepts request and provides, mutates, deletes resource based on request
+            - every client request will result in a server response
+                - server WILL return 
+                    - HTTP status code (indicating what server did based on request)
+                - sever MAY return
+                    - JSON representation of resource in HTTP response body to be used by client
     - Resource definition
         - refer to resources by a path
             - /resource
@@ -61,6 +69,7 @@ REST
     - Just scratched surface
         - practical resource for learning more http://restcookbook.com/
         - OG doctoral dissertation by Roy Thomas Fielding https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
+        - Richardson Maturity Model https://restfulapi.net/richardson-maturity-model/
 
 
 .. list-table:: GET HTTP Status Codes (most common)
