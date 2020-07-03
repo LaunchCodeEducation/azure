@@ -2,7 +2,7 @@
 REST
 ====
 
-.. ::
+.. :: outline
 
     What must students know to get through the walkthrough?
 
@@ -37,30 +37,10 @@ REST
                 - PATCH /dog/identifier including representation of just what should be changed {rabies_vaccine: True}
     - HTTP status codes to look out for -- tables exist, and just need to be filled out below
         - GET
-            - successful: 200 resource exists and representation sent back to requester
-            - successful: 204 resource exists but representation cannot be sent back to requester
-            - unsuccessful: 401 user not authorized to access resource (missing/incorrect credentials)
-            - unsuccessful: 404 resource at PATH does not exist (misspelling? identifier? not a resource?)
         - POST
-            - successful: 201 resource created successfully
-            - unsuccessful: 400 request contained incorrect representation of resource
-            - unsuccessful: 401 user not authorized to access resource (missing/incorrect credentials)
-            - unsuccessful: 404 resource at PATH does not exist
         - DELETE
-            - successful: 200 resource deleted
-            - unsuccessful: 400
-            - unsuccessful: 401
-            - unsuccessful: 404
         - PUT
-            - successful: 200 resource updated
-            - unsuccessful: 400
-            - unsuccessful: 401
-            - unsuccessful: 404
         - PATCH
-            - successful: 200 resource updated
-            - unsuccessful: 400
-            - unsuccessful: 401
-            - unsuccessful: 404
     - Additional HTTP Status Codes
         - 405: HTTP method not allowed for resource
         - 500: Server error (bug in code? application logic incorrect?)
