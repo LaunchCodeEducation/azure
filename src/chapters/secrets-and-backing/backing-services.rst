@@ -24,7 +24,7 @@ Examples of backing services:
 External Backing Services
 =========================
 
-As the name implies, an **external backing service** is a dependent service that runs *external* to the application. In other words, the backing service and the application run on different host machines and communicate over an *external network*. An example of this would be to provision two VMs:
+   An **external backing service** is a dependent service that runs *external* to the application. In other words, the backing service and the application run on different host machines and communicate over an *external network*.
 
 Let's explore examples of what the infrastructure of using an **external** backing service would look like over the three application environments we discussed in the previous article.
 
@@ -40,17 +40,17 @@ Let's explore examples of what the infrastructure of using an **external** backi
      - a shared development database
    * - Development
      - CI controlled VM
-     - A high parity Azure Managed Database
+     - A high parity Managed Database
    * - Production
-     - Load balanced Azure VM
-     - A scalable Azure Managed Database
+     - scaled VM
+     - Managed Database
 
 Internal Backing Services
 =========================
 
-An **internal backing service** is hosted on the same machine as the running application. In this class we have only used internal ``backing services``. An application running in a ``local environment`` almost always uses an internal ``backing service``.
+   An **internal backing service** is hosted on the same machine as the running application. 
 
-Let's look at a few examples of internal backing services.
+In this class we have only used internal ``backing services``. An application running in a ``local environment`` almost always uses an internal ``backing service``. Let's look at a few examples of internal backing services.
 
 .. list-table:: Internal Backing Services
    :widths: 30 30 30
@@ -65,9 +65,9 @@ Let's look at a few examples of internal backing services.
    * - Development
      - CI controlled VM
      - Database embedded in the CI VM
-   * - Production (education purposes only)
-     - Azure VM 
-     - Database embedded in the Azure VM
+   * - Production (**learning only**)
+     - single VM 
+     - Database embedded in the VM
 
 Application Environment Best Practices
 ======================================
@@ -86,7 +86,9 @@ Development
 
     a development environment should use *internal* ``backing services``
 
-Development environments are fully automated and only generate reports. Due to this automation an internal backing service makes more sense. Every time code gets merged into this environment the automation software (CI) sets up and runs the automated tools. Part of the CI responsibilities are to create and manage any necessary ``backing services``. Using an internal backing service increases the speed at which the automated tests complete. In addition an internal backing service is less expensive than one managed by a Cloud Service Provider.
+Development environments are fully automated and only generate reports. Due to this automation an internal backing service makes more sense. Every time code gets merged into this environment the automation software (CI) sets up and runs the automated tools.
+
+Part of the CI responsibilities are to create and manage any necessary ``backing services``. Using an internal backing service makes the *environment disposable* and increases the speed at which the automated tests complete (no network latency). In addition an internal backing service is less expensive than one managed by a Cloud Service Provider.
 
 With heavy data processing projects it may make sense to use external ``backing services`` for your development environment. Since the nature of the project relies on knowing exactly how the ``backing services`` behave, the higher parity may be worth the increases in cost and speed. Like most best practices this is a trade off and not a concrete rule.
 
@@ -95,11 +97,11 @@ Production
 
     a production environment should use *external* ``backing services``
 
-Production environments are live environments. In a production environment your applications are interacting with paying customers or mission stakeholders. You cannot afford to lose data caused by logical errors (bugs) or by overloaded infrastructure.  
+**Production environments are live environments**. In a production environment your applications are interacting with paying customers or mission stakeholders. You cannot afford to lose data caused by logical errors (bugs) or by overloaded infrastructure.  
 
-In most cases it makes sense to separate your ``backing services`` from their dependant applications in the production environment. When you cannot afford for an application crash to impact the ``backing service`` (such as data loss) you need to physically decouple their infrastructure. This means to physically separate your application host from where your ``backing services`` are hosted.
+In most production environments it makes sense to separate your ``backing services`` from their dependant applications. When you cannot afford for an application crash to impact the ``backing service`` (such as data loss) you need to decouple their infrastructure. This means to physically separate your application host from where your ``backing services`` are hosted.
 
-The logical errors should be filtered by the environments leading to production. However, overloaded infrastructure can be an unpredictable risk. By separating your infrastructure it is easier to independently manage your ``application`` and ``backing services``.
+The logical errors should be filtered by the environments leading to production. However, overloaded infrastructure can be an unpredictable risk. By separating your infrastructure it is easier to independently *manage* your ``application`` and ``backing services``.
 
 .. note::
 
