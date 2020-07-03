@@ -7,5 +7,6 @@ Secrets Management & Backing Services
 
    secrets-management
    application-environments
+   backing-services
    walkthrough
    studio
