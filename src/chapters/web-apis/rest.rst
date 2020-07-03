@@ -27,7 +27,7 @@ REST
             - need to provide the id of the resource & how it should change
                 - PUT /dog/identifier including dog representation in JSON (whatever is sent will overwrite the existing resource sso everything must be sent) {"name": "Bernie", "age": 4, "breed": "basset/beagle", rabies_vaccine: True}
                 - PATCH /dog/identifier including representation of just what should be changed {rabies_vaccine: True}
-    - HTTP status codes to look out for
+    - HTTP status codes to look out for -- tables exist, and just need to be filled out below
         - GET
             - successful: 200 resource exists and representation sent back to requester
             - successful: 204 resource exists but representation cannot be sent back to requester
@@ -63,7 +63,7 @@ REST
         - OG doctoral dissertation by Roy Thomas Fielding https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
 
 
-.. list-table:: GET HTTP Status Codes
+.. list-table:: GET HTTP Status Codes (most common)
    :widths: 15 30 30
    :header-rows: 1
 
@@ -82,6 +82,88 @@ REST
    * - 404
      - False
      - resource at PATH does not exist
+
+- difference between GET /resource && GET /resource/id
+
+.. list-table:: POST HTTP Status Codes (most common)
+   :widths: 15 30 30
+   :header-rows: 1
+
+   * - Code
+     - Successful
+     - Description
+   * - 201
+     - True
+     - 
+   * - 400
+     - False
+     - 
+   * - 401
+     - False
+     - 
+   * - 404
+     - False
+     - 
+
+.. list-table:: PUT HTTP Status Codes (most common)
+   :widths: 15 30 30
+   :header-rows: 1
+
+   * - Code
+     - Successful
+     - Description
+   * - 200
+     - True
+     - 
+   * - 400
+     - False
+     - 
+   * - 401
+     - False
+     - 
+   * - 404
+     - False
+     - 
+
+.. list-table:: PATCH HTTP Status Codes (most common)
+   :widths: 15 30 30
+   :header-rows: 1
+
+   * - Code
+     - Successful
+     - Description
+   * - 200
+     - True
+     - 
+   * - 400
+     - False
+     - 
+   * - 401
+     - False
+     - 
+   * - 404
+     - False
+     - 
+
+.. list-table:: DELETE HTTP Status Codes (most common)
+   :widths: 15 30 30
+   :header-rows: 1
+
+   * - Code
+     - Successful
+     - Description
+   * - 200
+     - True
+     - 
+   * - 400
+     - False
+     - 
+   * - 401
+     - False
+     - 
+   * - 404
+     - False
+     - 
 
 .. original review writeup when that was our original expectation of the content we were responsible for
 
