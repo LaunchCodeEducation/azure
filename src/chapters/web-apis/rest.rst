@@ -2,6 +2,64 @@
 REST
 ====
 
+.. ::
+
+    What must students know to get through the walkthrough?
+
+    - REST simple def
+    - Resource definition
+        - refer to resources by a path
+            - /resource
+    - What is meant by representation?
+        - JSON used as data format in this class however you may also see (XML in your career)
+    - Verb-Noun nature of REST refers to HTTP Verb -> Resource
+        - If you want to view (get) a collection of resource -> GET /resource
+        - If you want to view (get) a resource -> GET /resource/identifier
+    - outside of viewing (get) a resource it may be necessary for users to:
+        - Create (POST) a resource
+            - need to provide the API a representation of the resource to be created
+                - example dog resource represented by JSON {"name": "Bernie", "age": 4, "breed": "basset/beagle", rabies_vaccine: False}
+                - POST /dog including dog JSON
+        - Delete (DELETE) a resource
+            - need to provide the id of the resource to be deleted
+                - DELETE /resource/identifier
+        - Update (PUT/PATCH) a resource **is this necessary for this class?** **if not just make a note for it**
+            - need to provide the id of the resource & how it should change
+                - PUT /dog/identifier including dog representation in JSON (whatever is sent will overwrite the existing resource sso everything must be sent) {"name": "Bernie", "age": 4, "breed": "basset/beagle", rabies_vaccine: True}
+                - PATCH /dog/identifier including representation of just what should be changed {rabies_vaccine: True}
+    - HTTP status codes to look out for
+        - GET
+            - successful: 200 resource exists and representation sent back to requester
+            - successful: 204 resource exists but representation cannot be sent back to requester
+            - unsuccessful: 401 user not authorized to access resource (missing/incorrect credentials)
+            - unsuccessful: 404 resource at PATH does not exist (misspelling? identifier? not a resource?)
+        - POST
+            - successful: 201 resource created successfully
+            - unsuccessful: 400 request contained incorrect representation of resource
+            - unsuccessful: 401 user not authorized to access resource (missing/incorrect credentials)
+            - unsuccessful: 404 resource at PATH does not exist
+        - DELETE
+            - successful: 200 resource deleted
+            - unsuccessful: 400
+            - unsuccessful: 401
+            - unsuccessful: 404
+        - PUT
+            - successful: 200 resource updated
+            - unsuccessful: 400
+            - unsuccessful: 401
+            - unsuccessful: 404
+        - PATCH
+            - successful: 200 resource updated
+            - unsuccessful: 400
+            - unsuccessful: 401
+            - unsuccessful: 404
+    - Additional HTTP Status Codes
+        - 405: HTTP method not allowed for resource
+        - 500: Server error (bug in code? application logic incorrect?)
+        - ref: https://www.restapitutorial.com/httpstatuscodes.html REST status codes
+        - ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status MDN all HTTP status codes
+
+
 We learned about REST in an earlier lesson, so this is just a short review, since we will be deploying a RESTful API.
 
 Review
