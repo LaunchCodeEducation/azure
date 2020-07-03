@@ -77,14 +77,14 @@ In the previous tables you saw example configurations with both internal and ext
 Local
 -----
 
-    a local environment should use an *internal* ``backing services``
+    a local environment should use *internal* ``backing services``
 
 Local environments go through rapid change. As developers write code it is imperative for them to have immediate feedback from the ``backing services`` of the application. Keeping the ``backing service`` internal gives them full control over the service such as resetting a database or seeding test data.
 
 Development
 -----------
 
-    a development environment should use an *internal* ``backing services``
+    a development environment should use *internal* ``backing services``
 
 Development environments are fully automated and only generate reports. Due to this automation an internal backing service makes more sense. Every time code gets merged into this environment the automation software (CI) sets up and runs the automated tools. Part of the CI responsibilities are to create and manage any necessary ``backing services``. Using an internal backing service increases the speed at which the automated tests complete. In addition an internal backing service is less expensive than one managed by a Cloud Service Provider.
 
@@ -99,7 +99,7 @@ Production environments are live environments. In a production environment your 
 
 In most cases it makes sense to separate your ``backing services`` from their dependant applications in the production environment. When you cannot afford for an application crash to impact the ``backing service`` (such as data loss) you need to physically decouple their infrastructure. This means to physically separate your application host from where your ``backing services`` are hosted.
 
-The logical errors should be filtered by the environments leading to production. However, overloaded infrastructure can be an unpredictable risk. By separating your infrastructure it easier to independently manage your ``application`` and ``backing services``.
+The logical errors should be filtered by the environments leading to production. However, overloaded infrastructure can be an unpredictable risk. By separating your infrastructure it is easier to independently manage your ``application`` and ``backing services``.
 
 .. note::
 
