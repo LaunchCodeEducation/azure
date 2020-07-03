@@ -70,9 +70,38 @@ REST
         - practical resource for learning more http://restcookbook.com/
         - OG doctoral dissertation by Roy Thomas Fielding https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
         - Richardson Maturity Model https://restfulapi.net/richardson-maturity-model/
+    - INTENTIONALLY LEFT OUT
+        - nested resources
+        - HEAD
+        - maturity model
+        - HATEOAS
 
 
-.. list-table:: GET HTTP Status Codes (most common)
+.. list-table:: GET /api/resource -> Resource[] (common server responses)
+   :widths: 15 30 30
+   :header-rows: 1
+
+   * - Code
+     - Successful
+     - Description
+   * - 200
+     - True
+     - resource exists and representation sent back to requester
+   * - 204
+     - True
+     - resource exists but representation cannot be sent back to requester
+   * - 401
+     - False
+     - user not authorized to access resource
+   * - 404
+     - False
+     - resource at PATH does not exist
+
+.. :: 
+    
+    GET /api/events -> CodingEvent[]
+
+.. list-table:: GET /api/resource/{id} -> Resource (common server responses)
    :widths: 15 30 30
    :header-rows: 1
 
