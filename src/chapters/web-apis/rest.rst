@@ -58,7 +58,30 @@ REST
         - 500: Server error (bug in code? application logic incorrect?)
         - ref: https://www.restapitutorial.com/httpstatuscodes.html REST status codes
         - ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status MDN all HTTP status codes
+    - Just scratched surface
+        - practical resource for learning more http://restcookbook.com/
+        - OG doctoral dissertation by Roy Thomas Fielding https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
 
+
+.. list-table:: GET HTTP Status Codes
+   :widths: 15 30 30
+   :header-rows: 1
+
+   * - Code
+     - Successful
+     - Description
+   * - 200
+     - True
+     - resource exists and representation sent back to requester
+   * - 204
+     - True
+     - resource exists but representation cannot be sent back to requester
+   * - 401
+     - False
+     - user not authorized to access resource
+   * - 404
+     - False
+     - resource at PATH does not exist
 
 We learned about REST in an earlier lesson, so this is just a short review, since we will be deploying a RESTful API.
 
