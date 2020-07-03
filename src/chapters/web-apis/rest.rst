@@ -83,6 +83,8 @@ REST
      - False
      - resource at PATH does not exist
 
+.. original review writeup when that was our original expectation of the content we were responsible for
+
 We learned about REST in an earlier lesson, so this is just a short review, since we will be deploying a RESTful API.
 
 Review
