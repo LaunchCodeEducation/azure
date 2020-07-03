@@ -101,7 +101,7 @@ REST
      - False
      - resource at PATH does not exist
 
-- difference between GET /resource && GET /resource/id
+.. following are the original headers I put in, preceding are the headers using the REQUEST -> RESPONSE body syntax pat uses in the walkthrough
 
 .. list-table:: POST HTTP Status Codes (most common)
    :widths: 15 30 30
