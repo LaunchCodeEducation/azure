@@ -27,14 +27,23 @@ Web Application Programming
 
    - Web-APIs
       - programmatic interaction over a network
-      - two parts of MVC that they are familiar with
+      - segue: in a lot of ways can say it is like MVC without the V...
 
-Splitting Apart MVC
-===================
+MVC Without the V
+=================
 
-- Model & Controller from MVC
-- concerned with management and transfer of data
-- benefits of doing so
+- View = data + styling (presentation)
+   - View is reliant on data -- it's styling (presentation) and data
+      - injecting data into templates
+      - injected client-side from a Web-API
+   - made with JS (vanilla or FEF [links to React, Vue]
+- View is decoupled
+   - benefits of doing so
+- only Model & Controller from MVC
+- segue: only concerned with management and transfer of data
+
+Responsibilities of a Web API
+=============================
 
 Management of Data
 ------------------
@@ -47,15 +56,6 @@ Transference of Data
 Controller
 
 Representation of Data
-----------------------
-
-- IS NOT: View = data + styling (presentation)
-   - View is decoupled
-   - View is reliant on data -- it's styling (presentation) and data
-      - injecting data into templates
-      - injected client-side from a Web-API
-
-Representation of data
 ======================
 
 Presentation vs Representation
