@@ -225,18 +225,29 @@ Above we saw the ``Content-Type`` header. This is the header that allows us to i
 API Design
 ==========
 
+Designing an API can be challenging, however the benefits of separating the client from the API far outweigh the challenges of designing the API. In the next article we will discuss one of the most common patterns for designing APIs: REST.
+
+However, before we get to the article let's discuss the three categories of APIs based on their designs.
+
 Standard-less
 -------------
 
-- any way you want as long as it conforms to HTTP, however that isn't following a pattern and will be very difficult to maintain, impossible for people to consume, impossible bring other devs
+Any API that uses HTTP as the protocol would fit in the category of standard-less. The API doesn't follow any additional constraints, rules, or patterns to deliver representations of data to a client application.
+
+As we have seen with MVC following some basic rules and patterns is a great way to organize your code increasing readability, maintainability, and scalability.
 
 RESTfulish
 ----------
 
-- RESTfulish
+The next category would be a RESTful like API. This would be an API that adopts some of the principles of REST, but not all of the principles. An API in this category would give you some benefits of REST, but not all of the benefits of REST.
 
 REST
 ----
 
-- We need a pattern segue to REST
-- necessary for consumers (they get X) and developers (they get Y)
+Fully adopting the OpenAPI REST spec into an API would allow you to classify your API as a REST API.
+
+Much like following the patterns of MVC allows other developers to easily understand your code, following REST gives other developers the benefit of understanding how your REST API is structured and behaves.
+
+As an added bonus a REST API also gives the client application a base-line understanding on how to interact with your API. REST has benefits for both API developers (providers), and client developers (consumers)!
+
+The next article will dive much deeper into the concept of REST.
