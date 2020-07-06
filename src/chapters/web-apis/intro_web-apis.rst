@@ -236,8 +236,8 @@ Any API that uses HTTP as the protocol would fit in the category of standard-les
 
 As we have seen with MVC following some basic rules and patterns is a great way to organize your code increasing readability, maintainability, and scalability.
 
-RESTfulish
-----------
+RESTful like
+------------
 
 The next category would be a RESTful like API. This would be an API that adopts some of the principles of REST, but not all of the principles. An API in this category would give you some benefits of REST, but not all of the benefits of REST.
 
