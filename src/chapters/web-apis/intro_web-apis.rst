@@ -1,7 +1,12 @@
+========
 Web-APIs
 ========
 
-   - API definition (intro)
+Before we learn about Web APIs let's first define an API:
+
+   **A**pplication **P**rogramming **I**nterface
+
+Of the components in the acronym the 
    
 Interfaces
 ----------
@@ -17,14 +22,19 @@ Application Programming
             - different types of APIs libraries are all APIs
             - when you have an API that crosses over a network is a web API
 
-Web-application Programming
+Web Application Programming
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
    - Web-APIs
       - programmatic interaction over a network
+      - two parts of MVC that they are familiar with
 
-The back-end component of multi-host
-====================================
+Splitting Apart MVC
+===================
+
+- Model & Controller from MVC
+- concerned with management and transfer of data
+- benefits of doing so
 
 Management of Data
 ------------------
@@ -39,15 +49,11 @@ Controller
 Representation of Data
 ----------------------
 
-- one component of a multi-host (back-end)
-   - Model & Controller from MVC
-   - concerned with management and transfer of data
-   - web-api is not
-      - View = data + styling (presentation)
-         - View is decoupled
-         - View is reliant on data -- it's styling (presentation) and data
-            - injecting data into templates
-            - injected client-side from a Web-API
+- IS NOT: View = data + styling (presentation)
+   - View is decoupled
+   - View is reliant on data -- it's styling (presentation) and data
+      - injecting data into templates
+      - injected client-side from a Web-API
 
 Representation of data
 ======================
