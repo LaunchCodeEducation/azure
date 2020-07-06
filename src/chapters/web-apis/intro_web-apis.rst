@@ -93,11 +93,7 @@ Although there are many different formats of data one format has risen to promin
 
 It is necessary to adopt a *universal representation* (JSON) data format because web-APIs and client applications may be written in two completely tech stacks. Your web-API may be written in ASP.NET whereas the client application may be written in React. These technologies are very different, however they both support JSON. So adopting JSON as the universal representation allows us to move data between the client application and web-API easily.
 
-Having a universal representation ensures the freedoms of separating client from web-APIs listed above:
-
-- platforms
-- teams
-- scaling
+Having a universal representation ensures the freedoms of separating client from web-APIs listed earlier in this article.
 
 JSON
 ^^^^
