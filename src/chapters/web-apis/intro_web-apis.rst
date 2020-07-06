@@ -27,7 +27,7 @@ Our client application's objective is to present data that meet our end-user nee
 
 .. admonition:: note
    
-   Presenting data to end-users falls into the category of User Experience (UX) which falls outside the scope of this class.
+   Presenting data to end-users falls into the category of User Experience (UX) which is outside the scope of this class.
 
 Client relies on data
 ---------------------
@@ -43,7 +43,7 @@ A client must ultimately *present* data to an end-user. This means the client mu
 Responsibilities of a Web API
 =============================
 
-The chief responsibility of a web-API is to provide representations of data, it builds to the representation by first managing and transferring data.
+The chief responsibility of a web-API is to provide representations of data, it constructs the representation by first managing and transferring data.
 
 Management of Data
 ------------------
@@ -91,7 +91,7 @@ Universal Representation
 
 .. Although there are many different formats of data one format has risen to prominence within the realm of web-APIs: **JSON**.
 
-It is necessary to adopt a *universal representation* because web-APIs and client applications may be written in two different programming languages. Your web-API may be written in ASP.NET whereas the client application may be written in React. These languages are very different, however they both support JSON.
+It is necessary to adopt a *universal representation* because web-APIs and client applications may be written in two different programming languages. Your web-API may be written in ASP.NET whereas the client application may be written in React. These languages are different, however they both support JSON.
 
    JSON has risen to prominence within the realm of web-APIs and has become the *universal representation* for data formatting.
 
@@ -126,7 +126,7 @@ HTTP as the language of Web-APIs
 
 Web-APIs communicate over a network, the most common protocol of the internet is HTTP so it comes as no surprise that HTTP is the language of Web-APIs. 
 
-Similarly our MVC applications also used HTTP as the protocol for an end-user to access the application. Web-APIs go a step further in that HTTP also facilitates the communication between client application and web-API.
+Similarly our MVC applications used HTTP as the protocol for an end-user to access the application. Web-APIs go a step further in that HTTP also facilitates the communication between client application and web-API.
 
 .. admonition:: tip
 
@@ -166,9 +166,9 @@ In this class you have seen a ``Content-Type`` HTTP header that has been set to 
       </body>
    </html>
 
-This is the header set for HTML documents and is used throughout the web.
+This is the header for HTML documents and is used throughout the web.
  
-APIs send representations of data in the format of JSON requiring the header ``Content-Type`` to be ``application/json`` which allows us to pass the state of the data.
+APIs send representations of data in the format of JSON requiring the header ``Content-Type`` to be ``application/json`` which allows us to pass the state of the data as the HTTP body.
 
 .. sourcecode:: json
    :caption: Example from `JSON chapter <https://education.launchcode.org/intro-to-professional-web-dev/chapters/fetch-json/data-formats-json.html#json>`_
@@ -241,10 +241,12 @@ RESTfulish
 
 The next category would be a RESTful like API. This would be an API that adopts some of the principles of REST, but not all of the principles. An API in this category would give you some benefits of REST, but not all of the benefits of REST.
 
+This is clearly a step up from standard-less but less than the ideal full REST API.
+
 REST
 ----
 
-Fully adopting the OpenAPI REST spec into an API would allow you to classify your API as a REST API.
+Fully adopting the `OpenAPI REST spec <https://swagger.io/specification/>`_ into an API would allow you to classify your API as a REST API.
 
 Much like following the patterns of MVC allows other developers to easily understand your code, following REST gives other developers the benefit of understanding how your REST API is structured and behaves.
 
