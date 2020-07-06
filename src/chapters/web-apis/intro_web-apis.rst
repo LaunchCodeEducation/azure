@@ -63,7 +63,7 @@ Consider the steps of a hypothetical web-API using an ORM:
 
 - a request from a client application for data comes in
 - a controller file catches the request
-- the controller file determines the request is valid
+- the controller file determines if the request is valid
 - the controller file transfers data from the database to an object via the ORM
 - the controller transforms the object into a package the client application can work with
 - the controller responds to the client with the packaged data
@@ -80,7 +80,7 @@ As mentioned above the client application presents the data to the end-user. How
 
 The client application needs to know what format the representation is in so that it can be transformed into a human readable presentation (HTML/CSS) of the data.
 
-Since the presentation is handled by the client application the web-APIs responsibility is to package the representations in a format the client application is expecting. You can discuss with the client application team to determine data format expectations, however a best practice is to use a *universal representation* widely accepted by client applications.
+Since the presentation is handled by the client application the web-APIs responsibility is to package the representations into a format the client application is expecting. The client application team and the web-API team must agree to the underlying data format, however a best practice is to use a *universal representation* widely accepted by client applications.
 
 .. admonition:: note
 
@@ -89,31 +89,125 @@ Since the presentation is handled by the client application the web-APIs respons
 Universal Representation
 ------------------------
 
-Although there are many different formats of data one format has risen to prominence within the realm of web-APIs: **JSON**.
+.. Although there are many different formats of data one format has risen to prominence within the realm of web-APIs: **JSON**.
 
-It is necessary to adopt a *universal representation* (JSON) data format because web-APIs and client applications may be written in two completely tech stacks. Your web-API may be written in ASP.NET whereas the client application may be written in React. These technologies are very different, however they both support JSON. So adopting JSON as the universal representation allows us to move data between the client application and web-API easily.
+It is necessary to adopt a *universal representation* because web-APIs and client applications may be written in two different programming languages. Your web-API may be written in ASP.NET whereas the client application may be written in React. These languages are very different, however they both support JSON.
 
-Having a universal representation ensures the freedoms of separating client from web-APIs listed earlier in this article.
+   JSON has risen to prominence within the realm of web-APIs and has become the *universal representation* for data formatting.
+
+Adopting JSON as the *universal representation* allows us to move data between the client application and web-API easily as JSON is supported by a huge number of modern programming languages. This *universal representation* allows the web-API to be developed before the client application has been designed as both teams already know what data format will be provided by the underlying web-API.
 
 JSON
 ^^^^
 
-- Representations of data
-   - API is about the data so it MUST represent data, but the View dictates the presentation of the represented data
-   - JSON
-      - tip about XML
-   - transference of data segue to HTTP
+We have already `worked with JSON <https://education.launchcode.org/intro-to-professional-web-dev/chapters/fetch-json/data-formats-json.html#json>`_ throughout this course.
+
+JSON is the universal representation of data accepted by client applications. This means our web-API must package the data requested by the client application as JSON and attach it to the response.
+
+Let's examine the steps we looked at earlier:
+
+- a request from a client application for data comes in
+- a controller file catches the request
+- the controller file determines if the request is valid
+- the controller file transfers data from the database to an object via the ORM
+- the controller transforms the object into a JSON representation
+- the controller responds to the client with the JSON representation
+
+.. admonition:: tip
+
+   `XML <https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction>`_ is another popular data format, however it is used less commonly than JSON for web-API to client application data formatting.
+
+In the next section we will discuss exactly how a client application makes a request and how a web-API responds.
 
 HTTP as the language of Web-APIs
 ================================
 
-   - tip:: we refer to web-apis as apis going forward
+   HTTP is the protocol used for communication between a web-API and a client application.
+
+Web-APIs communicate over a network, the most common protocol of the internet is HTTP so it comes as no surprise that HTTP is the language of Web-APIs. 
+
+Similarly our MVC applications also used HTTP as the protocol for an end-user to access the application. Web-APIs go a step further in that HTTP also facilitates the communication between client application and web-API.
+
+.. admonition:: tip
+
+   We will refer to web-apis as apis going forward since HTTP will facilitate the communication between client application and web-API.
+
+Luckily we have already worked with `HTTP in this class <https://education.launchcode.org/intro-to-professional-web-dev/chapters/http/how-the-internet-works.html#http>`_ as it is a very important protocol to understand when working with web applications.
+
+As a primer recall HTTP:
+
+- is a stateless request/response protocol
+- requests and responses **may** include HTTP bodies
+- responses always contain a three digit HTTP status code
+- requests and responses **always** include HTTP headers
+
+Since HTTP is a stateless request/response protocol **every request and response must transfer the necessary state** required by the client application or API. State is transferred via HTTP in the form of HTTP bodies, HTTP Status Codes, and HTTP Headers.
 
 Bodies
 ------
 
+The HTTP body is part of how we express state through the stateless HTTP protocol. An HTTP body can contain a large number of different media types know as `MIME types <https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types>`_. 
+
+A MIME type is associated with the HTTP header ``Content-Type`` which is what instructs the recipient of the HTTP request/response on what MIME type the HTTP body contains.
+
+You have seen a ``Content-Type`` header that has been set to ``text/html``.
+
+.. sourcecode:: html
+   :caption: Example from `HTML chapter <https://education.launchcode.org/intro-to-professional-web-dev/chapters/html/structure.html#structure-rules>`_
+
+   <!DOCTYPE html>
+   <html>
+      <head>
+         <title>My Web Page</title>
+         content
+      </head>
+      <body>
+         content
+      </body>
+   </html>
+
+This is the header set for HTML documents and is used throughout the web. However, we will be sending representations of data in the format of JSON requiring the header ``Content-Type`` with ``application/json``.
+
+.. sourcecode:: json
+   :caption: Example from `JSON chapter <https://education.launchcode.org/intro-to-professional-web-dev/chapters/fetch-json/data-formats-json.html#json>`_
+
+   {
+      "title": "An Astronaut's Guide to Life on Earth",
+      "author": "Chris Hadfield",
+      "ISBN": 9780316253017,
+      "year_published": 2013,
+      "subject": ["Hadfield, Chris", "Astronauts", "Biography"],
+      "available": true
+   }
+
+The HTTP body **may** include JSON that represents the data being passed between API and client application. In the following article you will learn about which HTTP requests/responses will include HTTP bodies.
+
 Status codes
 ------------
+
+The next HTTP component that transfers state is the HTTP status code. The HTTP status code is included as a part of **every** HTTP response. The status code is the API's way of telling the client application how their initial request was handled. 
+
+`HTTP response status codes <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>`_ are a part of the HTTP spec and their usage goes beyond API design, however many of their codes have been adopted as a part of API design.
+
+.. list-table:: Common HTTP status codes in API design
+   :widths: 25 20 60
+   :header-rows: 1
+
+   * - Status Code Group
+     - Commonly Used
+     - Description
+   * - 2XX
+     - 200, 201, 204
+     - request was successful 
+   * - 3XX
+     - 301, 302
+     - request was redirected
+   * - 4XX
+     - 400, 401, 403, 404, 405
+     - client error
+   * - 5XX
+     - 500, 502, 504
+     - server error
 
 Headers
 -------
