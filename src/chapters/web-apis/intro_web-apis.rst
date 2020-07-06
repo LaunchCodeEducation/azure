@@ -43,15 +43,30 @@ A client must ultimately *present* data to an end-user. This means the client mu
 Responsibilities of a Web API
 =============================
 
+The chief responsibility of a web-API is to provide representations of data, it builds to the representation by first managing and transferring data.
+
 Management of Data
 ------------------
 
-Model
+A web-API manages data by modeling objects that line up with the underlying business data. This should seem familiar as it's the exact same process we saw in MVC. Our *Models* are class files that drive the interactions in our codebase.
+
+Web-APIs often take advantage of ORMs just like MVC applications do. If you have underlying classes that can be mapped to data in a database you can easily make data available for use within the web-API codebase.
 
 Transference of Data
 --------------------
 
-Controller
+Outside of managing the data a web-API is concerned with transferring data. 
+
+A client application will make a request for some data. Our web-API must contain *Controller* files that can handle the requests. As a part of handling the request the *Controller* file must understand the request, access the requested data, package the data in an accepted format and send the package as a response to the client application.
+
+Consider the steps of a hypothetical web-API using an ORM:
+
+- a request from a client application for data comes in
+- a controller file catches the request
+- the controller file determines the request is valid
+- the controller file transfers data from the database to an object via the ORM
+- the controller transforms the object into a package the client application can work with
+- the controller responds to the client with the packaged data
 
 Representation of Data
 ======================
@@ -59,14 +74,30 @@ Representation of Data
 Presentation vs Representation
 ------------------------------
 
-View -- the web-api is not concerned with the presentation of the data, however the view requires a representation of the data for the presentation layer
-- AJAX (this is how you consume an API from client)
+As mentioned above the client application presents the data to the end-user. However, the client relies on consuming a representation of data from the web-API.
+
+   Presentation is a representation of data intended for end-users.
+
+The client application needs to know what format the representation is in so that it can be transformed into a human readable presentation (HTML/CSS) of the data.
+
+Since the presentation is handled by the client application the web-APIs responsibility is to package the representations in a format the client application is expecting. You can discuss with the client application team to determine data format expectations, however a best practice is to use a *universal representation* widely accepted by client applications.
+
+.. admonition:: note
+
+   A web client application will use AJAX as the means of making requests to a web-API.
 
 Universal Representation
 ------------------------
 
-- apis can be written in any language and framework
-- balance between language agnostic & structure
+Although there are many different formats of data one format has risen to prominence within the realm of web-APIs: **JSON**.
+
+It is necessary to adopt a *universal representation* (JSON) data format because web-APIs and client applications may be written in two completely tech stacks. Your web-API may be written in ASP.NET whereas the client application may be written in React. These technologies are very different, however they both support JSON. So adopting JSON as the universal representation allows us to move data between the client application and web-API easily.
+
+Having a universal representation ensures the freedoms of separating client from web-APIs listed above:
+
+- platforms
+- teams
+- scaling
 
 JSON
 ^^^^
