@@ -150,7 +150,7 @@ The HTTP body is part of how we express state through the stateless HTTP protoco
 
 A MIME type is associated with the HTTP header ``Content-Type`` which is what instructs the recipient of the HTTP request/response on what MIME type the HTTP body contains.
 
-You have seen a ``Content-Type`` header that has been set to ``text/html``.
+In this class you have seen a ``Content-Type`` HTTP header that has been set to ``text/html``.
 
 .. sourcecode:: html
    :caption: Example from `HTML chapter <https://education.launchcode.org/intro-to-professional-web-dev/chapters/html/structure.html#structure-rules>`_
@@ -166,7 +166,9 @@ You have seen a ``Content-Type`` header that has been set to ``text/html``.
       </body>
    </html>
 
-This is the header set for HTML documents and is used throughout the web. However, we will be sending representations of data in the format of JSON requiring the header ``Content-Type`` with ``application/json``.
+This is the header set for HTML documents and is used throughout the web.
+ 
+APIs send representations of data in the format of JSON requiring the header ``Content-Type`` to be ``application/json`` which allows us to pass the state of the data.
 
 .. sourcecode:: json
    :caption: Example from `JSON chapter <https://education.launchcode.org/intro-to-professional-web-dev/chapters/fetch-json/data-formats-json.html#json>`_
@@ -187,7 +189,7 @@ Status codes
 
 The next HTTP component that transfers state is the HTTP status code. The HTTP status code is included as a part of **every** HTTP response. The status code is the API's way of telling the client application how their initial request was handled. 
 
-`HTTP response status codes <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>`_ are a part of the HTTP spec and their usage goes beyond API design, however many of their codes have been adopted as a part of API design.
+`HTTP response status codes <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>`_ are a part of the HTTP spec and their usage goes beyond API design, however many of their codes have been adopted as a standard within API design.
 
 .. list-table:: Common HTTP status codes in API design
    :widths: 25 20 60
@@ -212,8 +214,13 @@ The next HTTP component that transfers state is the HTTP status code. The HTTP s
 Headers
 -------
 
-- note:: Web APIs can use other protocols (outside scope)
-   - XML fits in this note
+The final HTTP component that transfers state are the HTTP headers. Every HTTP request and response contain at least one header. However, as many headers as necessary can be added to a given request or response.
+
+Above we saw the ``Content-Type`` header. This is the header that allows us to inform the API or client application of the format of the data included in the body. Throughout our API design we will typically be setting this header to ``application/json`` to pass JSON representations of data.
+
+.. admonition:: note
+
+   As mentioned earlier there are multiple MIME types and other options for data formats besides JSON. The ``Content-Type`` header must match the data format of attached HTTP bodies or the recipient of the request/response will be unusable.
 
 API Design
 ==========
