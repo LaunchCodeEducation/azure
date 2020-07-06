@@ -2,32 +2,9 @@
 Web-APIs
 ========
 
-Before we learn about Web APIs let's first define an API:
+Recall the high level `definition of APIs <https://education.launchcode.org/intro-to-professional-web-dev/chapters/fetch-json/introduction.html#api>`_ from an earlier unit. Web-APIs are how programs to other programs over a network. Throughout the remainder of this chapter we will explore web-apis and a pattern for organizing them called REST.
 
-   **A**pplication **P**rogramming **I**nterface
-
-Of the components in the acronym the 
-   
-Interfaces
-----------
-
-User
-^^^^
-      - UI (user interaction)
-
-Application Programming
-^^^^^^^^^^^^^^^^^^^^^^^
-      - application programming interfaces (programmatic interaction)
-         - break down API
-            - different types of APIs libraries are all APIs
-            - when you have an API that crosses over a network is a web API
-
-Web Application Programming
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-   - Web-APIs
-      - programmatic interaction over a network
-      - segue: in a lot of ways can say it is like MVC without the V...
+Although REST may look complicated, it's very closely related to something you have learned.
 
 MVC Without the V
 =================
