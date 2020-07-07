@@ -6,44 +6,59 @@ Recall the high level `definition of APIs <https://education.launchcode.org/intr
 
    **Web-APIs** are how applications communicate with other applications **over a network**. 
 
-Throughout the remainder of this chapter we will explore web-apis and a pattern for organizing them called REST. Although REST may sound complicated, it's very closely related to something you have learned: *MVC*.
+Throughout the remainder of this chapter we will explore Web-APIs and a pattern for organizing them called REST. Although REST may sound complicated, it is just another pattern like MVC.
 
 MVC Without the V
 =================
 
-A good start to thinking about web-apis is that they are similar to MVC web applications with one major distinction:
+A good start to thinking about Web-APIs is that they are similar to MVC web applications with one major distinction:
 
-   Web-apis are not concerned with the presentation of data. 
+   Web-apis are **not concerned with the presentation** of data. 
 
-A web-api is responsible for the Model and Controller, but not responsible for the View. The View is decoupled from the Model and Controller to be developed separately. This separation leads to two different projects a client (front end) and web-api (back-end). 
+A web-api encompasses the Model and Controller aspects of MVC but is not responsible for the View layer. In a web-api the View, or presentation of data, is decoupled from the Model and Controller that manage and transfer data. This separation leads to the development of two different applications, a **client (front end)** and **web-api (back-end)**. 
 
-This separation gives us freedom in the form of:
+The separation between client and web-api gives us freedom in the form of:
 
-- platforms (client can be developed for web, mobile, CLI, GUI, etc)
-- teams (client and web-api can be developed by different specialized groups)
-- scaling (client and web-api can be hosted on separate infrastructure)
+- **platforms**: client can be developed for web, mobile, CLI, GUI, etc
+- **teams**: client and web-api can be developed by different specialized groups
+- **scaling**: client and web-api can be hosted on separate infrastructure
 
-Our client application's objective is to present data that meet our end-user needs. 
+.. admonition:: fun fact
 
-.. admonition:: note
-   
-   Presenting data to end-users falls into the category of User Experience (UX) which is outside the scope of this class.
+   Client applications involves User Interface (UI) and User Experience (UX) development.
 
 Client relies on data
 ---------------------
 
-Even though the client has been separated from the web-API the client still relies on data from the web-API. What good is the styling and user-experience (UX) of a client application if it doesn't contain any data the user needs?
+Even though the front-end has been separated from the back-end it still relies on data to present to the user.
 
-A client must ultimately *present* data to an end-user. This means the client must request a *representation* of the data from the web-API. After the request has been made to the web-API the client can parse the represented data into the presentation for the end-user.
+A client must ultimately *present* data to an end-user. This means the client must request a *representation* of the data from the web-API. After the client receives the representation it is styled and displayed to the user.
 
 .. admonition:: note
 
-   This client to web-API relationship is crucial to the operation of the client application. A web-API provides representations of data that are *consumed* by the client which presents the data to the end-user.
+   A web-API provides representations of data that are *consumed* by the client which then decides how that data should be presented.
 
 Responsibilities of a Web API
 =============================
 
-The chief responsibility of a web-API is to provide representations of data, it constructs the representation by first managing and transferring data.
+   The chief responsibility of a web-API is to provide **representations of data** that are usable to the client. 
+
+Data Delivery
+-------------
+
+Think about how a View works in MVC. Data is *injected* into a *template* file that is **rendered into HTML** in the Controller before being sent back to the user. We call this approach **server-side rendering**.
+
+A client and web-API work in a similar way. However, instead of injecting the data into a template it is transferred over the network through AJAX requests. When the client application receives the **data** it uses JavaScript to inject it into the HTML. This approach is called **client-side rendering** because the web-API only sends data, not HTML.
+
+.. admonition:: example
+
+   For example, consider requesting the ``/events`` path of your MVC project. The response was an HTML *presentation of the data*. In other words, the **data was already included** in the presentation.
+
+      **MVC**: ``GET /events -> HTML with data``
+
+   In a web-API analog the ``/events`` path would return **just the underlying data**. It is then the client application's responsibility to inject the received data into its presentation.
+
+      **web-API**: ``GET /events -> just data``
 
 Management of Data
 ------------------
@@ -61,12 +76,12 @@ A client application will make a request for some data. Our web-API must contain
 
 Consider the steps of a hypothetical web-API using an ORM:
 
-- a request from a client application for data comes in
-- a controller file catches the request
-- the controller file determines if the request is valid
-- the controller file transfers data from the database to an object via the ORM
-- the controller transforms the object into a package the client application can work with
-- the controller responds to the client with the packaged data
+#. a request from a client application for data comes in
+#. a controller file catches the request
+#. the controller file determines if the request is valid
+#. the controller file transfers data from the database to an object via the ORM
+#. the controller transforms the object into a package the client application can work with
+#. the controller responds to the client with the packaged data
 
 Representation of Data
 ======================
@@ -88,8 +103,6 @@ Since the presentation is handled by the client application the web-APIs respons
 
 Universal Representation
 ------------------------
-
-.. Although there are many different formats of data one format has risen to prominence within the realm of web-APIs: **JSON**.
 
 It is necessary to adopt a *universal representation* because web-APIs and client applications may be written in two different programming languages. Your web-API may be written in ASP.NET whereas the client application may be written in React. These languages are different, however they both support JSON.
 
@@ -119,18 +132,18 @@ Let's examine the steps we looked at earlier:
 
 In the next section we will discuss exactly how a client application makes a request and how a web-API responds.
 
-HTTP as the language of Web-APIs
+HTTP As the Language of Web-APIs
 ================================
 
    HTTP is the protocol used for communication between a web-API and a client application.
 
-Web-APIs communicate over a network, the most common protocol of the internet is HTTP so it comes as no surprise that HTTP is the language of Web-APIs. 
+Web-APIs communicate over a network, the most common protocol of the internet is HTTP so it comes as no surprise that HTTP is the language of web-APIs. 
 
 Similarly our MVC applications used HTTP as the protocol for an end-user to access the application. Web-APIs go a step further in that HTTP also facilitates the communication between client application and web-API.
 
 .. admonition:: tip
 
-   We will refer to web-apis as apis going forward since HTTP will facilitate the communication between client application and web-API.
+   We will refer to Web-APIs as apis going forward since HTTP will facilitate the communication between client application and web-API.
 
 Luckily we have already worked with `HTTP in this class <https://education.launchcode.org/intro-to-professional-web-dev/chapters/http/how-the-internet-works.html#http>`_ as it is a very important protocol to understand when working with web applications.
 
@@ -225,23 +238,20 @@ Above we saw the ``Content-Type`` header. This is the header that allows us to i
 API Design
 ==========
 
-Designing an API can be challenging, however the benefits of separating the client from the API far outweigh the challenges of designing the API. In the next article we will discuss one of the most common patterns for designing APIs: REST.
+   The design of an API is **a contract that defines how the client and API interact with data**. 
 
-However, before we get to the article let's discuss the three categories of APIs based on their designs.
+The API is responsible for **upholding** the data management and transfer **behaviors** of the **contract**.
 
-Standard-less
--------------
+The client application is responsible for **consuming** (AJAX requests) an API according to the **contract**.
 
-Any API that uses HTTP as the protocol would fit in the category of standard-less. The API doesn't follow any additional constraints, rules, or patterns to deliver representations of data to a client application.
+As long as both sides of the *interface* (client and API logic) uphold the contract then front and back-end teams experience the following freedoms:
 
-As we have seen with MVC following some basic rules and patterns is a great way to organize your code increasing readability, maintainability, and scalability.
+- Front-end developers can choose or change the internal styling, libraries, frameworks and design patterns
+- Back-end developers can choose or change the internal server language, libraries, frameworks and design patterns
+- Both sides can choose or change their external hosting infrastructure at any time without affecting the other
+- Both sides can make and deploy changes to their code bases at any time without needing to coordinate with or wait for the other
 
-RESTful like
-------------
-
-The next category would be a RESTful like API. This would be an API that adopts some of the principles of REST, but not all of the principles. An API in this category would give you some benefits of REST, but not all of the benefits of REST.
-
-This is clearly a step up from standard-less but less than the ideal full REST API.
+Only when a change must be made to either the client AJAX requests or API behavior do the two teams need to communicate and agree upon a new contract.
 
 REST
 ----
