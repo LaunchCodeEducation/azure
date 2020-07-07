@@ -13,44 +13,46 @@ MVC Without the V
 
 A good start to thinking about Web-APIs is that they are similar to MVC web applications with one major distinction:
 
-   Web-apis are **not concerned with the presentation** of data. 
+   Web-APIs are **not concerned with the presentation** of data. 
 
-A web-api encompasses the Model and Controller aspects of MVC but is not responsible for the View layer. In a web-api the View, or presentation of data, is decoupled from the Model and Controller that manage and transfer data. This separation leads to the development of two different applications, a **client (front end)** and **web-api (back-end)**. 
+A web-API encompasses the Model and Controller aspects of MVC but is not responsible for the View layer. In a web-API the View, or presentation of data, is decoupled from the Model and Controller that manage and transfer data.
 
-The separation between client and web-api gives us freedom in the form of:
+This separation leads to the development of two different applications, a **client (front end)** and **web-API (back-end)**. 
+
+The separation between client and web-API provides the following benefits:
 
 - **platforms**: client can be developed for web, mobile, CLI, GUI, etc
-- **teams**: client and web-api can be developed by different specialized groups
-- **scaling**: client and web-api can be hosted on separate infrastructure
+- **teams**: client and web-API can be developed by different specialized groups
+- **scaling**: client and web-API can be hosted on separate infrastructure
 
 .. admonition:: fun fact
 
-   Client applications involves User Interface (UI) and User Experience (UX) development.
+   Client applications involve User Interface (UI) and User Experience (UX) development.
 
 Client interacts with data
 --------------------------
 
-Even though the front-end has been separated from the back-end it still interacts with data from the web-API.
+Despite being separated from each other, the client application still relies on **interactions with the data** through the web-API.
 
-A client must ultimately *present* data to an end-user. This means the client must request a *representation* of the data from the web-API. After the client receives the representation it is styled and displayed to the user. 
+A front-end client must ultimately *present* data to an end-user. This means the client must request a *representation* of the data from the web-API. After the client receives the representation it is parsed, styled and rendered to the user. 
 
 .. admonition:: note
 
-   A web-API provides representations of data that are *consumed* by the client which then decides how that data should be presented.
-
-In addition to presenting data a user may create, update, or delete the data leading the client application to send a representation back to the web-API dictating the changes that need to be made to the underlying data.
+   A web-API and is interacted with, or **consumed**, by a client application. This process involves transferring data representations and instructions like Creating, Reading, Updating and Deleting.
 
 Responsibilities of a Web API
 =============================
 
-   The chief responsibility of a web-API is to handle **representations of data** that are used by the client. 
+   The chief responsibility of a web-API is to provide **interactions with** and exchange **representations of data** with its client application.
 
 Data Delivery
 -------------
 
 Think about how a View works in MVC. Data is *injected* into a *template* file that is **rendered into HTML** in the Controller before being sent back to the user. We call this approach **server-side rendering**.
 
-A client and web-API work in a similar way. However, instead of injecting the data into a template it is transferred over the network through AJAX requests. When the client application receives the **data** it uses JavaScript to inject it into the HTML. This approach is called **client-side rendering** because the web-API only sends data, not HTML.
+A client application and web-API work in a similar way. However, instead of injecting the data into a template on the server it is transferred over the network through AJAX requests made by the client.
+
+When the client application receives the data it uses JavaScript to inject it into the HTML -- all from within the browser. This approach is called **client-side rendering** because the web-API only sends data, the HTML is assembled on the user's end.
 
 .. admonition:: example
 
@@ -58,9 +60,11 @@ A client and web-API work in a similar way. However, instead of injecting the da
 
       **MVC**: ``GET /events -> HTML with data``
 
-   In a web-API analog the ``/events`` path would return **just the underlying data**. It is then the client application's responsibility to inject the received data into its presentation.
+   In a web-API analog the ``/events`` path would return **just the underlying data**. 
 
       **web-API**: ``GET /events -> just data``
+
+   It is then the client application's responsibility to integrate the received data into its presentation.
 
 Management of Data
 ------------------
@@ -80,8 +84,8 @@ Consider the steps of a hypothetical web-API using an ORM:
 
 #. a request from a client application for data comes in
 #. a controller file catches the request
-#. the controller file determines if the request is valid
-#. the controller file transfers data from the database to an object via the ORM
+#. the controller determines if the request is valid
+#. the controller transfers data from the database to an object via the ORM
 #. the controller transforms the object into a package the client application can work with
 #. the controller responds to the client with the packaged data
 
@@ -93,24 +97,20 @@ Presentation vs Representation
 
 As mentioned above the client application presents the data to the end-user. However, the client relies on consuming a representation of data from the web-API.
 
-   Presentation is a representation of data intended for end-users.
+   Presentation is the rendered combination of data and visual styling intended for end-users.
 
 The client application needs to know what format the representation is in so that it can be transformed into a human readable presentation (HTML/CSS) of the data.
 
-Since the presentation is handled by the client application the web-APIs responsibility is to package the representations into a format the client application is expecting. The client application team and the web-API team must agree to the underlying data format, however a best practice is to use a *universal representation* widely accepted by client applications.
-
-.. admonition:: note
-
-   A web client application will use AJAX as the means of making requests to a web-API.
+Since the presentation is handled by the client application the web-APIs responsibility is to package the representations into a format the client application is expecting. The client application team and the web-API team must agree to the underlying data format. A best practice is to use a *universal representation* widely accepted by client applications.
 
 Universal Representation
 ------------------------
 
-It is necessary to adopt a *universal representation* because web-APIs and client applications may be written in two different programming languages. Your web-API may be written in ASP.NET whereas the client application may be written in React. These languages are different, however they both support JSON.
+It is necessary to adopt a *universal representation* because web-APIs and client applications may be written in two different programming languages. Your web-API may be written in C#/ASP.NET whereas the client application may be written using JavaScript and React.
 
-   JSON has risen to prominence within the realm of web-APIs and has become the *universal representation* for data formatting.
+While there are many languages and frameworks available in web development they all support the creation and parsing of JSON. 
 
-Adopting JSON as the *universal representation* allows us to move data between the client application and web-API easily as JSON is supported by a huge number of modern programming languages. This *universal representation* allows the web-API to be developed before the client application has been designed as both teams already know what data format will be provided by the underlying web-API.
+   JSON is a standard in web development because it is simple to process in any language, compatible with HTTP and seamlessly represents the structure of data objects
 
 JSON
 ^^^^
@@ -121,12 +121,12 @@ JSON is the universal representation of data accepted by client applications. Th
 
 Let's examine the steps we looked at earlier:
 
-- a request from a client application for data comes in
-- a controller file catches the request
-- the controller file determines if the request is valid
-- the controller file transfers data from the database to an object via the ORM
-- the controller transforms the object into a JSON representation
-- the controller responds to the client with the JSON representation
+#. a request from a client application for data comes in
+#. a controller file catches the request
+#. the controller determines if the request is valid
+#. the controller transfers data from the database to an object via the ORM
+#. the controller transforms the object into a JSON representation
+#. the controller responds to the client with the JSON representation
 
 .. admonition:: tip
 
@@ -145,7 +145,7 @@ Similarly our MVC applications used HTTP as the protocol for an end-user to acce
 
 .. admonition:: tip
 
-   We will refer to Web-APIs as apis going forward since HTTP will facilitate the communication between client application and web-API.
+   We will refer to web-APIs as APIs going forward since the web prefix is implied.
 
 Luckily we have already worked with `HTTP in this class <https://education.launchcode.org/intro-to-professional-web-dev/chapters/http/how-the-internet-works.html#http>`_ as it is a very important protocol to understand when working with web applications.
 
@@ -229,13 +229,13 @@ The next HTTP component that transfers state is the HTTP status code. The HTTP s
 Headers
 -------
 
-The final HTTP component that transfers state are the HTTP headers. Every HTTP request and response contain at least one header. However, as many headers as necessary can be added to a given request or response.
+The final HTTP component that transfers state are the HTTP headers. Any `number of headers <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers>`_ can be included in a request or response.
 
-Above we saw the ``Content-Type`` header. This is the header that allows us to inform the API or client application of the format of the data included in the body. Throughout our API design we will typically be setting this header to ``application/json`` to pass JSON representations of data.
+Above we saw the ``Content-Type`` header. This is the header that allows us to inform the API (request header) or client application (response header) of the format of the data included in the body. 
 
-.. admonition:: note
+.. admonition:: tip
 
-   As mentioned earlier there are multiple MIME types and other options for data formats besides JSON. The ``Content-Type`` header must match the data format of attached HTTP bodies or the recipient of the request/response will be unusable.
+   A client can specify which ``Content-Type`` they want to receive in the API response using the ``Accept`` request header.
 
 API Design
 ==========
@@ -246,7 +246,7 @@ The API is responsible for **upholding** the data management and transfer **beha
 
 The client application is responsible for **consuming** (AJAX requests) an API according to the **contract**.
 
-As long as both sides of the *interface* (client and API logic) uphold the contract then front and back-end teams experience the following freedoms:
+As long as both sides of the *interface* (the client and API logic) uphold the contract then front and back-end teams can operate independently. This provides the following freedoms:
 
 - Front-end developers can choose or change the internal styling, libraries, frameworks and design patterns
 - Back-end developers can choose or change the internal server language, libraries, frameworks and design patterns
@@ -258,10 +258,8 @@ Only when a change must be made to either the client AJAX requests or API behavi
 REST
 ----
 
-Fully adopting the `OpenAPI REST spec <https://swagger.io/specification/>`_ into an API would allow you to classify your API as a REST API.
+Adopting the REST specification into the design of an API provides consistency during development and consumption.
 
-Much like following the patterns of MVC allows other developers to easily understand your code, following REST gives other developers the benefit of understanding how your REST API is structured and behaves.
+Much like following the patterns of MVC allows other developers to easily understand your code, following REST gives other developers the benefit of understanding how your API is structured and behaves.
 
-As an added bonus a REST API also gives the client application a base-line understanding on how to interact with your API. REST has benefits for both API developers (providers), and client developers (consumers)!
-
-The next article will dive much deeper into the concept of REST.
+As an added bonus a REST API also gives the client application a base-line understanding on how to interact with your API.
