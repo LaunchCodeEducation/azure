@@ -34,11 +34,11 @@ Even though the front-end has been separated from the back-end it still interact
 
 A client must ultimately *present* data to an end-user. This means the client must request a *representation* of the data from the web-API. After the client receives the representation it is styled and displayed to the user. 
 
-In addition a user may create, update, or delete their data leading the client application to send a representation back to the web-API dictating the changes that need to be made to the underlying data.
-
 .. admonition:: note
 
    A web-API provides representations of data that are *consumed* by the client which then decides how that data should be presented.
+
+In addition to presenting data a user may create, update, or delete the data leading the client application to send a representation back to the web-API dictating the changes that need to be made to the underlying data.
 
 Responsibilities of a Web API
 =============================
