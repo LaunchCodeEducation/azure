@@ -131,7 +131,11 @@ Transferring a Representation of State
 
 A RESTful API is designed to be stateless, just like the HTTP protocol used for communicating with its client application. How can REST be stateless if we have been harping about State this whole time?
 
-Conceptually, REST considers State something that **transitions** throughout the interactions between the API and a client. In order to maintain portability between the different client and API contexts we transfer Representations of State. These Representations can then be converted between the *portable Representation* (JSON) and the representation that fits the context (a JavaScript or C# object).
+Conceptually, REST considers State something that **transitions** throughout the interactions between the API and a client. Both HTTP and the RESTful API server are stateless. 
+
+It is up to the client maintain the *current State*. If the client wants to *transition to a new State* it interacts with the API which then *persists the latest State after the transition* in a database. 
+
+In order to maintain portability between the different client and API contexts we transfer Representations of State. These Representations can then be converted between the *portable Representation* (JSON) and the representation that fits the context (a JavaScript or C# object).
 
 Recall that State is defined by its latest interaction. Because every interaction is initiated by the client we consider the **client to be in control of State**.
 
