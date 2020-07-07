@@ -43,7 +43,7 @@ In addition to presenting data a user may create, update, or delete the data lea
 Responsibilities of a Web API
 =============================
 
-   The chief responsibility of a web-API is to provide **representations of data** that are usable to the client. 
+   The chief responsibility of a web-API is to handle **representations of data** that are used by the client. 
 
 Data Delivery
 -------------
