@@ -27,12 +27,14 @@ The separation between client and web-api gives us freedom in the form of:
 
    Client applications involves User Interface (UI) and User Experience (UX) development.
 
-Client relies on data
----------------------
+Client interacts with data
+--------------------------
 
-Even though the front-end has been separated from the back-end it still relies on data to present to the user.
+Even though the front-end has been separated from the back-end it still interacts with data from the web-API.
 
-A client must ultimately *present* data to an end-user. This means the client must request a *representation* of the data from the web-API. After the client receives the representation it is styled and displayed to the user.
+A client must ultimately *present* data to an end-user. This means the client must request a *representation* of the data from the web-API. After the client receives the representation it is styled and displayed to the user. 
+
+In addition a user may create, update, or delete their data leading the client application to send a representation back to the web-API dictating the changes that need to be made to the underlying data.
 
 .. admonition:: note
 
