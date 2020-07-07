@@ -155,15 +155,37 @@ In some cases it makes sense for an API to expose a resource with any CRUD inter
 Resources
 =========
 
-Collections
------------
+   **Resource**: the Representation of a *specific type of State* that a RESTful API *exposes* for a *client to interact* with
 
-Entities
---------
+While State is an abstract concept, a **resource** is something more *tangible*. In simple terms, a **resource is like a type of object** that an API allows clients to interact with. Resources are categorized as an individual **entity** or a **collection**.
 
-- something contained in a collection
-- note: sub-collections 
-   - something belonging to the parent path collection/entity
+   **Entity**: an individual type of resource that is **uniquely identifiable in a collection**
+
+   **Collection**: entities of the same resource type **treated as a whole, or single unit**
+
+We refer to the State of a resource in terms of a single entity or the *collective State* of a collection as a whole. Unlike the State of an entity, a resource collection is something that does not need to be created. 
+
+Initially a collection's State is just *empty*. If you were to **R**\ead the collection's State it would be *represented* as an empty JSON array, ``[]``.
+
+In RESTful design an individual entity **only exists as part of a collection**. This means that when **C**\reating an individual entity you are operating on the **State of the collection**:
+
+- **creating an entity**: you are **transitioning the State of the collection** by adding an entity's initial State to it
+
+The entity itself has a State that transitions as well. The resource entity has an initial State after being **C**\reated, a new State after an **U**\pdate or a non-existent State once **D**\eleted. 
+
+Because every entity is *a part of a collection* each of these operations also indirectly **transition the State of the collection**:
+
+- **updating an entity**: you are **transitioning the State of the collection** by modifying the entity's State within it
+- **deleting an entity**: you are **transitioning the State of the collection** by removing an entity's State from it
+
+When we operate on an individual entity's State we are operating *inside the State of the collection*. We have to *identify the entity* within the collection before performing the operation.
+
+For example, if we wanted to **R**\ead an entity's State we would need to know:
+
+- which resource collection the entity belongs to
+- the unique identifier of the entity to find it within the collection
+
+The hierarchal relationship between collections and the entities within them is an integral aspect of RESTful design. The contract of a RESTful API defines the **schema**, or structure, of its resources along with the hierarchal **endpoints** used for interacting with them.
 
 Schemas
 =======
