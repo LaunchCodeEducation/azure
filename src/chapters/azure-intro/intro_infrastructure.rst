@@ -37,11 +37,7 @@ Since CSPs have multiple data centers filled with tons of servers they can negot
 Infrastructure
 ==============
 
-Infrastructure refers to the all of the hardware and software used to deploy your code.
-
-Infrastructure is a broad term that refers to everything necessary for deploying a web application. This definition includes the physical components and the software.
-
-infrastructure is the stuff outside of your code.
+   Infrastructure is a broad term that refers to the all of the hardware and software used to deploy your code.
 
 .. too deep? should it just instead say Infrastructure is the physical
 
@@ -68,9 +64,9 @@ infrastructure is the stuff outside of your code.
 
 One of the major benefits of using a CSP is the physical components are handled by the CSP. So throughout this class when we refer to infrastructure we are referring to the services rented from the CSP and the software we must manage to use those services.
 
-.. ::
+.. admonition:: tip
 
-   .. note:: to end intro infrastructure is a very deep concept, but for the purposes of this article is to give you an understanding of the terms you will encounter throughout this course.
+   As we talk about Infrastructure throughout this course remember that all of the CSP services are backed by physical components in a data center.
 
 Infrastructure as a Service
 ===========================
