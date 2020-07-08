@@ -174,11 +174,9 @@ Let's take another look at our example API:
 
 .. admonition:: example
 
-   The path to identify the State of a Coding Event Resource would be described as:
-
-      ``/events/{eventId}``
+   The path to identify the State of a Coding Event Resource would be described as ``/events/{eventId}``.
    
-   Assume a Coding Event exists with an ``Id`` of ``12``. 
+   Let's assume a Coding Event exists with an ``Id`` of ``12``.
    
    We could make a request to the ``GET /events/12`` **endpoint** to **R**\ead its *current State*:
 
