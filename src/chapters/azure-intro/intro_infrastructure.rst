@@ -79,11 +79,54 @@ We will work with both a web UI, and a CLI tool that will allow us to provision 
 
 These tools will allow us to quickly and easily setup the infrastructure without ever touching the hardware for a relatively inexpensive fee.
 
+The services provided by a CSP fall into three categories: disk storage, computation and networking.
+
+Disk Storage
+============
+
+Almost all cloud services are reliant on hard disk storage. Imagine all the stuff that must be stored in order to run an application in the cloud:
+
+- build artifacts
+- programming language runtimes
+- code dependencies
+- OS
+- database records
+
+All of these things must be stored on a disk accessible to any cloud services that need them. Disk storage is a service provided by CSPs that comes in various forms:
+
+- stand alone file systems
+- server mountable hard drives
+- databases
+
+These services can be provisioned and attached to other services.
+
+.. ::
+
+   Consider the previous example of a server. Beyond CPU, RAM and an OS the server has a hard drive. After all a computer wouldn't not be very useful if it didn't have some form of permanent storage. The build artifacts, the dependencies, the software all have to live somewhere and the hard drive is the answer.
+
+   In Cloud Computing we consider disk storage to be separate from computation
+
+.. ::
+
+   this needs to be a note if the point is made at all
+
+   Outside of computation, and it's RAM, a virtual server will require a hard drive to store the OS, dependencies, and build artifacts. When thinking about Infrastructure it's a best practice to keep the aspects separated from each other. 
+
 Computation
 ===========
 
-Data Storage
-============
+One of the most common services provided by a CSP is a virtualized computer (commonly referred to as a server). 
+
+This server would have:
+
+- a Central Processing Unit (CPU)
+- Random Access Memory (RAM)
+- a *mountable* hard drive
+- an OS 
+
+Although the server would exist in a data center it would be very similar to your own laptop. When interfacing with this remote server you would be able to download, install and run applications. This is an ideal service for deploying a web application.
+
+This service would be categorized as **computation** because the primary need being fulfilled by the server is the CPU and RAM a running application needs to function.
 
 Networking
 ==========
