@@ -66,10 +66,18 @@ One of the major benefits of using a CSP is the physical components are handled 
 
 .. admonition:: tip
 
-   As we talk about Infrastructure throughout this course remember that all of the CSP services are backed by physical components in a data center.
+   As we talk about Infrastructure throughout this course remember that all of the CSP services are backed by physical hardware in a data center.
 
 Infrastructure as a Service
-===========================
+---------------------------
+
+   Infrastructure as a Service (IaaS) is the description for interacting with Infrastructure managed by a CSP.
+
+The CSP owns all the physical hardware and we rent it, as a service, paying them for their work. To provide access the CSP provides various tools for interfacing with their hardware. 
+
+We will work with both a web UI, and a CLI tool that will allow us to provision (create), configure, and manage the infrastructure necessary to deploy our projects in a cloud environment.
+
+These tools will allow us to quickly and easily setup the infrastructure without ever touching the hardware.
 
 Computation
 ===========
