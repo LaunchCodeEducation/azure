@@ -19,30 +19,11 @@ Shapes
 
    **Shape**: the blueprint that describes the Representation of an input or output to an API
 
-You can think of the shape like a Class definition in an object-oriented codebase. It describes the input or output of an API in terms of its fields and data types. There are no rule for how the shapes should be defined.
+The shape describes the input or output of an API in terms of its fields and data types. There are no rule for how the shapes should be defined. However, the goal should be to describe the shapes in a way that is **easy to understand**. 
 
-However, the goal should be to describe the shapes in a way that is **easy to understand**. For this reason they are typically shown in a way that is similar to the Representation format.
+For this reason they are typically shown in a way that is similar to the Representation format. Because we use JSON as the Representation format the `JSON data types <https://json-schema.org/understanding-json-schema/reference/type.html>`_ are used. 
 
-.. admonition:: note
-
-   Because we use JSON as the Representation format the `JSON data types <https://json-schema.org/understanding-json-schema/reference/type.html>`_ are used. These data types provide the best balance between structure and portability across JavaScript and the numerous languages an API can be implemented in.
-
-Below is a general example of what a shape looks like. Notice that it is not *actual* JSON but a sort of pseudocode that is a balance between readable and descriptive:
-
-.. sourcecode:: json
-
-   ResourceName {
-      fieldName: string
-      otherFieldName: integer
-      ...
-   }
-
-The naming convention for the fields is an implementation detail. REST does not define a rule for this either but you may see ``camelCase``, ``snake_case``, ``PascalCase`` or the ``wHyArEyOuLiKeThIsCaSe``.
-
-Resource Shapes
----------------
-
-To understand a Resource shape let's first take a look at an example:
+You can think of the shape like a Class definition in an object-oriented codebase:
 
 .. admonition:: example
 
@@ -57,7 +38,7 @@ To understand a Resource shape let's first take a look at an example:
       }
 
    .. sourcecode:: json
-      :caption: The external Resource shape (blueprint) of a Coding Event
+      :caption: The output Resource shape (blueprint) of a Coding Event
 
       CodingEvent {
          Id: integer
@@ -66,8 +47,10 @@ To understand a Resource shape let's first take a look at an example:
          Date: string (ISO 8601 date format)
       }
 
-   A JSON Representation of a Coding Event, based on the Resource shape:
+The JSON Representation of the Resource that the API sends out is then based on the shape. Like an object is based on the blueprint of its Class:
 
+.. admonition:: example
+   
    .. sourcecode:: json
       :caption: sample Coding Event JSON Representation
 
@@ -78,57 +61,145 @@ To understand a Resource shape let's first take a look at an example:
          "Date": "2020-10-31"
       }
 
-When we refer to the *type of Resource* exposed by an API we are referring to its **Resource shape**. One of the first steps in designing an API is to define the Resources and their shapes. For a consumer, knowing the Resource shape allows them to plan how they will use and interact with the State of each Resource.
+We can think of inputs as a *partial State* provided by the client during **C**\reate and **U**\pdate interactions. Only some of the fields are included because the API is responsible for providing the others.
 
-Recall that *internally* the API uses data Model Classes to *represent State* as objects that are *usable in its context*.
-
-In simple cases the *external* Resource shape is 1:1 with the properties of this *internal* data Model blueprint (Class definition). 
-
-Input Shapes
-------------
-
-When a client *transfers a Representation of State* to the API we consider this an API **input**. Just like with Resources we can define **input shapes** that describe the Representation the API expects from the client.
-
-Consider the **C**\reate interaction. The client must transfer a Representation of the Resource they want to create. We distinguish between Resource and input shapes because some fields are left to the API to manage. These fields are managed by the API internally to ensure consistent behavior or provide computed values.
-
-Some of the other common fields the API is responsible for managing:
-
-- the unique identifier (``Id``) 
-- the created or last updated timestamp
-- links for relationships between Resources
-
-We can think of inputs as a *partial State* provided by the client. The input shape could then be defined as:
-
-   The partial shape of a Resource used in **C**\reate and **U**\pdate interactions
+Consider the following example of an input shape. Notice that the ``Id`` field is not included:
 
 .. admonition:: example
 
-   For example, if a client were to request that a Coding Event be **C**\reated it would need to provide 
+   .. sourcecode:: json
+      :caption: The input shape (blueprint) used to Create a Coding Event
 
-- segue interactions
+      CodingEvent {
+         Title: string
+         Description: string
+         Date: string (ISO 8601 date format)
+      }
+
+   Some of the common fields the API is responsible for managing:
+
+   - the unique identifier (``Id``) 
+   - the created or last updated timestamp
+   - links for relationships between Resources
 
 Endpoints
 =========
 
-- tip: endpoints are just the path and the method
-   - relative paths (relative to the hosted server origin)
+   The HTTP **path** and **method** that defines the location for interacting with a Resource
 
-Paths (resource subject)
------
+Endpoints are what an API exposes to its consumers. Each endpoint is made up of a:
 
-- entrypoint
-- collection/{identifier}
-- collection/{identifier}/sub-collection
+- **path**: identifies the Resource (collection or entity) 
+- **method**: the action to take on the Resource's State
 
-Methods (action to take on resource)
--------
+Endpoints are written using *relative paths*. This approach is more readable and decouples the endpoint from where it is hosted.
 
-Links
-=====
+For example consider the two URLs or *absolute paths* to a Pumpkin Resource *collection*:
 
-- sub-collections
-- links
-- 
+   ``http://localhost:5000/pumpkins``
+
+   ``https://my-live-site.com/pumpkins``
+
+If we describe the endpoint using a relative path of ``/pumpkins`` then it remains valid whether the API is *hosted locally* on our machine or *hosted remotely* and accessible on the internet.
+
+Identifying the Resource
+------------------------
+
+   Paths are used to identify the Resource State to be interacted with
+
+Recall the hierarchal nature of Resources where an entity only exists within a collection. In order to identify an entity you need to provide both its collection and its unique identifier.
+
+RESTful APIs separate the Resources they expose into one or more **Resource entry-points**. As the name implies these entry-points are the start of the hierarchy and identify the Resource collection.
+
+Let's consider two Resources exposed by a RESTful API:
+
+.. admonition:: example
+
+   The Coding Events API would have the following familiar Resources (among others):
+
+   - ``CodingEvent``
+   - ``Tag``
+
+   The entry-points for these two Resources would be:
+
+   - ``CodingEvent``: ``/events``
+   - ``Tag``: ``/tags``
+
+Notice that the entry-points are **pluralized**. The pluralized path indicates that the **Resource State of the collection** is the subject of the interaction. For example, consider the response when making a ``GET`` request to them:
+
+.. admonition:: example
+
+   What would the response, or output, of the API be for the following **endpoints** (entry-point path and the ``Get`` method)?
+
+   - ``GET /events``
+
+   .. sourcecode:: json
+      :caption: response from a GET request to /events entry-point
+
+      [
+         CodingEvent { ... },
+         ...
+      ]
+   
+   - ``GET /tags``
+
+   .. sourcecode:: json
+      :caption: response from a GET request to /tags entry-point
+
+      [
+         Tag { ... },
+         ...
+      ]
+
+As expected the State of the Resource collection is represented in a JSON array (``[]``).
+
+What if we wanted to interact with *an individual* Resource entity? We would identify it *within* its collection.
+
+.. admonition:: tip
+
+   The hierarchy of collections and entities is similar to directories and files. To identify an entity is *like identifying a file within a directory*. 
+   
+   You need both the directory (collection) name and a *sub-path* that uniquely identifies the file (entity).
+
+The path to interact with the State of the entity would need to include:
+
+- the collection identifier, or Resource entry-point (``/collection``)
+- the unique identifier of the entity within the collection
+
+Because the unique identifier of the entity is *variable* we use a **path variable** to describe it:
+
+   ``/collection/{entityId}``
+
+Let's take another look at our example API:
+
+.. admonition:: example
+
+   The path to identify the State of a Coding Event Resource would be described as:
+
+      ``/events/{eventId}``
+   
+   Assume a Coding Event exists with an ``Id`` of ``12``. 
+   
+   We could make a request to the ``GET /events/12`` **endpoint** to **R**\ead its *current State*:
+
+   .. sourcecode:: json
+      :caption: response from a GET request to /events/12
+
+      {
+         "Id": 12,
+         "Title": "Halloween Hackathon!",
+         "Description": "A gathering of nerdy ghouls to work on GitHub Hacktoberfest contributions",
+         "Date": "2020-10-31"
+      }
+
+Organizing Relationships
+------------------------
+
+- example of two collection entry points and sub-collection
+- keep brief
+
+CRUD Interactions & HTTP Methods
+================================
 
 Endpoint Behavior
 =================
