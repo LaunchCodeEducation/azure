@@ -161,26 +161,29 @@ If an application server is struggling to handle the traffic of any number of us
 Networking
 ==========
 
+**Networking** services are the CSP services that facilitate and control communication across other computation and disk storage services.
+
+All the physical components of our infrastructure are housed in a data center and all the servers in the data center are networked together. However, we don't want our infrastructure to be accessed by some other party's infrastructure as this could cause all sorts of issues. CSPs provide additional virtualized networks that allow you to create, and manage networks to suit the needs of your deployment.
+
+.. admonition:: note
+
+   This class barely scratches the surface of networking. All of our deployments will have the most basic of networking concerns to allow us to focus more on computation and disk storage.
+
 Examples
 --------
+
+- Network Security Groups (NSG) to open ports on application servers so users can access them via a browser
+- Virtual Private Networks (VPN) which allow you to control the access one service has with another
+- Virtual Private Clouds (VPC) manages large numbers of services
 
 Scaling
 -------
 
-.. ::
+Scaling also applies to networking. In the instance of a complex deployment that has lots of different disk storage, and computation services it is usually beneficial to create sub-networks inside the VPN that hosts all the services.
 
-   IaaS -- top levels
-      - servers (computing)
-         - example (the physical Server, a virtual machine (slice of a Server), containers (slice of a virtual machine))
-         - provisioning
-         - scaling
-         - note: these terms depend on the context of the infrastructure
-      - databases (data storage)
-         - example (disks (memory for virtual machines), databases (disk attached for database), file storage (disk))
-         - when provisioning our storage we are thinking about the needs of the applications (how much disk space do we need, what type of disk storage do we need)
-         - when scaling our storage
-      - networking (networking) -- everything in the CSP is networked to the internet so networking provisioning is creating your own private network for your infrastructure. You decide how that network operates both internally and externally via SG
-         - example: security (the network between infrastructure (storage and compute), SGs, sub-networks)
-         - when provisioning our networking what we are thinking about is how do we connect the other pieces of infrastructure, also how can we secure these connections
-         - scaling: how to we connect these sub-networks of a broader system (in a more complex deployment with lots of different infrastructure some things need to connect to other infrastructure but not everything which is when you would consider sub-network)
-      - the entire system is made up of pieces of infrastructure (the sum of all the pieces)
+Conclusion
+==========
+
+As a reminder infrastructure has a broad definition. Using CSPs we are more concerned with the abstract concepts of computation, disk storage, and networking instead of the physical components. When we refer to the infrastructure to deploy an application we are referring to the various CSP services we interact with to make the deployment possible.
+
+In the next article we will explore the Azure services that go with the abstract concepts learned throughout this article.
