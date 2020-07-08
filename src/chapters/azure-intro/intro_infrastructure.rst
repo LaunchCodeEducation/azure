@@ -10,8 +10,8 @@ Introduction to Infrastructure and IaaS
 
    the cloud is powerful and provides us with more than just an always on computer it gives us on demand (computing power, data storage, and networking)
 
-Cloud Services Provider (CSP)
-=============================
+Cloud Services Provider
+=======================
 
 A Cloud Services Provider (CSP) gives access to servers hosted in data centers. **Data Centers** are very large buildings that contain server racks full of computers. These computers are massively powerful machines that are connected together and available for rent on the internet. 
 
@@ -36,8 +36,8 @@ Infrastructure
 
    .. note:: to end intro infrastructure is a very deep concept, but for the purposes of this article is to give you an understanding of the terms you will encounter throughout this course.
 
-Infrastructure as a Service (IaaS)
-==================================
+Infrastructure as a Service
+===========================
 
 Computation
 ===========
