@@ -15,11 +15,19 @@ Cloud Services Provider (CSP)
 
 A Cloud Services Provider (CSP) gives access to servers hosted in data centers. **Data Centers** are very large buildings that contain server racks full of computers. These computers are massively powerful machines that are connected together and available for rent on the internet. 
 
-After you setup an account with a CSP you can rent parts of these servers. The CSP manages the underlying infrastructure of the servers allowing you rent computation, data storage, and networking as you need it.
+After you setup an account with a CSP you can rent parts of these servers. The CSP manages the underlying *infrastructure* of the servers allowing you rent computation, data storage, and networking as you need it.
 
-Cloud Service Providers give you the ability to rent and pay for computing power as you use it. You don't need to buy your own equipment, set it up, and maintain it these responsibilities fall on the CSP. You just pay them for the computation, data storage, and networking necessary to host your applications.
+CSPs give you the ability to rent and pay for computing power as you use it. You don't need to buy your own equipment, set it up, and maintain it these responsibilities fall on the CSP. You just pay them for the computation, data storage, and networking necessary to host your applications.
 
-In a nutshell a **Cloud Services Provider** (CSP) provides various computing services hosted in a data center that can be rented at the user's discretion and are accessed via the internet. Since these machines are stored in a data center they are always on, highly available, very customizable and accessible via the internet. 
+In a nutshell a **Cloud Services Provider** (CSP) provides various computing services hosted in a data center that can be rented and are accessed via the internet. Since these servers are stored in a data center they are always on, highly available, very customizable and accessible via the internet.
+
+.. admonition:: note
+
+   The CSP is responsible for maintaining the servers and will guarantee a certain level of service uptime. This guarantee of uptime will give you confidence that your deployed applications will always be reachable by your end-users. This guaranteed uptime is also known as **high availability**. Most CSPs like `Azure offer ways to increase the availability <https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability#use-availability-zones-to-protect-from-datacenter-level-failures>`_ even further.
+
+One of the main benefits of a CSP is the diminishment of your responsibilities. You are not responsible for purchasing, configuring, maintaining, replacing, upgrading, or the utilities of the actual physical servers. These responsibilities are handled by the CSP leaving you to focus on the deployment of your applications. These responsibilities are factored into the cost of renting services from a CSP. This is a trade off, you could choose to not use a CSP and handle all those responsibilities yourself (infrastructure *on-premises*) or you can rent these services from a CSP.
+
+Since CSPs have multiple data centers filled with tons of servers they can negotiate lower rates for physical machines, maintenance/upgrading/utilities fees and can usually offer you rental fees at a very reasonable rate.
 
 Infrastructure
 ==============
