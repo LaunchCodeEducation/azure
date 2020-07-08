@@ -73,13 +73,17 @@ Infrastructure as a Service
 
    CSPs provide Infrastructure as a Service (IaaS) in which they offer access to their hardware through a digital interface.
 
-The CSP owns all the physical hardware and we rent it, as a service, paying them for their work. To provide access the CSP provides various tools for interfacing with their hardware. 
+The CSP owns all the physical hardware and customers rent it, as a service, paying the CSP for their work. To provide access the CSP provides various tools for interfacing with their hardware. 
 
-We will work with both a web UI, and a CLI tool that will allow us to provision (create), configure, and manage the infrastructure necessary to deploy our projects in a cloud environment.
+Most CSPs provide both a web UI, and a CLI tool that will allow customers to provision (create), configure, and manage the infrastructure necessary to deploy applications in a cloud environment.
 
-These tools will allow us to quickly and easily setup the infrastructure without ever touching the hardware for a relatively inexpensive fee.
+These tools will allow customers to quickly and easily setup the infrastructure without ever touching the hardware for a relatively inexpensive fee.
 
-The services provided by a CSP fall into three categories: disk storage, computation and networking.
+The services provided by a CSP fall into three categories: disk storage, computation and networking. 
+
+.. admonition:: note
+
+   We will talk about these services in an abstract manner, but an article in the future will mention specific examples in Azure.
 
 Disk Storage
 ============
@@ -92,16 +96,38 @@ Almost all cloud services are reliant on hard disk storage. Imagine all the stuf
 - OS
 - database records
 
-All of these things must be stored on a disk accessible to any cloud services that need them. Disk storage is a service provided by CSPs that comes in various forms:
+All of these things must be stored on a disk accessible to any cloud services that need them. 
 
-- stand alone file systems
+Examples
+--------
+
+Disk storage is a service provided by CSPs that comes in various forms:
+
 - server mountable hard drives
-- databases
+- database mountable hard drives
+- stand alone file systems
 
-These services can be provisioned and attached to other services.
+These services can be provisioned and attached to other services, but the actual disk storage is external from the service that uses it.
+
+Scaling
+-------
+
+Due to the externalized nature of disk storage they can be scaled without affecting the service they are attached to.
+
+   **Scaling** is the process of managing resources based on demand.
+
+Scaling for a database server would be starting with disk storage that provides 20GBs of space to a DB that currently has 12GBs of data. However, as the database space keeps being used up a new hard disk can be provisioned to add additional space. In the same vein if database records are deleted and the current level of hard disk space is too much, disk storage can be turned off, also known as scaling down.
+
+.. admonition::
+
+   An added benefit for databases that have externalized disk storage is redundancy. Multiple copies of the data can be provisioned across as many disk storage services you are willing to pay for. This additional cost provides protection from data loss.
 
 Computation
 ===========
+
+Certain cloud services require **computation** which is a combination of central processing units and random access memory.
+
+A deployed application will need a CPU and RAM in order to catch user requests, determine what to do with the request, and respond to the user. Similarly a database needs CPU and RAM in order to access records, add records, update records and delete records. Anything you can think of as *running* needs computation services.
 
 One of the most common services provided by a CSP is a virtualized computer (commonly referred to as a server). 
 
@@ -116,9 +142,30 @@ Although the server would exist in a data center it would be very similar to you
 
 This service would be categorized as **computation** because the primary need being fulfilled by the server is the CPU and RAM a running application needs to function.
 
+Examples
+--------
+
+Again there are multiple CSP services that provide computation:
+
+- virtualized application servers
+- database servers
+- lambdas
+
+Scaling
+-------
+
+Due to the external nature of these services they can be scaled.
+
+If an application server is struggling to handle the traffic of any number of users a new application server can be spun up to help share the load.
+
 Networking
 ==========
 
+Examples
+--------
+
+Scaling
+-------
 
 .. ::
 
