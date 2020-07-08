@@ -100,18 +100,6 @@ All of these things must be stored on a disk accessible to any cloud services th
 
 These services can be provisioned and attached to other services.
 
-.. ::
-
-   Consider the previous example of a server. Beyond CPU, RAM and an OS the server has a hard drive. After all a computer wouldn't not be very useful if it didn't have some form of permanent storage. The build artifacts, the dependencies, the software all have to live somewhere and the hard drive is the answer.
-
-   In Cloud Computing we consider disk storage to be separate from computation
-
-.. ::
-
-   this needs to be a note if the point is made at all
-
-   Outside of computation, and it's RAM, a virtual server will require a hard drive to store the OS, dependencies, and build artifacts. When thinking about Infrastructure it's a best practice to keep the aspects separated from each other. 
-
 Computation
 ===========
 
