@@ -1,10 +1,10 @@
-====================
-Introduction to REST
-====================
+=============
+REST Concepts
+=============
 
-In this article we will explore a pattern for organizing the behavior of an API. REST is an **architectural pattern** that provides *uniformity and predictability* to any API that adheres to it. These benefits are seen in both the back-end development of an API as well as by the front-end **client** (the consumer). 
+In this article we will explore a pattern for organizing the behavior of an API. REST is an **architectural pattern** that provides *uniformity and predictability* to any API that adheres to it. The same benefits are experienced by the API consumer.
 
-   REST is just a set of guiding principles for supporting the organization of an API's core responsibilities -- managing and transferring data.
+   REST is a set of guiding principles for supporting the organization of an API's core responsibilities -- managing and transferring data.
    
    Its pattern organizes the **external interface** (contract) and does not concern itself with the *internal implementation* of the API . 
 
@@ -13,16 +13,14 @@ In this course we will only be consuming a REST API, not creating one. For this 
 What is REST?
 =============
 
-   **RE**\presentational **S**\tate **T**\transfer
+   **RE**\presentational **S**\tate **T**\ransfer
 
 .. admonition:: tip
 
    The topics of State and Representation are *purposefully abstract* in REST so that they can be applied to any API. Don't get overwhelmed!
    
-   We will introduce them briefly before spending the majority of the article on practical aspects and examples of REST in action.
-
 What is State?
---------------
+==============
 
    Transitional data that can be viewed or changed by external interaction
 
@@ -30,10 +28,10 @@ While State is abstract you can "interact" with it using **CRUD** (Create, Read,
 
 Imagine viewing, or **R**\eading, the State as it *transitions* through each of the following interactions:
 
-#. **before Creating**: no State
+#. **before Creating**: empty State
 #. **after Creating**: initial State
 #. **after Updating**: new State
-#. **after Deleting**: no State
+#. **after Deleting**: empty State
 
 You can see that the State is defined by how the data exists **after its latest interaction**. 
 
@@ -42,7 +40,7 @@ You can see that the State is defined by how the data exists **after its latest 
    The concept of State is both the most abstract and most fundamental aspect of REST. All of the following sections will reference the Coding Events MVC project you created to illustrate the concepts in a more relatable way. 
 
 What is a Representation?
--------------------------
+=========================
 
    A depiction of State that is usable in a given context
 
@@ -95,9 +93,9 @@ Consider a third Representation -- JSON. Recall that JSON is a format that provi
       :caption: CodingEvent State represented as a JSON object
 
       {
-         "Id": 1
-         "Title": "Halloween Hackathon!"
-         "Description": "A gathering of nerdy ghouls..."
+         "Id": 1,
+         "Title": "Halloween Hackathon!",
+         "Description": "A gathering of nerdy ghouls...",
          "Date": "2020-10-31"
       }
 
@@ -108,9 +106,9 @@ Consider a third Representation -- JSON. Recall that JSON is a format that provi
 
       [
          {
-            "Id": 1
-            "Title": "Halloween Hackathon!"
-            "Description": "A gathering of nerdy ghouls..."
+            "Id": 1,
+            "Title": "Halloween Hackathon!",
+            "Description": "A gathering of nerdy ghouls...",
             "Date": "2020-10-31"
          },
          ...
@@ -125,15 +123,16 @@ Consider a third Representation -- JSON. Recall that JSON is a format that provi
    The inverse process where JSON is parsed, or converted back to an object Representation, is called **JSON deserialization**.
 
 Transferring a Representation of State
---------------------------------------
+======================================
 
-   In REST, a **Representation** of **State** is what is **transitioned** and **transferred** by **interaction** between a client and an API.
+   In REST, **State** is **transitioned** by interactions between a client and an API.
+   
+   Aside from **D**\eleting, all other interactions involve **transferring** a **Representation of State**.
+   
+A RESTful API is designed to be stateless. This has the following implications:
 
-A RESTful API is designed to be stateless, just like the HTTP protocol used for communicating with its client application. How can REST be stateless if we have been harping about State this whole time?
-
-Conceptually, REST considers State something that **transitions** throughout the interactions between the API and a client. Both HTTP and the RESTful API server are stateless. 
-
-It is up to the client maintain the *current State*. If the client wants to *transition to a new State* it interacts with the API which then *persists the latest State after the transition* in a database. 
+- The State of data is maintained by the client application and the database that are on either side of the *interface*. 
+- Its transitions are driven by the client and facilitated by the API which send or receive representations of the desired State.
 
 In order to maintain portability between the different client and API contexts we transfer Representations of State. These Representations can then be converted between the *portable Representation* (JSON) and the representation that fits the context (a JavaScript or C# object).
 
@@ -141,16 +140,16 @@ Recall that State is defined by its latest interaction. Because every interactio
 
 What this means is that the client can:
 
-- *request the current* Representation of State be sent to it (**R**\ead)
-- *transition to a new State* by sending a new Representation of State (**C**\reate, **U**\pdate)
-- *transition to an empty State* by requesting a removal (**D**\elete)
+- **R**\ead: *request the current* Representation of State
+- **C**\reate & **U**\pdate: *transition to a new State* by sending a new Representation of State
+- **D**\elete: *transition to an empty State* by requesting its removal
 
 However, it is up the API to define the contract, or **expose**:
 
 - the types of State, or **resources**, the client can interact with
 - which (CRUD) interactions are *supported* for each resource 
 
-In some cases it makes sense for an API to expose a resource with any CRUD interaction. Whereas in other cases a resource may be restricted to only being **C**\reated and **R**\ead. These decisions are what drive the design of the contract. 
+These decisions are what drive the design of the contract. 
    
 Resources
 =========
@@ -159,103 +158,31 @@ Resources
 
 While State is an abstract concept, a **resource** is something more *tangible*. In simple terms, a **resource is like a type of object** that an API allows clients to interact with. Resources are categorized as an individual **entity** or a **collection**.
 
-   **Entity**: an individual type of resource that is **uniquely identifiable in a collection**
+   **Entity**: a single resource that is **uniquely identifiable in a collection**
 
-   **Collection**: entities of the same resource type **treated as a whole, or single unit**
+   **Collection**: entities of the same resource type **treated as a whole**
 
-We refer to the State of a resource in terms of a single entity or the *collective State* of a collection as a whole. Unlike the State of an entity, a resource collection is something that does not need to be created. 
+We refer to **the State of a resource** in terms of a single entity or the *collective State* of a collection.
 
-Initially a collection's State is just *empty*. If you were to **R**\ead the collection's State it would be *represented* as an empty JSON array, ``[]``.
+.. admonition:: note
+   
+   Initially a collection's State is just *empty*.
+   
+   If you were to **R**\ead the collection's State it would be *represented* as an empty JSON array, ``[]``.
 
-In RESTful design an individual entity **only exists as part of a collection**. This means that when **C**\reating an individual entity you are operating on the **State of the collection**:
+In RESTful design an individual entity **only exists as part of a collection**.
 
-- **creating an entity**: you are **transitioning the State of the collection** by adding an entity's initial State to it
+   A change to the State of an entity inherently changes the State of the collection it is a part of.
 
-The entity itself has a State that transitions as well. The resource entity has an initial State after being **C**\reated, a new State after an **U**\pdate or a non-existent State once **D**\eleted. 
+When **C**\reating an entity you are operating on the **State of the collection**. In order to create it you must know:
 
-Because every entity is *a part of a collection* each of these operations also indirectly **transition the State of the collection**:
+- what collection the entity belongs to
 
-- **updating an entity**: you are **transitioning the State of the collection** by modifying the entity's State within it
-- **deleting an entity**: you are **transitioning the State of the collection** by removing an entity's State from it
+When **R**\eading, **U**\pdating or **D**\eleting an entity you are *directly operating* on the **State of the entity** and *indirectly* on the State of its collection.
 
-When we operate on an individual entity's State we are operating *inside the State of the collection*. We have to *identify the entity* within the collection before performing the operation.
+In order to fulfill these operations you need to know:
 
-For example, if we wanted to **R**\ead an entity's State we would need to know:
+- what collection the entity belongs to
+- how to uniquely identify the entity within the collection
 
-- which resource collection the entity belongs to
-- the unique identifier of the entity to find it within the collection
-
-The hierarchal relationship between collections and the entities within them is an integral aspect of RESTful design. The contract of a RESTful API defines the **schema**, or structure, of its resources along with the hierarchal **endpoints** used for interacting with them.
-
-Schemas
-=======
-
-- blueprint to define the representations
-   - representation like an object
-   - schema like a class
-- example
-   - shape
-   - class
-   - representation
-
-Inputs
-------
-
-Outputs
--------
-
-- inputs / outputs
-- segue interactions
-
-Endpoints
-=========
-
-- tip: endpoints are just the path and the method
-   - relative paths (relative to the hosted server origin)
-
-Paths (resource subject)
------
-
-Methods (action to take on resource)
--------
-
-Endpoint Behavior
-=================
-
-Bodies
--------
-
-Status Codes
-------------
-
-- status code groups table
-   - commons
-
-Headers
--------
-
-- common both
-- common request
-- common response
-
-Documentation
-=============
-
-Shorthand
----------
-
-Swagger
--------
-
-- tip more than docs, link to codegen
-
-Learning More
-=============
-
-list of links
-
-- origin in a doctoral thesis
-   - made even MORE generic to apply to software architecture as a whole
-   - in practice we focus on the web based implementation
-- maturity model
-- good examples
+This hierarchal relationship between collections and the entities within them is an integral aspect of RESTful design. The contract of a RESTful API defines the **schema**, or structure, of its resources along with the hierarchal organization of the **endpoints** used for interacting with them.
