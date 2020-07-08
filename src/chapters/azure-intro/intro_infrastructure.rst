@@ -71,13 +71,13 @@ One of the major benefits of using a CSP is the physical components are handled 
 Infrastructure as a Service
 ---------------------------
 
-   Infrastructure as a Service (IaaS) is the description for interacting with Infrastructure managed by a CSP.
+   CSPs provide Infrastructure as a Service (IaaS) in which they offer access to their hardware through a digital interface.
 
 The CSP owns all the physical hardware and we rent it, as a service, paying them for their work. To provide access the CSP provides various tools for interfacing with their hardware. 
 
 We will work with both a web UI, and a CLI tool that will allow us to provision (create), configure, and manage the infrastructure necessary to deploy our projects in a cloud environment.
 
-These tools will allow us to quickly and easily setup the infrastructure without ever touching the hardware.
+These tools will allow us to quickly and easily setup the infrastructure without ever touching the hardware for a relatively inexpensive fee.
 
 Computation
 ===========
