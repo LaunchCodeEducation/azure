@@ -2,13 +2,9 @@
 Introduction to Infrastructure and IaaS
 =======================================
 
-.. ::
+In the previous chapter we went through the steps to deploy the CodingEventsAPI to our local machines and discussed how we could instead deploy to a cloud host which would solve the problems of networking, discovery, and availability. 
 
-   tie in intro -- in the previous chapter we deployed an application to our local machine, this was not a good solution for these reasons (list from previous article)
-
-   hypothetically let's talk about deploying that same application to a machine in the cloud -- the cloud will give us the ability to (list previous article).
-
-   the cloud is powerful and provides us with more than just an always on computer it gives us on demand (computing power, data storage, and networking)
+Continuing with the concept of cloud hosting instead of local hosting this chapter will cover Cloud Service Providers, Infrastructure, Infrastructure as a Service, and an introduction to Azure services predominantly Azure Virtual Machines.
 
 Cloud Services Provider
 =======================
