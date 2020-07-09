@@ -355,9 +355,7 @@ We can see this behavior in action with a request to the ``DELETE`` endpoint for
 
 .. admonition:: example
 
-   What would happen if we made another request to remove an entity that *doesn't exist*?
-
-      ``DELETE /events/999 -> 404``
+   What would happen if we made another request to the endpoint of a Resource entity that **doesn't exist**, ``DELETE /events/999``?
 
    We would receive a ``404``, or ``Not Found``, status code that lets us know the **request failed** because of a **client error** (providing an ``Id`` for a nonexistent Resource).
 
@@ -445,26 +443,36 @@ A bad request will include an error message in its response. The response will i
 
 .. admonition:: example
 
-   In the Coding Events API a ``CodingEvent`` is validated using the following criteria:
+   In the Coding Events API, **the State** of a ``CodingEvent`` is **validated** using the following criteria:
 
    - ``Title``: 10-100 characters
    - ``Description``: less than 1000 characters
 
-   Imagine sending a ``POST`` request with the following **invalid representation of State**:
+   Imagine a client sending a ``PATCH`` request to **U**\pdate the ``CodingEvents`` Resource entity with an ``Id`` of ``6``. 
+
+      ``PATCH /events/6 (PartialCodingEvent) -> CodingEvent``
+   
+   If their request body contained the following **invalid representation** of partial State (due to a ``Title`` field that is too short):
 
    .. sourcecode:: json
-      :caption: invalid request body for POST /events endpoint
+      :caption: invalid representation in request to PATCH /events/6 endpoint
    
       {
+         "Title": "short"
       }
 
-   Then the response would have a ``400`` status code and a body indicating what aspects were invalid:
+   The API response would have a ``400`` status code alerting the client that they must **correct their representation**. The response body would be used to communicate which aspects were invalid:
 
    .. sourcecode:: json
       :caption: 400 failed response body
 
       {
-
+         "error": "invalid fields",
+         "fields": [
+            {
+               "Title": "must be between 10 and 100 characters in length"
+            }
+         ]
       }
 
    Using the hints in the response the client can fix their request body and reissue the request successfully.
