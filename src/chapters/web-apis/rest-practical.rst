@@ -344,6 +344,12 @@ We can see the behavior of a ``DELETE`` endpoint for a single Resource entity in
 Headers & Status Codes
 ======================
 
+Another aspect of a RESTful API dictates the usage of HTTP response status codes and HTTP request/response headers. 
+
+Response status codes inform the client on if their request was handled successfully. The response status code and the attached message will include the information the client must change to fix the request.
+
+HTTP headers are attached to both requests and responses that include additional information about the request/response. A previous chapter mentioned the ``Content-Type`` header which dictates the format of the attached request/response body. We show additional common headers used in REST.
+
 .. ::
 
    ...in addition to the req/res bodies each endpoint also has req/res headers and res status codes...
