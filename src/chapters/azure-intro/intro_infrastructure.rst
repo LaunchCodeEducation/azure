@@ -2,24 +2,24 @@
 Introduction to Infrastructure and IaaS
 =======================================
 
-In the previous chapter we went through the steps to deploy the CodingEventsAPI to our local machines and discussed how we could instead deploy to a cloud host which would solve the problems of networking, discovery, and availability. 
+In the previous chapter we went through the steps to deploy the CodingEventsAPI to our local machines. We discussed how we could deploy to a cloud host which would solve the problems of networking, discovery, and availability. 
 
-Continuing with the concept of cloud hosting this chapter will cover Cloud Service Providers, Infrastructure, Infrastructure as a Service, and an introduction to Azure services predominantly Azure Virtual Machines.
+Continuing with the concept of cloud hosting this chapter will cover Cloud Service Providers, Infrastructure, Infrastructure as a Service, and an introduction to Microsoft Azure services predominantly Virtual Machines.
 
 Cloud Services Provider
 =======================
 
-   A Cloud Services Provider (CSP) rents access to servers hosted in data centers. 
+   A `Cloud Services Provider <https://azure.microsoft.com/en-us/overview/what-is-a-cloud-provider/>`_ (CSP) rents access to services hosted in data centers. 
 
-**Data Centers** are very large buildings that contain server racks full of computers. These computers are massively powerful machines that are connected together and available for rent on the internet. 
+**Data Centers** are very large buildings that contain server racks full of computers. These computers are massively powerful machines that are connected together and customizable segments of each are available for rent on the internet. 
 
-After you setup an account with a CSP you can rent parts of these servers. The CSP manages the underlying *infrastructure* of the servers allowing you rent computation, data storage, and networking as you need it.
+After you setup an account with a CSP you can rent parts of these servers. The CSP manages the underlying hardware of the servers allowing you rent computation, data storage, and networking as you need it.
 
 Since these servers are stored in a data center they are always on, highly available, very customizable and accessible via the internet.
 
 .. admonition:: note
 
-   The CSP is responsible for maintaining the servers and will guarantee a certain level of service uptime. This guarantee of uptime will give you confidence that your deployed applications will always be reachable by your end-users. This guaranteed uptime is also known as **high availability**. Most CSPs like `Azure offer ways to increase the availability <https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability#use-availability-zones-to-protect-from-datacenter-level-failures>`_ even further.
+   The CSP is responsible for maintaining the servers and will guarantee a certain level of service uptime. This guarantee of uptime will give you confidence that your deployed applications will be reachable by your end-users when they need access. This guaranteed uptime is also known as **high availability**. Most CSPs like `Microsoft Azure offer ways to increase the availability <https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability#use-availability-zones-to-protect-from-datacenter-level-failures>`_ even further.
 
 One of the main benefits of a CSP is the diminishment of your responsibilities. When renting services from a CSP you are not responsible for any aspects of the physical server including:
 
@@ -30,9 +30,9 @@ One of the main benefits of a CSP is the diminishment of your responsibilities. 
 - upgrading
 - utilities
 
-These responsibilities are handled by the CSP allowing you to focus on the deployment and deployment of your applications. These responsibilities are factored into the cost of renting services from a CSP. This is a trade off, you could choose to not use a CSP and handle all those responsibilities yourself (infrastructure *on-premises*) or you can rent these services from a CSP.
+These responsibilities are handled by the CSP allowing you to focus on the development and deployment of your applications. These responsibilities are factored into the cost of renting services from a CSP. This is a trade off, you could choose to not use a CSP and handle all those responsibilities yourself (infrastructure *on-premises*) or you can rent these services from a CSP.
 
-Since CSPs have multiple data centers filled with tons of servers they can negotiate lower rates for physical machines, maintenance/upgrading/utilities fees and can usually offer you rental fees at a very reasonable rate.
+Since CSPs have multiple data centers filled with tons of servers they can negotiate lower rates for hardware, maintenance/upgrading/utility fees and can usually offer you rental fees at a very reasonable price.
 
 Infrastructure
 ==============
@@ -62,7 +62,7 @@ Infrastructure
    * - routers
      - CLI tools
 
-One of the major benefits of using a CSP is the physical components are handled by the CSP. So throughout this class when we refer to infrastructure we are referring to the services rented from the CSP and the software we must manage to use those services.
+One of the major benefits of using a CSP is the physical components are handled by the CSP. So throughout this class when we refer to *infrastructure we are referring to the services rented from the CSP* and the software we must manage to use those services.
 
 .. admonition:: tip
 
@@ -71,7 +71,7 @@ One of the major benefits of using a CSP is the physical components are handled 
 Infrastructure as a Service
 ---------------------------
 
-   CSPs provide Infrastructure as a Service (IaaS) in which they offer access to their hardware through a digital interface.
+   Infrastructure as a Service (IaaS) is when a CSP rents access to their cloud services through a digital interface.
 
 The CSP owns all the physical hardware and customers rent it, as a service, paying the CSP for their work. To provide access the CSP provides various tools for interfacing with their hardware. 
 
@@ -83,7 +83,7 @@ The services provided by a CSP fall into three categories: disk storage, computa
 
 .. admonition:: note
 
-   We will talk about these services in an abstract manner, but an article in the future will mention specific examples in Azure.
+   We will talk about these services in an abstract manner, but this chapter will contain specific examples in Microsoft Azure.
 
 Disk Storage
 ============
@@ -186,4 +186,4 @@ Conclusion
 
 As a reminder infrastructure has a broad definition. Using CSPs we are more concerned with the abstract concepts of computation, disk storage, and networking instead of the physical components. When we refer to the infrastructure to deploy an application we are referring to the various CSP services we interact with to make the deployment possible.
 
-In the next article we will explore the Azure services that go with the abstract concepts learned throughout this article.
+In the next article we will explore the Microsoft Azure services that go with the abstract concepts learned throughout this article.
