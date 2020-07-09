@@ -174,7 +174,7 @@ Let's take another look at our example API:
 
 .. admonition:: example
 
-   The path to identify the State of a Coding Event Resource would be described as ``/events/{eventId}``.
+   The path to identify the State of a Coding Event Resource would be described as ``/events/{codingEventId}``.
    
    Let's assume a Coding Event exists with an ``Id`` of ``12``.
    
@@ -190,14 +190,90 @@ Let's take another look at our example API:
          "Date": "2020-10-31"
       }
 
-Organizing Relationships
-------------------------
+CRUD Operations & HTTP Methods
+==============================
 
-- example of two collection entry points and sub-collection
-- keep brief
+In a RESTful API the interactions a client takes on the State of a Resource are described using HTTP methods. If the Resource path describes the **noun**, or subject, the HTTP method describes the **verb**, or action, that is taken on that subject's State. 
 
-CRUD Interactions & HTTP Methods
-================================
+As we saw in the previous article, State is something that can be interacted with using CRUD operations. *By convention*, each of these operations corresponds to an HTTP method:
+
+.. list-table::
+   :header-rows: 1
+
+   * - HTTP method
+     - ``POST``
+     - ``GET``
+     - ``PUT/PATCH``
+     - ``DELETE``
+   * - CRUD operation
+     - **C**\reate
+     - **R**\ead
+     - **U**\pdate*
+     - **D**\elete
+   * - Behavior with Resource State
+     - transition to initial State
+     - view the **current** State
+     - transition to a new State
+     - transition to an empty State
+
+The use case of an API dictates the design of its contract. This includes which actions the client can take on each Resource State. In other words, **not every action must be exposed** for each Resource the API manages.
+
+.. admonition:: note
+
+   If a client tries to take an action on a Resource that is not supported by the API they will receive a ``405`` **status code** or ``Method not allowed`` error response.
+
+Operating on Collections & Entities
+-----------------------------------
+
+Depending on the endpoint (the Resource path and the method) the effect of the request can differ. In other words, the **behavior** is dependent on the subject -- whether it is an entity or the collection as a whole.
+
+.. list-table:: Resource collection
+   :header-rows: 1
+
+   * - HTTP method
+     - ``POST``
+     - ``GET``
+     - ``PUT/PATCH``
+     - ``DELETE``
+   * - CRUD operation
+     - **C**\reate
+     - **R**\ead
+     - **U**\pdate*
+     - **D**\elete
+   * - Behavior with Resource State
+     - create a new entity in the collection
+     - view the **current** list of all entities in the collection
+     - bulk update of entities in the collection
+     - remove all entities in the collection
+
+.. admonition:: note
+
+   Exposing the ability to modify or delete *all of the entities in a collection* at once can be risky. In many cases the design of a RESTful API will only support ``GET`` and ``POST`` endpoints for collections. 
+
+.. list-table:: Individual Resource entity
+   :header-rows: 1
+
+   * - HTTP method
+     - ``POST``
+     - ``GET``
+     - ``PUT/PATCH``
+     - ``DELETE``
+   * - CRUD operation
+     - N/A
+     - **R**\ead
+     - **U**\pdate*
+     - **D**\elete
+   * - Behavior with Resource State
+     - (created inside a collection)
+     - view the **current** entity State
+     - update the entity State
+     - remove the entity from the collection
+
+.. admonition:: note
+
+   **U**\pdating using ``PUT`` or ``PATCH`` in REST is a choice left to the API designer. The REST pattern is primarily used in the context of HTTP. However, it is actually `so abstract <https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm>`_ it doesn't officially constrain its use to the HTTP protocol -- let alone the `semantics of its methods <https://restfulapi.net/rest-put-vs-post/>`_.
+
+   In this course we will follow the convention that ``PATCH`` is used to **U**\pdate the **State of a Resource entity**. 
 
 Endpoint Behavior
 =================
@@ -232,10 +308,22 @@ Swagger
 Learning More
 =============
 
+Organizing Relationships
+------------------------
+
+Suppose you have two Resources that are related to each other:
+
+.. admonition:: example
+
+   In the Coding Events API the following relationships exist:``Category`` can have **many** ``CodingEvent`` can have many ``Tags``
+
+- example of two collection entry points and sub-collection
+- keep brief
+
 list of links
 
-- origin in a doctoral thesis
-   - made even MORE generic to apply to software architecture as a whole
-   - in practice we focus on the web based implementation
 - maturity model
+- resource links
 - good examples
+   - GitHub
+   - stripe
