@@ -1,6 +1,6 @@
-=============
-REST Concepts
-=============
+===========================
+REST: Abstract Fundamentals
+===========================
 
 In this article we will explore a pattern for organizing the behavior of an API. REST is an **architectural pattern** that provides *uniformity and predictability* to any API that adheres to it. The same benefits are experienced by the API consumer.
 
@@ -185,4 +185,4 @@ In order to fulfill these operations you need to know:
 - what collection the entity belongs to
 - how to uniquely identify the entity within the collection
 
-This hierarchal relationship between collections and the entities within them is an integral aspect of RESTful design. The contract of a RESTful API defines the **schema**, or structure, of its resources along with the hierarchal organization of the **endpoints** used for interacting with them.
+This hierarchal relationship between collections and the entities within them is an integral aspect of RESTful design. The contract of a RESTful API defines the **shape**, or structure, of its resources along with the hierarchal organization of the **endpoints** used for interacting with them.

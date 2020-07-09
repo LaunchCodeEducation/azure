@@ -6,7 +6,8 @@ Introduction to Web APIs & REST
    :maxdepth: 3
 
    intro_web-apis
-   rest-conceptual
+   rest-abstract
+   rest-practical
    walkthrough_setup-powershell
    walkthrough_postman-rest
    
