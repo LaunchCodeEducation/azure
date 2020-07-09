@@ -2,18 +2,9 @@
 Introduction to Azure
 =====================
 
-Cloud Services Provider
-=======================
-
 Azure will be the Cloud Services Provider we use in this class.
 
-A Cloud Services Provider gives access to servers hosted in data centers. **Data Centers** are very large buildings that contain server racks full of computers. These computers are massively powerful machines that are connected together and available for rent on the internet. After you setup an account on Azure you can rent part of one of these servers in the form of various services like a Virtual Machine, which is an OS that works similarly to your local machine. From this machine you would be able to install the ``dotnet`` CLI, and copy over your build artifacts and then run your project.
-
-Cloud Service Providers give you the ability to rent computing power as you need. So you don't need to buy your own equipment, set it up, and maintain it. You leave all of that work to the Cloud Services Provider. You just pay them for the amount of power, and time to rent their services.
-
 In this class we will work with a couple of different Azure Services, but the main one will focus on is the Virtual Machine.
-
-In a nutshell a **Cloud Services Provider** provides various computing services hosted in a data center that can be rented and configured at the user's discretion and are accessed via the internet. Since these machines are stored in a data center they are always on, highly available, accessible via the internet, and highly customizable. 
 
 Azure Account
 =============
