@@ -94,6 +94,8 @@ Endpoints are what an API exposes to its consumers. Each endpoint is made up of 
 
 Endpoints are written using *relative paths*. This approach is more readable and decouples the endpoint from where it is hosted.
 
+.. :: review: CUT STARTING HERE TO END OF SECTION (you cover the idea with the sentence before, and the rest is distracting from the point of verb-noun relationship)
+
 For example consider the two URLs or *absolute paths* to a Pumpkin Resource *collection*:
 
    ``http://localhost:5000/pumpkins``
@@ -107,7 +109,9 @@ Identifying the Resource
 
    Paths are used to identify the Resource State to be interacted with
 
-Recall the hierarchal nature of Resources where an entity only exists within a collection. In order to identify an entity you need to provide both its collection and its unique identifier.
+.. :: review: change Resource State to just Resource (you made the point multiple times in the abstract article it's ok if students think of it as just a resource now)
+
+Recall the hierarchal nature of Resources where an entity only exists within a collection. In order to identify an entity you need to provide both its collection (``/pumpkins``) and its unique identifier (``/pumpkins/{id}``).
 
 RESTful APIs separate the Resources they expose into one or more **Resource entry-points**. As the name implies these entry-points are the start of the hierarchy and identify the Resource collection.
 
@@ -132,14 +136,14 @@ Let's consider two Resources exposed by a RESTful API:
    - adequately describes the Resource in as few characters as necessary
    - **is a noun** (actions are described by the method of the endpoint)
 
-Notice that the entry-points are **pluralized**. The pluralized path indicates that the **Resource State of the collection** is the subject of the interaction. For example, what would the response, or output, of the API be for requests to the following **endpoints** (entry-point path and the ``GET`` method)? 
+Notice that the entry-points are **pluralized**. The pluralized path indicates that the **Resource State of the collection** is the subject of the interaction. For example, what would the response, or output, of the API be for requests to the following **endpoints** (entry-point path and the ``GET`` method)?
 
 We expect that **R**\eading the State of the Resource collection should return a representation of the *collective State*: 
 
 .. admonition:: example
 
    .. sourcecode:: json
-      :caption: response from a GET request to /events entry-point
+      :caption: response from a GET request to ``/events`` entry-point
 
       [
          CodingEvent { ... },
@@ -147,7 +151,7 @@ We expect that **R**\eading the State of the Resource collection should return a
       ]
    
    .. sourcecode:: json
-      :caption: response from a GET request to /tags entry-point
+      :caption: response from a GET request to ``/tags`` entry-point
 
       [
          Tag { ... },
