@@ -89,8 +89,8 @@ Endpoints
 
 Endpoints are what an API exposes to its consumers. Each endpoint is made up of a:
 
-- **path**: identifies the Resource (collection or entity) 
-- **method**: the action to take on the Resource's State
+- **path**: the **noun** that identifies the Resource
+- **method**: the **verb**, or action, to take on the Resource's State
 
 Endpoints are written using *relative paths*. This approach is more readable and decouples the endpoint from where it is hosted.
 
@@ -117,21 +117,26 @@ Let's consider two Resources exposed by a RESTful API:
 
    The Coding Events API would have the following familiar Resources (among others):
 
-   - ``CodingEvent``
-   - ``Tag``
+   .. list-table:: Resource and corresponding collection entry-point
 
-   The entry-points for these two Resources would be:
+      * - Resource
+        - ``CodingEvent``
+        - ``Tag``
+      * - Collection entry-point
+        - ``/events``
+        - ``/tags``
 
-   - ``CodingEvent``: ``/events``
-   - ``Tag``: ``/tags``
+   The name of the path is arbitrary but should follow these rules of thumb to *maintain consistency*:
 
-Notice that the entry-points are **pluralized**. The pluralized path indicates that the **Resource State of the collection** is the subject of the interaction. For example, consider the response when making a ``GET`` request to them:
+   - is lowercase and separated by underscores if necessary
+   - adequately describes the Resource in as few characters as necessary
+   - **is a noun** (actions are described by the method of the endpoint)
+
+Notice that the entry-points are **pluralized**. The pluralized path indicates that the **Resource State of the collection** is the subject of the interaction. For example, what would the response, or output, of the API be for requests to the following **endpoints** (entry-point path and the ``GET`` method)? 
+
+We expect that **R**\eading the State of the Resource collection should return a representation of the *collective State*: 
 
 .. admonition:: example
-
-   What would the response, or output, of the API be for the following **endpoints** (entry-point path and the ``Get`` method)?
-
-   - ``GET /events``
 
    .. sourcecode:: json
       :caption: response from a GET request to /events entry-point
@@ -141,8 +146,6 @@ Notice that the entry-points are **pluralized**. The pluralized path indicates t
          ...
       ]
    
-   - ``GET /tags``
-
    .. sourcecode:: json
       :caption: response from a GET request to /tags entry-point
 
@@ -150,10 +153,10 @@ Notice that the entry-points are **pluralized**. The pluralized path indicates t
          Tag { ... },
          ...
       ]
-
+   
 As expected the State of the Resource collection is represented in a JSON array (``[]``).
 
-What if we wanted to interact with *an individual* Resource entity? We would identify it *within* its collection.
+What if we wanted to interact with *an individual* Resource entity? We would need to identify it *within* its collection.
 
 .. admonition:: tip
 
@@ -220,10 +223,10 @@ The use case of an API dictates the design of its contract. This includes which 
 Endpoint Behavior
 =================
 
+Depending on the endpoint (the Resource path and the method) the effect of the request can differ. In other words, the **behavior of an endpoint** is dependent on the subject -- an entity or the collection as a whole.
+
 Operating On Collections
 ------------------------
-
-Depending on the endpoint (the Resource path and the method) the effect of the request can differ. In other words, the **behavior** is dependent on the subject -- whether it is an entity or the collection as a whole.
 
 .. list-table:: Resource collection
    :header-rows: 1
