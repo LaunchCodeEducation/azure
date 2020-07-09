@@ -85,35 +85,33 @@ Consider the following example of an input shape. Notice that the ``Id`` field i
 Endpoints
 =========
 
-   The HTTP **path** and **method** that defines the location for interacting with a Resource
+   The HTTP **path** and **method** that defines the location of a Resource and the action to take on its State
 
 Endpoints are what an API exposes to its consumers. Each endpoint is made up of a:
 
 - **path**: the **noun** that identifies the Resource
 - **method**: the **verb**, or action, to take on the Resource's State
 
-Endpoints are written using *relative paths*. This approach is more readable and decouples the endpoint from where it is hosted.
+.. They are written using *relative paths*. This approach is more readable and decouples the endpoint from where the API is running (locally or in the cloud).
 
-.. :: review: CUT STARTING HERE TO END OF SECTION (you cover the idea with the sentence before, and the rest is distracting from the point of verb-noun relationship)
+.. For example consider the two URLs or *absolute paths* to a Pumpkin Resource *collection*:
 
-For example consider the two URLs or *absolute paths* to a Pumpkin Resource *collection*:
+.. - ``http://localhost:5000/pumpkins``
+.. - ``https://my-live-site.com/pumpkins``
 
-   ``http://localhost:5000/pumpkins``
-
-   ``https://my-live-site.com/pumpkins``
-
-If we describe the endpoint using a relative path of ``/pumpkins`` then it remains valid whether the API is *hosted locally* on our machine or *hosted remotely* and accessible on the internet.
+.. If we describe the endpoint using a relative path of ``/pumpkins`` then it remains valid whether the API is *hosted locally* on our machine or *hosted remotely* in the cloud.
 
 Identifying the Resource
 ------------------------
 
-   Paths are used to identify the Resource State to be interacted with
+   Paths are used to identify the Resource
 
-.. :: review: change Resource State to just Resource (you made the point multiple times in the abstract article it's ok if students think of it as just a resource now)
+Recall the hierarchal nature of Resources where **an entity only exists within a collection**. In order to *identify an entity* you need to provide both:
 
-Recall the hierarchal nature of Resources where an entity only exists within a collection. In order to identify an entity you need to provide both its collection (``/pumpkins``) and its unique identifier (``/pumpkins/{id}``).
+- its collection (``/collection``)
+- its unique identifier (``/collection/{entityId}``)
 
-RESTful APIs separate the Resources they expose into one or more **Resource entry-points**. As the name implies these entry-points are the start of the hierarchy and identify the Resource collection.
+RESTful APIs separate the Resources they expose into one or more **Resource entry-points**. As the name implies these entry-points are the start of the hierarchy and identify each **top-level Resource collection**.
 
 Let's consider two Resources exposed by a RESTful API:
 
@@ -136,29 +134,52 @@ Let's consider two Resources exposed by a RESTful API:
    - adequately describes the Resource in as few characters as necessary
    - **is a noun** (actions are described by the method of the endpoint)
 
-Notice that the entry-points are **pluralized**. The pluralized path indicates that the **Resource State of the collection** is the subject of the interaction. For example, what would the response, or output, of the API be for requests to the following **endpoints** (entry-point path and the ``GET`` method)?
+Notice that the entry-points are **pluralized**. The pluralized path indicates that the **State of the Resource collection** is the subject of the interaction. 
 
-We expect that **R**\eading the State of the Resource collection should return a representation of the *collective State*: 
+Consider a request to the following **endpoint** (path and method):
+
+.. list-table:: Identify the Resource
+   :header-rows: 1
+
+   * - Path
+     - Noun (subject)
+   * - ``/collection``
+     - Resource collection
+
+.. list-table:: Interact with its State
+   :header-rows: 1
+
+   * - HTTP method
+     - Verb (action)
+   * - ``GET``
+     - view representation of the collection
+
+Let's see this in action with our example API. Using what we have learned so far we can expect the State of the Resource collection to be represented in a JSON array, ``[]``:
 
 .. admonition:: example
 
    .. sourcecode:: json
-      :caption: response from a GET request to ``/events`` entry-point
+      :caption: response from a request to the GET ``/events`` endpoint
 
       [
          CodingEvent { ... },
          ...
       ]
+
+   The State of the ``CodingEvent`` collection is made up of the **collective State** of **each** ``CodingEvent`` **entity** within it.
+
+.. admonition:: example
+
    
    .. sourcecode:: json
-      :caption: response from a GET request to ``/tags`` entry-point
+      :caption: response from a request to the GET ``/tags`` endpoint
 
       [
          Tag { ... },
          ...
       ]
-   
-As expected the State of the Resource collection is represented in a JSON array (``[]``).
+
+   A request to the endpoint of the ``Tag`` collection would include its respective ``Tag`` **entity representations** (JSON objects).
 
 What if we wanted to interact with *an individual* Resource entity? We would need to identify it *within* its collection.
 
