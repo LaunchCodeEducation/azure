@@ -226,7 +226,7 @@ You could then issue a ``GET`` request to the ``Location`` header value and view
 
    ``POST /api/events (NewCodingEvent) -> 201, CodingEvent``
 
-If the request fails because of a *user error* then it will respond with a ``400`` status code and a message about what went wrong. In the case of ``CodingEvent`` entities the following validation criteria must be met:
+If the request fails because of a *client error* then it will respond with a ``400`` status code and a message about what went wrong. In the case of ``CodingEvent`` entities the following validation criteria must be met:
 
 - ``Title``: 10-100 characters
 - ``Description``: less than 1000 characters
@@ -458,7 +458,7 @@ To illustrate the rejection of bad requests let's send one that violates the ``N
       "Date": "2020-10-31"
    }
 
-You can see from the response that the API rejected the request due to **user error**. The response had a **bad request** status of ``400`` and the body included information about what needs to be corrected to issue a successful request:
+You can see from the response that the API rejected the request due to **client error**. The response had a **bad request** status of ``400`` and the body included information about what needs to be corrected to issue a successful request:
 
 .. image:: /_static/images/postman/create-coding-event-bad-request.png
    :alt: Postman response of create coding event with a bad request body

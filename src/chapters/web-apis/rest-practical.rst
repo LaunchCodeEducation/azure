@@ -106,10 +106,7 @@ Identifying the Resource
 
    Paths are used to identify the Resource
 
-Recall the hierarchal nature of Resources where **an entity only exists within a collection**. In order to *identify an entity* you need to provide both:
-
-- its collection (``/collection``)
-- its unique identifier (``/collection/{entityId}``)
+Recall the hierarchal nature of Resources where **an entity only exists within a collection**. 
 
 RESTful APIs separate the Resources they expose into one or more **Resource entry-points**. As the name implies these entry-points are the start of the hierarchy and identify each **top-level Resource collection**.
 
@@ -181,7 +178,14 @@ Let's see this in action with our example API. Using what we have learned so far
 
    A request to the endpoint of the ``Tag`` collection would include its respective ``Tag`` **entity representations** (JSON objects).
 
-What if we wanted to interact with *an individual* Resource entity? We would need to identify it *within* its collection.
+Suppose we wanted to interact with *an individual* Resource entity. We would need to *identify it within* its collection. 
+
+The path to identify a Resource entity would need to include:
+
+- the collection identifier, or Resource entry-point (``/collection``)
+- the unique Resource entity identifier (``/{entityId}``) within the collection
+
+Because the unique identifier of the entity is *variable* we use a **path variable** (``{entityId}``) to describe it in a generic way.
 
 .. admonition:: tip
 
@@ -189,20 +193,29 @@ What if we wanted to interact with *an individual* Resource entity? We would nee
    
    You need both the directory (collection) name and a *sub-path* that uniquely identifies the file (entity).
 
-The path to interact with the State of the entity would need to include:
+Consider a request to the following **endpoint** for viewing a single Resource entity:
 
-- the collection identifier, or Resource entry-point (``/collection``)
-- the unique identifier of the entity within the collection
+.. list-table:: Identify the Resource
+   :header-rows: 1
 
-Because the unique identifier of the entity is *variable* we use a **path variable** to describe it:
+   * - Path
+     - Noun (subject)
+   * - ``/collection/{entityId}``
+     - Resource entity
 
-   ``/collection/{entityId}``
+.. list-table:: Interact with its State
+   :header-rows: 1
+
+   * - HTTP method
+     - Verb (action)
+   * - ``GET``
+     - view representation of a single entity
 
 Let's take another look at our example API:
 
 .. admonition:: example
 
-   The path to identify the State of a Coding Event Resource would be described as ``/events/{codingEventId}``.
+   The generic path to identify a ``CodingEvent`` Resource would be described as ``/events/{codingEventId}``.
    
    Let's assume a Coding Event exists with an ``Id`` of ``12``.
    
@@ -214,32 +227,34 @@ Let's take another look at our example API:
       {
          "Id": 12,
          "Title": "Halloween Hackathon!",
-         "Description": "A gathering of nerdy ghouls to work on GitHub Hacktoberfest contributions",
+         "Description": "A gathering of nerdy ghouls...",
          "Date": "2020-10-31"
       }
 
 CRUD Operations & HTTP Methods
 ------------------------------
 
-In a RESTful API the interactions a client takes on the State of a Resource are described using HTTP methods. If the Resource path describes the **noun**, or subject, the HTTP method describes the **verb**, or action, that is taken on that subject's State. 
+   In a RESTful API the interactions a client takes on a Resource are described using HTTP methods
 
-As we saw in the previous article, State is something that can be interacted with using CRUD operations. *By convention*, each of these operations corresponds to an HTTP method:
+If the Resource path describes the **noun** (subject) the HTTP method describes the **verb** (action) that is taken on that subject's State. 
 
-.. list-table::
-   :header-rows: 1
+As we saw in the previous article, State is something that can be interacted using **CRUD** operations. *By convention*, each of these operations corresponds to an HTTP method:
+
+.. list-table:: HTTP method and corresponding **CRUD** operation
+   :stub-columns: 1
 
    * - HTTP method
      - ``POST``
      - ``GET``
-     - ``PUT/PATCH``
+     - ``PUT/PATCH*``
      - ``DELETE``
    * - CRUD operation
      - **C**\reate
      - **R**\ead
-     - **U**\pdate*
+     - **U**\pdate
      - **D**\elete
 
-The use case of an API dictates the design of its contract. This includes which actions the client can take on each Resource State. In other words, **not every action must be exposed** for each Resource the API manages.
+The use case of an API dictates the design of its contract. This includes which actions the client can take on each Resource. In other words, **not every action must be exposed** for each Resource the API manages.
 
 .. admonition:: note
 
@@ -248,13 +263,13 @@ The use case of an API dictates the design of its contract. This includes which 
 Endpoint Behavior
 =================
 
-Depending on the endpoint (the Resource path and the method) the effect of the request can differ. In other words, the **behavior of an endpoint** is dependent on the subject -- an entity or the collection as a whole.
+Depending on the endpoint the effect of the request can differ. In other words, the **behavior of an endpoint** is dependent on the subject -- an entity or the collection as a whole.
 
 Operating On Collections
 ------------------------
 
-.. list-table:: Resource collection
-   :header-rows: 1
+.. list-table:: Endpoint behaviors for a Resource collection
+   :stub-columns: 1
 
    * - HTTP method
      - ``POST``
@@ -271,17 +286,36 @@ Operating On Collections
 
    Exposing the ability to modify or delete *all of the entities in a collection* at once can be risky. In many cases the design of a RESTful API will only support ``GET`` and ``POST`` endpoints for collections. 
 
+Let's consider a request for creating a Resource entity. Recall that this operation acts on **the State of the collection** by adding a new entity to it.
+
+The ``POST`` endpoint of the collection the entity belongs to can be used with a **request body**. This request body is a **representation of the initial State** the client must provide as **an input** to the API. 
+
+Let's take a look at this request in the context of our example API:
+
 .. admonition:: example
 
-   - GET example
-   - POST example
-   - show bodies (request, response)
+   As we saw earlier, the *input shape* for creating a ``CodingEvent`` only **includes the fields the consumer is responsible for**:
+
+   .. sourcecode:: json
+      :caption: 
+
+   After sending this request the response would include:
+
+   - a ``201``, or ``Created``, **status code**
+   - a ``Location`` **response header**
+   - the representation of the created Resource entity
+
+   .. sourcecode:: json
+   
+      {
+
+      }
 
 Operating On Entities
 ---------------------
 
-.. list-table:: Individual Resource entity
-   :header-rows: 1
+.. list-table:: Endpoints behaviors for an individual Resource entity
+   :stub-columns: 1
 
    * - HTTP method
      - ``POST``
@@ -300,22 +334,117 @@ Operating On Entities
 
    In this course we will follow the convention that ``PATCH`` is used to **U**\pdate the **State of a Resource entity**. 
 
+We can see the behavior of a ``DELETE`` endpoint for a single Resource entity in our example API:
+
 .. admonition:: example
 
-   - GET
    - DELETE
-   - show req/res bodies
+   - 204 status code and NO response body
 
 Headers & Status Codes
 ======================
 
 ...in addition to the req/res bodies each endpoint also has req/res headers and res status codes...
+- status codes only responses
+- status code + message + REST meaning
+- headers req/res and either
 
 Status Codes
 ------------
 
-- status code groups table
-   - commons
+   Every API response includes a status code that indicates whether the client's request succeeded or failed
+
+Success Status Codes
+^^^^^^^^^^^^^^^^^^^^
+
+When a request is successful the ``2XX`` status codes are used. These codes communicate to the consumer the **type of success** relative to the action that was taken. Below is a list of the common success codes you will encounter:
+
+.. list-table:: Common client success status codes for each action
+   :header-rows: 1
+   :widths: 20 20 20 40
+
+   * - HTTP method
+     - Status code
+     - Message
+     - Response
+   * - ``POST``
+     - ``201``
+     - ``Created``
+     - Resource entity and ``Location`` header
+   * - ``GET``
+     - ``200``
+     - ``OK``
+     - Resource entity or collection
+   * - ``DELETE``
+     - ``204``
+     - ``No Content``
+     - empty response body
+
+Failure Status Codes
+^^^^^^^^^^^^^^^^^^^^
+
+Sometimes requests can fail. A failed request is due to either the consumer or a bug in the API. Recall the status code groups that categorized the type of failure:
+
+- **client error**: ``4XX`` status code group
+- **server error**: ``5XX`` status code group
+
+Server errors are **not something the consumer can control**. However, client errors indicate that the request can be **reissued with corrections**. Each of these status codes and messages notify the consumer of the changes needed for a success.
+
+Let's look at some of the common client error status codes:
+
+.. list-table:: Common client error status codes
+   :header-rows: 1
+   :widths: 20 30 50
+
+   * - Status code
+     - Message
+     - Correction
+   * - ``400``
+     - ``Bad Request``
+     - Client must fix errors in their request body
+   * - ``401``
+     - ``Unauthorized``
+     - Client must **authenticate** first*
+   * - ``403``
+     - ``Forbidden``
+     - An authenticated client is **not allowed** to perform the requested action
+   * - ``404``
+     - ``Not Found``
+     - The path to identify the Resource is incorrect or the Resource does not exist
+
+A bad request will include an error message in its response that indicates **what the client must change** in their request body to succeed. This failure is seen when **C**\reating or **U**\pdating a Resource entity:
+
+.. admonition:: example
+
+   In the Coding Events API a ``CodingEvent`` is validated using the following criteria:
+
+   - ``Title``: 10-100 characters
+   - ``Description``: less than 1000 characters
+
+   Imagine sending a ``POST`` request with the following **invalid representation of State**:
+
+   .. sourcecode:: json
+      :caption: invalid request body for POST /events endpoint
+   
+      {
+      }
+
+   Then the response would have a ``400`` status code and a body indicating what aspects were invalid:
+
+   .. sourcecode:: json
+      :caption: 400 failed response body
+
+      {
+
+      }
+
+   Using the hints in the response the client can fix their request body and reissue the request successfully.
+
+.. admonition:: fun fact
+
+   The ``401``, or ``Unauthorized``, status code actually indicates that the consumer is **not authenticated**. This means the consumer has **not proven their identity** to the API.
+   
+   The ``403``, or ``Forbidden``, status code is a more accurate description of being **unauthorized**. After authenticating, the consumer's **authorization** can determine if they are allowed or **forbidden** from taking the requested action.
 
 Headers
 -------
@@ -326,18 +455,6 @@ Headers
 
 Learning More
 =============
-
-Organizing Relationships
-------------------------
-
-Suppose you have two Resources that are related to each other:
-
-.. admonition:: example
-
-   In the Coding Events API the following relationships exist:``Category`` can have **many** ``CodingEvent`` can have many ``Tags``
-
-- example of two collection entry points and sub-collection
-- keep brief
 
 list of links
 
