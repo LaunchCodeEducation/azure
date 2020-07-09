@@ -478,9 +478,28 @@ A bad request will include an error message in its response. The response will i
 Headers
 -------
 
-- common both
-- common request
-- common response
+.. list-table:: Common request/response headers in REST
+   :header-rows: 1
+   :widths: 20 20 20 40
+
+   * - Request/Response
+     - Header
+     - Meaning
+     - Example
+   * - Both
+     - ``Content-Type``
+     - The attached body has the following media type
+     - ``application/json``
+   * - Request
+     - ``Accept``
+     - The client expects the requested resource to be returned in the following media type
+     - ``application/json``
+   * - POST Response
+     - ``Location``
+     - The created resource can be found at the following location
+     - ``/resources/{id}``
+
+There are many additional HTTP headers that can be used with REST, but their usage goes beyond the scope of this course.
 
 Learning More
 =============
