@@ -478,6 +478,8 @@ A bad request will include an error message in its response. The response will i
 Headers
 -------
 
+Headers are one of the ways a client and a RESTful API communicate. As a brief example headers can be used by a client request to share credentials with the API. Additional examples are illustrated in the following table.
+
 .. list-table:: Common request/response headers in REST
    :header-rows: 1
    :widths: 20 20 20 40
