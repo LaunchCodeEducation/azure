@@ -344,10 +344,13 @@ We can see the behavior of a ``DELETE`` endpoint for a single Resource entity in
 Headers & Status Codes
 ======================
 
-...in addition to the req/res bodies each endpoint also has req/res headers and res status codes...
-- status codes only responses
-- status code + message + REST meaning
-- headers req/res and either
+.. ::
+
+   ...in addition to the req/res bodies each endpoint also has req/res headers and res status codes...
+   
+   - status codes only responses
+   - status code + message + REST meaning
+   - headers req/res and either
 
 Status Codes
 ------------
@@ -383,7 +386,7 @@ When a request is successful the ``2XX`` status codes are used. These codes comm
 Failure Status Codes
 ^^^^^^^^^^^^^^^^^^^^
 
-Sometimes requests can fail. A failed request is due to either the consumer or a bug in the API. Recall the status code groups that categorized the type of failure:
+Requests can fail. A failed request is due to either the consumer or a bug in the API. Recall the status code groups that categorized the type of failure:
 
 - **client error**: ``4XX`` status code group
 - **server error**: ``5XX`` status code group
@@ -412,7 +415,7 @@ Let's look at some of the common client error status codes:
      - ``Not Found``
      - The path to identify the Resource is incorrect or the Resource does not exist
 
-A bad request will include an error message in its response that indicates **what the client must change** in their request body to succeed. This failure is seen when **C**\reating or **U**\pdating a Resource entity:
+A bad request will include an error message in its response. The response will indicate **what the client must change** in their request body to succeed. This failure is seen when **C**\reating or **U**\pdating a Resource entity:
 
 .. admonition:: example
 
