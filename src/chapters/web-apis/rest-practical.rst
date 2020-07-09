@@ -494,7 +494,7 @@ Headers
      - ``Accept``
      - The client expects the requested resource to be returned in the following media type
      - ``application/json``
-   * - POST Response
+   * - Response
      - ``Location``
      - The created resource can be found at the following location
      - ``/resources/{id}``
