@@ -288,7 +288,7 @@ Operating On Collections
 
 Let's consider a request for creating a Resource entity. Recall that this operation acts on **the State of the collection** by adding a new entity to it.
 
-The ``POST`` endpoint of the collection the entity belongs to can be used with a **request body**. This request body is a **representation of the initial State** the client must provide as **an input** to the API. 
+The ``POST`` endpoint of the collection, that the entity belongs to, can be used with a **request body**. This request body is a **representation of the initial State** the client must provide as **an input** to the API. 
 
 Let's take a look at this request in the context of our example API:
 
@@ -345,13 +345,13 @@ We can see this behavior in action with a request to the ``DELETE`` endpoint for
 
 .. admonition:: example
 
-   Let's once again assume a ``CodingEvent`` Resource exists with an ``Id`` of ``12``. If we want to remove this entity we need to issue a request to its **unique** ``DELETE`` endpoint:
+   Let's once again assume a ``CodingEvent`` Resource exists with an ``Id`` of ``12``. If we want to remove this entity we need to issue a request to its **uniquely identified** ``DELETE`` endpoint:
 
       ``DELETE /events/12 -> 204``
    
-   In this shorthand you can see that this request has an *empty request body*, like the *empty State* we are requesting a transition to. 
+   In this shorthand you can see that this request has an *empty request body*. This is the *empty State* we are requesting a transition to. 
    
-   The ``204``, or ``No Content``, **status code** in the response indicates that the action was successful *and that the response body is empty*. The API transfers back a *representation of empty State* to communicate the success. 
+   The ``204``, or ``No Content``, **status code** in the response indicates that the action was successful *and that the response body is empty*. The API transfers back a *representation of empty State* (no response body) to the client. 
 
 .. admonition:: example
 
@@ -362,24 +362,16 @@ We can see this behavior in action with a request to the ``DELETE`` endpoint for
 Headers & Status Codes
 ======================
 
-Another aspect of a RESTful API dictates the usage of HTTP response status codes and HTTP request/response headers. 
+Another aspect of a RESTful API dictates the usage of HTTP response status codes and HTTP request and response headers. 
 
 Response status codes inform the client on if their request was handled successfully. The response status code and the attached message will include the information the client must change to fix the request.
 
-HTTP headers are attached to both requests and responses that include additional information about the request/response. A previous chapter mentioned the ``Content-Type`` header which dictates the format of the attached request/response body. We show additional common headers used in REST.
-
-.. ::
-
-   ...in addition to the req/res bodies each endpoint also has req/res headers and res status codes...
-   
-   - status codes only responses
-   - status code + message + REST meaning
-   - headers req/res and either
+HTTP headers are used to communicate additional information (**metadata**) about a request or response. We will explore some common HTTP headers and their usage in RESTful design.
 
 Status Codes
 ------------
 
-   Every API response includes a status code that indicates whether the client's request succeeded or failed
+   Every RESTful API response includes a **status code** that indicates whether the client's request succeeded or failed
 
 Success Status Codes
 ^^^^^^^^^^^^^^^^^^^^
@@ -486,11 +478,11 @@ A bad request will include an error message in its response. The response will i
 Headers
 -------
 
-Headers are one of the ways a client and a RESTful API communicate. As a brief example headers can be used by a client request to share credentials with the API. Additional examples are illustrated in the following table.
+   In RESTful design **headers** are used to communicate **metadata** about each interaction with a Resource
 
 .. list-table:: Common request/response headers in REST
    :header-rows: 1
-   :widths: 20 20 20 40
+   :widths: 20 20 40 20
 
    * - Request/Response
      - Header
@@ -502,23 +494,35 @@ Headers are one of the ways a client and a RESTful API communicate. As a brief e
      - ``application/json``
    * - Request
      - ``Accept``
-     - The client expects the requested resource to be returned in the following media type
+     - The client expects the requested Resource representation in the given media type
      - ``application/json``
    * - Response
      - ``Location``
-     - The created resource can be found at the following location
+     - The created Resource representation can be found at the given URL value
      - ``/resources/{id}``
 
-There are many additional HTTP headers that can be used with REST, but their usage goes beyond the scope of this course.
+.. admonition:: tip
+
+   The ``Authorization`` **request header** is also commonly used. Later in this course we will learn about **authenticating** with an API using this header and a `JWT access token <https://auth0.com/docs/protocols/oidc>`_.
 
 Learning More
 =============
 
-list of links
+These articles have covered the fundamental aspects of the RESTful mental model and practical usage. However, RESTful design is a deep topic that even extends *beyond the web and use of HTTP*! 
 
-- maturity model
-- thesis link 
-- resource links
-- good examples
-   - GitHub
-   - stripe
+If you want to learn more the following links are a good start:
+
+Practical Understanding
+-----------------------
+
+- `Craig Dennis: APIs for beginners (YouTube) <https://www.youtube.com/watch?v=GZvSYJDk-us&t=0s>`_
+- `REST sub-collections, relationships and links <https://restful-api-design.readthedocs.io/en/latest/relationships.html>`_
+- `OpenAPI specification & Swagger REST tools <https://swagger.io/specification/>`_
+- The `GitHub API <https://developer.github.com/v3/>`_ and `Stripe (payment processing) API <https://stripe.com/docs/api>`_ are excellent examples of RESTful design (and fantastic documentation)
+
+Deep Understanding
+------------------
+
+- the `REST constraints <https://www.restapitutorial.com/lessons/whatisrest.html>`_
+- the `The Richardson REST maturity model <https://www.martinfowler.com/articles/richardsonMaturityModel.html>`_
+- the original `REST doctoral thesis by Roy Fielding <https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm>`_
