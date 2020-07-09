@@ -294,22 +294,27 @@ Let's take a look at this request in the context of our example API:
 
 .. admonition:: example
 
-   As we saw earlier, the *input shape* for creating a ``CodingEvent`` only **includes the fields the consumer is responsible for**:
+   As we saw earlier, the *input shape* for creating a ``CodingEvent`` only **includes the fields the consumer is responsible for**. The ``Id`` field is then managed internally by the API.
+   
+   We refer to this shape as a ``NewCodingEvent`` to distinguish it from the ``CodingEvent`` Resource shape:
 
    .. sourcecode:: json
-      :caption: 
+
+      NewCodingEvent {
+         Title: string
+         Description: string
+         Date: string (ISO 8601 date format)
+      }
+
+   We can describe this request in a shorthand. This shorthand includes the endpoint, input, and outputs:
+
+      ``POST /events (NewCodingEvent) -> 201, CodingEvent``
 
    After sending this request the response would include:
 
    - a ``201``, or ``Created``, **status code**
    - a ``Location`` **response header**
-   - the representation of the created Resource entity
-
-   .. sourcecode:: json
-   
-      {
-
-      }
+   - the representation of the created Resource entity State (including an assigned ``Id`` field)
 
 Operating On Entities
 ---------------------
@@ -334,12 +339,27 @@ Operating On Entities
 
    In this course we will follow the convention that ``PATCH`` is used to **U**\pdate the **State of a Resource entity**. 
 
-We can see the behavior of a ``DELETE`` endpoint for a single Resource entity in our example API:
+When removing a Resource the client is requesting a **transition to an empty State**. This means that both the **request body** and **response body** that are transferred, *the representations of State*, are empty.
+
+We can see this behavior in action with a request to the ``DELETE`` endpoint for a single Resource entity in our example API:
 
 .. admonition:: example
 
-   - DELETE
-   - 204 status code and NO response body
+   Let's once again assume a ``CodingEvent`` Resource exists with an ``Id`` of ``12``. If we want to remove this entity we need to issue a request to its **unique** ``DELETE`` endpoint:
+
+      ``DELETE /events/12 -> 204``
+   
+   In this shorthand you can see that this request has an *empty request body*, like the *empty State* we are requesting a transition to. 
+   
+   The ``204``, or ``No Content``, **status code** in the response indicates that the action was successful *and that the response body is empty*. The API transfers back a *representation of empty State* to communicate the success. 
+
+.. admonition:: example
+
+   What would happen if we made another request to remove an entity that *doesn't exist*?
+
+      ``DELETE /events/999 -> 404``
+
+   We would receive a ``404``, or ``Not Found``, status code that lets us know the **request failed** because of a **client error** (providing an ``Id`` for a nonexistent Resource).
 
 Headers & Status Codes
 ======================
