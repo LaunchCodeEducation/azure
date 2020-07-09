@@ -191,7 +191,7 @@ Let's take another look at our example API:
       }
 
 CRUD Operations & HTTP Methods
-==============================
+------------------------------
 
 In a RESTful API the interactions a client takes on the State of a Resource are described using HTTP methods. If the Resource path describes the **noun**, or subject, the HTTP method describes the **verb**, or action, that is taken on that subject's State. 
 
@@ -210,11 +210,6 @@ As we saw in the previous article, State is something that can be interacted wit
      - **R**\ead
      - **U**\pdate*
      - **D**\elete
-   * - Behavior with Resource State
-     - transition to initial State
-     - view the **current** State
-     - transition to a new State
-     - transition to an empty State
 
 The use case of an API dictates the design of its contract. This includes which actions the client can take on each Resource State. In other words, **not every action must be exposed** for each Resource the API manages.
 
@@ -222,8 +217,11 @@ The use case of an API dictates the design of its contract. This includes which 
 
    If a client tries to take an action on a Resource that is not supported by the API they will receive a ``405`` **status code** or ``Method not allowed`` error response.
 
-Operating on Collections & Entities
------------------------------------
+Endpoint Behavior
+=================
+
+Operating On Collections
+------------------------
 
 Depending on the endpoint (the Resource path and the method) the effect of the request can differ. In other words, the **behavior** is dependent on the subject -- whether it is an entity or the collection as a whole.
 
@@ -235,11 +233,6 @@ Depending on the endpoint (the Resource path and the method) the effect of the r
      - ``GET``
      - ``PUT/PATCH``
      - ``DELETE``
-   * - CRUD operation
-     - **C**\reate
-     - **R**\ead
-     - **U**\pdate*
-     - **D**\elete
    * - Behavior with Resource State
      - create a new entity in the collection
      - view the **current** list of all entities in the collection
@@ -250,6 +243,15 @@ Depending on the endpoint (the Resource path and the method) the effect of the r
 
    Exposing the ability to modify or delete *all of the entities in a collection* at once can be risky. In many cases the design of a RESTful API will only support ``GET`` and ``POST`` endpoints for collections. 
 
+.. admonition:: example
+
+   - GET example
+   - POST example
+   - show bodies (request, response)
+
+Operating On Entities
+---------------------
+
 .. list-table:: Individual Resource entity
    :header-rows: 1
 
@@ -258,28 +260,28 @@ Depending on the endpoint (the Resource path and the method) the effect of the r
      - ``GET``
      - ``PUT/PATCH``
      - ``DELETE``
-   * - CRUD operation
-     - N/A
-     - **R**\ead
-     - **U**\pdate*
-     - **D**\elete
    * - Behavior with Resource State
-     - (created inside a collection)
+     - N/A (created inside a collection)
      - view the **current** entity State
      - update the entity State
      - remove the entity from the collection
 
 .. admonition:: note
 
-   **U**\pdating using ``PUT`` or ``PATCH`` in REST is a choice left to the API designer. The REST pattern is primarily used in the context of HTTP. However, it is actually `so abstract <https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm>`_ it doesn't officially constrain its use to the HTTP protocol -- let alone the `semantics of its methods <https://restfulapi.net/rest-put-vs-post/>`_.
+   **U**\pdating using ``PUT`` or ``PATCH`` in REST is a choice left to the API designer. This article has a great `breakdown of the subject <https://restfulapi.net/rest-put-vs-post/>`_.
 
    In this course we will follow the convention that ``PATCH`` is used to **U**\pdate the **State of a Resource entity**. 
 
-Endpoint Behavior
-=================
+.. admonition:: example
 
-Bodies
--------
+   - GET
+   - DELETE
+   - show req/res bodies
+
+Headers & Status Codes
+======================
+
+...in addition to the req/res bodies each endpoint also has req/res headers and res status codes...
 
 Status Codes
 ------------
@@ -293,17 +295,6 @@ Headers
 - common both
 - common request
 - common response
-
-Documentation
-=============
-
-Shorthand
----------
-
-Swagger
--------
-
-- tip more than docs, link to codegen
 
 Learning More
 =============
@@ -323,6 +314,7 @@ Suppose you have two Resources that are related to each other:
 list of links
 
 - maturity model
+- thesis link 
 - resource links
 - good examples
    - GitHub
