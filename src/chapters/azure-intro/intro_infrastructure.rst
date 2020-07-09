@@ -145,7 +145,7 @@ This service would be categorized as **computation** because the primary need be
 Examples
 --------
 
-Again there are multiple CSP services that provide computation:
+There are multiple CSP services that provide computation:
 
 - virtualized application servers
 - database servers
