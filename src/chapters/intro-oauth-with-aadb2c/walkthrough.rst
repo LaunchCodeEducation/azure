@@ -4,9 +4,9 @@ Walkthrough: Setup Azure ADB2C Tenant
 
 .. the provider is still someone else (MS, Google, Twitter, etc)
 
-.. image:: 1
+.. image:: 1 directory-subscription
 
-.. image:: 2
+.. image:: 2 create-resource
 
 .. image:: 3
 
@@ -122,7 +122,13 @@ click on the created flow
 
 .. image:: 28 run-user-flow-sidebar
 
-.. :: comment grab the link as students may need to add that to their sourcecode in studio
+.. :: 
+
+   comment: grab the link as students may need to add that to their sourcecode in studio 
+   
+   - link JWTAADB2C metadata address in app settings
+   - metadata link: https://student0720tenant.b2clogin.com/student0720tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_coding-events-api-susi
+   - authorization URL: https://student0720tenant.b2clogin.com/student0720tenant.onmicrosoft.com/oauth2/v2.0/authorize?p=b2c_1_coding-events-api-susi
 
 click run user flow
 
