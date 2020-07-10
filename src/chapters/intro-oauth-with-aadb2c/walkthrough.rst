@@ -83,13 +83,79 @@ select ``Authenticaion`` under Management header
 
 everything default execpt ID tokens!
 
-select ID tokens under ``Implicit Grant`` 
+select ID tokens under ``Implicit Grant``
+
+go back to the app registrations
+
+note:: checkout the breadcrumbs for easy access
+
+.. :: comment
+
+   YOU MUST DO THIS! will need new images
+
+   legacy view allow implicit flow switch to true
+
+.. image:: 17 select user flows
+
+.. image:: 18 new-user-flow-select
+
+.. image:: 19 select-susi-flow
+
+#. name: coding-events-api-susi
+#. select email sign-up
+#. no MFA (default)
+#. 
+
+.. image:: 20 susi-flow-steps1-3
+
+.. note:: click show more
+
+.. image:: 21 show-more-sidebar
+
+.. image:: 22 show-more-user-attributes-form1
+
+.. image:: 23 show-more-user-attributes-form2
+
+.. image:: 24 create-susi-flow-form-final
+
+.. image:: 25 after-flow-created
+
+click on the created flow
+
+.. image:: 26 flow-dashboard
+
+.. :: comment great place for fluff if we need it a note that says click through here and you can add new ID providers and set attributes
+
+.. image:: 27 run-user-flow
+
+.. image:: 28 run-user-flow-sidebar
+
+.. :: comment grab the link as students may need to add that to their sourcecode in studio
+
+click run user flow
+
+.. image:: 29 user-flow-auth-form
+
+your app won't have any users to start so you will have to register one -- this is just like any registration you've used before
+
+click sign up now
+
+.. image:: 30 signup-email
+
+.. image:: 31 signup-email-verification-code
+
+.. image:: 32 signup-email-password-requirements
+
+.. image:: 33 singup-email-final
+
+
+
 
 .. :: comment
 
    maybe come back here for setting APP ID
 
-   .. image:: 17
+   .. image:: 17!
 
 
 
