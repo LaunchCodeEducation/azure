@@ -19,6 +19,93 @@ Walkthrough: Setup Azure ADB2C Tenant
    - choose the email provider
 
 
+.. image:: 1
+
+.. image:: 2
+
+.. image:: 3
+
+.. image:: 4
+
+.. image:: 5
+
+link to ``Create new B2C Tenant or Link to existing Tenant`` which takes them to the next pic
+
+.. image:: 6
+
+note: select link to existing!
+
+.. image:: 7
+
+warning: make sure your subscription matches the lab handout name
+
+.. image:: 8 create-rg
+
+.. image:: 9 create-final
+
+note: click the create button
+
+section: we setup AADB2C, we still have to register an application
+
+.. image:: 10 search-for-tenant-resource
+
+.. image:: 11 tenant-home
+
+click on the Azure AD B2C Settings button (it's giant because it has an image)
+
+.. image:: 12 tenant-portal
+
+note: you are in the student-ADB2C directory (organization name of the tenant)
+
+click on ``App Registration`` under the Manage header in the left sidebar
+
+.. image:: 13 new-registration
+
+.. image:: 14 new-registration-form-final
+
+everything is default except for redirect URI
+
+- redirect URI: https://jwt.ms
+
+click ``Register`` to confirm
+
+.. image:: 15 app-dashboard (Coding Events API)
+
+you will need the app ID
+
+and the tenant ID
+
+.. not sure which one, but the student will need one of app, or tenant ID
+
+select ``Authenticaion`` under Management header
+
+.. image:: 16 grant-implicit-flow
+
+everything default execpt ID tokens!
+
+select ID tokens under ``Implicit Grant`` 
+
+.. :: comment
+
+   maybe come back here for setting APP ID
+
+   .. image:: 17
+
+
+
+.. ::
+
+   how the labs work
+
+   - need to be in their default directory
+   - whenever they provision something they must use their HANDOUT subscription
+      - HANDOUT subscription is defined as the lab assignment
+
+   - * Whatever you call the HANDOUT that's what becomes their subscription that students should use
+
+   - when adding a student to a lab the handout name is set per student, and the handout is the subscription students should use eto provision resources
+
+   - top right corner and select (switch directory) they have a subscription filter if they unselect everything execpt their handout subscription that will become their default
 
 
 
