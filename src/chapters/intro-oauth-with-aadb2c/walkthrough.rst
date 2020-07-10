@@ -62,11 +62,11 @@ and the tenant ID
 
 .. not sure which one, but the student will need one of app, or tenant ID
 
-select ``Authenticaion`` under Management header
+select ``Authentication`` under Management header
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/16grant-implicit-flow.png
 
-everything default execpt ID tokens, access tokens!
+everything default except ID tokens, access tokens!
 
 select ID tokens under ``Implicit Grant``
 select access tokens
@@ -124,7 +124,7 @@ click on the created flow
 
 .. :: 
 
-   comment: grab the link as students may need to add that to their sourcecode in studio 
+   comment: grab the link as students may need to add that to their source code in studio 
 
    - link JWTAADB2C metadata address in app settings
    - metadata link: https://student0720tenant.b2clogin.com/student0720tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_coding-events-api-susi
@@ -155,20 +155,3 @@ click sign up now
 .. :: comment: implicit flow link: https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application
 
 .. :: comment: best practices: https://docs.microsoft.com/en-us/azure/active-directory-b2c/best-practices
-
-
-.. ::
-
-   how the labs work
-
-   - need to be in their default directory
-   - whenever they provision something they must use their HANDOUT subscription
-      - HANDOUT subscription is defined as the lab assignment
-
-   - * Whatever you call the HANDOUT that's what becomes their subscription that students should use
-
-   - when adding a student to a lab the handout name is set per student, and the handout is the subscription students should use eto provision resources
-
-   - top right corner and select (switch directory) they have a subscription filter if they unselect everything execpt their handout subscription that will become their default
-
-
