@@ -9,5 +9,4 @@ Introduction to Web Hosting
    networking
    processes-ports
    walkthrough
-   studio
    studio-2
