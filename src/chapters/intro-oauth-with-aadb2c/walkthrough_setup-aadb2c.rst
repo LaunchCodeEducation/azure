@@ -150,8 +150,4 @@ click sign up now
 
 .. :: comment: https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview summarizes all the tokens link to it, or describe some of it
 
-.. :: comment: link to OIDC https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect
-
-.. :: comment: implicit flow link: https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application
-
 .. :: comment: best practices: https://docs.microsoft.com/en-us/azure/active-directory-b2c/best-practices
