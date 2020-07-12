@@ -43,7 +43,7 @@ A way to keep them straight:
 OAuth
 =====
 
-   **OAuth** is the specification of sharing access between two unrelated applications.
+   **OAuth** is the specification of sharing access of an identity between two unrelated applications.
 
 You have probably used OAuth without realizing it. When you create, or sign into, an account on an application and you prove your identity (authentication) by signing into a separate unrelated application you are using OAuth. 
 
@@ -58,4 +58,14 @@ During this OAuth process Spotify may access some of your data from Facebook, li
 AADB2C
 ======
 
-- light intro link to the materials
+In this class we will use Azure Active Directory Business to Customer (AADB2C) as our Customer Identity Access Manager (CIAM). 
+
+This tool provides identity as a service. In essence AADB2C provides the bridge for allowing OAuth between user accounts (Google, Microsoft, Twitter, Facebook, Amazon, etc) known as providers to applications you develop and deploy.
+
+We will create and configure an AADB2C tenant that is connected to an email address of users. We will have to set which information is shared from the provider like their email address, and name. This information will be available to us in our application.
+
+So users when they first sign up or login to our application they will be routed to a third party AADB2C page which is where the user will authenticate. AADB2C will then pass the user information to our application letting us know the user has been authenticated, and giving us the information we need in our application.
+
+.. admonition:: note
+
+   OAuth, and CIAMs can be difficult to setup, configure, and use. We will be setting up a very simple provider and tenant example in our walkthrough to illustrate how it can be done. However, to continue your own learning checkout the `Microsoft AADBDC overview <https://docs.microsoft.com/en-us/azure/active-directory-b2c/overview>`_ you can find even more information by looking over the other links in that article.
