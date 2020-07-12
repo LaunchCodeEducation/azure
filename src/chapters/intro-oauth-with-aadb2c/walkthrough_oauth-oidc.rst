@@ -17,7 +17,9 @@ This section will be completed in your browser away from the curriculum of this 
 
 .. :: comment: students will need NPM installation instructions these should probably be added to visual oauth repo
 
-Here you can find the `Visual OAuth walkthrough <https://github.com/LaunchCodeEducation/visual-oauth>`_.
+.. :: comment: put NPM installation steps here? keep it out of visual-oauth
+
+Complete the `Visual OAuth walkthrough <https://github.com/LaunchCodeEducation/visual-oauth>`_ before moving forward.
 
 OIDC
 ====
