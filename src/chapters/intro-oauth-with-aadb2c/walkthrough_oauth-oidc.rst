@@ -8,10 +8,14 @@ As a reminder:
 
    **OAuth** is the specification of sharing access of an identity between two unrelated applications.
 
+.. admonition:: note
+
+   We will be using `OAuth 2.0 <https://oauth.net/2/>`_ in this class. `Auth 1.0 <https://oauth.net/core/1.0/>`_ is still used in some applications, but will not be discussed in this class.
+
 .. :: comment:: warn about the difference between 1.0 and 2.0 and implicit flow, put this at the end, or remove
 
-Visual OAuth
-============
+Walkthrough: Visual OAuth
+=========================
 
 This section will be completed in your browser away from the curriculum of this class, in which you host a small project that will show how OAuth works, as well as introducing the terms that are commonly used in the OAuth spec.
 
