@@ -10,7 +10,7 @@ As a reminder:
 
 .. admonition:: note
 
-   We will be using `OAuth 2.0 <https://oauth.net/2/>`_ in this class. `Auth 1.0 <https://oauth.net/core/1.0/>`_ is still used in some applications, but will not be discussed in this class.
+   We will be using `OAuth 2.0 <https://oauth.net/2/>`_ throughout this class. `Auth 1.0 <https://oauth.net/core/1.0/>`_ is still used in some applications, but will not be discussed as it is out of scope.
 
 .. :: comment:: warn about the difference between 1.0 and 2.0 and implicit flow, put this at the end, or remove
 
@@ -23,7 +23,9 @@ This section will be completed in your browser away from the curriculum of this 
 
 .. :: comment: put NPM installation steps here? keep it out of visual-oauth
 
-**Complete the** `Visual OAuth walkthrough <https://github.com/LaunchCodeEducation/visual-oauth>`_ **before moving forward.**
+.. admonition:: warning
+
+   **Complete the** `Visual OAuth walkthrough <https://github.com/LaunchCodeEducation/visual-oauth>`_ **before moving forward.**
 
 OAuth Implicit Flow
 ===================
@@ -39,4 +41,8 @@ From Microsoft:
 
    "OpenID Connect (OIDC) is an authentication protocol, built on top of OAuth 2.0, that can be used to securely sign users in to web applications."
 
-AADB2C uses the OIDC protocol so that users are authenticated, and can share information between applications. We won't explore OIDC in any depth in this class, but learning more about the `Microsoft implementation of the OIDC protocol <https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect>`_ may be beneficial.
+AADB2C uses the OIDC protocol to authenticate users via OAuth. Outside of authentication OIDC gives us the ability to share information between applications. 
+
+.. admonition:: note
+
+   We won't explore OIDC as a concept in this class, but learning more about the `Microsoft implementation of the OIDC protocol <https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect>`_ may be beneficial. We will see Microsoft's implementation of OIDC through AADB2C.
