@@ -2,16 +2,22 @@
 Visual OAuth & OIDC
 ===================
 
-- reminder def of OAuth
+This article will link out to a GitHub project that will show you how to setup a project that will take you through the steps of OAuth in a visual setting from your browser.
 
-.. :: note:: about the difference between 1.0 and 2.0 and implicit flow
+As a reminder: 
+
+   **OAuth** is the specification of sharing access of an identity between two unrelated applications.
+
+.. :: comment:: warn about the difference between 1.0 and 2.0 and implicit flow, put this at the end, or remove
 
 Visual OAuth
 ============
 
-- visual oauth walkthrough
+This section will be completed in your browser away from the curriculum of this class, in which you host a small project that will show how OAuth works, as well as introducing the terms that are commonly used in the OAuth spec.
 
-.. https://github.com/LaunchCodeEducation/visual-oauth
+.. :: comment: students will need NPM installation instructions these should probably be added to visual oauth repo
+
+Here you can find the `Visual OAuth walkthrough <https://github.com/LaunchCodeEducation/visual-oauth>`_.
 
 OIDC
 ====
