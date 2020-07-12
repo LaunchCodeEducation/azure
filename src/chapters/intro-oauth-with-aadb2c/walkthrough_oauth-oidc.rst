@@ -2,15 +2,16 @@
 Visual OAuth & OIDC
 ===================
 
-OAuth
-=====
+- reminder def of OAuth
 
-- def
+.. :: note:: about the difference between 1.0 and 2.0 and implicit flow
 
 Visual OAuth
-------------
+============
 
 - visual oauth walkthrough
+
+.. https://github.com/LaunchCodeEducation/visual-oauth
 
 OIDC
 ====
