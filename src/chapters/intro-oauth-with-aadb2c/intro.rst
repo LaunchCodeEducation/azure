@@ -2,6 +2,8 @@
 Introduction to Auth
 ====================
 
+.. :: comment: diagrams in intros how adding in this thing affects the greater system
+
 Authentication & Authorization
 ==============================
 
