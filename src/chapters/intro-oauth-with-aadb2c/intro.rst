@@ -10,17 +10,17 @@ Authentication
 
    **Authentication** is the process of proving identity.
 
-An example would be logging into your email, you have to provide your email address and a password.
+An example would be logging into your email, you have to provide your email address and a password to prove your identity.
 
 .. admonition:: note
 
    There are multiple factors of authentication the three most common are:
 
-   - Knowledge based: *something you know* like a username and password
-   - Possession based: *something you have* like an ID badge or keycard
-   - Inherent based: *something you are* like your fingerprint or face unlock
+   - Knowledge based (*something you know*): a username and password
+   - Possession based (*something you have*): an ID badge or keycard
+   - Inherent based (*something you are*): a fingerprint or face unlock
 
-   An application can be made more secure by requiring multiple factors for authentication.
+   An application can be made more secure by requiring Multiple Factors for Authentication (MFA). Learn more about `MFA from Microsoft <https://docs.microsoft.com/en-us/azure/active-directory/authentication/concept-mfa-howitworks>`_.
 
 Authorization
 -------------

@@ -34,6 +34,8 @@ OAuth Implicit Flow
 
 .. :: comment: implicit flow link: https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application
 
+.. :: comment: OAuth 2.0 implicit grant link: https://tools.ietf.org/html/rfc6749#section-4.2
+
 OIDC
 ====
 
