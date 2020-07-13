@@ -51,7 +51,7 @@ The second difference in Implicit Flow is that the Client Back-end does not exch
    Since an additional check is not performed by the Provider a compromised Access Token from the Redirect URI can be used to assume another user's identity. This is a security concern and Implicit Flow needs to be handled with care. You can learn more by exploring:
 
       - `OAuth 2.0 Implicit Grant Flow spec <https://tools.ietf.org/html/rfc6749#section-4.2>`_
-      - `Microsoft article abotu Implicit Flow in AADB2C <https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application>`_
+      - `Microsoft article about Implicit Flow in AADB2C <https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application>`_
 
 .. :: comment: great video from oauth.net about implicit flow: https://oauth.net/2/grant-types/implicit/
 
