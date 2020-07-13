@@ -23,6 +23,8 @@ This section will be completed in your browser away from the curriculum of this 
 
    **Complete the** `Visual OAuth walkthrough <https://github.com/LaunchCodeEducation/visual-oauth>`_ **before moving forward.**
 
+.. :: comment: JWT section, or a JWT note
+
 OAuth Implicit Flow
 ===================
 
