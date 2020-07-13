@@ -19,10 +19,6 @@ Walkthrough: Visual OAuth
 
 This section will be completed in your browser away from the curriculum of this class, in which you host a small project that will show how OAuth works, as well as introducing the terms that are commonly used in the OAuth spec.
 
-.. :: comment: students will need NPM installation instructions these should probably be added to visual oauth repo
-
-.. :: comment: put NPM installation steps here? keep it out of visual-oauth
-
 .. admonition:: warning
 
    **Complete the** `Visual OAuth walkthrough <https://github.com/LaunchCodeEducation/visual-oauth>`_ **before moving forward.**
