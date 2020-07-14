@@ -2,23 +2,83 @@
 Walkthrough: Setup Azure ADB2C Tenant
 =====================================
 
-.. the provider is still someone else (MS, Google, Twitter, etc)
+In this walkthrough we will set up our own identity manager using Azure. The Azure Active Directory B2C (AADB2C) service abstracts away the complexity of setting up and managing a central authentication authority. It allows us to support any number of identity providers (like Microsoft, LinkedIn or GitHub) to connect users to our applications.
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/1directory-subscription.png
+In our case we will set up AADB2C using an Email Provider (a generic identity tied to an email address). As an identity management service AADB2C uses the OIDC protocol to provide an **identity token** to our application after a user authenticates.
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/2create-resource.png
+When you provision an AADB2C service Azure will create a **tenant directory**. The tenant directory represents the authentication authority *for your entire organization*. Within the tenant you can **register applications** (like our Coding Events API) and configure **identity flows** that users utilize to connect with the applications. 
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/3create-aadb2c.png
+The identity flows allow you to customize the user experience *flows* like creating an account (identity) and signing in or out. Each flow can specify the **claims** (identity fields) that need to be collected from the user and provided in the identity token. We will be configuring a Sign Up / Sign In (SUSI) flow for our API users to register and access members-only endpoints.  
+
+Checklist
+=========
+
+Setting up our AADB2C authority will involve the following steps:
+
+#. create an AADB2C tenant directory
+#. link the tenant directory to an active Azure Subscription
+#. register our Coding Events API application
+#. configure a SUSI flow using an Email provider
+
+After we have completed these steps we will test out the SUSI flow and, after registering an identity, view the JWT (identity token). We will be using the Microsoft `JWT decoder tool <https://jwt.ms>`_ to verify the authenticity of and claims within the identity token.
+
+.. admonition:: note
+
+   The screenshots for this walkthrough use the generic ``student`` name. 
+   
+   Anywhere you see ``<name>`` or ``student`` you should **replace with your name.**
+
+Set Up AADB2C Tenant Directory
+==============================
+
+Create Tenant Directory
+-----------------------
+
+From the dashboard of the Azure Portal select the **Create a resource** button:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/1create-resource.png
+   :alt: Azure Portal create a resource
+
+In the search box enter: ``Azure Active Directory B2C`` then select **create**:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/2create-aadb2c.png
+   :alt: Azure ADB2C marketplace service
+
+Before linking to a Subscription we have to create the tenant directory, select the first choice:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/3create-aadb2c-tenant-dir.png
+   :alt: AADB2C create new tenant
+
+This will present the AADB2C creation form. Enter the following values:
+
+- **Organization name**: ``<name> ADB2C`` (the tenant directory name)
+- **Initial domain name**: ``<name>0720tenant`` (subdomain name of your tenant on the ``.onmicrosoft.com`` domain Azure provides)
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/4create-aadb2c-form1.png
+   :alt: AADB2C create directory form
+
+Select **Review and create** and confirm that your configuration matches the image below. Then create it.
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/5create-aadb2c-form2.png
+   :alt: AADB2C review configuration
 
-link to ``Create new B2C Tenant or Link to existing Tenant`` which takes them to the next pic
+Link tenant directory to your Subscription
+------------------------------------------
+
+The new tenant directory is **not usable** until it is linked to an active Azure Subscription.
+
+.. admonition:: tip
+
+   If you are curious about the relationship between Azure accounts, Subscriptions, and directories `this forum post has some great discussion and links to further reading <https://techcommunity.microsoft.com/t5/azure/understanding-azure-account-subscription-and-directory/td-p/34800>`_.
+
+After creating the tenant directory you can click the ``Create new B2C Tenant or Link to existing Tenant`` link in the upper-left breadcrumb links. This will take you back to the initial AADB2C view.
+
+This time select the second option:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/6link-to-existing-b2c-tenant.png
+   :alt: AADB2C link subscription to tenant
 
-note: select link to existing!
+
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/7subscription-linking-form.png
 
