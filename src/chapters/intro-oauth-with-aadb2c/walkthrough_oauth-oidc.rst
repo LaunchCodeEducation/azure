@@ -1,34 +1,54 @@
-===================
-Visual OAuth & OIDC
-===================
+=================================
+Walkthrough: Explore OAuth & OIDC
+=================================
 
-This article will link out to a GitHub project that will show you how to setup a project that will take you through the steps of OAuth in a visual setting from your browser.
+In this walkthrough we will begin by exploring OAuth using a visual learning tool. Afterwards we will introduce the OIDC specification (spec) which is built as a layer over the OAuth spec.
 
-As a reminder: 
+Both of these specs are designed for a **user to securely coordinate** the exchange of their information between two unrelated services:
 
-   **OAuth** is the specification of sharing access of an identity between two unrelated applications.
+- **client service**: *requests* a user to *authorize access* to their identity or data from a provider service
+- **provider service**: *provides* the identity or access to data of a user who **authorizes** a client service
+
+Because OIDC is built over OAuth their distinction from each other is subtle but important to understand. Throughout this walkthrough keep in mind the **purpose** of each of these coordination mechanisms:
+
+- **OAuth**: used for sharing access of a user's data on a provider service to a client service
+- **OIDC**: used for a (identity) provider service to **provide the identity** of a user to a client service
+
+How OAuth Works
+===============
+
+The first step of this walkthrough will use a tool called Visual OAuth. This tool will introduce you to the key terminology and concepts involved in OAuth. After learning the fundamentals it will guide you step-by-step through the OAuth mechanism. 
+
+You will run this project locally on your machine. The `Visual OAuth repo <https://github.com/LaunchCodeEducation/visual-oauth>`_ has all of the instructions for setting up and using the tool in its ``README`` file. 
 
 .. admonition:: note
+   
+   Follow the repo link and the instructions **then return to this article** when you have finished.
 
-   We will be using `OAuth 2.0 <https://oauth.net/2/>`_ throughout this class. `Auth 1.0 <https://oauth.net/core/1.0/>`_ is still used in some applications, but will not be discussed as it is out of scope.
+How OIDC Works
+==============
 
-.. :: comment:: warn about the difference between 1.0 and 2.0 and implicit flow, put this at the end, or remove
-
-Walkthrough: Visual OAuth
-=========================
-
-This section will be completed in your browser away from the curriculum of this class, in which you host a small project that will show how OAuth works, as well as introducing the terms that are commonly used in the OAuth spec.
-
-.. admonition:: warning
-
-   **Complete the** `Visual OAuth walkthrough <https://github.com/LaunchCodeEducation/visual-oauth>`_ **before moving forward.**
-
-.. :: comment: JWT section, or a JWT note
+- learned
+   - define flow
+   - the authorization code grant flow
+      - an alternative flow (implicit)
+   - access tokens for delegating access / management of user data
+      - JWT
+      - identity tokens for sharing the identity of a user
+- sharing identity
+   - OIDC
+      - built over oauth to navigate around pseudo-authentication with OAuth (link)
+         - https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth#pseudo-authentication-with-oauth-20
+   - special type of provider service called identity provider
+      - can be both a provider (OAuth) and identity provider or standalone
+         - plug AADB2C as an identity manager of multiple identity providers
+         - for sharing SSO across multiple providers and applications in your organization
+   - sharing the identity session of a user for SSO
 
 OAuth Implicit Flow
-===================
+-------------------
 
-Let's consider the steps of OAuth presented to you in the walkthrough:
+Let's consider the steps of OAuth presented to you in the Visual OAuth walkthrough:
 
 - User Authenticates & Authorizes the Client
 - Provider Redirects to Client with Auth Code
@@ -57,8 +77,11 @@ The second difference in Implicit Flow is that the Client Back-end does not exch
 
 .. :: comment: great video from oauth.net about implicit flow: https://oauth.net/2/grant-types/implicit/
 
-OIDC
-====
+Identity Tokens
+---------------
+
+Sharing Identity
+----------------
 
 From Microsoft: 
 
@@ -69,3 +92,4 @@ AADB2C uses the OIDC protocol to authenticate users via OAuth. Outside of authen
 .. admonition:: note
 
    We won't explore OIDC as a concept in this class, but learning more about the `Microsoft implementation of the OIDC protocol <https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect>`_ may be beneficial. We will see Microsoft's implementation of OIDC through AADB2C.
+
