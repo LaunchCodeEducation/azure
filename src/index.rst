@@ -12,7 +12,6 @@ Chapters
    chapters/hosting/index
    chapters/azure-intro/index
    chapters/secrets-and-backing/index
-   chapters/intro-oauth-with-aadb2c/index
    chapters/powershell-intro/index
 
    chapters/az-cli/index

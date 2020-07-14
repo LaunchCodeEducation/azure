@@ -6,6 +6,5 @@ Introduction to OAuth with Azure ADB2C
    :maxdepth: 3
 
    intro
-   walkthrough_oauth-oidc
 
    
