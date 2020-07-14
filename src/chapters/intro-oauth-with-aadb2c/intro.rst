@@ -1,73 +1,60 @@
-====================
-Introduction to Auth
-====================
+==================================
+OAuth & Azure Active Directory B2C
+==================================
 
 .. :: comment: diagrams in intros how adding in this thing affects the greater system
 
-Authentication & Authorization
-==============================
-
 Authentication
---------------
+==============
 
-   **Authentication** is the process of proving identity.
+   **Authentication**: the process of proving identity.
 
 An example would be logging into your email, you have to provide your email address and a password to prove your identity.
 
+There are multiple factors of authentication the three most common are:
+
+- **Knowledge based**: *something you know* (a username and password)
+- **Possession based**: *something you have* (`a digital certificate <https://www.ssl.com/faqs/what-is-an-x-509-certificate/>`_)
+- **Inherent based**: *something you are* (a fingerprint or face unlock)
+- **Location based**: *where you are* (geo-location coordinates)
+
 .. admonition:: note
-
-   There are multiple factors of authentication the three most common are:
-
-   - Knowledge based (*something you know*): a username and password
-   - Possession based (*something you have*): an ID badge or keycard
-   - Inherent based (*something you are*): a fingerprint or face unlock
 
    An application can be made more secure by requiring Multiple Factors for Authentication (MFA). Learn more about `MFA from Microsoft <https://docs.microsoft.com/en-us/azure/active-directory/authentication/concept-mfa-howitworks>`_.
 
 Authorization
--------------
+=============
 
-   **Authorization** is the level of access of a proven identity.
+   **Authorization**: the process of determining what a proven identity can access. 
 
-As an example think about a user of a bank. When the user proves their identity (*authentication*) they can access (*authorized*) their account information. However they cannot access (*unauthorized*) any other user's information. *Authorization* is what a user is authorized and unauthorized to access, which is their level of access.
-
-A way to keep them straight:
-
-- *Authentication* is about identity
-- *Authorization* is about access
+As an example think about a user of a bank site. When the user proves their identity with their username and password (*authentication*) they **can access** (*authorized*) **their** account information. However they **cannot access** (*unauthorized*) any **other** user's information. 
 
 .. admonition:: note
 
-   Understanding and correctly implementing Authentication and Authorization are imperative to the security of your application.You can learn more with the `Microsoft Auth documentation <https://docs.microsoft.com/en-us/azure/active-directory/develop/authentication-vs-authorization>`_.
-
-.. https://docs.microsoft.com/en-us/azure/active-directory/develop/authentication-vs-authorization
+   Understanding and correctly implementing Authentication and Authorization are imperative to the security of your application and business data. You can learn more with the `Microsoft Auth documentation <https://docs.microsoft.com/en-us/azure/active-directory/develop/authentication-vs-authorization>`_.
 
 OAuth
 =====
 
-   **OAuth** is the specification of sharing access of an identity between two unrelated applications.
+   **OAuth** is a mechanism for a user to *securely* share access to their data that exists on one service with another service. 
 
-You have probably used OAuth without realizing it. When you create, or sign into, an account on an application and you prove your identity (authentication) by signing into a separate unrelated application you are using OAuth. 
+For example, when you are registering for a Spotify account you can choose to create it using your Facebook account. First you **authenticate** with Facebook. Then you *grant access* to your Facebook profile data so Spotify can create a profile using that information. 
 
-For example when you are signing into your Spotify account it may redirect you to Facebook. You prove your identity (authentication) to Facebook and then it sends a notification to Spotify that you are who you claim to be. This is what grants you access to the Spotify platform. 
-
-During this OAuth process Spotify may access some of your data from Facebook, like your friends-list allowing you to connect with your Facebook friends on the Spotify platform.
+OAuth can also be used to grant *management access* of your data between services. If you allow Spotify to *manage* your Facebook data it can automatically post the music you are listening to *on your behalf*.
 
 .. admonition:: note
 
-   The following walkthrough will give a much deeper explanation of OAuth as well as a way OAuth is implemented. If you require more information checkout the `Microsoft OAuth technical guide <https://docs.microsoft.com/en-us/advertising/guides/authentication-oauth?view=bingads-13>`_.
+   The upcoming walkthrough will explore how OAuth works from a more detailed perspective. If you require more information take a look at the `Microsoft OAuth technical guide <https://docs.microsoft.com/en-us/advertising/guides/authentication-oauth?view=bingads-13>`_.
 
-AADB2C
-======
+Azure Active Directory B2C
+==========================
 
-In this class we will use Azure Active Directory Business to Customer (AADB2C) as our Customer Identity Access Manager (CIAM). 
+In this class we will use Azure Active Directory Business to Customer (AADB2C) service as our Customer Identity Access Manager (CIAM). According to the `Microsoft AADBDC documentation <https://docs.microsoft.com/en-us/azure/active-directory-b2c/overview>`_,
 
-This tool provides identity as a service. In essence AADB2C provides the bridge for allowing OAuth between user accounts (Google, Microsoft, Twitter, Facebook, Amazon, etc) known as providers to applications you develop and deploy.
+   "[AADB2C is] capable of supporting millions of users and billions of authentications per day. It takes care of the scaling and safety of the authentication platform ..."
 
-We will create and configure an AADB2C tenant that is connected to an email address of users. We will have to set which information is shared from the provider like their email address, and name. This information will be available to us in our application.
+AADB2C provides identity as a service. It acts as a bridge between your application and the identity of a user that is shared from an **identity provider** like Microsoft, GitHub or a generic Email and password provider.
 
-So users when they first sign up or login to our application they will be routed to a third party AADB2C page which is where the user will authenticate. AADB2C will then pass the user information to our application letting us know the user has been authenticated, and giving us the information we need in our application.
+It uses a protocol called **OIDC** (built over OAuth) that allows for the exchange of user **identity tokens**. We will learn more about OAuth, OIDC and identity tokens in the upcoming lessons.
 
-.. admonition:: note
-
-   OAuth, and CIAMs can be difficult to setup, configure, and use. We will be setting up a very simple provider and tenant example in our walkthrough to illustrate how it can be done. However, to continue your own learning checkout the `Microsoft AADBDC overview <https://docs.microsoft.com/en-us/azure/active-directory-b2c/overview>`_ you can find even more information by looking over the other links in that article.
+Afterwards, in the AADB2C walkthrough we will learn how it works by configuring it to manage Email-based identities for our Coding Events API.
