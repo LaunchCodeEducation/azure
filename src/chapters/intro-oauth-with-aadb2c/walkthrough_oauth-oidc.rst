@@ -41,19 +41,19 @@ OAuth Implicit Grant Flow
 
 Let's consider the steps of the OAuth authorization code grant flow presented in the Visual OAuth walkthrough:
 
-   - User Authenticates & Authorizes the Client
-   - Provider Redirects to Client with Auth Code
-   - Client Front-end Sends Auth Code to Back-end
-   - Client Back-end Exchanges (by using it's client secret) Auth Code For Access Token
+- User Authenticates & Authorizes the Client
+- Provider Redirects to Client with Auth Code
+- Client Front-end Sends Auth Code to Back-end
+- Client Back-end Exchanges (by using it's client secret) Auth Code For Access Token
 
 This grant flow is the preferred OAuth grant flow for applications that have a dedicated back-end. However, for applications that only contain a front-end like a Single Page Applications (SPA) the OAuth authorization code grant flow will not work!
 
 A new grant flow will need to be used for the SPA to gain an Access Token. Enter the OAuth Implicit Grant Flow:
 
-   - User Authenticates & Authorizes the Client
-   - Provider Redirects to Client with Access Token
+- User Authenticates & Authorizes the Client
+- Provider Redirects to Client with Access Token
 
-This flow is simple in comparison to the authorization code grant flow. The Client consists of only a front-end application all of it's code will be plainly visible to end users. There is no way a client secret could be privately stored, therefore an Auth Code could not be securely exchanged for an Access Token. For this reason the Provider sends the Access Token directly to the Client after the user has authenticated and authorized the Client.
+This flow is simple in comparison to the authorization code grant flow. The Client consists of only a front-end application all of it's code will be plainly visible to end users. There is no way a client secret could be privately stored, therefore an Auth Code could not be securely exchanged for an Access Token. For this reason the Provider sends the Access Token directly to the Client front-end (as a part of the redirect URI).
 
 The OAuth Implicit Grant Flow has a glaring vulnerability in that anyone that can view the network traffic would be able to plainly see the Access Token as a part of the Redirect URI. Malicious actors could take this Access Token and use it giving them access to information not meant for them! For this reason it is recommended to use the OAuth authorization code grant flow whenever possible.
 
