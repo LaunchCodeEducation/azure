@@ -37,11 +37,9 @@ To learn about OIDC we will need to explore a different type of OAuth grant, the
 .. a different type of flow, a different token, and a different spec
 
 
-
 - learned
    - define flow
    - define grants
-   - the authorization code grant flow
       - an alternative flow (implicit)
    - access tokens for delegating access / management of user data
       - JWT
