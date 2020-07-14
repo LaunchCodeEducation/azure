@@ -28,7 +28,7 @@ You will run this project locally on your machine. The `Visual OAuth repo <https
 How OIDC Works
 ==============
 
-From the Visual OAuth article we learned about the OAuth authorization code grant flow. This grant flow results in a token which represents a user identity being shared between applications.
+From the Visual OAuth article we learned about the OAuth authorization code grant flow. This grant flow results in an Access token which authorizes a user to access data, or an API. In this section we will be learning about a new OAuth grant flow, and how we will be working with it using OpenID Connect (OIDC).
 
 A **flow** is the process of obtaining an Access token using OAuth. This includes requesting and granting tokens.
 
