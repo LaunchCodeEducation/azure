@@ -83,15 +83,29 @@ if we wanted to write the astronauts to a file
    > New-Item -Type file -Name space-residents.txt -Value ($webRequest.people)
 
 
-Setup Tasks
------------
+Setup Task
+----------
 
-.. :: comment
+As a part of this studio you will need to upload the scripts you write to GitHub.
 
-   - create project directory
-   - fork and clone this starter into it
-   - (have them script those steps)
-      - move the script file into that repo, commit and push (what does windows do when you push)
+The first script (``setup-repository.ps``) accomplishes the following tasks:
+
+- create a script for this set of tasks named ``setup-repository.ps``
+- create a project directory named ``powershell-studio`` in your home directory
+- fork this repository
+- clone the project repository into the ``powershell-studio``
+
+admonition:: note
+
+   As a bonus task you can automate the final steps of this task within your script by completing the following in your script:
+
+   - move the ``setup-repository.ps`` script into the ``powershell-studio`` directory
+   - from the ``powershell-studio`` directory add and commit the changes to git
+
+After running the script successfully, push the script to GitHub.
+
+Example Script
+--------------
 
 Submitting your work
 --------------------
