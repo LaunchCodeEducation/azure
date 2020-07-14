@@ -100,118 +100,76 @@ Check that your form matches the image below **and that you have chosen the Azur
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/9-create-final-review.png
 
-Register & Configure an AADB2C Application
-==========================================
+Register an AADB2C Application
+==============================
 
-Now that our AADB2C tenant is set uup we can register our Coding Events API application. Registering an application is a configuration that takes place *within the tenant*. For this reason we will need to **switch to the tenant directory**. 
-
-Register the Coding Events API application
-------------------------------------------
-
-In the search bar at the top of the Azure Portal enter: ``<name>0720`` and select the tenant resource:
+section: we setup AADB2C, we still have to register an application
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/10search-for-tenant-resource.png
-   :alt: Azure Portal search for tenant resource
-
-This will send you to the linked ADB2C tenant resource view:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/11tenant-home.png
-   :alt: AADB2C tenant resource dashboard
 
-Select the **Azure ADB2C Settings** icon. This will open a **new tab in the tenant directory**:
+click on the Azure AD B2C Settings button (it's giant because it has an image)
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/12tenant-portal.png
-   :alt: AADB2C tenant settings icon
 
-.. admonition:: tip
+note: you are in the student-ADB2C directory (organization name of the tenant)
 
-   In the top-right corner notice that **in this new tab** your Azure directory has been automatically switched. It should now say you are in the ``<Name> ADB2C`` tenant directory rather than your ``Default`` directory.
-
-On the left sidebar select the **App Registration** link. Then select **New registration**:
+click on ``App Registration`` under the Manage header in the left sidebar
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/13new-registration.png
-   :alt: AADB2C tenant App Registrations
-
-For this form we will **leave all of the default settings** except for the following:
-
-- **Name**: the name of our application, ``Coding Events API``
-- **Redirect URI**: where to redirect the user after authenticating, ``https://jwt.ms``
-
-For the Redirect URI we will provide the URL of the Microsoft JWT tool. After authenticating and being redirected, the tool will automatically extract the identity token and provide a UI for inspecting it. 
-
-Confirm that your configuration matches the screenshot below, then select **Register**:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/14new-app-registration-form-final.png
-   :alt: AADB2C tenant App Registration completed form
 
+everything is default except for redirect URI
 
-Configure the Coding Events API application registration
---------------------------------------------------------
+- redirect URI: https://jwt.ms
 
-After registering you will be sent to the Coding Events API application dashboard. Each registered application will have its own dashboard like this one that allows you to configure it independently from the others.
+click ``Register`` to confirm
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/15app-dashboard.png
-   :alt: Coding Events API application registration dashboard
 
-We will need to configure this application to support the **implicit grant OAuth flow** for receiving the identity token of an authenticated user. In the left sidebar select the **Authentication** settings. 
+you will need the app ID
 
-We will leave all defaults except for the **Implicit grant** section. Scroll down to this section then select both checkboxes to enable the implicit grant:
+and the tenant ID
 
-- **Access Tokens**
-- **ID tokens**
+.. not sure which one, but the student will need one of app, or tenant ID
 
-Confirm your configuration matches the screenshot below then use the **Save** icon at the top:
+select ``Authentication`` under Management header
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/16grant-implicit-flow.png
-   :alt: Coding Events API application Authentication implicit grant settings
 
-Before continuing to the next step, return to the tenant dashboard. You can use the ``Azure AD B2C | App Registrations`` breadcrumb link at the top as a shortcut.
+everything default except ID tokens, access tokens!
 
-Set Up the SUSI Flow
-====================
+select ID tokens under ``Implicit Grant``
+select access tokens
 
-The final step of our configuration is to set up a User Flow (SUSI) for registering and authenticating users. User Flows can be configured 
+go back to the app registrations
 
-.. admonition:: tip
+note:: checkout the breadcrumbs for easy access
 
-   User flows are configured **independently from registered applications**. Flows can be *reused* across any number of applications within the organization **that share the same flow requirements**.
+.. :: comment
 
-   For our purposes we will customize a user flow specific to our Coding Events API application.
+   YOU MUST DO THIS! will need new images
 
-In the left sidebar of the **tenant dashboard** switch from App Registrations by selecting the **User Flows** option under *Policies*.
+   legacy view allow implicit flow switch to true
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/17select-user-flows.png
-   :alt: AADB2C tenant dashboard select User Flows configuration
 
-Create a SUSI flow
-------------------
+.. :: comment
 
-A User 
+   maybe come back here for setting APP ID
 
-In the User Flows view select **New User flow**:
+   .. image:: 17!
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/18-new-user-flow-select.png
-   :alt: AADB2C User Flows select new User flow
-
-Then select the recommended **Sign up and sign in** (SUSI) flow template:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/19select-susi-flow.png
-   :alt: select SUSI User Flow template
 
-This will present the SUSI flow form. As mentioned previously we will allow users to register using the generic Email provider.
-
-.. admonition:: note
-
-   The Email provider is available by default. Additional providers can be configured in the **Identity providers** settings on the left sidebar. After they are configured they will be available for use in creating or editing your tenant's User Flows. 
-
-   .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/fluff-2-identity-providers-show.png
-      :alt: Identity provider settings view
-   
-For the top half of the form (steps 1-3) configure the following settings:
-
-#. **Name**: after the ``B2C_1_`` prefix enter ``coding-events-api-susi``
-#. **Providers**: we will use the ``Email signup`` provider
-#. **MFA**: leave ``disabled``
+#. name: coding-events-api-susi
+#. select email sign-up
+#. no MFA (default)
+#. 
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/20susi-flow-steps1-3.png
 
