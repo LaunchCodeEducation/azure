@@ -28,8 +28,19 @@ You will run this project locally on your machine. The `Visual OAuth repo <https
 How OIDC Works
 ==============
 
+From the Visual OAuth article we learned about the OAuth authorization code grant flow. The OAuth authorization code grant flow results in a token which represents an identity being shared between applications. Outside of the OAuth authorization code grant flow there are other grant flows.
+
+A **flow** is the process of token management including: requesting tokens, granting tokens and how the token is managed throughout the process.
+
+To learn about OIDC we will need to explore a different type of OAuth grant, the implicit grant flow. This grant has a different flow, a different token, and a different spec.
+
+.. a different type of flow, a different token, and a different spec
+
+
+
 - learned
    - define flow
+   - define grants
    - the authorization code grant flow
       - an alternative flow (implicit)
    - access tokens for delegating access / management of user data
