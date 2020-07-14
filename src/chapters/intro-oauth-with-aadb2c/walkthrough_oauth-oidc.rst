@@ -28,13 +28,17 @@ You will run this project locally on your machine. The `Visual OAuth repo <https
 How OIDC Works
 ==============
 
-From the Visual OAuth article we learned about the OAuth authorization code grant flow. This grant flow results in an Access token which authorizes a user to access data, or an API. In this section we will be learning about a new OAuth grant flow, and how we will be working with it using OpenID Connect (OIDC).
+From the Visual OAuth article we learned about the OAuth authorization code grant flow. This grant flow results in an Access token which authorizes a user to access data, or an API.
 
-A **flow** is the process of obtaining an Access token using OAuth. This includes requesting and granting tokens.
+   A **grant flow** is the process of a client obtaining an Access token via OAuth.
 
-A **grant** is the act of providing an an Access token to the client.
+.. ::
 
-To learn about OIDC we will need to explore a different type of OAuth grant flow, the OAuth Implicit grant flow. This grant flow has a different flow, a different token, and a different spec.
+   A **flow** is the process of obtaining an Access token using OAuth. This includes requesting and granting tokens.
+
+   A **grant** is the act of providing an an Access token to the client.
+
+In this section we will be learning about a new OAuth grant flow, OAuth Implicit grant flow. This grant flow has a different process, a different token, and a different spec.
 
 OAuth Implicit Grant Flow
 -------------------------
