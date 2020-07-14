@@ -6,9 +6,7 @@ In this walkthrough we will set up our own identity manager using Azure. The Azu
 
 In our case we will set up AADB2C using an Email Provider (a generic identity tied to an email address). As an identity management service, AADB2C uses the OIDC protocol that will provide an **identity token** to our application after a user registers or authenticates with their email and password.
 
-When you provision an AADB2C service Azure will create a **tenant directory**. The tenant directory represents the authentication authority *for your entire organization*. Within the tenant you can **register applications** (like our Coding Events API) and configure **identity flows** that users utilize to connect with the registered applications. 
-
-The identity flows allow you to customize the user experience *flows* like creating an account (identity) and signing in or out. Each flow can specify the **claims** (identity fields) that need to be collected from the user and provided in the identity token. We will be configuring a Sign Up / Sign In **(SUSI) flow** for our API users to register and access members-only endpoints.  
+When you provision an AADB2C service Azure will create a **tenant directory**. The tenant directory represents the authentication authority *for your entire organization*. Within the tenant you can **register applications** (client services like our Coding Events API) and configure **identity flows** that users utilize to connect with the registered applications.
 
 Checklist
 =========
@@ -170,11 +168,21 @@ Before continuing to the next step, return to the tenant dashboard. You can use 
 Set Up the SUSI Flow
 ====================
 
-The final step of our configuration is to set up a User Flow (SUSI) for registering and authenticating users. User Flows can be configured 
+The final step of our configuration is to set up a User Flow for registering and authenticating users of our Coding Events API. We will be configuring a Sign Up / Sign In **(SUSI) flow** with an Email provider to manage our API user identities with an email and password.
+
+A User Flow (identity flow) allows you to customize the user *process* like creating an account and signing in or out. For each User Flow you can configure:
+
+- the identity provider(s) that the flow will allow
+- the appearance of the flow UI (like a registration form)
+- the **claims** used in the flow
+
+Each flow can specify the claims (user attributes) that need to be **collected** from the user during registration and **provided** in the identity token. 
+
+Claims are used to standardize the identity data that is collected across the identity providers used in a flow. Some examples of claims include built-in claims like city and age or `custom claims<https://docs.microsoft.com/en-us/azure/active-directory-b2c/user-profile-attributes>`_ that apply to a more specific context.
 
 .. admonition:: tip
 
-   User flows are configured **independently from registered applications**. Flows can be *reused* across any number of applications within the organization **that share the same flow requirements**.
+   User flows are configured **independently from registered applications**. Flows can be customized for a single application or *reused* across any number of applications within the organization **that share the same flow requirements**.
 
    For our purposes we will customize a user flow specific to our Coding Events API application.
 
@@ -185,8 +193,6 @@ In the left sidebar of the **tenant dashboard** switch from App Registrations by
 
 Create a SUSI flow
 ------------------
-
-A User 
 
 In the User Flows view select **New User flow**:
 
@@ -214,18 +220,43 @@ For the top half of the form (steps 1-3) configure the following settings:
 #. **MFA**: leave ``disabled``
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/20susi-flow-steps1-3.png
+   :alt: SUSI flow steps 1-3 completed
 
-.. note:: click show more
+Scrolling down to the bottom half of the form you will see a section for configuring the claims. Claims are separated into **collected** (during registration) and **returned** (in the identity token).
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/21show-more-sidebar.png
+For our SUSI flow we will use the following claims:
 
+.. list-table:: SUSI flow claims
+   :widths: 15 30 30
+   :header-rows: 1
+
+   * - Collected claims
+     - ``Display Name`` (username)
+     - ``Email Address``
+   * - Returned claims 
+     -  ``Display Name``
+     -  ``Email Addresses``
+     -  ``User's Object ID``
+
+Click the **show more** link to open the full claims selection panel. Select each collected and returned claim then close the panel. 
+
+.. admonition:: note
+
+   The ``User's Object ID`` or **OID** field is the unique identifier for each user within the AADB2C tenant. It is **at the end*** of the claims sidebar.
+   
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/22show-more-user-attributes-form1.png
+   :alt: SUSI flow claims sidebar (top)
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/23show-more-user-attributes-form2.png
+   :alt: SUSI flow claims sidebar (bottom with OID)
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/24create-susi-flow-form-final.png
+After setting the claims you can **create** the SUSI flow. This will send you back to the User Flows settings view:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/25after-flow-created.png
+   :alt: User Flows settings view with new SUSI flow
+
+Test the SUSI Flow
+==================
 
 click on the created flow
 
