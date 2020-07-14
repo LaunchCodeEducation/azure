@@ -50,7 +50,7 @@ Let's consider the steps of the OAuth authorization code grant flow presented in
 - Client Front-end Sends Auth Code to Back-end
 - Client Back-end Exchanges (by using it's client secret) Auth Code For Access Token
 
-This grant flow is the preferred OAuth grant flow for applications that have a dedicated back-end. However, for applications that only contain a front-end like a Single Page Applications (SPA) the OAuth authorization code grant flow will not work!
+This grant flow is the preferred OAuth grant flow for applications that have a dedicated back-end. However, for Client applications that only consist of a front-end, like a Single Page Application (SPA), the OAuth authorization code grant flow will not work!
 
 A new grant flow will need to be used for the SPA to gain an Access Token. Enter the OAuth Implicit Grant Flow:
 
