@@ -30,34 +30,16 @@ How OIDC Works
 
 From the Visual OAuth article we learned about the OAuth authorization code grant flow. The OAuth authorization code grant flow results in a token which represents an identity being shared between applications. Outside of the OAuth authorization code grant flow there are other grant flows.
 
-A **flow** is the process of token management including: requesting tokens, granting tokens and how the token is managed throughout the process.
+A **flow** is the process of obtaining a token using OAuth. This includes requesting and granting tokens.
 
-To learn about OIDC we will need to explore a different type of OAuth grant, the implicit grant flow. This grant has a different flow, a different token, and a different spec.
+A **grant** is the act of providing a token to the client.
 
-.. a different type of flow, a different token, and a different spec
+To learn about OIDC we will need to explore a different type of OAuth grant flow, the OAuth Implicit grant flow. This grant flow has a different flow, a different token, and a different spec.
 
+OAuth Implicit Grant Flow
+-------------------------
 
-- learned
-   - define flow
-   - define grants
-      - an alternative flow (implicit)
-   - access tokens for delegating access / management of user data
-      - JWT
-      - identity tokens for sharing the identity of a user
-- sharing identity
-   - OIDC
-      - built over oauth to navigate around pseudo-authentication with OAuth (link)
-         - https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth#pseudo-authentication-with-oauth-20
-   - special type of provider service called identity provider
-      - can be both a provider (OAuth) and identity provider or standalone
-         - plug AADB2C as an identity manager of multiple identity providers
-         - for sharing SSO across multiple providers and applications in your organization
-   - sharing the identity session of a user for SSO
-
-OAuth Implicit Flow
--------------------
-
-Let's consider the steps of OAuth presented to you in the Visual OAuth walkthrough:
+Let's consider the steps of the OAuth authorization code grant flow presented to you in the Visual OAuth walkthrough:
 
 - User Authenticates & Authorizes the Client
 - Provider Redirects to Client with Auth Code
@@ -86,11 +68,19 @@ The second difference in Implicit Flow is that the Client Back-end does not exch
 
 .. :: comment: great video from oauth.net about implicit flow: https://oauth.net/2/grant-types/implicit/
 
-Identity Tokens
----------------
+JSON Web Tokens (JWT)
+---------------------
 
-Sharing Identity
-----------------
+A **JSON Web Token** (JWT) is a way of securely transferring data over a network. The data is encrypted, signed, represented by JSON, and attached to an HTTP header.
+
+A JWT is the token that represents a user identity that is granted as a part of an OAuth grant flow.
+
+.. admonition:: note
+
+   Although we will be receiving a JWT as our identity token we will not explore the concept of JWTs any further. Understanding how they encrypt, sign, and decrpyt data is important you can learn more about them by reading the `jwt.io introduction <https://jwt.io/introduction/>`_.
+
+OpenID Connect (OIDC)
+---------------------
 
 From Microsoft: 
 
@@ -102,3 +92,21 @@ AADB2C uses the OIDC protocol to authenticate users via OAuth. Outside of authen
 
    We won't explore OIDC as a concept in this class, but learning more about the `Microsoft implementation of the OIDC protocol <https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect>`_ may be beneficial. We will see Microsoft's implementation of OIDC through AADB2C.
 
+.. :: comment
+
+   - learned
+      - define flow
+      - define grants
+         - an alternative flow (implicit)
+      - access tokens for delegating access / management of user data
+         - JWT
+         - identity tokens for sharing the identity of a user
+   - sharing identity
+      - OIDC
+         - built over oauth to navigate around pseudo-authentication with OAuth (link)
+            - https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth#pseudo-authentication-with-oauth-20
+      - special type of provider service called identity provider
+         - can be both a provider (OAuth) and identity provider or standalone
+            - plug AADB2C as an identity manager of multiple identity providers
+            - for sharing SSO across multiple providers and applications in your organization
+      - sharing the identity session of a user for SSO
