@@ -9,6 +9,10 @@ This article will give you a few tasks that you should accomplish using what you
 Setup Task
 ==========
 
+.. repo they will clone https://github.com/LaunchCodeEducation/powershell-practice
+
+.. repo has 2 files: ``launchcode-repos.ps`` and ``powershell-repo.ps`` they have prompts in the file for how the student can complete the tasks
+
 As a part of this studio you will need to upload the scripts you write to GitHub.
 
 The first script (``setup-repository.ps``) accomplishes the following tasks:
@@ -27,8 +31,8 @@ The first script (``setup-repository.ps``) accomplishes the following tasks:
 
 After running the script successfully, push the script to GitHub.
 
-Studio Task
-===========
+Studio Tasks
+============
 
 Using the ``Invoke-RestMethod`` cmdlet you will need to write various scripts to gather information from the `GitHub Developers API <https://developer.github.com/v3/>`_.
 
