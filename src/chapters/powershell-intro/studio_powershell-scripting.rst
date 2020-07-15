@@ -2,7 +2,7 @@
 Studio: PowerShell
 ==================
 
-PowerShell like most languages and tools, requires practice to facilitate learning and memory.
+PowerShell like most languages and tools requires practice to facilitate learning and memory.
 
 This article will give you a few tasks that you should accomplish using what you have learned about PowerShell from this chapter.
 
@@ -159,6 +159,7 @@ LaunchCodeEducation Repositories
 
 Your first set of ``Invoke-RestMethod`` tasks will be accessing ``https://api.github.com/orgs/launchcodeeducation/repos``.
 
+- create a file named ``launchcode-repos.ps`` to serve as a container for your following work
 - how many repositories are returned when making a GET request to ``https://api.github.com/orgs/launchcodeeducation/repos``?
 - what are the names of the repositories returned by a GET request to ``https://api.github.com/orgs/launchcodeeducation/repos``?
 - save all the names of the repositories in alphabetical order as a CSV file named ``launchcode-education-repo-names.csv``
