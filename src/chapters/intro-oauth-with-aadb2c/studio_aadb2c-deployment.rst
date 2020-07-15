@@ -18,6 +18,7 @@
    - public IP address
    - kv name
    - aadb2c config stuff
+      - set the redirect URL for this new application (app registrations > authentication > add URI button
 #. setup VM
    - TODO script
       - give them NGINX and SSL script with comments
