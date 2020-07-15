@@ -1,3 +1,12 @@
+===============
+Studio Solution
+===============
+
+setup-repository.ps
+===================
+
+Students create this file themselves, and have to move it to the proper directory.
+
 .. sourcecode:: powershell
    :caption: setup-repository.ps
 
@@ -26,6 +35,11 @@
 
    # students would then need to execute this script
    # after the script executes successfully they will need to push up to GitHub
+
+launchcode-repos.ps
+===================
+
+The starter script is given to the students, but they are responsible for coming up with PS commands that will solve the prompts.
 
 .. sourcecode:: powershell
    :caption: launchcode-repos.ps
@@ -65,6 +79,12 @@
    (Invoke-RestMethod -URI https://api.github.com/repos/LaunchCodeEducation/cs50x-live/issues)[4].url
 
    # upon answering all the questions students should save their results in a script and push it to GitHub
+
+
+powershell-repo.ps
+==================
+
+The starter script is given to the students, but they are responsible for coming up with PS commands that will solve the prompts.
 
 .. sourcecode:: powershell
    :caption: powershell-repo.ps

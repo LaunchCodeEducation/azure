@@ -13,7 +13,7 @@ Setup Task
 
 .. repo has 2 files: ``launchcode-repos.ps`` and ``powershell-repo.ps`` they have prompts in the file for how the student can complete the tasks
 
-As a part of this studio you will need to upload the scripts you write to GitHub.
+To complete this studio you will need to upload three scripts to a GitHub repository. Two of the scripts will be provided for you and you will be responsible for filling out the scripts. The first script will be one you must create yourself.
 
 The first script (``setup-repository.ps``) accomplishes the following tasks:
 
@@ -41,7 +41,7 @@ Using the ``Invoke-RestMethod`` cmdlet you will need to write various scripts to
 Invoke-RestMethod Examples
 --------------------------
 
-The most simple example is making a GET request to the ``astros.json`` endpoint:
+The most simple example is making a request to the Open Notify API ``astros.json`` endpoint:
 
 .. sourcecode:: powershell
 
@@ -156,7 +156,7 @@ And finally writing this data to a CSV file:
 
 The ``Invoke-RestMethod`` cmdlet is a powerful tool for working with APIs. When combined with our knowledge of PowerShell we have a huge toolbox of things we can do with the data. 
 
-Continue exploring ``Invoke-RestMethod`` and the `Open Notify API <http://api.open-notify.org/>`_. The next section will require you to use the same PowerShell tools to gather, organize, and write data from the `GitHub Developers API <https://developer.github.com/v3/>`_.
+Continue exploring ``Invoke-RestMethod`` and the `Open Notify API <http://api.open-notify.org/>`_. The next sections will require you to use the same PowerShell tools to gather, organize, and write data from the `GitHub Developers API <https://developer.github.com/v3/>`_.
 
 LaunchCodeEducation Repositories
 --------------------------------
