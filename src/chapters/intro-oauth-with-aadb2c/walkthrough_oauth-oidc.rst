@@ -28,40 +28,30 @@ You will run this project locally on your machine. The `Visual OAuth repo <https
 How OIDC Works
 ==============
 
-From the Visual OAuth article we learned about the OAuth authorization code grant flow. This grant flow results in an Access token which authorizes a user to access data, or an API.
+From the Visual OAuth article we learned about the OAuth authorization code grant flow. This grant flow results in an Access token which authorized the Client API to access the user's protected GitHub API data.
 
-.. A **grant flow** is the process of a client obtaining an Access token via OAuth.
+   An OAuth **grant flow** is the general term for the process of a Client obtaining an Access token via OAuth
 
-A **flow** is a series of steps to achieve an end goal.
-
-A **grant** is the act of providing an an Access token to the client via OAuth.
-
-.. some change
-
-In this section we will be learning about a new OAuth grant flow, OAuth Implicit grant flow. This grant flow has a different process, a different token, and a different spec.
+In this section we will be learning about a new OAuth grant flow called the Implicit grant flow.
 
 OAuth Implicit Grant Flow
 -------------------------
 
 Let's consider the steps of the OAuth authorization code grant flow presented in the Visual OAuth walkthrough:
 
-- User Authenticates & Authorizes the Client
-- Provider Redirects to Client with Auth Code
-- Client Front-end Sends Auth Code to Back-end
-- Client Back-end Exchanges (by using it's client secret) Auth Code For Access Token
+#. User Authenticates & Authorizes the Client
+#. Provider Redirects to Client with Auth Code
+#. Client Front-end Sends Auth Code to Back-end
+#. Client Back-end Exchanges (by using it's client secret) Auth Code For Access Token
 
 This grant flow is the preferred OAuth grant flow for Client applications that have a dedicated back-end. 
 
-However, for Client applications that only consist of a front-end, like a Single Page Application (SPA), the OAuth authorization code grant flow will not work. Without a Client back-end the client secret cannot be stored which is necessary for exchanging an Auth Code for an Access Token.
+The implicit grant flow is suitable for Client applications that can not securely store the **client secret**. Recall that this secret is needed in the 4th step of the authorization code grant flow. Typically this scenario is encountered in Client applications that only consist of a front end.
 
-We will need a different grant flow so a SPA can get an Access Token via OAuth. Enter the OAuth Implicit Grant Flow:
+In the implicit grant flow there are only two steps:
 
-- User Authenticates & Authorizes the Client
-- Provider Redirects to Client with Access Token
-
-This flow is simple in comparison to the authorization code grant flow. Since there isn't a Client back-end there is no way a client secret could be privately stored, therefore an Auth Code could not be securely exchanged for an Access Token. For this reason the Provider sends the Access Token directly to the Client front-end as a part of the redirect URI.
-
-The OAuth Implicit Grant Flow has a glaring vulnerability in that anyone that can view the network traffic would be able to plainly see the Access Token as a part of the Redirect URI. Malicious actors could take this Access Token and use it giving them access to information not meant for them! It is recommended to use the OAuth authorization code grant flow whenever possible.
+#. User Authenticates & Authorizes the Client
+#. Provider Redirects to Client with Access Token
 
 .. admonition:: note
 
@@ -70,23 +60,29 @@ The OAuth Implicit Grant Flow has a glaring vulnerability in that anyone that ca
       - `OAuth 2.0 Implicit Grant Flow spec <https://tools.ietf.org/html/rfc6749#section-4.2>`_
       - `Microsoft article about Implicit Flow in AADB2C <https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application>`_
 
-The end result of every OAuth grant flow is to provide an Access token to the client. The token must have a data format, luckily the accepted format is a familiar one: JSON.
+AADB2C uses the implicit grant flow for providing the identity token of our users. The token must have a data format, luckily the accepted format is a familiar one: JSON.
 
 JSON Web Tokens (JWT)
 ---------------------
 
-A **JSON Web Token** (JWT) is a way of securely transferring data over a network. The data is encrypted, signed, represented by JSON, and can be attached to an HTTP header. 
-
 In OAuth there are two types of tokens:
 
-- Access Tokens: credentials that grant access (authorization) to data, or an API
-- Identity Tokens: container of identity information that can be shared between applications
+- Access Tokens: credentials that grant access (authorization) to data from a provider API
+- Identity Tokens: a JWT with identity information that can be shared between applications
 
-In our OAuth grant flows the end result was always an Access Token, however these tokens do not contain information about the user. If our application wants to gain identity information about their user they will need to get their hands on an Identity Token.
+A **JSON Web Token** (JWT) is a way of securely transferring data over a network. A JWT is made up of 3 components:
+
+#. **header**: token metadata
+#. **payload**: the JSON data
+#. **signature**: a digital signature of authenticity
+
+The JSON data is `signed for authenticity <https://auth0.com/docs/tokens/guides/validate-jwts#check-the-signature>`_ and Base64 encoded for being transported. The token is then attached to the ``Authorization`` HTTP header. 
 
 .. admonition:: note
 
    To learn more about JWTs start with the `jwt.io introduction <https://jwt.io/introduction/>`_.
+
+In our OAuth grant flows the end result was always an Access Token, however these tokens do not contain information about the user. If our application wants to gain identity information about their user they will need to get their hands on an Identity Token.
 
 OpenID Connect (OIDC)
 ---------------------
