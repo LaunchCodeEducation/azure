@@ -224,25 +224,22 @@ For the top half of the form (steps 1-3) configure the following settings:
 
 Scrolling down to the bottom half of the form you will see a section for configuring the claims. Claims are separated into **collected** (during registration) and **returned** (in the identity token).
 
-For our SUSI flow we will use the following claims:
+For our SUSI flow we will use the following **collected claims**:
 
-.. list-table:: SUSI flow claims
-   :widths: 15 30 30
-   :header-rows: 1
+- ``Display Name`` (username)
+- ``Email Address``
 
-   * - Collected claims
-     - ``Display Name`` (username)
-     - ``Email Address``
-   * - Returned claims 
-     -  ``Display Name``
-     -  ``Email Addresses``
-     -  ``User's Object ID``
+And the following **returned claims**:
 
-Click the **show more** link to open the full claims selection panel. Select each collected and returned claim then close the panel. 
+-  ``Display Name``
+-  ``Email Addresses``
+-  ``User's Object ID``
 
 .. admonition:: note
 
-   The ``User's Object ID`` or **OID** field is the unique identifier for each user within the AADB2C tenant. It is **at the end*** of the claims sidebar.
+   The ``User's Object ID`` or **OID** field is the unique identifier for each user within the AADB2C tenant. It can be found **at the end** of the claims sidebar.
+
+Click the **show more** link to open the full claims selection panel. Select each collected and returned claim then close the panel. 
    
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/22show-more-user-attributes-form1.png
    :alt: SUSI flow claims sidebar (top)
@@ -255,49 +252,99 @@ After setting the claims you can **create** the SUSI flow. This will send you ba
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/25after-flow-created.png
    :alt: User Flows settings view with new SUSI flow
 
-Test the SUSI Flow
+Test the User Flow
 ==================
 
-click on the created flow
+Our final step is to test out the SUSI flow we created. We will register our first user accounts in the new AADB2C tenant using this flow. After registering we will inspect the identity token and the returned claims that were included in it.
+
+From the User Flows settings view select the new flow, ``B2C_1_coding-events-api-susi``. This will take you to the SUSI flow dashboard where you can modify and test (run) the flow:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/26flow-dashboard.png
+   :alt: SUSI flow dashboard view
 
-.. :: comment great place for fluff if we need it a note that says click through here and you can add new ID providers and set attributes
+.. admonition:: note
+
+   For our purposes we used the built-in claims and default UI styling provided by AADB2C. However, from this dashboard you can modify the flow's:
+
+   - identity providers (to add additional providers like Microsoft or GitHub)
+   - user attributes (previously referred to as collected claims)
+   - application claims (previously referred to as the returned claims)
+   - `page layouts <https://docs.microsoft.com/en-us/azure/active-directory-b2c/customize-ui-overview>`_ (the styling of the UI)
+
+Run the SUSI flow
+-----------------
+
+In the top left corner of the SUSI flow dashboard select the **Run user flow** button:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/27run-user-flow.png
+   :alt: SUSI flow dashboard Run User Flow button
+
+This will open the flow sidebar panel:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/28run-user-flow-sidebar.png
+   :alt: SUSI flow sidebar panel to configure and initiate the flow
 
-.. :: 
+At the top of the panel you will see the `OIDC metadata URL <https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#fetch-the-openid-connect-metadata-document>`_. This document provides metadata with the OIDC endpoints for using the AADB2C identity management service. Although it is human readable it is meant for programmatic access by applications to integrate into the AADB2C system.
 
-   comment: grab the link as students may need to add that to their source code in studio 
-
-   - link JWTAADB2C metadata address in app settings
-   - metadata link: https://student0720tenant.b2clogin.com/student0720tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_coding-events-api-susi
-   - authorization URL: https://student0720tenant.b2clogin.com/student0720tenant.onmicrosoft.com/oauth2/v2.0/authorize?p=b2c_1_coding-events-api-susi
-
-click run user flow
+The run flow panel allows you to test out the flow with a specific application and reply (redirect) URL. In our case we only have a single application and reply URL to choose from. Select the **Run user flow** button to open a new tab with the AADB2C login page:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/29user-flow-auth-form.png
+   :alt: AADB2C login page
 
-your app won't have any users to start so you will have to register one -- this is just like any registration you've used before
+Register a user account
+-----------------------
 
-click sign up now
+Initially the AADB2C tenant will not have any user accounts in it. Let's create a new account by selecting the **Sign up now** link at the bottom. 
+
+You will need to provide *and verify* your email address. 
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/30signup-email.png
+   :alt: AADB2C registration email verification
+
+Azure will email you a temporary verification code which you need to enter:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/31-signup-email-verification-code.png
+   :alt: AADB2C enter email verification code
+
+After verifying your email address you need to provide a username and password. The password has default security constraints that require a relatively complex value:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/32signup-email-password-requirements.png
+   :alt: AADB2C password constraints
+
+As with other passwords in this course we will all use the same one to make troubleshooting more consistent:
+
+- **password**: ``LaunchCode-@zure1``
+
+The username field is presented because we chose the ``Display Name`` *collected field* when configuring the SUSI flow. You can enter your name here (in place of ``student`` in the screenshot):
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/33signup-email-final.png
+   :alt: AADB2C registration final form
+
+After registering you will be *redirected* to the redirect URL (``https://jwt.ms``). This tool will capture the JWT identity token and decode it for inspection.
+
+Inspect the identity token
+--------------------------
+
+Congratulations, you now have your first managed user identity!
+
+As a reminder the redirect will provide the identity token as a query parameter (``id-token``) which you can view in the URL bar. The Microsoft JWT tool will automatically extract this token from the URL and decode it.
+
+From within the tool you can view the decoded JWT:
+
+- **header**: highlighted in red
+- **payload**: highlighted in blue
+- **signature**: highlighted in green
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/34final-token.png
+   :alt: decoded identity token
 
-.. :: comment: https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview summarizes all the tokens link to it, or describe some of it
+Selecting the **Claims** tab will switch to a break down of the claims in the payload. For each claim you can view a description of its meaning and usage:
 
-.. :: comment: link to OIDC https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/35final-token-claims.png
+   :alt: decoded identity token claims
 
-.. :: comment: implicit flow link: https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application
+Notice that these claims describe the relationship between the user (you), the AADB2C tenant (the identity manager) and the client application (the Coding Events API):
 
-.. :: comment: best practices: https://docs.microsoft.com/en-us/azure/active-directory-b2c/best-practices
+- **iss[uer]**: the AADB2C tenant is the Active Directory account manager and issuer of the identity token
+- **sub[ject]**: the subject of the token is your OID (unique identifier in the AADB2C tenant directory)
+- **aud[ience]**: the audience, or recipient, of the token is your registered application's identifier
