@@ -157,59 +157,48 @@ Continue exploring ``Invoke-RestMethod`` and the `Open Notify API <http://api.op
 LaunchCodeEducation Repositories
 --------------------------------
 
-Your first set of ``Invoke-RestMethod`` tasks will be accessing ``https://api.github.com/orgs/launchcodeeducation/repos``.
+In the repository you cloned you will find a file named ``launchcode-repos.ps``. This script file has prompts for you to solve using PowerShell. After using PowerShell to answer the prompt copy your command underneath the prompt in the file.
 
-- create a file named ``launchcode-repos.ps`` to serve as a container for your following work
+The prompts in the file are:
+
 - how many repositories are returned when making a GET request to ``https://api.github.com/orgs/launchcodeeducation/repos``?
 - what are the names of the repositories returned by a GET request to ``https://api.github.com/orgs/launchcodeeducation/repos``?
 - save all the names of the repositories in alphabetical order as a CSV file named ``launchcode-education-repo-names.csv``
-- are there any issues attached to the first repository in the list, if so how many?
-- save the 
+- are there any issues attached to the first repository in the list?
+- what is the issues_url for the first repository in the list?
+- make a new request to that issues_url
+- how many issues are found
+- how would you access the 5th issues of this list
+- what is the id, title, and URL for the fifth issues in this list?
+
+
+Upon completing this file push it to your GitHub repository don't forget to push the ``launchcode-education-repo-names.csv`` file you created in one step as well.
 
 PowerShell Repository
 ---------------------
 
+You also need to answer the prompts in the ``powershell-repo.ps`` file:
+
+- Invoke-RestMethod -URI https://api.github.com/repos/powershell/powershell
+- how many github users are watching the powershell repo and how many users have subscribed to the powershell repo
+- when was the repo created
+- what is the subscribers URL
+- how many users are returned when you make a request to the subscribers url?
+- what are the login usernames of the subscribers found at that URL in alphabetical order
+- what was the login name of the most recent commit?
+- when was the most recent pull request created and has it been merged?
+- what was the login name of the user that made the most recent pull request, and what is the URL to their profile
+
+
+After completing the prompts push your changes to GitHub.
+
 Submitting your work
 --------------------
 
-To submit your work you will 
+Upon completing and pushing:
 
+- ``setup.ps``
+- ``launchcode-repos.ps``
+- ``powershell-repo.ps``
 
-
-
-.. :: comment: make a REST request to GitHub
-
-.. :: comment: get all the repos of the LaunchCodeEducation
-
-.. :: format: the top five in a table
-
-.. :: write it in a script
-
-.. :: can you do this in a pipe
-
-.. :: comment: extension of that is to make a studio where they just do a scripted deployment with the AZ CLI
-
-- create a repo
-
-- setup a directory
-
-- as a starter -- have them fork write a little script that will clone their forked repo (add a file to it ``name.txt``, stage, commit, and push all in one script)
-
-script
-   - clones
-   - adds name.txt file
-   - 
-
-start with the solution write the thing first and then work backwards
-   - make a web request
-
-
-- how many total issues are there on the PowerShellCore repo?
-
-
-.. (Invoke-RestMethod -URI https://api.github.com/orgs/launchcodeeducation/repos)
-
-- display to Table
-- convert the JSON to a CSV
-- put a bonus hit another API give (different CMDlets to use, and different Open Public API) (Convert-Tos) not bonus, but a requirement (min requirement -- must have an output file after doing some PS operations)
-- hidden directory with solutions (for the TAs) (Create a directory in the project folder, but put it under /instructor)
+Notify your TA of your completion. With any remaining time in the class continue exploring with PowerShell by looking into more of the URLs returned in the various GitHub API endpoints we visited. A huge amount of data is now accessible at your fingertips!
