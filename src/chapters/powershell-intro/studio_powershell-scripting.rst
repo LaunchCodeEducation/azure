@@ -199,10 +199,10 @@ After completing the prompts push your changes to GitHub.
 Submitting your work
 --------------------
 
-Upon completing and pushing:
+After completing and pushing:
 
 - ``setup.ps``
 - ``launchcode-repos.ps``
 - ``powershell-repo.ps``
 
-Notify your TA of your completion. With any remaining time in the class continue exploring with PowerShell by looking into more of the URLs returned in the various GitHub API endpoints we visited. A huge amount of data is now accessible at your fingertips!
+notify your TA. With any remaining time in the class continue exploring with PowerShell by looking into more of the URLs returned in the various GitHub API endpoints we visited. A huge amount of data is now accessible at your fingertips!
