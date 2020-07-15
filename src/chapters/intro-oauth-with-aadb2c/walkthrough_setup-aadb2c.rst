@@ -101,7 +101,9 @@ Check that your form matches the image below **and that you have chosen the Azur
 Register & Configure an AADB2C Application
 ==========================================
 
-Now that our AADB2C tenant is set uup we can register our Coding Events API application. Registering an application is a configuration that takes place *within the tenant*. For this reason we will need to **switch to the tenant directory**. 
+Now that our AADB2C tenant is set up we can register our Coding Events API application. The AADB2C accounts we create exist as part of the tenant directory. Each application that is registered with the tenant directory allows it to integrate with the identities of those user accounts.
+
+As a result, registering an application is a configuration that takes place *within the tenant*. For this reason we will need to **switch to the tenant directory**. 
 
 Register the Coding Events API application
 ------------------------------------------
@@ -142,7 +144,6 @@ Confirm that your configuration matches the screenshot below, then select **Regi
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/14new-app-registration-form-final.png
    :alt: AADB2C tenant App Registration completed form
 
-
 Configure the Coding Events API application registration
 --------------------------------------------------------
 
@@ -168,21 +169,30 @@ Before continuing to the next step, return to the tenant dashboard. You can use 
 Set Up the SUSI Flow
 ====================
 
-The final step of our configuration is to set up a User Flow for registering and authenticating users of our Coding Events API. We will be configuring a Sign Up / Sign In **(SUSI) flow** with an Email provider to manage our API user identities with an email and password.
+The final step of our configuration is to set up a User Flow for registering and authenticating users in our AADB2C tenant directory. We will be configuring a Sign Up / Sign In **(SUSI) flow** with an Email provider to manage these identifies with an email and password. 
 
-A User Flow (identity flow) allows you to customize the user *process* like creating an account and signing in or out. For each User Flow you can configure:
+After users have created accounts in the tenant directory our registered application (the Coding Events API) will be able to use their identifies.
+
+A User Flow (identity flow) allows you to customize the user *processes* for interacting with their AADB2C account. Such as creating an account and signing in or out. 
+
+For each User Flow you can configure:
 
 - the identity provider(s) that the flow will allow
-- the appearance of the flow UI (like a registration form)
-- the **claims** used in the flow
+- the appearance of the AADB2C account UI (like a registration form)
+- the **claims** collected during registration and returned in the identity tokens
 
-Each flow can specify the claims (user attributes) that need to be **collected** from the user during registration and **provided** in the identity token. 
+Each flow can specify the claims (user attributes) that need to be **collected** from the user during registration and **returned** in the identity token. 
 
-Claims are used to standardize the identity data that is collected across the identity providers used in a flow. Some examples of claims include built-in claims like city and age or `custom claims<https://docs.microsoft.com/en-us/azure/active-directory-b2c/user-profile-attributes>`_ that apply to a more specific context.
+Claims are used to standardize the identity data that is collected across the identity providers used in a flow. Some examples of claims include common built-in claims like:
+
+- ``Job Title``
+- ``Legal Age Group Classification``
+
+You can also define `custom claims <https://docs.microsoft.com/en-us/azure/active-directory-b2c/user-profile-attributes>`_ that apply to more specific use cases.
 
 .. admonition:: tip
 
-   User flows are configured **independently from registered applications**. Flows can be customized for a single application or *reused* across any number of applications within the organization **that share the same flow requirements**.
+   User flows are configured **independently from registered applications**. They can be customized for a single application or *reused* across any number of applications.
 
    For our purposes we will customize a user flow specific to our Coding Events API application.
 
@@ -237,7 +247,7 @@ And the following **returned claims**:
 
 .. admonition:: note
 
-   The ``User's Object ID`` or **OID** field is the unique identifier for each user within the AADB2C tenant. It can be found **at the end** of the claims sidebar.
+   The ``User's Object ID`` (**OID** field) is the unique identifier for each user within the AADB2C tenant. It can be found **at the end** of the claims sidebar.
 
 Click the **show more** link to open the full claims selection panel. Select each collected and returned claim then close the panel. 
    
@@ -247,7 +257,7 @@ Click the **show more** link to open the full claims selection panel. Select eac
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/23show-more-user-attributes-form2.png
    :alt: SUSI flow claims sidebar (bottom with OID)
 
-After setting the claims you can **create** the SUSI flow. This will send you back to the User Flows settings view:
+After setting the claims you can **create** the SUSI flow. This will send you back to the User Flows view:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/25after-flow-created.png
    :alt: User Flows settings view with new SUSI flow
@@ -257,7 +267,7 @@ Test the User Flow
 
 Our final step is to test out the SUSI flow we created. We will register our first user accounts in the new AADB2C tenant using this flow. After registering we will inspect the identity token and the returned claims that were included in it.
 
-From the User Flows settings view select the new flow, ``B2C_1_coding-events-api-susi``. This will take you to the SUSI flow dashboard where you can modify and test (run) the flow:
+From the User Flows view select the new flow, ``B2C_1_coding-events-api-susi``. This will take you to the SUSI flow dashboard where you can modify and test (run) the flow:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/26flow-dashboard.png
    :alt: SUSI flow dashboard view
@@ -284,9 +294,13 @@ This will open the flow sidebar panel:
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/28run-user-flow-sidebar.png
    :alt: SUSI flow sidebar panel to configure and initiate the flow
 
-At the top of the panel you will see the `OIDC metadata URL <https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#fetch-the-openid-connect-metadata-document>`_. This document provides metadata with the OIDC endpoints for using the AADB2C identity management service. Although it is human readable it is meant for programmatic access by applications to integrate into the AADB2C system.
+At the top of the panel you will see the `OIDC metadata URL <https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#fetch-the-openid-connect-metadata-document>`_. 
 
-The run flow panel allows you to test out the flow with a specific application and reply (redirect) URL. In our case we only have a single application and reply URL to choose from. Select the **Run user flow** button to open a new tab with the AADB2C login page:
+.. admonition:: note
+
+   This document provides metadata with the OIDC endpoints for using the AADB2C identity management service. Although it is human readable it is meant for programmatic access by applications to integrate into the AADB2C system.
+
+The run flow panel allows you to test out the flow with a specific application and reply (redirect) URL. In our case we only have a single application and reply URL to choose from. Select the **Run user flow** button to open a new tab with the AADB2C tenant login page:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/29user-flow-auth-form.png
    :alt: AADB2C login page
@@ -294,7 +308,7 @@ The run flow panel allows you to test out the flow with a specific application a
 Register a user account
 -----------------------
 
-Initially the AADB2C tenant will not have any user accounts in it. Let's create a new account by selecting the **Sign up now** link at the bottom. 
+Initially the AADB2C tenant directory will not have any user accounts in it. Let's create a new account by selecting the **Sign up now** link at the bottom. 
 
 You will need to provide *and verify* your email address. 
 
@@ -332,7 +346,7 @@ As a reminder the redirect will provide the identity token as a query parameter 
 From within the tool you can view the decoded JWT:
 
 - **header**: highlighted in red
-- **payload**: highlighted in blue
+- **payload**: highlighted in purple
 - **signature**: highlighted in green
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/34final-token.png
