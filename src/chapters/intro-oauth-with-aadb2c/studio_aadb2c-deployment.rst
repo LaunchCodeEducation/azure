@@ -19,6 +19,7 @@
    - kv name
    - aadb2c config stuff
       - set the redirect URL for this new application (app registrations > authentication > add URI button
+         - it needs to be the swagger redirect URL // this needs to be looked up
 #. setup VM
    - TODO script
       - give them NGINX and SSL script with comments
