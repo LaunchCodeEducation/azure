@@ -36,6 +36,8 @@ A **flow** is a series of steps to achieve an end goal.
 
 A **grant** is the act of providing an an Access token to the client via OAuth.
 
+.. some change
+
 In this section we will be learning about a new OAuth grant flow, OAuth Implicit grant flow. This grant flow has a different process, a different token, and a different spec.
 
 OAuth Implicit Grant Flow
