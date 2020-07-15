@@ -70,7 +70,7 @@ The OAuth Implicit Grant Flow has a glaring vulnerability in that anyone that ca
       - `OAuth 2.0 Implicit Grant Flow spec <https://tools.ietf.org/html/rfc6749#section-4.2>`_
       - `Microsoft article about Implicit Flow in AADB2C <https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application>`_
 
-The end result of every OAuth grant flow is to provide an Access token to the client. The token contains data and therefore must have a data format, luckily a familiar format: JSON.
+The end result of every OAuth grant flow is to provide an Access token to the client. The token must have a data format, luckily the accepted format is a familiar one: JSON.
 
 JSON Web Tokens (JWT)
 ---------------------
