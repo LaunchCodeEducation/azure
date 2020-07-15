@@ -1,3 +1,5 @@
+.. authorization url https://student0720tenant.b2clogin.com/student0720tenant.onmicrosoft.com/oauth2/v2.0/authorize?p=b2c_1_coding-events-api-susi
+
 .. sourcecode:: js
    :caption: appsettings.json
 
