@@ -98,4 +98,11 @@
    # when was the most recent pull request created and has it been merged?
    (Invoke-RestMethod -URI https://api.github.com/repos/PowerShell/PowerShell/pulls)[0] | Select-Object -Property created_at,merged_at
 
+   # what was the login name of the user that made the most recent pull request, and what is the URL to their profile
+   (Invoke-RestMethod -URI https://api.github.com/repos/PowerShell/PowerShell/pulls)[0].user.login
+   (Invoke-RestMethod -URI https://api.github.com/repos/PowerShell/PowerShell/pulls)[0].user.url
+
+   (Invoke-RestMethod -URI https://api.github.com/repos/PowerShell/PowerShell/pulls)[0].user | Select-Object -Property login,url
+
+
 
