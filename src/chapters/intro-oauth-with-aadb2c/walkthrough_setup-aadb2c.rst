@@ -2,11 +2,13 @@
 Walkthrough: Setup Azure ADB2C Tenant
 =====================================
 
-In this walkthrough we will set up our own identity manager using Azure. The Azure Active Directory B2C (AADB2C) service abstracts away the complexity of setting up and managing a central authentication authority. It allows us to support any number of identity providers (like Microsoft, LinkedIn or GitHub) to connect users to our applications.
+In this walkthrough we will set up our own identity manager using Azure. The Azure Active Directory B2C (AADB2C) service abstracts away the complexity of setting up a Customer Identity Access Manager (CIAM). 
 
-In our case we will set up AADB2C using an Email Provider (a generic identity tied to an email address). As an identity management service, AADB2C uses the OIDC protocol that will provide an **identity token** to our application after a user registers or authenticates with their email and password.
+It allows us to support any number of identity providers (like Microsoft, LinkedIn or GitHub) to connect users to our organization's applications. In our case we will set up AADB2C using an Email Provider (a generic identity tied to an email address). 
 
-When you provision an AADB2C service Azure will create a **tenant directory**. The tenant directory represents the authentication authority *for your entire organization*. Within the tenant you can **register applications** (client services like our Coding Events API) and configure **identity flows** that users utilize to connect with the registered applications.
+When you provision an AADB2C service Azure will create a **tenant directory**. The tenant directory represents the Active Directory that holds our user accounts. Each AADB2C tenant has one or more **User identity flows** that customize how users register and interact with their account. 
+
+These accounts can then be accessed by **registered applications** (client services like our Coding Events API). As an identity management service, AADB2C uses the OIDC protocol to provide an **identity token** to our application after a user registers or authenticates.
 
 Checklist
 =========
@@ -16,9 +18,9 @@ Setting up our AADB2C authority will involve the following steps:
 #. create an AADB2C tenant directory
 #. link the tenant directory to an active Azure Subscription
 #. register our Coding Events API application
-#. configure a SUSI flow using an Email provider
+#. configure a **S**\ign **U**\p and **S**\ign **I**\n (SUSI) flow using an Email provider
 
-After we have completed these steps we will register an identity, test out the SUSI flow and inspect the resulting JWT (identity token). We will be using the Microsoft `JWT decoder tool <https://jwt.ms>`_ to verify the authenticity of and claims within the identity token.
+After we have completed these steps we will register an identity using the SUSI flow and inspect the resulting JWT (identity token). We will be using the Microsoft `JWT decoder tool <https://jwt.ms>`_ to verify the authenticity of and claims within the identity token.
 
 .. admonition:: note
 
@@ -52,6 +54,10 @@ This will present the AADB2C creation form. Enter the following values:
 - **Organization name**: ``<name> ADB2C`` (the tenant directory name)
 - **Initial domain name**: ``<name>0720tenant`` (subdomain name of your tenant on the ``.onmicrosoft.com`` domain Azure provides)
 
+.. admonition:: note
+
+   The pattern for the subdomain is: ``<name><MMYY>tenant``. To ensure the subdomains are unique select the correct month and year when you are taking the course.
+
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/4create-aadb2c-form1.png
    :alt: AADB2C create directory form
 
@@ -67,7 +73,7 @@ The new tenant directory is **not usable** until it is linked to an active Azure
 
 .. admonition:: tip
 
-   We will not dicuss the relationship between Azure accounts, Subscriptions, and directories. If you are curious, look over  `this forum post has some great discussion and links to further reading <https://techcommunity.microsoft.com/t5/azure/understanding-azure-account-subscription-and-directory/td-p/34800>`_.
+   We will not dicuss the relationship between Azure accounts, Subscriptions, and directories. If you are curious,   `this forum post has some great discussion and links to further reading <https://techcommunity.microsoft.com/t5/azure/understanding-azure-account-subscription-and-directory/td-p/34800>`_.
 
 After creating the tenant directory you can click the ``Create new B2C Tenant or Link to existing Tenant`` link in the upper-left breadcrumb links. If you are signed into Azure you can `click this link <https://portal.azure.com/#create/Microsoft.AzureADB2C>`_ to navigate directly to it. 
 
@@ -80,11 +86,13 @@ The Subscription linking form will require:
 
 - the tenant (by its subdomain)
 - the Subscription to link the tenant to
-- a RG for containing the linked tenant directory
+- a RG for containing the linked tenant resource
 
 .. admonition:: warning
 
-   Make sure you select the correct Subscription. This will be the Azure Labs *Subscription Handout* that you received during initial registration, **not your personal Subscription**. The Subscription name will likely differ from the screenshot below.
+   Make sure you select the correct Subscription. This will be the Azure Labs *Subscription Handout* that you received during initial registration, **not your personal Subscription**.
+   
+   The Subscription name will likely differ from the screenshot below.
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/7subscription-linking-form.png
    :alt: AADB2C link Subscription form
