@@ -91,17 +91,29 @@ From Microsoft:
 
    "OpenID Connect (OIDC) is an authentication protocol, built on top of OAuth 2.0, that can be used to securely sign users in to web applications."
 
-OIDC is an identity manager built on top of OAuth. OAuth grants an Access token that represents authorization. OIDC is a reusable authentication platform that can provide Identity Tokens. Since OIDC is built over OAuth using the Client can grant permissions for both Access Tokens, and Identity Tokens!
+OIDC is an identity manager built on top of OAuth. OIDC provides a reusable authentication platform that can provide Identity Tokens across any number of your applications. The authentication platform uses the underlying authentication from a connected provider like an email account, or a Microsoft account.
+
+Using OIDC you can quickly implement a Sign Up Sign In (SUSI) authentication form that can be tied to a third party provider. When a user needs to authenticate with your application they are sent to the OIDC SUSI form to authenticate with the third party provider. Upon a successful authentication the OIDC platform sends an Access Token (OAuth) and can send an Identity Token to your application as well. 
+
+The same OIDC login flow and provider can be used to authenticate users for any number of applications you develop that utilize the same grant flow.
+
+With OIDC your application can gain access to the Access Tokens (via OAuth) it needs. OIDC is also an identity manager so your application can also gain access to the Identity Tokens it needs. OIDC provides one simple form, connected to a provider, that allows your application to access both Access Tokens and optionally Identity Tokens.
 
 In the walkthrough we will use AADB2C as the implementation of OIDC.
-
-.. go further by mentioning provider vs identity provider
-
-.. bring in the idea of SSO?
 
 .. admonition:: note
 
    Checkout the `Microsoft implementation of the OIDC protocol <https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect>`_ to learn more about OIDC. We will see Microsoft's implementation of OIDC through AADB2C in our upcoming walkthrough.
+
+.. :: comment
+
+   From Microsoft:
+
+      "OpenID Connect (OIDC) is an authentication protocol, built on top of OAuth 2.0, that can be used to securely sign users in to web applications."
+
+   OIDC is an identity manager built on top of OAuth. OAuth grants an Access token that represents authorization. OIDC is a reusable authentication platform, connected to an underlying provider, that can provide Identity Tokens to a client application. Since OIDC is built over OAuth the Client can grant permissions for both Access Tokens, and Identity Tokens!
+
+   In the walkthrough we will use AADB2C as the implementation of OIDC.
 
 .. :: comment
 
