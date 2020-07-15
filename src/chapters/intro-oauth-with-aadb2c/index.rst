@@ -7,3 +7,4 @@ Introduction to OAuth with Azure ADB2C
 
    intro
    walkthrough_oauth-oidc
+   walkthrough_setup-aadb2c
