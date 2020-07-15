@@ -30,13 +30,11 @@ How OIDC Works
 
 From the Visual OAuth article we learned about the OAuth authorization code grant flow. This grant flow results in an Access token which authorizes a user to access data, or an API.
 
-   A **grant flow** is the process of a client obtaining an Access token via OAuth.
+.. A **grant flow** is the process of a client obtaining an Access token via OAuth.
 
-.. ::
+A **flow** is a series of steps to achieve an end goal.
 
-   A **flow** is the process of obtaining an Access token using OAuth. This includes requesting and granting tokens.
-
-   A **grant** is the act of providing an an Access token to the client.
+A **grant** is the act of providing an an Access token to the client via OAuth.
 
 In this section we will be learning about a new OAuth grant flow, OAuth Implicit grant flow. This grant flow has a different process, a different token, and a different spec.
 
