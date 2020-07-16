@@ -1,71 +1,121 @@
-===================
-Visual OAuth & OIDC
-===================
+=================================
+Walkthrough: Explore OAuth & OIDC
+=================================
 
-This article will link out to a GitHub project that will show you how to setup a project that will take you through the steps of OAuth in a visual setting from your browser.
+In this walkthrough we will begin by exploring OAuth using a visual learning tool. Afterwards we will introduce the OIDC specification (spec) which is built as a layer over the OAuth spec.
 
-As a reminder: 
+Both of these specs are designed for a **user to securely coordinate** the exchange of their information between two unrelated services:
 
-   **OAuth** is the specification of sharing access of an identity between two unrelated applications.
+- **client service**: *requests* a user to *authorize access* to their identity or data from a provider service
+- **provider service**: *provides* the identity or access to data of a user who **authorizes** a client service
+
+Because OIDC is built over OAuth their distinction from each other is subtle but important to understand. Throughout this walkthrough keep in mind the **purpose** of each of these coordination mechanisms:
+
+- **OAuth**: used for sharing access of a user's data on a provider service to a client service
+- **OIDC**: used for a (identity) provider service to **provide the identity** of a user to a client service
+
+How OAuth Works
+===============
+
+The first step of this walkthrough will use a tool called Visual OAuth. This tool will introduce you to the key terminology and concepts involved in OAuth. After learning the fundamentals it will guide you step-by-step through the OAuth mechanism. 
+
+You will run this project locally on your machine. The `Visual OAuth repo <https://github.com/LaunchCodeEducation/visual-oauth>`_ has all of the instructions for setting up and using the tool in its ``README`` file. 
+
+.. admonition:: note
+   
+   Follow the repo link and the instructions **then return to this article** when you have finished.
+
+How OIDC Works
+==============
+
+From the Visual OAuth article we learned about the OAuth authorization code grant flow. This grant flow results in an Access token which authorized the Client API to access the user's protected GitHub API data.
+
+   An OAuth **grant flow** is the general term for the process of a Client obtaining an Access token via OAuth
+
+In this section we will be learning about a new OAuth grant flow called the Implicit grant flow.
+
+OAuth Implicit Grant Flow
+-------------------------
+
+Let's consider the steps of the OAuth authorization code grant flow presented in the Visual OAuth walkthrough:
+
+#. User Authenticates & Authorizes the Client
+#. Provider Redirects to Client with Auth Code
+#. Client Front-end Sends Auth Code to Back-end
+#. Client Back-end Exchanges (by using it's client secret) Auth Code For Access Token
+
+This grant flow is the preferred OAuth grant flow for Client applications that have a dedicated back-end. 
+
+The implicit grant flow is suitable for Client applications that can not securely store the **client secret**. Recall that this secret is needed in the 4th step of the authorization code grant flow. Typically this scenario is encountered in Client applications that only consist of a front end.
+
+In the implicit grant flow there are only two steps:
+
+#. User Authenticates & Authorizes the Client
+#. Provider Redirects to Client with Access Token
 
 .. admonition:: note
 
-   We will be using `OAuth 2.0 <https://oauth.net/2/>`_ throughout this class. `Auth 1.0 <https://oauth.net/core/1.0/>`_ is still used in some applications, but will not be discussed as it is out of scope.
+   You can learn more about the OAuth Implicit Grant Flow by exploring:
 
-.. :: comment:: warn about the difference between 1.0 and 2.0 and implicit flow, put this at the end, or remove
+   - `OAuth 2.0 Implicit Grant Flow spec <https://tools.ietf.org/html/rfc6749#section-4.2>`_
+   - `Microsoft article about Implicit Flow in AADB2C <https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application>`_
 
-Walkthrough: Visual OAuth
-=========================
+In this course we will use the implicit flow in AADB2C to simplify the process of gaining tokens that authorize and authenticate our users. So far you have learned about Access Tokens for *authorization*. Identity Tokens are used for *authentication* and come in a standardized format, JSON.
 
-This section will be completed in your browser away from the curriculum of this class, in which you host a small project that will show how OAuth works, as well as introducing the terms that are commonly used in the OAuth spec.
+JSON Web Tokens (JWT)
+---------------------
 
-.. admonition:: warning
+In OAuth there are two types of tokens:
 
-   **Complete the** `Visual OAuth walkthrough <https://github.com/LaunchCodeEducation/visual-oauth>`_ **before moving forward.**
+- **Access Tokens**: credentials that grant access (authorization) to data from a provider API
+- **Identity Tokens**: a JWT with identity information that can be shared between applications
 
-.. :: comment: JWT section, or a JWT note
+A **JSON Web Token** (JWT) is a way of securely transferring data over a network. A JWT is made up of 3 components:
 
-OAuth Implicit Flow
-===================
+#. **header**: token metadata
+#. **payload**: the JSON data
+#. **signature**: a digital signature of authenticity
 
-Let's consider the steps of OAuth presented to you in the walkthrough:
-
-- User Authenticates & Authorizes the Client
-- Provider Redirects to Client with Auth Code
-- Client Front-end Sends Auth Code to Back-end
-- Client Back-end Exchanges Auth Code For Access Token
-
-Now let's look at the OAuth Implicit Grant Flow steps:
-
-- User Authenticates & Authorizes the Client
-- Provider Redirects to Client with Access Token
-- Client Front-end Sends Provider Token to Back-end
-- Client Back-end validates token and grants access
-
-At first glance these two different grant flows may look familiar, however, they have a couple of key differences that have big implications.
-
-The first difference in Implicit Flow is that the Provider Redirects to Client with an *Access Token as a part of the redirect URI instead of an Auth Code*. This token is the identity of the user and would be plainly visible to anyone that can view the network traffic.
-
-The second difference in Implicit Flow is that the Client Back-end does not exchange a code with the provider to receive an Access Token. The Access Token was sent from the Client Front-end so the Client Back-end simply needs to validate that the Access Token matches the one on file for that user. If the tokens match the user is granted access. There is no additional transaction from the Client Back-end to the Provider.
+The JSON data is `signed for authenticity <https://auth0.com/docs/tokens/guides/validate-jwts#check-the-signature>`_ and Base64 encoded to make even large payloads easy to transport over HTTP.
 
 .. admonition:: note
 
-   Since an additional check is not performed by the Provider a compromised Access Token from the Redirect URI can be used to assume another user's identity. This is a security concern and Implicit Flow needs to be handled with care. You can learn more by exploring:
+   To learn more about JWTs start with the `jwt.io introduction <https://jwt.io/introduction/>`_.
 
-      - `OAuth 2.0 Implicit Grant Flow spec <https://tools.ietf.org/html/rfc6749#section-4.2>`_
-      - `Microsoft article about Implicit Flow in AADB2C <https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application>`_
+In our OAuth grant flows the end result is always an Access Token which does not necessarily contain information about the user's identity. If our application wants to gain identity information about their user they will need to get their hands on an Identity Token.
 
-.. :: comment: great video from oauth.net about implicit flow: https://oauth.net/2/grant-types/implicit/
+OpenID Connect (OIDC)
+---------------------
 
-OIDC
-====
-
-From Microsoft: 
+`From the Microsoft documentation <https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect>`_: 
 
    "OpenID Connect (OIDC) is an authentication protocol, built on top of OAuth 2.0, that can be used to securely sign users in to web applications."
 
-AADB2C uses the OIDC protocol to authenticate users via OAuth. Outside of authentication OIDC gives us the ability to share information between applications because it uses OAuth. 
+OIDC is an identity management protocol built on top of OAuth. In many ways it is just *a thin layer* over OAuth. Whereas OAuth is about *delegating access* (authorization) using Access Tokens, OIDC provides a mechanism for the secure exchange of a user's identity (authentication) with an Identity Token. 
 
 .. admonition:: note
 
-   We won't explore OIDC as a concept in this class, but learning more about the `Microsoft implementation of the OIDC protocol <https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect>`_ may be beneficial. We will see Microsoft's implementation of OIDC through AADB2C.
+   OIDC was developed to **standardize the use of OAuth for authentication**. Before OIDC, developers used `pseudo-authentication with OAuth <https://en.wikipedia.org/wiki/OpenID#OpenID_vs._pseudo-authentication_using_OAuth>`_ which, given that OAuth is an *authorization protocol*, was considered a "hacky" approach.
+
+Consider the steps taken in the Visual OAuth walkthrough. After gaining an Access Token the Client back end (Visual OAuth API) used the token to access the requesting user's identity information. As a demonstration of using an Access Token this process was valid -- but as a means of *authenticating the requesting user* it was not!
+
+OIDC standardizes both this authentication process and what is returned. Rather than each provider defining their own arbitrary "user profile" endpoint and response body, OIDC establishes a consistent identity endpoint and Identity Tokens. These *signed* tokens contain **claims** (user identity fields) in the JWT payload. 
+
+An organization can use an identity management service like AADB2C to define a consistent set of identity claims across any number of **identity providers** like Microsoft, GitHub or a standard Email (and password) provider.
+
+OIDC in AADB2C
+==============
+
+AADB2C uses OIDC to provide a centralized authentication platform that enables `Single Sign On (SSO) <https://docs.microsoft.com/en-us/azure/active-directory-b2c/session-overview>`_. It stores user accounts in a **tenant directory** (an Active Directory instance) and uses:
+
+- **OAuth**: for controlling access to applications that are registered in the tenant
+- **OIDC**: for sharing user account identities with registered applications
+
+Using AADB2C you can implement **User Flows** that bridge the gap between a user, an identity provider and your registered applications. Upon a successful authentication, the AADB2C service can send an Identity Token (OIDC) and, in most cases, an Access Token (OAuth) to your registered application.
+
+.. admonition:: note
+
+   If you want to learn more about OAuth, OIDC and AADB2C the following videos are a great start:
+
+   - `OAuth & OIDC explained simply by Nate Barbettini <https://www.youtube.com/watch?v=996OiexHze0>`_
+   - `Microsoft AADB2C overview (YouTube) <https://www.youtube.com/watch?v=GmBKlXED9Ug>`_
