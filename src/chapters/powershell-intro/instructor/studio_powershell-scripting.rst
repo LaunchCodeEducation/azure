@@ -9,32 +9,39 @@ Students create this file themselves, and have to move it to the proper director
 
 .. sourcecode:: powershell
    :caption: setup-repository.ps
+   
+   # declare variables
+   $StudioRepoDir='~/powershell-studio'
+   $CommitMessage=''
+
+   # BONUS: capture these variables from user input
 
    # force the location to be the home directory
    Set-Location
 
-   # create a new directory named powershell-studio
-   New-Item -Type directory -Name powershell-studio
-
    # fork and clone this repo into the powershell-studio directory
-   git clone https://github.com/launchcodeeducation/{studio-repo-name} powershell-studio
+   git clone https://github.com/launchcodeeducation/{studio-repo-name} "$StudioRepoDir"
 
-   # BONUS
+   # PUT IN EXTERNAL NOTE
+   # PSCommandPath is a Script-scoped variable (only exists within the script)
+   # it holds the absolute path to the script file itself when it is executed
 
-   # move setup-repository.ps into the powershell-studio directory
-   Move-Item setup-repository.ps powershell-studio
+   # move this script into the powershell-studio directory
+   Move-Item "$PSCommandPath" "$StudioRepoDir"
 
    # change into the powershell-studio directory
-   Set-Location powershell-studio
+   Set-Location "$StudioRepoDir"
 
-   # add files to staging
+   # stage the new file in git
    git add .
 
-   # commit staged files
-   git commit -m "setup-repository.ps"
+   # commit the staged script file
+   git commit -m $CommitMessage
 
-   # students would then need to execute this script
-   # after the script executes successfully they will need to push up to GitHub
+   # push to their forked repo
+   git push
+
+Students would then execute the script. Proof of its success would be be to share a link to the new file in their forked repo.
 
 launchcode-repos.ps
 ===================

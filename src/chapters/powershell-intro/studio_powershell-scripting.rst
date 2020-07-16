@@ -6,6 +6,28 @@ PowerShell like most languages and tools requires practice to facilitate learnin
 
 This article will give you a few tasks that you should accomplish using what you have learned about PowerShell from this chapter.
 
+helpful links:
+- variables: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_variables?view=powershell-7#types-of-variables
+   - scopes https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scopes?view=powershell-7#powershell-scopes
+- quoting: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules?view=powershell-7
+- 
+
+Setup PowerShell
+================
+
+- in order to execute scripts have to set the execution policy
+- Set-ExecutionPolicy
+   - cmdlet link: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7
+   - policies: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&redirectedfrom=MSDN
+      - we cant sign so
+      - we use RemoteSigned as the *least privileged access* necessary to run our scripts
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+
+
 Setup Task
 ==========
 
