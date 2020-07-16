@@ -104,7 +104,7 @@ OIDC standardizes both this authentication process and what is returned. Rather 
 An organization can use an identity management service like AADB2C to define a consistent set of identity claims across any number of **identity providers** like Microsoft, GitHub or a standard Email (and password) provider.
 
 OIDC in AADB2C
---------------
+==============
 
 AADB2C uses OIDC to provide a centralized authentication platform that enables `Single Sign On (SSO) <https://docs.microsoft.com/en-us/azure/active-directory-b2c/session-overview>`_. It stores user accounts in a **tenant directory** (an Active Directory instance) and uses:
 
@@ -112,3 +112,10 @@ AADB2C uses OIDC to provide a centralized authentication platform that enables `
 - **OIDC**: for sharing user account identities with registered applications
 
 Using AADB2C you can implement **User Flows** that bridge the gap between a user, an identity provider and your registered applications. Upon a successful authentication, the AADB2C service can send an Identity Token (OIDC) and, in most cases, an Access Token (OAuth) to your registered application.
+
+.. admonition:: note
+
+   If you want to learn more about OAuth, OIDC and AADB2C the following videos are a great start:
+
+   - `OAuth & OIDC explained simply by Nate Barbettini <https://www.youtube.com/watch?v=996OiexHze0>`_
+   - `Microsoft AADB2C overview (YouTube) <https://www.youtube.com/watch?v=GmBKlXED9Ug>`_
