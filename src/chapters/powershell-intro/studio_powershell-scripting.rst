@@ -19,7 +19,7 @@ The first script (``setup-repository.ps``) accomplishes the following tasks:
 
 - create a script for this set of tasks named ``setup-repository.ps``
 - create a project directory named ``powershell-studio`` in your home directory
-- fork this repository
+- fork the `powershell-practice <https://github.com/LaunchCodeEducation/powershell-practice>`_ repository
 - clone the project repository into the ``powershell-studio``
 
 .. admonition:: note
