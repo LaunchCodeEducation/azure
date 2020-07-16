@@ -1,30 +1,16 @@
-==================
-Studio: PowerShell
-==================
+============================
+Studio: PowerShell Scripting
+============================
 
 .. ::
 
-   tools students will need
+   intro section
 
+- ...as part of writing a script you will need to research and understand the tools needed to accomplish the task...
+- ...save time we will provide command banks that came from the following sources...
    - `PowerShell documentation root <https://docs.microsoft.com/en-us/powershell/scripting/how-to-use-docs?view=powershell-7>`_
    - `PowerShell Utility Module <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/?view=powershell-7>`_
-   - `PowerShell formatting examples <https://docs.microsoft.com/en-us/powershell/scripting/samples/using-format-commands-to-change-output-view?view=powershell-7>`_
-   - `git clone <https://www.git-scm.com/docs/git-clone>`_
-   - `git add <https://www.git-scm.com/docs/git-add>`_
-   - `git commit <https://www.git-scm.com/docs/git-commit>`_
-   - `git push <https://www.git-scm.com/docs/git-push>`_
-   - `Move-Item <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/move-item?view=powershell-7>`_
-   - `$PSCommandPath <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7#myinvocation>`_
-   - `Set-Location <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-location?view=powershell-7>`_
-   - `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_
-   - `Select-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Select-Object?view=powershell-7`_
-   - `Format-Table <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/format-table?view=powershell-7>`_
-   - `Export-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-csv?view=powershell-7>`_
-   - `ConvertTo-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/convertto-csv?view=powershell-7>`_: pipe CSV object into `Add-Content <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/add-content?view=powershell-7>_
-   - `Sort-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Sort-Object?view=powershell-7>`_
-   - `add content <https://education.launchcode.org/azure/chapters/powershell-intro/piping.html#adding-contents-to-a-file>`_
-   - 
-   - `Get-Member <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-member?view=powershell-7>`_: easily find a property or method of an object
+   - `PowerShell formatting examples <https://docs.microsoft.com/en-us/powershell/scripting/samples>`_
 
 This article will give you a few tasks that you should accomplish using what you have learned about PowerShell from this chapter. There is no better substitute than practice to learn a tool. When working through the tasks of this article try out different processes to solve the problems.
 
@@ -32,58 +18,182 @@ This article will give you a few tasks that you should accomplish using what you
 
    A great way to bolster your understanding of PowerShell is to read more and practice what you have learned. We recommend looking over the following articles and using what you learn throughout this studio:
 
-   - `variables <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_variables?view=powershell-7#types-of-variables>`_ 
-   - `scopes <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scopes?view=powershell-7#powershell-scopes>`_ 
-   - `quoting <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules?view=powershell-7>`_
- 
+Running PowerShell Scripts
+==========================
 
-.. example of creating and running a hello world script file
+Allow script execution
+----------------------
 
+This studio will require you to create and execute a PowerShell script. As a security measure Windows does not allow the execution of *unsigned*, or untrusted, scripts by default.. You will need to grant your PowerShell session an elevated `execution policy <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&redirectedfrom=MSDN>`_ to run your own scripts. 
 
-Setup PowerShell
-================
+.. admonition:: note
 
-This studio will require you to create and execute a PowerShell script. By default Windows does not let just any user run scripts. You will need to grant your PowerShell session an elevated `execution policy <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&redirectedfrom=MSDN>`_ to run scripts. This execution policy will only be enabled for the PowerShell session that executes the command.
+   As a best practice, this execution policy will only be applied to the *scope* of the PowerShell process that executes the command. If you end that process (by exiting or closing the PowerShell Terminal) you will have to call the cmdlet again.
 
-We will be using the *least privileged access* necessary to run our scripts which is the ``RemoteSigned`` execution policy.
+We will be using the *least privileged access* necessary to run our scripts which corresponds to the ``RemoteSigned`` execution policy. 
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
 
+You can learn more about ``Set-ExecutionPolicy`` in its `cmdlet documentation <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7>`_.
+
+Executing your first script
+---------------------------
+
+.. simple example showing variable and cmdlet usage
+.. warning / reminder about file extensions importance in windows
+.. provide script and blocks showing how to do implicit execution
+.. link to quoting article to understand differences
+.. link / ref back to sub-expressions article
+.. ask them to try evaluating it in their head first before executing (get used to reading and parsing)
+
+- `variables <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_variables?view=powershell-7#types-of-variables>`_ 
+- `scopes <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scopes?view=powershell-7#powershell-scopes>`_ 
+- `quoting <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules?view=powershell-7>`_
+
+.. sourcecode:: powershell
+   :caption: ~/hello-world.ps1
+
+   $Name = 'Your Name'
+
+   Write-Message "Hello $Name!"
+
+   Write-Message "Can you let me out of here? I am stuck inside $(Get-Location)!!"
+
+.. sourcecode:: powershell
+   :caption: execute hello-world script
+
+   # general form
+   > .\path\to\script.ps1
+
+   # execute the script
+   > .\hello-world.ps1
+
+Tips for writing scripts
+------------------------
+
+.. think about / try manual steps first
+.. scripts as a way to compose the manual steps
+.. look up documentation and understand the inputs / outputs / parameters of CLI programs and cmdlets
+.. when modifying / moving / deleting files ALWAYS create a backup first 
+   .. .bak extension common in bash, equiv in posh?
+.. with these tips in mind here is how the studio will work
+   .. a task, a breakdown, limited guidance and command banks
+
+The Auto-Committing-Setup Script
+================================
+
+   A script that clones the forked studio repository, then *moves, adds, commits and pushes itself* back to GitHub automatically!
+
+Before you can accomplish your first task you will need to `fork the studio repository <https://github.com/LaunchCodeEducation/powershell-practice>`_. This is the repo you will be working in for the remaining exercises.
+
+This challenge will require you to create a PowerShell script named ``auto-committing-setup.ps1``. You can create this file anywhere and, if written correctly, it will still execute successfully. 
+
+Let's consider the individual steps, or commands, that we need to compose in this script:
+
+#. declare a ``$GitHubUsername`` variable with your username (this will be used to clone your forked repo)
+#. declare a ``$CommitMessage`` variable with the value ``auto committed from auto-committing-setup.ps1!``
+#. declare a ``$StudioRepoDir`` variable with the value of the path where the repo will be cloned
+#. clone your forked repo into a directory at the ``$StudioRepoDir`` path
+#. copy the ``auto-committing-setup.ps1`` script (**by its absolute path**) into the cloned repo directory
+#. change into the cloned directory (``$StudioRepoDir``)
+#. add the new script file in the cloned directory to ``git`` staging
+#. commit the changes to the repo using the message variable (``$CommitMessage``)
+#. push the local ``git`` history back to your forked repo
+
+Limited Guidance
+-----------------
+
+Jump Start
+^^^^^^^^^^
+
+In order to jump start your script here are steps 1-4:
+
+.. sourcecode:: powershell
+   :caption: auto-committing-setup.ps1
+      
+   # declare variables
+   $GitHubUsername=''
+   $StudioRepoDir=''
+   $CommitMessage='auto committed from auto-committing-setup.ps1!'
+
+   # fork and clone this repo into the powershell-studio directory
+   git clone "https://github.com/$GitHubUsername/powershell-practice" "$StudioRepoDir"
+
+   # TODO: complete steps 5-9
+
+Referencing the script path
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To reference **the absolute path of the script** from inside the script itself you can use the ``$PSCommandPath`` `variable <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7#myinvocation>`_.
+
+Setting a commit message
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+When committing from the command-line you can use the ``-m`` option to attach a message:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > git commit -m "<message in here>"
+
+Command Bank
+------------
+
+For this script you will use the following ``git`` and PowerShell commands.
+
+Git Commands
+^^^^^^^^^^^^
+
+- `git clone <https://www.git-scm.com/docs/git-clone>`_
+- `git add <https://www.git-scm.com/docs/git-add>`_
+- `git commit <https://www.git-scm.com/docs/git-commit>`_
+- `git push <https://www.git-scm.com/docs/git-push>`_
+
+PowerShell Cmdlets
+^^^^^^^^^^^^^^^^^^
+
+- `Copy-Item <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/copy-item?view=powershell-7>`_
+- `Set-Location <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-location?view=powershell-7>`_
+
 .. admonition:: note
 
-   You can learn more about by reading the `Microsoft Set-ExecutionPolicy cmdlet <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7>`_ documentation
+   As a bonus try capturing the ``$GitHubUsername`` and ``$StudioRepoDir`` variables from user input using the `Read-Host cmdlet <>`_. This `short article <https://www.itprotoday.com/powershell/prompting-user-input-powershell>`_ is a great primer.
 
-Setup Task
-==========
+Deliverable
+-----------
 
-Before you can accomplish your first task you will need to `fork the studio repository <https://github.com/LaunchCodeEducation/powershell-practice>`_.
+Upon completing and executing the script it will automatically be pushed to your GitHub repository.
 
-To complete this first task you will need to create a PowerShell script named ``setup-repository.ps1`` that accomplishes the following tasks:
+You will know you have completed this task correctly when your remote forked repository contains:
 
-- declare a commit message variable with the value ``auto committed from setup-repository.ps1!``
-- declare a directory variable where the repo will be cloned
-- clone your forked repo into a directory named: directory variable
-- move the ``setup-repository.ps1`` script into the cloned directory
-- change into the cloned directory (directory variable)
-- add everything in the cloned directory to staging
-- commit with the message variable (commit message variable)
-- push to your forked repo
+- a file named: ``auto-committing-setup.ps1``.
+- a new commit with the message ``auto committed from auto-committing-setup.ps1!``
 
-.. comment:: tip: here are the commands you will likely be using
+After it succeeds you can send the repo link to your TA for review.
 
-.. admonition:: tip
+Command-Line REST
+=================
 
-   To reference a script from inside the script itself you can use the $PSCommandPath variable.
+.. some sort of lead-in for hitting a REST API using Invoke-RestMethod
+.. similar to postman but using the cmdlet with declarative -Parameter names for key features of each req
+.. describe outputs in JSON and how to work with them
+.. our goals are to write scripts to analyze API data about a GitHub org and individual repo
 
-Upon completing and running the script it will automatically be pushed to your GitHub repository.
+.. ::
 
-You will know you have completed this task correctly when your remote forked repository contains a new commit with the message ``committed from setup-repository!`` and contains a file named: ``setup-repository.ps1``. There will also be two additional ``.ps1`` files that you will work with in the next two tasks.
 
-Studio Tasks
-============
+command banks (distribute in each script that needs them)
+   - `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_
+   - `Select-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Select-Object?view=powershell-7`_
+   - `Format-Table <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/format-table?view=powershell-7>`_
+   - `Export-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-csv?view=powershell-7>`_
+   - `ConvertTo-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/convertto-csv?view=powershell-7>`_: pipe CSV object into `Add-Content <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/add-content?view=powershell-7>_
+   - `Sort-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Sort-Object?view=powershell-7>`_
+   - `Add-Content <https://education.launchcode.org/azure/chapters/powershell-intro/piping.html#adding-contents-to-a-file>`_
+   - `Get-Member <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-member?view=powershell-7>`_: easily find a property or method of an object
 
 Using the ``Invoke-RestMethod`` cmdlet you will need to write various scripts to gather information from the `GitHub Developers API <https://developer.github.com/v3/>`_.
 
@@ -252,7 +362,7 @@ Submitting your work
 
 After completing and pushing:
 
-- ``setup.ps1``
+- ``auto-committing-setup.ps1``
 - ``launchcode-repos.ps1``
 - ``powershell-repo.ps1``
 

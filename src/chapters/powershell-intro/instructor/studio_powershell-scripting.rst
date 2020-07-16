@@ -2,29 +2,24 @@
 Studio Solution
 ===============
 
-setup-repository.ps
+auto-committing-setup.ps1
 ===================
 
 Students create this file themselves, and have to move it to the proper directory.
 
 .. sourcecode:: powershell
-   :caption: setup-repository.ps
-   
+   :caption: auto-committing-setup.ps1
+      
    # declare variables
-   $StudioRepoDir='~/powershell-studio'
-   $CommitMessage=''
-
-   # BONUS: capture these variables from user input
+   $GitHubUsername=''
+   $StudioRepoDir=''
+   $CommitMessage='auto committed from auto-committing-setup.ps1!'
 
    # fork and clone this repo into the powershell-studio directory
-   git clone https://github.com/launchcodeeducation/{studio-repo-name} "$StudioRepoDir"
-
-   # PUT IN EXTERNAL NOTE
-   # PSCommandPath is a Script-scoped variable (only exists within the script)
-   # it holds the absolute path to the script file itself when it is executed
+   git clone "https://github.com/$GitHubUsername/powershell-practice" "$StudioRepoDir"
 
    # move this script into the powershell-studio directory
-   Move-Item "$PSCommandPath" "$StudioRepoDir"
+   Copy-Item "$PSCommandPath" "$StudioRepoDir"
 
    # change into the powershell-studio directory
    Set-Location "$StudioRepoDir"
@@ -40,13 +35,24 @@ Students create this file themselves, and have to move it to the proper director
 
 Students would then execute the script. Proof of its success would be be to share a link to the new file in their forked repo.
 
-launchcode-repos.ps
+bonus solution
+
+.. sourcecode:: powershell
+   :caption: auto-committing-setup.ps1
+   
+   # declare variables
+   $GitHubUsername = Read-Host -Prompt 'GitHub username'
+   $StudioRepoDir = Read-Host -Prompt 'Path (rel or abs) where the repo will be cloned'
+
+   # remaining script ...
+
+launchcode-repos.ps1
 ===================
 
 The starter script is given to the students, but they are responsible for coming up with PS commands that will solve the prompts.
 
 .. sourcecode:: powershell
-   :caption: launchcode-repos.ps
+   :caption: launchcode-repos.ps1
 
    # how many repositories are returned when making a GET request to ``https://api.github.com/orgs/launchcodeeducation/repos``?
    # the answer is 30
@@ -85,13 +91,13 @@ The starter script is given to the students, but they are responsible for coming
    # upon answering all the questions students should save their results in a script and push it to GitHub
 
 
-powershell-repo.ps
+powershell-repo.ps1
 ==================
 
 The starter script is given to the students, but they are responsible for coming up with PS commands that will solve the prompts.
 
 .. sourcecode:: powershell
-   :caption: powershell-repo.ps
+   :caption: powershell-repo.ps1
 
    # powershell/powershell
    # https://api.github.com/repos/powershell/powershell
