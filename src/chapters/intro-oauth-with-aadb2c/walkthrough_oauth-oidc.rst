@@ -57,18 +57,18 @@ In the implicit grant flow there are only two steps:
 
    You can learn more about the OAuth Implicit Grant Flow by exploring:
 
-      - `OAuth 2.0 Implicit Grant Flow spec <https://tools.ietf.org/html/rfc6749#section-4.2>`_
-      - `Microsoft article about Implicit Flow in AADB2C <https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application>`_
+   - `OAuth 2.0 Implicit Grant Flow spec <https://tools.ietf.org/html/rfc6749#section-4.2>`_
+   - `Microsoft article about Implicit Flow in AADB2C <https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application>`_
 
-AADB2C uses the implicit grant flow for providing the identity token of our users. The token must have a data format, luckily the accepted format is a familiar one: JSON.
+In this course we will use the implicit flow in AADB2C to simplify the process of gaining tokens that authorize and authenticate our users. So far you have learned about Access Tokens for *authorization*. Identity Tokens are used for *authentication* and come in a standardized format, JSON.
 
 JSON Web Tokens (JWT)
 ---------------------
 
 In OAuth there are two types of tokens:
 
-- Access Tokens: credentials that grant access (authorization) to data from a provider API
-- Identity Tokens: a JWT with identity information that can be shared between applications
+- **Access Tokens**: credentials that grant access (authorization) to data from a provider API
+- **Identity Tokens**: a JWT with identity information that can be shared between applications
 
 A **JSON Web Token** (JWT) is a way of securely transferring data over a network. A JWT is made up of 3 components:
 
@@ -76,60 +76,39 @@ A **JSON Web Token** (JWT) is a way of securely transferring data over a network
 #. **payload**: the JSON data
 #. **signature**: a digital signature of authenticity
 
-The JSON data is `signed for authenticity <https://auth0.com/docs/tokens/guides/validate-jwts#check-the-signature>`_ and Base64 encoded for being transported. The token is then attached to the ``Authorization`` HTTP header. 
+The JSON data is `signed for authenticity <https://auth0.com/docs/tokens/guides/validate-jwts#check-the-signature>`_ and Base64 encoded to make even large payloads easy to transport over HTTP.
 
 .. admonition:: note
 
    To learn more about JWTs start with the `jwt.io introduction <https://jwt.io/introduction/>`_.
 
-In our OAuth grant flows the end result was always an Access Token, however these tokens do not contain information about the user. If our application wants to gain identity information about their user they will need to get their hands on an Identity Token.
+In our OAuth grant flows the end result is always an Access Token which does not necessarily contain information about the user's identity. If our application wants to gain identity information about their user they will need to get their hands on an Identity Token.
 
 OpenID Connect (OIDC)
 ---------------------
 
-From Microsoft: 
+`From the Microsoft documentation <https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect>`_: 
 
    "OpenID Connect (OIDC) is an authentication protocol, built on top of OAuth 2.0, that can be used to securely sign users in to web applications."
 
-OIDC is an identity manager built on top of OAuth. OIDC provides a reusable authentication platform that can provide Identity Tokens across any number of your applications. The authentication platform uses the underlying authentication from a connected provider like an email account, or a Microsoft account.
-
-Using OIDC you can quickly implement a Sign Up Sign In (SUSI) authentication form that can be tied to a third party provider. When a user needs to authenticate with your application they are sent to the OIDC SUSI form to authenticate with the third party provider. Upon a successful authentication the OIDC platform sends an Access Token (OAuth) and can send an Identity Token to your application as well. 
-
-The same OIDC login flow and provider can be used to authenticate users for any number of applications you develop that utilize the same grant flow.
-
-With OIDC your application can gain access to the Access Tokens (via OAuth) it needs. OIDC is also an identity manager so your application can also gain access to the Identity Tokens it needs. OIDC provides one simple form, connected to a provider, that allows your application to access both Access Tokens and optionally Identity Tokens.
-
-In the walkthrough we will use AADB2C as the implementation of OIDC.
+OIDC is an identity management protocol built on top of OAuth. In many ways it is just *a thin layer* over OAuth. Whereas OAuth is about *delegating access* (authorization) using Access Tokens, OIDC provides a mechanism for the secure exchange of a user's identity (authentication) with an Identity Token. 
 
 .. admonition:: note
 
-   Checkout the `Microsoft implementation of the OIDC protocol <https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect>`_ to learn more about OIDC. We will see Microsoft's implementation of OIDC through AADB2C in our upcoming walkthrough.
+   OIDC was developed to **standardize the use of OAuth for authentication**. Before OIDC, developers used `pseudo-authentication with OAuth <https://en.wikipedia.org/wiki/OpenID#OpenID_vs._pseudo-authentication_using_OAuth>`_ which, given that OAuth is an *authorization protocol*, was considered a "hacky" approach.
 
-.. :: comment
+Consider the steps taken in the Visual OAuth walkthrough. After gaining an Access Token the Client back end (Visual OAuth API) used the token to access the requesting user's identity information. As a demonstration of using an Access Token this process was valid -- but as a means of *authenticating the requesting user* it was not!
 
-   From Microsoft:
+OIDC standardizes both this authentication process and what is returned. Rather than each provider defining their own arbitrary "user profile" endpoint and response body, OIDC establishes a consistent identity endpoint and Identity Tokens. These *signed* tokens contain **claims** (user identity fields) in the JWT payload. 
 
-      "OpenID Connect (OIDC) is an authentication protocol, built on top of OAuth 2.0, that can be used to securely sign users in to web applications."
+An organization can use an identity management service like AADB2C to define a consistent set of identity claims across any number of **identity providers** like Microsoft, GitHub or a standard Email (and password) provider.
 
-   OIDC is an identity manager built on top of OAuth. OAuth grants an Access token that represents authorization. OIDC is a reusable authentication platform, connected to an underlying provider, that can provide Identity Tokens to a client application. Since OIDC is built over OAuth the Client can grant permissions for both Access Tokens, and Identity Tokens!
+OIDC in AADB2C
+--------------
 
-   In the walkthrough we will use AADB2C as the implementation of OIDC.
+AADB2C uses OIDC to provide a centralized authentication platform that enables `Single Sign On (SSO) <https://docs.microsoft.com/en-us/azure/active-directory-b2c/session-overview>`_. It stores user accounts in a **tenant directory** (an Active Directory instance) and uses:
 
-.. :: comment
+- **OAuth**: for controlling access to applications that are registered in the tenant
+- **OIDC**: for sharing user account identities with registered applications
 
-   - learned
-      - define flow
-      - define grants
-         - an alternative flow (implicit)
-      - access tokens for delegating access / management of user data
-         - JWT
-         - identity tokens for sharing the identity of a user
-   - sharing identity
-      - OIDC
-         - built over oauth to navigate around pseudo-authentication with OAuth (link)
-            - https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth#pseudo-authentication-with-oauth-20
-      - special type of provider service called identity provider
-         - can be both a provider (OAuth) and identity provider or standalone
-            - plug AADB2C as an identity manager of multiple identity providers
-            - for sharing SSO across multiple providers and applications in your organization
-      - sharing the identity session of a user for SSO
+Using AADB2C you can implement **User Flows** that bridge the gap between a user, an identity provider and your registered applications. Upon a successful authentication, the AADB2C service can send an Identity Token (OIDC) and, in most cases, an Access Token (OAuth) to your registered application.
