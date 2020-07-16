@@ -123,6 +123,3 @@ The starter script is given to the students, but they are responsible for coming
    (Invoke-RestMethod -URI https://api.github.com/repos/PowerShell/PowerShell/pulls)[0].user.url
 
    (Invoke-RestMethod -URI https://api.github.com/repos/PowerShell/PowerShell/pulls)[0].user | Select-Object -Property login,url
-
-
-

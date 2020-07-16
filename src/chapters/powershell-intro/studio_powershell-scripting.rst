@@ -206,3 +206,8 @@ After completing and pushing:
 - ``powershell-repo.ps``
 
 notify your TA. With any remaining time in the class continue exploring with PowerShell by looking into more of the URLs returned in the various GitHub API endpoints we visited. A huge amount of data is now accessible at your fingertips!
+
+Finished Early?
+---------------
+
+If you finish early pair with another student that has finished and compare your script files. Work together to come up with a one line powershell command for each prompt.
