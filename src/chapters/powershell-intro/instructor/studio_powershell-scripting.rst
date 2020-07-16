@@ -16,9 +16,6 @@ Students create this file themselves, and have to move it to the proper director
 
    # BONUS: capture these variables from user input
 
-   # force the location to be the home directory
-   Set-Location
-
    # fork and clone this repo into the powershell-studio directory
    git clone https://github.com/launchcodeeducation/{studio-repo-name} "$StudioRepoDir"
 
