@@ -2,56 +2,81 @@
 Studio: PowerShell
 ==================
 
-PowerShell like most languages and tools requires practice to facilitate learning and memory.
+.. ::
 
-This article will give you a few tasks that you should accomplish using what you have learned about PowerShell from this chapter.
+   tools students will need
 
-helpful links:
-- variables: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_variables?view=powershell-7#types-of-variables
-   - scopes https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scopes?view=powershell-7#powershell-scopes
-- quoting: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules?view=powershell-7
-- 
+   - `PowerShell documentation root <https://docs.microsoft.com/en-us/powershell/scripting/how-to-use-docs?view=powershell-7>`_
+   - `PowerShell Utility Module <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/?view=powershell-7>`_
+   - `PowerShell formatting examples <https://docs.microsoft.com/en-us/powershell/scripting/samples/using-format-commands-to-change-output-view?view=powershell-7>`_
+   - `git clone <https://www.git-scm.com/docs/git-clone>`_
+   - `git add <https://www.git-scm.com/docs/git-add>`_
+   - `git commit <https://www.git-scm.com/docs/git-commit>`_
+   - `git push <https://www.git-scm.com/docs/git-push>`_
+   - `Move-Item <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/move-item?view=powershell-7>`_
+   - `$PSCommandPath <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7#myinvocation>`_
+   - `Set-Location <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-location?view=powershell-7>`_
+   - `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_
+   - `Select-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Select-Object?view=powershell-7`_
+   - `Format-Table <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/format-table?view=powershell-7>`_
+   - `Export-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-csv?view=powershell-7>`_
+   - `Sort-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Sort-Object?view=powershell-7>`_
+
+This article will give you a few tasks that you should accomplish using what you have learned about PowerShell from this chapter. There is no better substitute than practice to learn a tool. When working through the tasks of this article try out different processes to solve the problems.
+
+.. admonition:: note
+
+   A great way to bolster your understanding of PowerShell is to read more and practice what you have learned. We recommend looking over the following articles and using what you learn throughout this studio:
+
+   - `variables <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_variables?view=powershell-7#types-of-variables>`_ 
+   - `scopes <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scopes?view=powershell-7#powershell-scopes>`_ 
+   - `quoting <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules?view=powershell-7>`_
+ 
+
+.. example of creating and running a hello world script file
+
 
 Setup PowerShell
 ================
 
-- in order to execute scripts have to set the execution policy
-- Set-ExecutionPolicy
-   - cmdlet link: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7
-   - policies: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&redirectedfrom=MSDN
-      - we cant sign so
-      - we use RemoteSigned as the *least privileged access* necessary to run our scripts
+This studio will require you to create and execute a PowerShell script. By default Windows does not let just any user run scripts. You will need to grant your PowerShell session an elevated `execution policy <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&redirectedfrom=MSDN>`_ to run scripts. This execution policy will only be enabled for the PowerShell session that executes the command.
+
+We will be using the *least privileged access* necessary to run our scripts which is the ``RemoteSigned`` execution policy.
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
 
+.. admonition:: note
+
+   You can learn more about by reading the `Microsoft Set-ExecutionPolicy cmdlet <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7>`_ documentation
 
 Setup Task
 ==========
 
-.. repo they will clone https://github.com/LaunchCodeEducation/powershell-practice
+Before you can accomplish your first task you will need to `fork the studio repository <https://github.com/LaunchCodeEducation/powershell-practice>`_.
 
-.. repo has 2 files: ``launchcode-repos.ps`` and ``powershell-repo.ps`` they have prompts in the file for how the student can complete the tasks
+To complete this first task you will need to create a PowerShell script named ``setup-repository.ps1`` that accomplishes the following tasks:
 
-To complete this studio you will need to upload three scripts to a GitHub repository. Two of the scripts will be provided for you and you will be responsible for filling out the scripts. The first script will be one you must create yourself.
+- declare a commit message variable with the value ``auto committed from setup-repository.ps1!``
+- declare a directory variable where the repo will be cloned
+- clone your forked repo into a directory named: directory variable
+- move the ``setup-repository.ps1`` script into the cloned directory
+- change into the cloned directory (directory variable)
+- add everything in the cloned directory to staging
+- commit with the message variable (commit message variable)
+- push to your forked repo
 
-The first script (``setup-repository.ps``) accomplishes the following tasks:
+.. comment:: tip: here are the commands you will likely be using
 
-- create a script for this set of tasks named ``setup-repository.ps``
-- create a project directory named ``powershell-studio`` in your home directory
-- fork the `powershell-practice <https://github.com/LaunchCodeEducation/powershell-practice>`_ repository
-- clone the project repository into the ``powershell-studio``
+.. admonition:: tip
 
-.. admonition:: note
+   To reference a script from inside the script itself you can use the $PSCommandPath variable.
 
-   As a bonus task you can automate the final steps of this task within your ``setup-repository.ps`` script by completing the following in your script:
+Upon completing and running the script it will automatically be pushed to your GitHub repository.
 
-   - move the ``setup-repository.ps`` script into the ``powershell-studio`` directory
-   - from the ``powershell-studio`` directory add and commit the changes to git
-
-After running the script successfully, push the script to GitHub.
+You will know you have completed this task correctly when your remote forked repository contains a new commit with the message ``committed from setup-repository!`` and contains a file named: ``setup-repository.ps1``. There will also be two additional ``.ps1`` files that you will work with in the next two tasks.
 
 Studio Tasks
 ============
@@ -183,7 +208,7 @@ Continue exploring ``Invoke-RestMethod`` and the `Open Notify API <http://api.op
 LaunchCodeEducation Repositories
 --------------------------------
 
-In the repository you cloned you will find a file named ``launchcode-repos.ps``. This script file has prompts for you to solve using PowerShell. After using PowerShell to answer the prompt copy your command underneath the prompt in the file.
+In the repository you cloned you will find a file named ``launchcode-repos.ps1``. This script file has prompts for you to solve using PowerShell. After using PowerShell to answer the prompt copy your command underneath the prompt in the file.
 
 The prompts in the file are:
 
@@ -203,7 +228,7 @@ Upon completing this file push it to your GitHub repository don't forget to push
 PowerShell Repository
 ---------------------
 
-You also need to answer the prompts in the ``powershell-repo.ps`` file:
+You also need to answer the prompts in the ``powershell-repo.ps1`` file:
 
 - Invoke-RestMethod -URI https://api.github.com/repos/powershell/powershell
 - how many github users are watching the powershell repo and how many users have subscribed to the powershell repo
@@ -223,9 +248,9 @@ Submitting your work
 
 After completing and pushing:
 
-- ``setup.ps``
-- ``launchcode-repos.ps``
-- ``powershell-repo.ps``
+- ``setup.ps1``
+- ``launchcode-repos.ps1``
+- ``powershell-repo.ps1``
 
 notify your TA. With any remaining time in the class continue exploring with PowerShell by looking into more of the URLs returned in the various GitHub API endpoints we visited. A huge amount of data is now accessible at your fingertips!
 
