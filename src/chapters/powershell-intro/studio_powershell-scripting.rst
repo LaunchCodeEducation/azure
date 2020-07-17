@@ -2,21 +2,19 @@
 Studio: PowerShell Scripting
 ============================
 
-.. ::
+Understanding a **scripting language is an important part** of the Operations toolkit. We have covered the basics, however to continue building skills with PowerShell you must continue researching and practicing. 
 
-   intro section
+You can learn new scripting concepts, best practices, tips and tricks in many different ways, however one of the most effective ways is by using the documentation. Learning to use the documentation for any tool is the difference between memorizing a few basic commands, and being able to learn what is necessary to solve practical problems.
 
-- ...as part of writing a script you will need to research and understand the tools needed to accomplish the task...
-- ...save time we will provide command banks that came from the following sources...
-   - `PowerShell documentation root <https://docs.microsoft.com/en-us/powershell/scripting/how-to-use-docs?view=powershell-7>`_
-   - `PowerShell Utility Module <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/?view=powershell-7>`_
-   - `PowerShell formatting examples <https://docs.microsoft.com/en-us/powershell/scripting/samples>`_
-
-This article will give you a few tasks that you should accomplish using what you have learned about PowerShell from this chapter. There is no better substitute than practice to learn a tool. When working through the tasks of this article try out different processes to solve the problems.
+Our studio today will contain many different tasks that will provide you with an opportunity to practice PowerShell. You will be able to complete almost every task by simply using what you have learned today. However, we will also provide lots of references to the PowerShell documentation throughout this studio. Challenge yourself to look into these references as a chance to learn **and practice** new things.
 
 .. admonition:: note
 
-   A great way to bolster your understanding of PowerShell is to read more and practice what you have learned. We recommend looking over the following articles and using what you learn throughout this studio:
+   To start things off the majority of the references will be specific links to cmdlets in:
+
+   - `PowerShell Documentation <https://docs.microsoft.com/en-us/powershell/scripting/how-to-use-docs?view=powershell-7>`_
+   - `PowerShell Utility Module <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/?view=powershell-7>`_
+   - `PowerShell formatting examples <https://docs.microsoft.com/en-us/powershell/scripting/samples>`_
 
 Running PowerShell Scripts
 ==========================
@@ -24,7 +22,7 @@ Running PowerShell Scripts
 Allow script execution
 ----------------------
 
-This studio will require you to create and execute a PowerShell script. As a security measure Windows does not allow the execution of *unsigned*, or untrusted, scripts by default.. You will need to grant your PowerShell session an elevated `execution policy <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&redirectedfrom=MSDN>`_ to run your own scripts. 
+This studio will require you to create and execute a PowerShell script. As a security measure Windows does not allow the execution of *unsigned*, or untrusted scripts by default. You will need to grant your PowerShell session an elevated `execution policy <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&redirectedfrom=MSDN>`_ to run your own scripts. 
 
 .. admonition:: note
 
