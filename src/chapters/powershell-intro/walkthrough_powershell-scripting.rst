@@ -217,7 +217,7 @@ To get your feet wet with ``Invoke-RestMethod`` we have provided some basic exam
 Invoke-RestMethod Examples
 --------------------------
 
-The most simple example is making a request to the Open Notify API ``astros.json`` endpoint:
+To start we will make a request for the astros.json file:
 
 .. sourcecode:: powershell
 
@@ -285,7 +285,7 @@ Then accessing the variable:
    ISS   Doug Hurley
    ISS   Bob Behnken
 
-We can even use our variable to determine how the data is stored (``Sort-Object``):
+We can even use our variable to determine how the data is sorted (``Sort-Object``):
 
 .. sourcecode:: powershell
 
@@ -332,5 +332,5 @@ And finally writing this data to a CSV file:
 
 The ``Invoke-RestMethod`` cmdlet is a powerful tool for working with APIs. When combined with our knowledge of PowerShell we have a huge toolbox of things we can do with the data. 
 
-Continue exploring ``Invoke-RestMethod`` and the `Open Notify API <http://api.open-notify.org/>`_. The next sections will require you to use the same PowerShell tools to gather, organize, and write data from the `GitHub Developers API <https://developer.github.com/v3/>`_.
+Continue exploring ``Invoke-RestMethod`` and the `Open Notify API <http://api.open-notify.org/>`_. The following studio will require you to use the same PowerShell tools to gather, organize, and write data from the `GitHub Developers API <https://developer.github.com/v3/>`_.
 
