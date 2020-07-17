@@ -11,6 +11,4 @@ Introduction to PowerShell
    objects
    expressions
    piping
-   scripting
-   walkthrough_powershell-scripting
-   studio_powershell-scripting
+   studio_intro-powershell-scripting
