@@ -1,4 +1,43 @@
 
+.. ::
+
+   $subscribersCount = (Invoke-RestMethod -URI https://api.github.com/repos/powershell/powershell).subscribers_count
+   (Invoke-RestMethod -URI 'https://api.github.com/repos/powershell/powershell/subscribers?page=1&per_page=100').Length
+   (Invoke-RestMethod -URI 'https://api.github.com/repos/powershell/powershell/subscribers?page=1&per_page=100').Length
+
+
+   create a CSV that has the URL of the PR, a message tagging the user by their login name and thanking them
+
+   of the last 100 PRs if it has been merged you need to record their login username, URL/name of PR, merged_at
+
+   thank you PR merge bot (login username, messages their name, when the PR was created, when it was merged)
+
+   100 PRs check if they have been merged, if so grab this info and add to a CSV (needs a CSV of merged PRs)
+
+   bots that close stale issues (go through the last 1000 issues, mark down login username, issue url, last_updated)
+
+   created_at vs updated_at (issues that are stale)
+
+   issue_url, user login, created_at, updated_at; give them logic for if updated_at > 
+
+   determine stale after so many days (make the days a variable so it can be changed in script very easily) 10 days
+
+   generate message for bot based on how long the last updated_at is
+
+   "Hey USERNAME it has been DAYS days since the last update to ISSUE_URL."
+
+   "10 days it will remain open"
+
+   "20 days we will close in 10 days"
+
+   "30 days we are closing this issue"
+
+   .. $three_months = $past.AddMonths(3)
+
+   .. $ten_days = $past.addDays(10)
+
+.. [datetime]$CreatedAt = $Issue.created_at
+
 launchcode-repos.ps1
 ===================
 

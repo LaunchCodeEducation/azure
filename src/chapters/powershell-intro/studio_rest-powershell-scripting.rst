@@ -165,6 +165,8 @@ Continue exploring ``Invoke-RestMethod`` and the `Open Notify API <http://api.op
 Generating Repo-Bot Data
 ========================
 
+.. show https://developer.github.com/v3/#pagination
+
 Discovery
 ---------
 
