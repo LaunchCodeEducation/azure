@@ -4,7 +4,9 @@ Studio: PowerShell Scripting
 
 Understanding a **scripting language is an important part** of the Operations toolkit. We have covered the basics, however to continue building skills with PowerShell you must continue researching and practicing. 
 
-You can learn new scripting concepts, best practices, tips and tricks in many different ways, however one of the most effective ways is by using the documentation. Learning to use the documentation for any tool is the difference between memorizing a few basic commands, and being able to learn what is necessary to solve practical problems.
+You can learn new scripting concepts, best practices, tips and tricks in many different ways, however one of the most effective ways is by using the documentation. 
+   
+   Learning to use the documentation for any tool is the difference between memorizing a few basic commands, and being able to learn what is necessary to solve practical problems.
 
 Our studio today will contain many different tasks that will provide you with an opportunity to practice PowerShell. You will be able to complete almost every task by simply using what you have learned today. However, we will also provide lots of references to the PowerShell documentation throughout this studio. Challenge yourself to look into these references as a chance to learn **and practice** new things.
 
@@ -175,27 +177,42 @@ After it succeeds you can send the repo link to your TA for review.
 Command-Line REST
 =================
 
-.. some sort of lead-in for hitting a REST API using Invoke-RestMethod
-.. similar to postman but using the cmdlet with declarative -Parameter names for key features of each req
-.. describe outputs in JSON and how to work with them
-.. our goals are to write scripts to analyze API data about a GitHub org and individual repo
+At various points through this class we have used Postman as a way for making requests to a RESTful API. Postman offers a GUI that is a very pleasant interface to work with, however a GUI is not always the best interface for a given job. 
 
-.. ::
+PowerShell offers multiple cmdlets for making HTTP requests from the CLI. A benefit of making requests from the CLI is that you can combine as many requests as you want and run them in a single script. This gives you the power to test a RESTful API in a very quick manner. 
 
+In this studio we will be using `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_, a cmdlet that allows you to make requests to a RESTful API. In a similar vein to Postman, ``Invoke-RestMethod`` allows you to set the request: URI, HTTP method, headers, body, and more. 
 
-command banks (distribute in each script that needs them)
-   - `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_
-   - `Select-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Select-Object?view=powershell-7`_
-   - `Format-Table <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/format-table?view=powershell-7>`_
-   - `Export-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-csv?view=powershell-7>`_
-   - `ConvertTo-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/convertto-csv?view=powershell-7>`_: pipe CSV object into `Add-Content <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/add-content?view=powershell-7>_
-   - `Sort-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Sort-Object?view=powershell-7>`_
-   - `Add-Content <https://education.launchcode.org/azure/chapters/powershell-intro/piping.html#adding-contents-to-a-file>`_
-   - `Get-Member <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-member?view=powershell-7>`_: easily find a property or method of an object
+The ``Invoke-RestMethod`` cmdlet returns a JSON object so with PowerShell we can easily access any attached properties or sub-collections from the response body using the familiar dot-notation and collection index selection syntax ([0]). In addition many PowerShell cmdlets can take the JSON response object returned from ``Invoke-RestMethod`` as an argument when using pipes (|) and sub-expressions ($()).
 
-Using the ``Invoke-RestMethod`` cmdlet you will need to write various scripts to gather information from the `GitHub Developers API <https://developer.github.com/v3/>`_.
+Using ``Invoke-RestMethod`` we will be consuming the `GitHub Developers API <https://developer.github.com/v3/>`_. We will be analyzing API data around the `LaunchCodeEducation organization <https://github.com/launchcodeeducation/>`_, and the `PowerShell repository <https://github.com/powershell/powershell>`_.
 
-``Invoke-RestMethod`` was a bonus cmdlet from a previous article, so we will show you how to work with by using the simple `Open Notify API <http://api.open-notify.org/>`_.
+Command Bank
+------------
+
+PowerShell Cmdlets
+^^^^^^^^^^^^^^^^^^
+
+- `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_
+- `Select-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Select-Object?view=powershell-7>`_
+- `Format-Table <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/format-table?view=powershell-7>`_
+- `Export-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-csv?view=powershell-7>`_
+- `ConvertTo-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/convertto-csv?view=powershell-7>`_: pipe CSV object into `Add-Content <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/add-content?view=powershell-7>`_
+- `Sort-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Sort-Object?view=powershell-7>`_
+
+.. :: 
+
+   command banks (distribute in each script that needs them)
+      - `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_
+      - `Select-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Select-Object?view=powershell-7`_
+      - `Format-Table <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/format-table?view=powershell-7>`_
+      - `Export-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-csv?view=powershell-7>`_
+      - `ConvertTo-Csv <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/convertto-csv?view=powershell-7>`_: pipe CSV object into `Add-Content <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/add-content?view=powershell-7>_
+      - `Sort-Object <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Sort-Object?view=powershell-7>`_
+      - `Add-Content <https://education.launchcode.org/azure/chapters/powershell-intro/piping.html#adding-contents-to-a-file>`_
+      - `Get-Member <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-member?view=powershell-7>`_: easily find a property or method of an object
+
+To get your feet wet with ``Invoke-RestMethod`` we have provided some basic examples that work with the `Open Notify API <http://api.open-notify.org/>`_.
 
 Invoke-RestMethod Examples
 --------------------------
@@ -333,6 +350,11 @@ The prompts in the file are:
 - how many issues are found
 - how would you access the 5th issues of this list
 - what is the id, title, and URL for the fifth issues in this list?
+
+- starter code
+   - if (has_issues)
+- a script that outputs the name, link, issues count, across all the repos
+
 
 
 Upon completing this file push it to your GitHub repository don't forget to push the ``launchcode-education-repo-names.csv`` file you created in one step as well.
