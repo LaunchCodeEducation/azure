@@ -2,18 +2,25 @@
 Walkthrough: Setup Azure ADB2C Tenant
 =====================================
 
-In this walkthrough we will set up our own identity manager using Azure. The Azure Active Directory B2C (AADB2C) service abstracts away the complexity of setting up a Customer Identity Access Manager (CIAM). 
+Azure Active Directory B2C (AADB2C) is a service that manages user identities and coordinates their access across the different applications in your organization.  When provisioning an AADB2C service Azure will create a **tenant directory**. 
 
-It allows us to support any number of identity providers (like Microsoft, LinkedIn or GitHub) to connect users to our organization's applications. In our case we will set up AADB2C using an Email Provider (a generic identity tied to an email address). 
+The tenant directory is an Active Directory instance that centralizes user identities for a SSO experience across your organization. This means that a user can have a **single identity** they create and access through multiple identity providers like Microsoft, GitHub or an Email and password.
 
-When you provision an AADB2C service Azure will create a **tenant directory**. The tenant directory represents the Active Directory that holds our user accounts. Each AADB2C tenant has one or more **User identity flows** that customize how users register and interact with their account. 
+Each AADB2C tenant uses **User identity flows**, or policies, that customize how a user registers and manages their identity in your organization. These user accounts can be used to authenticate and interact with your organization's **registered applications**. 
 
-These accounts can then be accessed by **registered applications** (client services like our Coding Events API). As an identity management service, AADB2C uses the OIDC protocol to provide an **identity token** to our application after a user registers or authenticates.
+In this walkthrough we will register the Coding Events API application and create a user account in our AADB2C tenant directory. We will then inspect the **identity token** received after completing the OIDC flow for our registered API. In the following studio we will then extend this configuration to protect our registered API using its own **access tokens**.
+
+.. AADB2C can be used for **bi-directional authorization** with your organization's web applications. For example, if a user's identity is linked to a GitHub account your application can request their GitHub access token without ever communicating directly with GitHub. AADB2C would manage the OAuth exchange between the user and GitHub and provide the access token transparently to your application.
+
+.. We say bi-directional because the inverse scenario can be used as well. AADB2C can be used to **protect access** to your applications through the use of *their own* access tokens. AADB2C abstracts the process of managing access tokens for other client applications to use on behalf of your tenant's users.
+
+Components of AADB2C
+====================
 
 Checklist
 =========
 
-Setting up our AADB2C authority will involve the following steps:
+Setting up our AADB2C service will involve the following steps:
 
 #. create an AADB2C tenant directory
 #. link the tenant directory to an active Azure Subscription
@@ -197,12 +204,6 @@ Claims are used to standardize the identity data that is collected across the id
 - ``Legal Age Group Classification``
 
 You can also define `custom claims <https://docs.microsoft.com/en-us/azure/active-directory-b2c/user-profile-attributes>`_ that apply to more specific use cases.
-
-.. admonition:: tip
-
-   User flows are configured **independently from registered applications**. They can be customized for a single application or *reused* across any number of applications.
-
-   For our purposes we will customize a user flow specific to our Coding Events API application.
 
 In the left sidebar of the **tenant dashboard** switch from App Registrations by selecting the **User Flows** option under *Policies*.
 
