@@ -31,3 +31,8 @@
    - login via SUSI
    - hit the protected owner endpoints
    - notify your TA and they will act as the member
+
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/.png
+   :alt: 
+
