@@ -233,7 +233,7 @@ This will present the SUSI flow form. As mentioned previously we will allow user
    
 For the top half of the form (steps 1-3) configure the following settings:
 
-#. **Name**: after the ``B2C_1_`` prefix enter ``coding-events-api-susi``
+#. **Name**: after the ``B2C_1_`` prefix enter ``susi-flow``
 #. **Providers**: we will use the ``Email signup`` provider
 #. **MFA**: leave ``disabled``
 
@@ -275,7 +275,7 @@ Test the User Flow
 
 Our final step is to test out the SUSI flow we created. We will register our first user accounts in the new AADB2C tenant using this flow. After registering we will inspect the identity token and the returned claims that were included in it.
 
-From the User Flows view select the new flow, ``B2C_1_coding-events-api-susi``. This will take you to the SUSI flow dashboard where you can modify and test (run) the flow:
+From the User Flows view select the new flow, ``B2C_1_susi-flow``. This will take you to the SUSI flow dashboard where you can modify and test (run) the flow:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/26flow-dashboard.png
    :alt: SUSI flow dashboard view
