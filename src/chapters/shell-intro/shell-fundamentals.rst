@@ -80,7 +80,7 @@ In the File Explorer program you used sidebars and your mouse to navigate throug
 
 - ``pwd``: print the CWD to see where you are currently
 - ``ls``: list the contents of a directory
-- ``cd``: change directories
+- ``ls``: change directories
 
 .. admonition:: note
 
@@ -88,7 +88,7 @@ In the File Explorer program you used sidebars and your mouse to navigate throug
 
    - ``pwd``: alias for ``Get-Location`` cmdlet
    - ``ls``: alias for ``Get-ChildItem`` cmdlet
-   - ``cd``: alias for ``Set-Location`` cmdlet
+   - ``ls``: alias for ``Set-Location`` cmdlet
 
 When you enter the ``pwd`` command into your Terminal it will print the absolute path of your CWD. Just like the File Explorer the Shell will open to your home directory by default:
 
@@ -118,7 +118,7 @@ If you want to view the contents of the CWD you are in you can use the ``ls`` co
    $ ls
    # contents of home directory 
 
-Finally you can use ``cd`` to change directories to a new working directory which becomes the CWD. Say you wanted to go from your home directory to the ``Downloads`` directory like our previous example. You can provide the relative path to the ``cd`` command to get there:
+Finally you can use ``ls`` to change directories to a new working directory which becomes the CWD. Say you wanted to go from your home directory to the ``Downloads`` directory like our previous example. You can provide the relative path to the ``ls`` command to get there:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -204,7 +204,7 @@ Arguments
 
 Arguments are positional values used to define the main behavior of a command. Like JavaScript or C# the arguments have a specific order they must be provided in. While some commands like ``pwd`` or ``ls`` have *default arguments*, most will require some additional input from you. The command documentation will describe what arguments, their order and any default values that apply to them.
 
-Let's consider the ``cd`` command we saw that was used to change directories. This time we did provide a positional argument, the relative or absolute path to the directory we wanted to switch to:
+Let's consider the ``ls`` command we saw that was used to change directories. This time we did provide a positional argument, the relative or absolute path to the directory we wanted to switch to:
 
 .. sourcecode:: bash
 
@@ -333,7 +333,7 @@ So how do environment variables relate to calling programs by their name rather 
 
 The PATH variable holds a collection of base paths that the Shell should look in when evaluating a command. When a command is called the Shell will look in each of the base paths until it finds an executable file with the same name. Then it combines the matching base path with the command name to form the absolute path of the file to execute.
 
-For example, in Bash the base directory that the built-in commands are stored in is ``/usr/bin``. Bash includes this base directory in its PATH variable by default. When we call the ``cd`` command it is actually referencing the executable program file at the ``/usr/bin/cd`` path. 
+For example, in Bash the base directory that the built-in commands are stored in is ``/usr/bin``. Bash includes this base directory in its PATH variable by default. When we call the ``ls`` command it is actually referencing the executable program file at the ``/usr/bin/ls`` path. 
 
 Let's assume a PATH variable with 4 base directories in its list (separated by ``:`` characters):
 
@@ -343,13 +343,13 @@ Let's assume a PATH variable with 4 base directories in its list (separated by `
 
 The process looks something like:
 
-#. read the program name (``cd``)
+#. read the program name (``ls``)
 #. recognize that it is a program name and not a path to an executable
-#. check each directory in the PATH list for a file with the name of the command (``cd``)
+#. check each directory in the PATH list for a file with the name of the command (``ls``)
 
-It first checks ``/usr/local/sbin`` but is unable to find the ``cd`` program file. It then checks ``/usr/local/bin`` and ``/usr/sbin`` but still fails to find it. Finally it finds the ``cd`` file in ``/usr/bin`` directory.
+It first checks ``/usr/local/sbin`` but is unable to find the ``ls`` program file. It then checks ``/usr/local/bin`` and ``/usr/sbin`` but still fails to find it. Finally it finds the ``ls`` file in ``/usr/bin`` directory.
 
-The command is then executed by combining the matching base path (``/usr/bin``) with the command name (``cd``) into the absolute path ``/usr/bin/cd``. If it reaches the end of the PATH list then it will output a *command not found* error. 
+The command is then executed by combining the matching base path (``/usr/bin``) with the command name (``ls``) into the absolute path ``/usr/bin/cd``. If it reaches the end of the PATH list then it will output a *command not found* error. 
 
 .. admonition:: note
 

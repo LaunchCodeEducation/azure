@@ -129,7 +129,7 @@ Use the command program ``cowsay`` and enter a message as its arguments:
    .. sourcecode:: bash
       :caption: Linux/Bash
 
-      $ sudo apt uninstall cowsay -y
+      $ sudo apt remove cowsay -y
 
 Adding custom sources
 =====================

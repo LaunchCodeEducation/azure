@@ -1,6 +1,6 @@
-=========================================================
-Walkthrough: Consuming the Coding Events API With Postman
-=========================================================
+=======================================================
+Walkthrough: Consuming the CodingEventsAPI With Postman
+=======================================================
 
 The UI of a browser is designed to make *simple* ``GET`` requests for URLs entered into its address bar. This design works great for browsing sites but falls short when working with headless APIs. 
 
