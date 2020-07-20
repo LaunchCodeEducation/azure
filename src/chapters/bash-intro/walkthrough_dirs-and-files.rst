@@ -94,32 +94,6 @@ Let's move the ``child-dir`` from its current parent directory (``/tmp``) into t
    $ ls parent-dir
    child-dir
 
-.. admonition:: warning
-
-   The act of moving a file (remember directories are files) can be used to define a new name for it in the destination path. 
-
-   When renaming files you **must be careful**. If a file of the same name exists at the destination path you provide **the existing file will be overwritten permanently**.
-
-   For example if we create another directory called ``child-dir`` and want to move it into ``parent-dir`` we can *rename it during the move* to not overwrite the existing directory file with the same name:
-
-   .. sourcecode:: bash
-      :caption: Linux/Bash
-
-      $ pwd
-      /home/student
-
-      $ mkdir /tmp/child-dir
-      
-      $ ls parent-dir
-      child-dir
-
-      # rename in the new destination path
-      $ mv /tmp/child-dir parent-dir/child-dir-2
-
-      $ ls parent-dir
-      child-dir
-      child-dir-2
-
 Copy a directory
 ----------------
 
@@ -142,7 +116,6 @@ Let's move our ``parent-dir`` to the ``/tmp`` dir:
    
    $ ls parent-dir
    child-dir
-   child-dir-2
 
    $ cp -r parent-dir /tmp/parent-dir
 
@@ -156,7 +129,6 @@ Now let's confirm the move by checking the ``/tmp`` dir:
 
    $ ls /tmp/parent-dir
    child-dir
-   child-dir-2
 
 Notice how it copied the ``parent-dir`` and *recursed* into it to copy all of the sub-directories as well.
 
@@ -184,7 +156,6 @@ We will also include the ``-i`` (interactive) option as a safety measure. This w
 
    $ ls /tmp/parent-dir
    child-dir
-   child-dir-2
 
    $ rm -i -r /tmp/parent-dir
    # for each prompt type y and hit enter (for yes)
