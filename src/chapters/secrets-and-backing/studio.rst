@@ -1,6 +1,6 @@
-================================
-Studio: Deploy API with KeyVault
-================================
+============================================
+Studio: Deploy CodingEventsAPI with KeyVault
+============================================
 
 In our Studio today we will be deploying the CodingEventsAPI to an Ubuntu VM. As part of the deployment we will provision an Azure Key vault to manage the database connection string of an embedded MySQL database server.
 

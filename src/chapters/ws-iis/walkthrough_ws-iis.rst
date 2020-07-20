@@ -1,8 +1,8 @@
 .. _walkthrough_ws-iis:
 
-============================================
-Walkthrough: Windows Server & IIS Deployment
-============================================
+========================================================
+Walkthrough: Windows Server & IIS Starter App Deployment
+========================================================
 
 Now that we have learned about remote access mechanisms and the IIS Manager it's time to get our hands dirty! In this walkthrough we will:
 
