@@ -14,7 +14,7 @@ Create a directory
 
 The ``mkdir`` (make directory) command creates directories using a relative or absolute path argument. If just the name of a directory is given then it is created *relative to* the CWD. If the absolute path is provided the directory is created at that *exact* location.
 
-By convention Linux directories do not use spaces in them. Space characters (`` ``) can conflict with the spaces between command arguments so they are avoided. In order to create a multi-word directory name the convention uses dashes (``-``) to separate the words. 
+By convention Linux directories do not use spaces in them. Space characters can conflict with the spaces between command arguments so they are avoided. In order to create a multi-word directory name the convention uses dashes (``-``) to separate the words. 
 
 Let's create a ``parent-dir`` and ``child-dir`` using ``mkdir``:
 
