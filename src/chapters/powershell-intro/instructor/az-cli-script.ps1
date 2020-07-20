@@ -37,10 +37,6 @@ az configure --default vm=$vmName
 
 az keyvault create -n "$kvName" --enable-soft-delete "false" --enabled-for-deployment "true" | Set-Content keyVault.json
 
-# set az kv default
-
-az configure --default kv=$kvName
-
 # KV: set secret
 
 az keyvault secret set --vault-name "$kvName" --description "connection string" --name "$kvSecretName" --value "$kvSecretValue"
@@ -49,7 +45,7 @@ az keyvault secret set --vault-name "$kvName" --description "connection string" 
 
 # VM open NSGs
 
-az vm open-port --port 80
+az vm open-port --port 443
 
 # VM: grant access to KV
 

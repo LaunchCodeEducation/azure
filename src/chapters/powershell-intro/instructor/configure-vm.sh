@@ -4,8 +4,7 @@ set -ex
 
 # -- env vars --
 
-# needed to use dpkg without user interaction
-DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND=noninteractive
 
 # -- end env vars --
 
