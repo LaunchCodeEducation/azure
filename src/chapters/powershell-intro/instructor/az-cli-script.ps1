@@ -4,12 +4,13 @@
 
 # variables
 
-$rgName = "paul-cli-scripting-rg"
-$vmName = "paul-cli-scripting-vm"
+$studentName = "paul"
+$rgName = "$studentName-cli-deploy-rg"
+$vmName = "$studentName-cli-deploy-vm"
 $vmSize = "Standard_B2s"
 $vmImage = "$(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn")"
 $vmAdminUsername = "student"
-$kvName = "paul-cli-scripting-kv"
+$kvName = "$studentName-cli-deploy-kv"
 $kvSecretName = "ConnectionStrings--Default"
 $kvSecretValue = "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
 
@@ -27,7 +28,7 @@ az configure --default group=$rgName
 
 # VM: provision
 
-az vm create -n "$vmName" --size "$vmSize" --image "$vmImage" --admin-username "$vmAdminUsername" --assign-identity | Set-Content virtualMachine.json
+az vm create -n "$vmName" --size "$vmSize" --image "$vmImage" --admin-username "$vmAdminUsername" --admin-password "LaunchCode-@zure1" --authentication-type "password" --assign-identity | Set-Content virtualMachine.json
 
 # set az vm default
 
