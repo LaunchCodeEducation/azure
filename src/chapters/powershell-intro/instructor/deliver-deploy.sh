@@ -67,9 +67,6 @@ dotnet publish -c Release -r linux-x64 -o "$api_working_dir"
 
 # -- deploy --
 
-# start nginx service
-service nginx start
-
 # start API service
 service coding-events-api start
 
