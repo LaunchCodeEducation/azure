@@ -8,24 +8,7 @@ Studio: PowerShell Scripted CodingEventsAPI Deployment
 - they will be provided the RunCommand scripts (configure-vm, configure-ssl, deliver-deploy)
 - they will be required to create the azureProvisionScript (az-cli-script.ps1)
 
-- we will dissect the bash deployment script what are all the things it's doing?
-  - sections as subheaders: (provision RG, provision VM, set VM assigned identity variable, provision KV, kv set-access policy using vm assigned identity, configure vm, configure ssl, deliver-deploy)
-  - there is some less than desirable code in these scripts (getting the VM assigned identity, keeping track of the VM ip, the variables are all strings) these are limitations of Bash, that we don't have in PowerShell. In ps we would be able to store these variables as objects, and access their properties with .notation, since the output comes in as an object, we can easily access the System Assigned Identity, get the VM public IP address, etc
-
-prompts:
-- create azureProvisionScript.ps1 
-- this script must:
-  - provision RG, VM, KV
-  - set access policy of KV to VM
-  - set our database connection string as secret in the KV
-  - send 3 scripts to the VM using the az cli vm run-command
-    #. configure-vm.sh
-    #. configure-ssl.sh
-    #. deliver-deploy.sh
-
 - TAs and instructor will have access to the solution scripts and will see the full deployment in action. They will provide you assistance when you get stuck.
-
-- example az vm run-command invoke examples:
 
 Bash Script Breakdown
 =====================
@@ -122,10 +105,14 @@ Let's consider the BASH deployment script we saw at the end of the Azure CLI cha
 
    # --- end ---
 
+- we will dissect the bash deployment script what are all the things it's doing?
+- sections as subheaders: (provision RG, provision VM, set VM assigned identity variable, provision KV, kv set-access policy using vm assigned identity, configure vm, configure ssl, deliver-deploy)
+- there is some less than desirable code in these scripts (getting the VM assigned identity, keeping track of the VM ip, the variables are all strings) these are limitations of Bash, that we don't have in PowerShell. In ps we would be able to store these variables as objects, and access their properties with .notation, since the output comes in as an object, we can easily access the System Assigned Identity, get the VM public IP address, etc
+
 Your Tasks
 ==========
 
-Create a script that accomplishes the following:
+Create a script (azureProvisionScript.ps1) that accomplishes the following:
 
 - set variables
 - provision RG
@@ -166,3 +153,5 @@ Limited Guidance
    > $virtualMachine.someProperty
 
 Saving the output as a file will allow you to keep the data for as long as you need, if you store it only as a variable if you close your PowerShell session you will lose the data.
+
+- example az vm run-command invoke examples:
