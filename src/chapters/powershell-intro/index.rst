@@ -13,3 +13,4 @@ Introduction to PowerShell
    piping
    cmdlet-invoke-restmethod
    studio_intro-powershell-scripting
+   studio_powershell-scripted-deployment
