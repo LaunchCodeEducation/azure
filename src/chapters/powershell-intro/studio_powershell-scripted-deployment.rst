@@ -8,7 +8,7 @@ Studio: PowerShell Scripted CodingEventsAPI Deployment
 - they will be provided the RunCommand scripts (configure-vm, configure-ssl, deliver-deploy)
 - they will be required to create the azureProvisionScript (az-cli-script.ps1)
 
-- we will disect the bash deployment script what are all the things it's doing?
+- we will dissect the bash deployment script what are all the things it's doing?
   - sections as subheaders: (provision RG, provision VM, set VM assigned identity variable, provision KV, kv set-access policy using vm assigned identity, configure vm, configure ssl, deliver-deploy)
   - there is some less than desirable code in these scripts (getting the VM assigned identity, keeping track of the VM ip, the variables are all strings) these are limitations of Bash, that we don't have in PowerShell. In ps we would be able to store these variables as objects, and access their properties with .notation, since the output comes in as an object, we can easily access the System Assigned Identity, get the VM public IP address, etc
 
