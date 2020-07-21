@@ -4,8 +4,6 @@ Cmdlet: Invoke-RestMethod
 
 PowerShell is filled with Cmdlets that allow you to accomplish many things. This chapter has done a good job of introducing the foundational features of PowerShell. However, to truly to take advantage of this tool you must be willing and able to continue learning and practicing this tool.
 
-That's what we will do in this article, learn about and practice a PowerShell cmdlet. Not only will we talk about what the cmdlet is and how it is used, but we will emphasize **why** you may want to use this tool.
-
 We will be working with the `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_.
 
 Command-Line REST
@@ -13,7 +11,7 @@ Command-Line REST
 
 Throughout this class we have used Postman as a way for making requests to a RESTful API. Postman offers a GUI that is a very pleasant interface to work with, however a GUI is not always the best interface for a given job. 
 
-PowerShell offers multiple cmdlets for making HTTP requests from the CLI. A benefit of making requests from the CLI is that you can combine as many requests as you want and run them in a single script. This gives you the power to script interactions with a RESTful API to automate tasks.
+PowerShell offers multiple cmdlets for making HTTP requests from the CLI. A benefit of making requests from the CLI is that you can combine as many requests as you want and run them in a single script. This gives you the power to script interactions with a RESTful API to automate tasks, like endpoint testing.
 
 Invoke-RestMethod
 =================
@@ -21,10 +19,6 @@ Invoke-RestMethod
 In a similar vein to Postman, ``Invoke-RestMethod`` allows you to set the request: URI, HTTP method, headers, body, and more all from a PowerShell terminal. 
 
 The ``Invoke-RestMethod`` cmdlet makes an HTTP request the server returns an HTTP response as a JSON object that can be mapped directly to a `PSCustomObject <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-pscustomobject?view=powershell-7>`_ which can be used directly with PowerShell, or can be saved in a JSON file. 
-
-.. ::
-
-   The ``Invoke-RestMethod`` cmdlet returns a JSON object that is seamless to interact with using PowerShell. We can easily access any attached properties or sub-collections from the response body using the familiar dot-notation and collection index selection syntax. In addition many PowerShell cmdlets can take the JSON response object returned from ``Invoke-RestMethod`` as an argument when using pipes (``|``) and sub-expressions (``$()``).
 
 Open-Notify Examples
 --------------------
@@ -158,9 +152,14 @@ CodingEventsAPI Examples
 Get Example
 -----------
 
+To get a collection of coding events you could use:
+
 .. sourcecode:: powershell
 
    > Invoke-RestMethod -Uri http://localhost:5000/api/events
+
+
+To get an individual coding event entity you could use:
 
 .. sourcecode:: powershell
 
@@ -168,6 +167,8 @@ Get Example
 
 Post Example
 ------------
+
+To post a new coding event entity you could use:
 
 .. sourcecode:: powershell
 
@@ -182,6 +183,8 @@ Post Example
 Put Example
 -----------
 
+To update an existing coding event entity you could use:
+
 .. sourcecode:: powershell
 
    > $body = @{
@@ -195,6 +198,8 @@ Put Example
 Delete Example
 --------------
 
+To delete an existing coding event entity you could use:
+
 .. sourcecode:: powershell
 
    > Invoke-RestMethod -Method "Delete" -Uri https://localhost:5000/api/events/{id}
@@ -207,6 +212,13 @@ You have seen how the ``-Method`` and ``-Body`` options work. ``-Method`` allow 
 There are a lot of additional options we can use to further configure the requests sent with ``Invoke-RestMethod``. You should look over the documentation of `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ to get an understanding of everything that can be done, but you will most likely recognize some common flags like:
 
 - ``-Headers``: used to define custom headers with our request
-- ``-Authentication``: used to define the authentication type (bearer, oauth, etc)
-- ``-Token``: used to define the oauth or bearer token to be included with the request
+- ``-Authentication``: used to define the authentication type (bearer, oauth, etc), this automatically creates the proper header
+- ``-Token``: used to define the oauth or bearer token to be included with the request this automatically creates the proper header
+
+Continue Learning
+=================
+
+In an earlier lesson we used Postman to test out our CodingEventsAPI. If you have extra time in this course we recommend writing a PowerShell script that uses the ``Invoke-RestMethod`` cmdlet to send requests to all of the endpoints with the proper information.
+
+You can work with any RESTful APIs using the ``Invoke-RestMethod`` cmdlet. To continue practicing you can self-host your own API, or you can find any publicly available APIs like the `GitHub Developer API <https://developer.github.com/v3/>`_.
 
