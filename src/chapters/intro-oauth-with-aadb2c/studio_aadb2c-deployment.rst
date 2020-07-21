@@ -40,6 +40,8 @@ Studio: Deploy CodingEventsAPI with AADB2C
 - first attempt: valid audience is clientID of the API
 
 
+.. comment: split this part into a walkthrough (setup) and studio (deploy/fire postman requests)
+
 # start images/steps
 
 - go to home page tenant dashboard (AADB2C) (in the tenant directory)
@@ -72,6 +74,9 @@ Studio: Deploy CodingEventsAPI with AADB2C
 
 
 .. comment: EVERYTHING ABOVE THIS POINT IS CORRECT below subject to change
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/3-5copy-scope-uri.png
+   :alt: add user_impersonation scope to API
 
 - go back to app registrations
 - click new registration
@@ -111,14 +116,53 @@ Studio: Deploy CodingEventsAPI with AADB2C
 - a window will pop up
 - for auth URL
 
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/6fill-out-form.png
+   :alt:
+
+- token name: access token
+- grant type: choose implicit
+- callback URL: https://www.postman.com/oauth2/callback
+  - warning DO NOT SELECT AUTHORIZE USING BROWSER
+- auth URL: click your meta data endpoint (AADB2C portal)
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/7metadata-authorization-endpoint.png
+   :alt:
+
+- client id: registered postman app CLIENT ID
+- scope: api_user_impersonation scope you copied earlier
+- state: leave blank
+- client authentication: default but confirm send as basic auth header
+- click request token a pop up will prompt you to login
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/8postman-adb2c-form-signin.png
+   :alt:
+
+- remind default password
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/9postman-access-token-success.png
+   :alt:
+
+- click use token
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/10postman-auth-tab-complete.png
+   :alt:
+
+- click the update button
+
 - switch back to client auth aadb2c
+
+.. comment:: END OF POSTMAN GROUP
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/5application-completed-registration-form.png
    :alt:
 
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/5-3copy-client-id.png
+   :alt:
+
 - leave defaults except for name & redirect URI
 - name: Postman
-- redirect URI: https://oauth.pstmn.io/v1/callback
+- redirect URI: https://www.postman.com/oauth2/callback
+- click the authentication settings and then click implicit flow
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/5-5postman-implicit-flow.png
    :alt:
@@ -186,3 +230,5 @@ Studio: Deploy CodingEventsAPI with AADB2C
 
 
 .. TODO: auth URL, clientID, scope (in postman)
+
+- 
