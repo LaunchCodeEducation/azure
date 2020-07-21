@@ -11,4 +11,5 @@ Introduction to PowerShell
    objects
    expressions
    piping
+   cmdlet-invoke-restmethod
    studio_intro-powershell-scripting
