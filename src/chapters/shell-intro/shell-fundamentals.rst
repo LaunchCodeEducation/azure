@@ -80,7 +80,7 @@ In the File Explorer program you used sidebars and your mouse to navigate throug
 
 - ``pwd``: print the CWD to see where you are currently
 - ``ls``: list the contents of a directory
-- ``ls``: change directories
+- ``cd``: change directories
 
 .. admonition:: note
 
@@ -88,7 +88,7 @@ In the File Explorer program you used sidebars and your mouse to navigate throug
 
    - ``pwd``: alias for ``Get-Location`` cmdlet
    - ``ls``: alias for ``Get-ChildItem`` cmdlet
-   - ``ls``: alias for ``Set-Location`` cmdlet
+   - ``cd``: alias for ``Set-Location`` cmdlet
 
 When you enter the ``pwd`` command into your Terminal it will print the absolute path of your CWD. Just like the File Explorer the Shell will open to your home directory by default:
 
@@ -118,7 +118,7 @@ If you want to view the contents of the CWD you are in you can use the ``ls`` co
    $ ls
    # contents of home directory 
 
-Finally you can use ``ls`` to change directories to a new working directory which becomes the CWD. Say you wanted to go from your home directory to the ``Downloads`` directory like our previous example. You can provide the relative path to the ``ls`` command to get there:
+Finally you can use ``cd`` to change directories to a new working directory which becomes the CWD. Say you wanted to go from your home directory to the ``Downloads`` directory like our previous example. You can provide the relative path to the ``cd`` command to get there:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -204,7 +204,7 @@ Arguments
 
 Arguments are positional values used to define the main behavior of a command. Like JavaScript or C# the arguments have a specific order they must be provided in. While some commands like ``pwd`` or ``ls`` have *default arguments*, most will require some additional input from you. The command documentation will describe what arguments, their order and any default values that apply to them.
 
-Let's consider the ``ls`` command we saw that was used to change directories. This time we did provide a positional argument, the relative or absolute path to the directory we wanted to switch to:
+Let's consider the ``cd`` command we saw that was used to change directories. This time we did provide a positional argument, the relative or absolute path to the directory we wanted to switch to:
 
 .. sourcecode:: bash
 
