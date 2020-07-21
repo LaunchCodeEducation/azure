@@ -349,7 +349,7 @@ The process looks something like:
 
 It first checks ``/usr/local/sbin`` but is unable to find the ``ls`` program file. It then checks ``/usr/local/bin`` and ``/usr/sbin`` but still fails to find it. Finally it finds the ``ls`` file in ``/usr/bin`` directory.
 
-The command is then executed by combining the matching base path (``/usr/bin``) with the command name (``ls``) into the absolute path ``/usr/bin/cd``. If it reaches the end of the PATH list then it will output a *command not found* error. 
+The command is then executed by combining the matching base path (``/usr/bin``) with the command name (``ls``) into the absolute path ``/usr/bin/ls``. If it reaches the end of the PATH list then it will output a *command not found* error. 
 
 .. admonition:: note
 
