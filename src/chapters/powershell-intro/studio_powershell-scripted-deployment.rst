@@ -2,16 +2,28 @@
 Studio: PowerShell Scripted CodingEventsAPI Deployment
 ======================================================
 
-- They saw the BASH deployment script (but it never ran)
-- they saw the AZ CLI stuff (so they are familiar with provisioning resources from command line)
+In our studio today we will be using PowerShell to script a complete deployment of the CodingEventsAPI to a Linux VM.
 
-- they will be provided the RunCommand scripts (configure-vm, configure-ssl, deliver-deploy)
-- they will be required to create the azureProvisionScript (az-cli-script.ps1)
+You will write a script that provisions and configures all of the Azure resources we will need for this deployment. Luckily this will be similar to what we did in the Azure CLI chapter. We will simply be combining all of those steps, and our newfound PowerShell skills to perform this task.
 
-- TAs and instructor will have access to the solution scripts and will see the full deployment in action. They will provide you assistance when you get stuck.
+Some of the scripts will be provided for you, but it would be in your best interest to read over them, and try to understand what they are doing.
+
+Before we get to writing our PowerShell script for our deployment, let's take a look at the BASH deployment script we saw at the end of the Azure CLI chapter.
+
+.. ::
+
+  - They saw the BASH deployment script (but it never ran)
+  - they saw the AZ CLI stuff (so they are familiar with provisioning resources from command line)
+
+  - they will be provided the RunCommand scripts (configure-vm, configure-ssl, deliver-deploy)
+  - they will be required to create the azureProvisionScript (az-cli-script.ps1)
+
+  - TAs and instructor will have access to the solution scripts and will see the full deployment in action. They will provide you assistance when you get stuck.
 
 Bash Script Breakdown
 =====================
+
+You saw this script earlier, so instead of breaking down every single line, we will organize it into it's major points.
 
 .. the full breakdown needs to happen as the last part of the Azure CLI chapter we will show them the BASH deployment script, and break it down in the article. Here we will just need to hit some key points to help the students form a mental model of the tasks (and their order) they will need to accomplish with their script.
 
@@ -105,9 +117,40 @@ Let's consider the BASH deployment script we saw at the end of the Azure CLI cha
 
    # --- end ---
 
-- we will dissect the bash deployment script what are all the things it's doing?
-- sections as subheaders: (provision RG, provision VM, set VM assigned identity variable, provision KV, kv set-access policy using vm assigned identity, configure vm, configure ssl, deliver-deploy)
-- there is some less than desirable code in these scripts (getting the VM assigned identity, keeping track of the VM ip, the variables are all strings) these are limitations of Bash, that we don't have in PowerShell. In ps we would be able to store these variables as objects, and access their properties with .notation, since the output comes in as an object, we can easily access the System Assigned Identity, get the VM public IP address, etc
+Declare Variables
+-----------------
+
+Provision Resource Group
+------------------------
+
+Provision Virtual Machine
+-------------------------
+
+Capture Virtual Machine's System Assigned Identity
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Create Appropriate Network Security Groups
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Provision Key Vault
+-------------------
+
+Set Key Vault Secret
+^^^^^^^^^^^^^^^^^^^^
+
+Set Key Vault Access Policy
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Send Bash Scripts to VM via RunCommand
+--------------------------------------
+
+
+
+.. ::
+
+  - we will dissect the bash deployment script what are all the things it's doing?
+  - sections as subheaders: (provision RG, provision VM, set VM assigned identity variable, provision KV, kv set-access policy using vm assigned identity, configure vm, configure ssl, deliver-deploy)
+  - there is some less than desirable code in these scripts (getting the VM assigned identity, keeping track of the VM ip, the variables are all strings) these are limitations of Bash, that we don't have in PowerShell. In ps we would be able to store these variables as objects, and access their properties with .notation, since the output comes in as an object, we can easily access the System Assigned Identity, get the VM public IP address, etc
 
 Your Tasks
 ==========
