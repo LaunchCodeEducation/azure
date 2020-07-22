@@ -10,16 +10,6 @@ Some of the scripts will be provided for you, but it would be in your best inter
 
 Before we get to writing our PowerShell script for our deployment, let's take a look at the BASH deployment script we saw at the end of the Azure CLI chapter.
 
-.. ::
-
-  - They saw the BASH deployment script (but it never ran)
-  - they saw the AZ CLI stuff (so they are familiar with provisioning resources from command line)
-
-  - they will be provided the RunCommand scripts (configure-vm, configure-ssl, deliver-deploy)
-  - they will be required to create the azureProvisionScript (az-cli-script.ps1)
-
-  - TAs and instructor will have access to the solution scripts and will see the full deployment in action. They will provide you assistance when you get stuck.
-
 Bash Script Breakdown
 =====================
 
