@@ -63,15 +63,15 @@ Let's consider the BASH deployment script we saw at the end of the Azure CLI cha
 
    # set az location default
 
-   # az configure --default location=eastus
+   az configure --default location=eastus
 
    # # RG: provision
 
-   # az group create -n "$rg_name"
+   az group create -n "$rg_name"
 
    # # set az rg default
 
-   # az configure --default group=$rg_name
+   az configure --default group=$rg_name
 
    # VM: provision
 
@@ -84,8 +84,13 @@ Let's consider the BASH deployment script we saw at the end of the Azure CLI cha
 
    # get the 1st line (identity)
    vm_id=$(echo "$vm_data" | head -n 1)
+
    # get the 2nd line (ip)
    vm_ip=$(echo "$vm_data" | tail -n +2)
+
+   # VM: add NSG rule for port 443 (https)
+
+   az vm open-port --port 443
 
    # set az vm default
 
@@ -99,17 +104,13 @@ Let's consider the BASH deployment script we saw at the end of the Azure CLI cha
 
    az keyvault secret set --vault-name $kv_name --description 'connection string' --name $kv_secret_name --value $kv_secret_value
 
-   # VM: add NSG rule for port 443 (https)
-
-   az vm open-port --port 443
-
-   # VM: grant access to KV
+   # KV: grant access to KV
 
    az keyvault set-policy --name $kv_name --object-id $vm_id --secret-permissions list get
 
    # VM setup-and-deploy script
 
-   # az vm run-command invoke --command-id RunBashScript --scripts vm-setup-and-deploy.sh
+   # az vm run-command invoke --command-id RunShellScript --scripts vm-setup-and-deploy.sh
 
    # finished print out IP address
 
@@ -120,30 +121,76 @@ Let's consider the BASH deployment script we saw at the end of the Azure CLI cha
 Declare Variables
 -----------------
 
+The Bash script first declares a suite of variables:
+
+- student_name
+- rg_name
+- vm_name
+- vm_admin_username
+- vm_admin_password
+- vm_size
+- vm_image
+- kv_name
+- kv_secret_name
+- kv_secret_value
+
+These variables are used throughout the script. As you can see most of them are used as the parameters for provisioning our Azure resources. All of the name variables use the underlying ``student_name`` variable to create a consist naming pattern. This allows us to easily spin up a new stack by changing this one variable, it is a single source of truth.
+
 Provision Resource Group
 ------------------------
+
+After our variables we start provisioning our Azure resources using the AZ CLI. Recall that the AZ CLI is cross-platform, these commands will work the same regardless of the underlying operating system.
+
+First up is our Resource Group. It must be provisioned before any of our other resources are provisioned, because it's the container that holds all the other resources. All we have to provide is the resource group name. These names must be unique to your account, so make sure the variable being used doesn't match any resource group names that currently exist in your Azure subscription.
 
 Provision Virtual Machine
 -------------------------
 
+After the Resource Group we have some flexibility. We could spin up the key vault or virtual machine first, however consider the dependencies. We will eventually need to set an access policy on our key vault that includes information about our virtual machine. For this reason it makes more sense to provision the virtual machine first since our key vault will need some information about our virtual machine.
+
 Capture Virtual Machine's System Assigned Identity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Upon creating our virtual machine we store the output from the command in a Bash variable. We do this because we are going to do some Bash scripting to extract the information we need:
+
+- the virtual machine system managed identity
+- the virtual machine public ip address
 
 Create Appropriate Network Security Groups
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+While we are working with our VM let's go ahead and open the ports necessary for a user to gain access to our CodingEventsAPI that will eventually be housed on this VM.
+
+The az cli provides a easy to use tool for opening whatever ports we need, in this case 443 (HTTPS).
+
 Provision Key Vault
 -------------------
+
+Now that we have a VM and have captured the information we need to create an access policy for a key vault we can provision it next.
+
+First up, provisioning the key vault!
 
 Set Key Vault Secret
 ^^^^^^^^^^^^^^^^^^^^
 
+After the key vault exists we can add whatever secrets our application will need to run. In this case we only have one secret, a database connection string, we give this secret a name, a key, and a value.
+
 Set Key Vault Access Policy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Finally we use the variable we created earlier that contains the Virtual Machine system assigned identity to create an access policy that grants the VM permission to use our provisioned key vault.
 
 Send Bash Scripts to VM via RunCommand
 --------------------------------------
 
+Now that all of our infrastructure has been provisioned, we need to finish configuring our VM. It will need to have dependencies installed, nginx configured and setup, a user and database created within MySQL, the souce code needs to be delivered, and finally deployed.
+
+These bash scripts are provided for you, however you should look over them as they are commented with what they are doing. Many of the tasks they accomplish go beyond the scope of this course, but are a necessary part of our deployment.
+
+Print Public IP Address to STDOUT
+---------------------------------
+
+As a final step to make things easier for us, we print the public IP address to the console to make it easier for us to connect to our deployed application from a web browser.
 
 
 .. ::
@@ -157,22 +204,21 @@ Your Tasks
 
 Create a script (azureProvisionScript.ps1) that accomplishes the following:
 
-- set variables
-- provision RG
-- provision VM
-  - will need to use the correct image URN, size, authentication-type, admin-username, admin-password, assign-identity
-- capture vm.identity.systemAssignedIdentity
-- open vm port 443
-- provision KV
-- create KV secret (database connection string)
-- set KV access-policy (using the vm.identity.systemAssignedIdentity)
-- send 3 bash scripts to the VM using az vm run-command invoke:
-  - configure-vm.sh
-  - configure-ssl.sh
-  - deliver-deploy.sh
+#. set variables
+#. provision RG
+#. provision VM
+#. capture vm.identity.systemAssignedIdentity
+#. open vm port 443
+#. provision KV
+#. create KV secret (database connection string)
+#. set KV access-policy (using the vm.identity.systemAssignedIdentity)
+#. send 3 bash scripts to the VM using az vm run-command invoke (configure-vm.sh, configure-ssl.sh, deliver-deploy.sh
+#. print VM public IP address to STDOUT or save it as a file
 
 Limited Guidance
 ================
+
+- bash scripting to get some data for our script (VM public ip address, and VM system assigned identity); this will be easier in PowerShell because of it's object oriented nature.
 
 - you will want to use variables -- you will want to capture the output of az cli commands in a variable or file
 
@@ -198,3 +244,7 @@ Limited Guidance
 Saving the output as a file will allow you to keep the data for as long as you need, if you store it only as a variable if you close your PowerShell session you will lose the data.
 
 - example az vm run-command invoke examples:
+
+.. sourcecode:: powershell
+
+  > az vm run-command invoke --command-id RunShellScript --scripts @some-bash-script.sh
