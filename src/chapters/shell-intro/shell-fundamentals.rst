@@ -57,7 +57,7 @@ Absolute paths are based on a fixed starting point, called the **root directory*
 
 On Linux machines the root directory is simply ``/``. Whereas on Windows machines the root directory (in most cases) is the C drive, ``C:``. Within each of these root directories exists the rest of the file system made up of sub-directories, sub-sub-directories and so on.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    An absolute path is just a relative path from a **constant starting point** instead of a variable CWD.
 
@@ -82,7 +82,7 @@ In the File Explorer program you used sidebars and your mouse to navigate throug
 - ``ls``: list the contents of a directory
 - ``cd``: change directories
 
-.. admonition:: note
+.. admonition:: Note
 
    These commands originated in Bash but were included in PowerShell as aliases (like a nick-name) for their native PowerShell cmdlet names. We will explore what cmdlets are later, but you should be able to understand them based on how declarative their names are:
 
@@ -177,7 +177,7 @@ Shell commands are similar to functions. They have a name, input arguments and b
 
 Calling, or executing, a command begins with the name of a CLI **program** followed by **positional arguments** and **options** (modifiers) used by the program.
 
-.. admonition:: note
+.. admonition:: Note
 
    In general terms executing a command looks like this:
 
@@ -272,7 +272,7 @@ Package Managers
 
 **Package managers** are the CLI equivalent of an App Store. They allow you to search for and install custom CLI programs that extend the behavior of the Shell. On Linux machines the package managers are even capable of extending the GUI Shell. While we will use Shell package managers in this class the same term applies to language-based package managers like ``npm`` (for JavaScript) and ``pip`` (for Python).
 
-.. admonition:: note
+.. admonition:: Note
 
    CLI **packages** (installed commands) can range from simple tools to more complex programs like compilers, interpreters and even full-fledged Web Servers.
 
@@ -351,7 +351,7 @@ It first checks ``/usr/local/sbin`` but is unable to find the ``ls`` program fil
 
 The command is then executed by combining the matching base path (``/usr/bin``) with the command name (``ls``) into the absolute path ``/usr/bin/ls``. If it reaches the end of the PATH list then it will output a *command not found* error. 
 
-.. admonition:: note
+.. admonition:: Note
 
    One of the most common issues beginners face when working with a Shell is encountering a *command not found* error. Assuming the command is not misspelled, this indicates that the command's file is in a directory that is not registered in the PATH list. 
 
@@ -368,7 +368,7 @@ The idea behind piping is simple but its capability is powerful. The first comma
 
 We will get into the syntax of piping in the Bash and PowerShell specific lessons. In general terms piping involves 2 or more commands each separated by the ``|`` pipe character (just above the ``enter`` key on your keyboard).
 
-.. admonition:: note
+.. admonition:: Note
 
    In a general sense this is what piping between two commands looks like. The output of the first command is used as the input (argument) to the second command in the pipeline. 
 

@@ -21,7 +21,7 @@ A database connection string is a type of **Secret**, a privileged piece of info
 
 Secrets can be used as the key to protect access to **Sensitive Data**.
 
-.. admonition:: note
+.. admonition:: Note
 
 	Sensitive data includes proprietary knowledge or Personal Identifying Information (PII). This sensitive data is usually secured within a data backing service. The data backing service credentials (database connection string) are guarded to ensure only individuals with authorization can access this sensitive data.
 
@@ -41,12 +41,12 @@ Examples of Proprietary data:
 - results of internal research
 - patented or copyrighted materials
 
-.. admonition:: note
+.. admonition:: Note
 
 	A secret is a subset of sensitive data. Proprietary knowledge and PII may be part of the underlying data an application uses, but they are not *necessary* for an application to function.
 
 Secrets
--------
+=======
 
 **Secret** data is information that is required by an application to function, but is kept separate from the source code of the application. In other words a **secret** is information that is never made publicly available.
 
@@ -68,7 +68,7 @@ There are a few things we must do to ensure our sensitive data is not exposed to
 - infrastructure must be configured to grant least privileged access
 - All PII and proprietary data is securely housed and requires authorization
 
-.. admonition:: warning
+.. admonition:: Warning
 
 	This and the next two articles will talk about various strategies and tooling to keep sensitive data protected, however they are not exhaustive.
 
@@ -133,7 +133,7 @@ Our local ``git`` repository has detected that a new file is currently untracked
    > git add .gitignore
    > git commit -m "added .gitignore to protect sensitive data"
 
-.. admonition:: tip
+.. admonition:: Tip
 
 	When writing code you should always consider the data that is exposed in your source code. A best practice is to add a file (or a directory of files) to ``.gitignore`` that you know will contain sensitive data. By adding it before creating the file you can ensure secrets won't ever have a chance to be committed. If you determine a file does have sensitive data in it you should add it to the ``.gitignore`` file right away.
 
@@ -153,7 +153,7 @@ Using ``external configuration`` files has two major benefits:
 #. secrets are kept separate and safe from both the code, and running application
 #. an application running across different environments can be configured in different ways (like easily swapping a local and production database connection string)
 
-.. admonition:: note
+.. admonition:: Note
 
 	Separating the configurations from the rest of the source code has even more benefits, but these are the two ways in which we will explore ``external configurations`` throughout this course.
 
@@ -247,7 +247,7 @@ Let's add a new secret:
 
 Setting our first secret associated with this project and secret store will have created a new ``secrets.json`` file. It will look something like this:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
    {
       "secret_name": "secret_value"

@@ -36,7 +36,7 @@ In the ``Set-Location`` example an additional term is added to the sentence, the
 
 The analogy of commands and sentences can not be generalized to a single formula but can be useful when learning PowerShell. 
 
-.. admonition:: tip
+.. admonition:: Tip
 
    You can view the full list of built-in cmdlets and functions using the ``Get-Command`` cmdlet:
 
@@ -119,7 +119,7 @@ Another useful option for ``Get-Help`` is ``-Examples`` which will provide pract
 
    > Get-Help <cmdlet name> -Examples
 
-.. admonition:: note
+.. admonition:: Note
 
    If you prefer to use the browser, using the ``-Online`` option will automatically open your browser to the *full documentation*:
 

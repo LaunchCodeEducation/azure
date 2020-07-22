@@ -22,7 +22,7 @@ Setting up our AADB2C authority will involve the following steps:
 
 After we have completed these steps we will register an identity using the SUSI flow and inspect the resulting JWT (identity token). We will be using the Microsoft `JWT decoder tool <https://jwt.ms>`_ to verify the authenticity of and claims within the identity token.
 
-.. admonition:: note
+.. admonition:: Note
 
    The screenshots for this walkthrough use the generic ``student`` name. 
    
@@ -54,7 +54,7 @@ This will present the AADB2C creation form. Enter the following values:
 - **Organization name**: ``<name> ADB2C`` (the tenant directory name)
 - **Initial domain name**: ``<name>0720tenant`` (subdomain name of your tenant on the ``.onmicrosoft.com`` domain Azure provides)
 
-.. admonition:: note
+.. admonition:: Note
 
    The pattern for the subdomain is: ``<name><MMYY>tenant``. To ensure the subdomains are unique select the correct month and year when you are taking the course.
 
@@ -71,7 +71,7 @@ Link tenant directory to your Subscription
 
 The new tenant directory is **not usable** until it is linked to an active Azure Subscription.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    We will not dicuss the relationship between Azure accounts, Subscriptions, and directories. If you are curious,   `this forum post has some great discussion and links to further reading <https://techcommunity.microsoft.com/t5/azure/understanding-azure-account-subscription-and-directory/td-p/34800>`_.
 
@@ -88,7 +88,7 @@ The Subscription linking form will require:
 - the Subscription to link the tenant to
 - a RG for containing the linked tenant resource
 
-.. admonition:: warning
+.. admonition:: Warning
 
    Make sure you select the correct Subscription. This will be the Azure Labs *Subscription Handout* that you received during initial registration, **not your personal Subscription**.
    
@@ -131,7 +131,7 @@ Select the **Azure ADB2C Settings** icon. This will open a **new tab in the tena
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/12tenant-portal.png
    :alt: AADB2C tenant settings icon
 
-.. admonition:: tip
+.. admonition:: Tip
 
    In the top-right corner notice that **in this new tab** your Azure directory has been automatically switched. It should now say you are in the ``<Name> ADB2C`` tenant directory rather than your ``Default`` directory.
 
@@ -198,7 +198,7 @@ Claims are used to standardize the identity data that is collected across the id
 
 You can also define `custom claims <https://docs.microsoft.com/en-us/azure/active-directory-b2c/user-profile-attributes>`_ that apply to more specific use cases.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    User flows are configured **independently from registered applications**. They can be customized for a single application or *reused* across any number of applications.
 
@@ -224,7 +224,7 @@ Then select the recommended **Sign up and sign in** (SUSI) flow template:
 
 This will present the SUSI flow form. As mentioned previously we will allow users to register using the generic Email provider.
 
-.. admonition:: note
+.. admonition:: Note
 
    The Email provider is available by default. Additional providers can be configured in the **Identity providers** settings on the left sidebar. After they are configured they will be available for use in creating or editing your tenant's User Flows. 
 
@@ -253,7 +253,7 @@ And the following **returned claims**:
 -  ``Email Addresses``
 -  ``User's Object ID``
 
-.. admonition:: note
+.. admonition:: Note
 
    The ``User's Object ID`` (**OID** field) is the unique identifier for each user within the AADB2C tenant. It can be found **at the end** of the claims sidebar.
 
@@ -280,7 +280,7 @@ From the User Flows view select the new flow, ``B2C_1_coding-events-api-susi``. 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/26flow-dashboard.png
    :alt: SUSI flow dashboard view
 
-.. admonition:: note
+.. admonition:: Note
 
    For our purposes we used the built-in claims and default UI styling provided by AADB2C. However, from this dashboard you can modify the flow's:
 
@@ -304,7 +304,7 @@ This will open the flow sidebar panel:
 
 At the top of the panel you will see the `OIDC metadata URL <https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#fetch-the-openid-connect-metadata-document>`_. 
 
-.. admonition:: note
+.. admonition:: Note
 
    This document provides metadata with the OIDC endpoints for using the AADB2C identity management service. Although it is human readable it is meant for programmatic access by applications to integrate into the AADB2C system.
 

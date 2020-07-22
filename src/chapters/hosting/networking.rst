@@ -28,13 +28,13 @@ Examples of valid IP addresses:
 - ``255.255.255.255``
 - ``47.120.14.1``
 
-.. admonition:: note
+.. admonition:: Note
 
    For the purposes of this class we will only work with IPv4 addresses. It should be noted that a new format for IP addresses (IPv6) is also used, but goes beyond the scope of this class. Everything you learn about IPv4 addresses in this class can be applied directly to IPv6 addresses with the exception of the numbering pattern.
 
 You have already worked with one special IP address the **loopback** IP Address. The loopback IP Address is represented as ``127.0.0.1`` and when requests are made to this address the request is sent back to the machine that made the request. We have done this throughout the class when running our C#.NET web applications, and to access the web app we would make a request to 127.0.0.1 in our browser.
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
    The Loopback Interface was designed specifically for developers to simulate networking from within a single host machine. The IP address ``127.0.0.1`` or *home IP* is mapped to the aptly named host name ``localhost`` which you have undoubtedly used many times!
 
@@ -50,7 +50,7 @@ Examples of places that may have a LAN:
 - convention center
 - restaurant
 
-.. admonition:: note
+.. admonition:: Note
 
    A LAN may have access to the internet, but only if internet access has been configured into the LAN.
 
@@ -95,7 +95,7 @@ A **public IP address** is an IP Address that uniquely identifies end-users and 
 
 You are given a public IP address by your ISP when you connect to the internet through one. Every time you make a request to a website, web app, or service your public IP address is sent with the request so the website, web app, or service know where to send their response.
 
-.. admonition:: note
+.. admonition:: Note
 
    Even though every machine on the internet has an IP address, not every machine or network is configured to be accessed via the internet. Your LAN has a public IP address, but is not configured to be accessed by end users of the internet. If someone else makes a request to your public IP address it will be shut down by your router, and no payload will be sent back to whoever made the request. This is true for all machines on the internet. They must first be configured to allow traffic through before websites, web apps, or services can be accessed through the internet.
 
@@ -107,6 +107,6 @@ It's similar to a phone book. Wherein a telephone number (IP Address), is regist
 
 As an example in your web browser you may enter ``google.com`` which gets sent to a DNS that resolves it to some IP Address like ``88.31.122.3`` which gives you access to the webpage, or web app on the server at that IP address.
 
-.. admonition:: note
+.. admonition:: Note
 
    When accessing the internet through an ISP usually your entire private LAN is given one public IP address. This is why an ISP knows which household, or business made a specific request, but cannot pinpoint it to one specific user on the LAN. To figure out which specific user made a specific request, they would need information from the ISP, and additional information from the LAN

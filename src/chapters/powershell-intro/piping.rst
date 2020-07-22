@@ -43,7 +43,7 @@ This expression has three steps:
 
 When the ``Get-ChildItem`` cmdlet is executed it evaluates to an ``Array`` object. However, as you noticed the sorting step (``Sort-Object``) operated on **each element** that is *inside*, not the ``Array`` itself. This is a key aspect of how piping works when working with collections of objects, like an ``Array``. 
 
-.. admonition:: tip
+.. admonition:: Tip
 
    When a collection of objects is piped from a command **the next command receives and processes each object in the collection one at a time**. 
    
@@ -80,7 +80,7 @@ Now let's see how this can be accomplished with a simple pipeline:
 In this pipeline the string ``"You found me!"`` was *piped*, or carried over to, the ``Add-Content`` cmdlet. Notice, unlike the traditional execution, that the ``-Value`` parameter is **implicitly** bound to the string object, ``"You found me!"``.
 
 .. Replacing file contents
------------------------
+.. -----------------------
 
 .. Piping Output Destinations
 .. ==========================
@@ -118,7 +118,7 @@ Parameter binding is PowerShell's mechanism of aligning the output object (by it
 
 There are two binding types available in piping, ``ByValue`` and ``ByPropertyName``. In the previous example the piped string object was successfully bound to the ``-Value`` option because it **accepts piped input** through the ``ByValue`` mechanism.
 
-.. admonition:: note
+.. admonition:: Note
 
    ``ByValue`` does not mean the option name must be ``-Value``, in fact it means just the opposite! This is just an coincidence of this simplistic example.
 
@@ -196,7 +196,7 @@ Let's look at the ``-Value`` and ``-Path`` parameters in particular. In the para
       Aliases                      None
       Dynamic?                     false
 
-.. admonition:: tip
+.. admonition:: Tip
   
    When the ``Get-Help`` option ``-Parameter`` is given a wildcard character (``*``) it will list the details for all the parameters of the cmdlet.
 
@@ -256,7 +256,7 @@ When we are searching for something that is *like* a string we can use the ``-Li
       Accept pipeline input?       True (ByValue)
       Accept wildcard characters?  false
 
-.. admonition:: tip
+.. admonition:: Tip
    
    You can read more about ``Where-Object`` and providing search criteria through **script blocks** `in its Microsoft documentation <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Core/Where-Object?view=powershell-7#description>`_. 
 
@@ -270,7 +270,7 @@ When designing a pipeline it can help to organize the commands and the path the 
 #. what logical steps (Verbs and Nouns) do you need to get from the first output to the last?
 #. how do the command steps need to be ordered for the parameters to bind properly?
 
-.. admonition:: tip
+.. admonition:: Tip
 
    The cmdlets ``Where-Object`` and ``Sort-Object`` that you saw in the examples are utility cmdlets. They can be used as transitions, or interjections between steps, to coordinate the behavior of a pipeline. 
    

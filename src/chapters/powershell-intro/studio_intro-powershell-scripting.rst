@@ -10,7 +10,7 @@ You can learn new scripting concepts, best practices, tips and tricks in many di
 
 In this and the following studio we will reference documentation for the tools used in accomplishing the tasks. The majority of the references will be specific links in the `PowerShell Utility Module <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/?view=powershell-7>`_
 
-.. admonition:: tip
+.. admonition:: Tip
 
    The `PowerShell Documentation <https://docs.microsoft.com/en-us/powershell/scripting/how-to-use-docs?view=powershell-7>`_ is extensive and easy to navigate. Every cmdlet documentation includes practical examples to help you with common tasks.
 
@@ -22,7 +22,7 @@ Allow script execution
 
 This walkthrough will require you to create and execute PowerShell scripts. As a security measure Windows does not allow the execution of *unsigned*, or untrusted scripts by default. You will need to grant your PowerShell session an elevated `execution policy <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&redirectedfrom=MSDN>`_ to run your own scripts. 
 
-.. admonition:: note
+.. admonition:: Note
 
    As a best practice, this execution policy will only be applied to the *scope* of the PowerShell process that executes the command. If you end that process (by exiting or closing the PowerShell Terminal) you will have to call the cmdlet again.
 
@@ -38,7 +38,7 @@ Executing your first script
 
 As a reminder, one of the core tenets of Windows is that all files must have a specific extension. The ``.ps1`` extension indicates that the file should be executed by PowerShell. You can create PowerShell scripts using any editor such as VS Code or even ``notepad``.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    You can open a file in ``notepad`` from the command-line using an absolute or relative path to the file:
 
@@ -65,7 +65,7 @@ Using the editor of your choice create the ``hello-world.ps1`` file in your home
 
    Write-Output "Can you let me out of here? I am stuck inside $(Get-Location)!!"
 
-.. admonition:: note
+.. admonition:: Note
 
    Notice how *literal* strings (those that do not go under substitution) like the ``$Name`` variable use single quotes. Strings that *do undergo* substitution, like those printed by ``Write-Output``, use double-quotes. 
    
@@ -91,12 +91,12 @@ Try executing the ``hello-world.ps1`` script:
    # execute the script
    > .\hello-world.ps1
 
-.. admonition:: note
+.. admonition:: Note
 
    Did the output match what you expected when reading the script? If not then ask your TA or instructor to guide you in correcting your understanding.
 
 .. Tips for writing scripts
-------------------------
+.. ------------------------
 
 .. think about / try manual steps first
 .. scripts as a way to compose the manual steps
@@ -201,7 +201,7 @@ PowerShell Cmdlets
 - `Copy-Item <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/copy-item?view=powershell-7>`_
 - `Set-Location <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-location?view=powershell-7>`_
 
-.. admonition:: note
+.. admonition:: Note
 
    As a bonus try capturing the ``$GitHubUsername`` and ``$PracticeRepoDir`` variables from user input using the `Read-Host cmdlet <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/read-host?view=powershell-7>`_. This `short article <https://www.itprotoday.com/powershell/prompting-user-input-powershell>`_ is a great primer.
 

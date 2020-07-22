@@ -4,7 +4,7 @@ REST: Abstract Fundamentals
 
 In this article we will explore a pattern for organizing the behavior of an API. REST is an **architectural pattern** that provides *uniformity and predictability* to any API that adheres to it. The same benefits are experienced by the API consumer.
 
-   REST is a set of guiding principles for supporting the organization of an API's core responsibilities -- managing and transferring data.
+   REST is a set of guiding principles for supporting the organization of an API's core responsibilities---managing and transferring data.
    
    Its pattern organizes the **external interface** (contract) and does not concern itself with the *internal implementation* of the API . 
 
@@ -15,7 +15,7 @@ What is REST?
 
    **RE**\presentational **S**\tate **T**\ransfer
 
-.. admonition:: tip
+.. admonition:: Tip
 
    The topics of State and Representation are *purposefully abstract* in REST so that they can be applied to any API. Don't get overwhelmed!
    
@@ -35,7 +35,7 @@ Imagine viewing, or **R**\eading, the State as it *transitions* through each of 
 
 You can see that the State is defined by how the data exists **after its latest interaction**. 
 
-.. admonition:: note
+.. admonition:: Note
 
    The concept of State is both the most abstract and most fundamental aspect of REST. All of the following sections will reference the Coding Events MVC project you created to illustrate the concepts in a more relatable way. 
 
@@ -48,7 +48,7 @@ Representations are a way of working with State in different contexts. Think abo
 
 First, consider how we *represent* State in a database row. Traditionally the *Representation of a row* is visualized as a table with columns listing the properties and values that make up the State:
 
-.. admonition:: example
+.. admonition:: Example
 
    .. list-table:: CodingEvent State represented as a database row
       :widths: 10 30 30 30
@@ -67,7 +67,7 @@ Recall that the raw State held in a database row was not *usable in the context 
 
 The ``toString()`` method is used to visualize the *Representation as an object* that looks something like this:
 
-.. admonition:: example
+.. admonition:: Example
 
    .. sourcecode:: js
       :caption: CodingEvent State represented as an object
@@ -85,7 +85,7 @@ In both cases the **State was the same**. The difference was in the **Representa
 
 Consider a third Representation -- JSON. Recall that JSON is a format that provides *structure, portability and compatibility*. For these reasons JSON is the standard Representation used when transferring State between a client application and an API. 
 
-.. admonition:: example
+.. admonition:: Example
 
    The State of a *single* ``CodingEvent`` **entity** would be represented as a *single JSON object*:
 
@@ -116,7 +116,7 @@ Consider a third Representation -- JSON. Recall that JSON is a format that provi
 
    Notice that the State here is represented as the *collective State* of all the ``CodingEvents`` in the list.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    The process of converting an object Representation to a JSON Representation is called **JSON serialization**.
    
@@ -164,7 +164,7 @@ While State is an abstract concept, a **resource** is something more *tangible*.
 
 We refer to **the State of a resource** in terms of a single entity or the *collective State* of a collection.
 
-.. admonition:: note
+.. admonition:: Note
    
    Initially a collection's State is just *empty*.
    

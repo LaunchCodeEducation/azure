@@ -51,7 +51,7 @@ In the following example we will access the ``getType()`` method attached to a `
    -------- -------- ----                                     --------
    True     True     String                                   System.Object
 
-.. admonition:: note
+.. admonition:: Note
 
    You can call ``getType()`` on any object in PowerShell. Like in C# every object extends the .NET ``System.Object`` class that provides the base implementation of ``getType()``. 
 
@@ -114,7 +114,7 @@ Looking at the output we can see many things including a property name ``Length`
 
 .. We can see that the object outputted by a ``getType()`` method call is a special type of object called ``System.RuntimeType``. Its purpose is to manage metadata about the object it belongs to (the ``"hello world"`` ``String`` in this case).
 
-.. admonition:: tip
+.. admonition:: Tip
 
    Between the object ``getType()`` method and the ``Get-Member`` cmdlet you can discover all of the details about the objects you are working with. Knowing the type and capabilities of an object that cmdlets accept as inputs and produce as outputs will help you when writing more advanced commands and scripts.
    
@@ -154,7 +154,7 @@ Looking at the output we can see many things including a property name ``Length`
 ..          .Name # -output-> (string object)
 ..             "PathInfo"
 
-.. .. admonition:: tip
+.. .. admonition:: Tip
    
 ..    In a lot of ways chaining is similar to using multiple group expressions. If group expressions clicked with you you can think of the chain above as being evaluated like this:
 

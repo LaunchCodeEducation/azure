@@ -8,7 +8,7 @@ An alias is like a nickname for a command. The Bash FS commands, like ``pwd`` or
 
 Because these aliases are not *the real Bash command* not all of their parameters are the same in PowerShell. Let's explore the underlying cmdlets and the common arguments used with them.
 
-.. admonition:: note
+.. admonition:: Note
 
    Some of the navigation shorthands from Bash have changed:
 
@@ -137,7 +137,7 @@ Its cmdlet equivalent ``Copy-Item`` can also be used for files or directories. W
 Delete a directory or file
 ==========================
 
-.. admonition:: warning
+.. admonition:: Warning
 
    Be **very careful** when removing (deleting) items in PowerShell. Always use the interactive mode (``-Confirm`` option) to confirm each deletion!
 
@@ -202,7 +202,7 @@ When creating a file you can use the ``-Value`` option to write content to the f
    > New-Item -Name "my-file.txt" -ItemType "file" -Path C:\absolute\path -Value "contents of the file"
    # creates C:\absolute\path\my-file.txt with "contents of the file" written to it
 
-.. admonition:: tip
+.. admonition:: Tip
 
    For creating the contents of files that are more than a single line take a look at this `here-string tutorial article <https://riptutorial.com/powershell/example/20569/here-string>`_.
 
@@ -231,7 +231,7 @@ The PowerShell equivalent to ``cat`` is ``Get-Content``. Notice how declarative 
 
 The ``Get-Content`` cmdlet will output an object based on the content in the file. Most of the time this will be a single ``String`` object for each line in the file. 
 
-.. admonition:: note
+.. admonition:: Note
 
    The ``Get-Content`` cmdlet has a number of options that can be used to get certain lines of a file's contents or even filter the output. You can read more about the options `in this documentation article <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-content?view=powershell-7>`_ 
 

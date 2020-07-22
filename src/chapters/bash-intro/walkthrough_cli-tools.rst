@@ -9,7 +9,7 @@ The APT Package Manager
 
 The Ubuntu Distribution comes pre-installed with the Advanced Packaging Tool (``apt``) program for managing packages. We will focus on the commands that are used most frequently. Like most CLI programs you can view more details about how to use ``apt`` by using the ``--help`` option.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    You will typically see ``apt`` used with the ``-y`` option added to the command. This option skips the confirmation prompt, like a popup confirmation you would see in a GUI, for the actions you are taking to speed up the process. 
 
@@ -30,7 +30,7 @@ Recall that APT, like all system-wide package managers, must have control over y
 
 The ``sudo`` command is the equivalent of opening the PowerShell Terminal in admin mode. It is an acronym for **S**\ubstitute **U**\ser to **DO** the command to the right of it. When used without specifying *which user to substitute* it will default to running the command to the right as the ``root`` user -- a special super user account type. 
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
    SUDO is often referred to as *super user do* because of how often it is used to run commands as root. Most people pronounce it *soo-doo* or **soo-doh**.
 
@@ -51,7 +51,7 @@ Below you can see the most ubiquitous ``apt`` command in use:
    $ sudo apt update
    # information about repository source updates
 
-.. admonition:: note
+.. admonition:: Note
 
    Updating the repository sources **only updates the metadata about packages**. The actual installed packages can be **upgraded to the latest version** using the ``apt upgrade`` command. 
 
@@ -122,7 +122,7 @@ Use the command program ``cowsay`` and enter a message as its arguments:
 
    $ cowsay Hello World!
 
-.. admonition:: note
+.. admonition:: Note
 
    It is okay to leave ``cowsay`` installed. But if you would like to remove it you can use ``apt`` to cleanly uninstall it:
 
@@ -140,7 +140,7 @@ These custom repositories often require both the repository and a **signing key*
 
 As an additional security measure, trusted repositories include a signing key to check that downloaded packages are authentic (from a trusted source) before being installed. 
 
-.. admonition:: note
+.. admonition:: Note
 
    The topics of Public Key Infrastructure (PKI), which includes signing keys, and custom repositories extends outside the scope of this course. You can read more about how these work `in this repository article <https://wiki.debian.org/DebianRepository>`_ and `this repository signing key article <https://wiki.debian.org/SecureApt>`_. Both of these articles offer an overview of the mechanisms involved from a relatively high level.
 
@@ -149,7 +149,7 @@ Installing .NET
 
 Let's see what this process looks like using the ``dotnet CLI`` installation as an example. 
 
-.. admonition:: tip
+.. admonition:: Tip
 
    Like other 3rd party tool installations you can find the instructions on the package maintainer's site. For example, we will be following the instructions from this `Microsoft installation article <https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#1804->`_. 
 
@@ -191,6 +191,6 @@ You can confirm the installation was successful by viewing the ``--help`` output
 
    $ dotnet --help
 
-.. admonition:: tip
+.. admonition:: Tip
 
    We will work with the ``dotnet CLI`` extensively in later lessons. But feel free to poke around with it in the mean time.

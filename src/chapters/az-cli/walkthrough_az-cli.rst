@@ -42,7 +42,7 @@ Once you are logged in you can make use of the global ``configure`` Command to s
 
 Now any resource that has a required Argument of ``--location`` or ``-l`` will automatically have ``eastus`` set as its value.
 
-.. admonition:: note
+.. admonition:: Note
 
     We will use the ``configure`` Command to set defaults for common Arguments throughout this walkthrough. You can change your default values at any time by re-issuing the command with new ``name=value`` pairs. 
     
@@ -199,7 +199,7 @@ From here we can see the URN we need for the Ubuntu image is ``"Canonical:Ubuntu
 
 Now we can reference the URN by its variable name ``$ImageURN`` (PowerShell) or ``image_urn`` (Bash) depending on your chosen shell.
 
-.. admonition:: tip
+.. admonition:: Tip
 
     You can make use of a slightly more advanced query and in-line execution to do this in one step. Below we use a filter on the list to only output objects whose URN property ``contains`` the string Ubuntu. Then we pipe the filtered list and assign the first element's URN value to the variable.
 
@@ -249,7 +249,7 @@ Let's create our VM! Note that this command will take some time to complete.
 
     $ az vm create -n <name>-linux-vm --size "Standard_B2s" --image "$image_urn" --admin-username "student" --assign-identity
 
-.. admonition:: note
+.. admonition:: Note
 
   If you receive the following error output:
 
@@ -414,11 +414,11 @@ After the KeyVault has been provisioned let's set the connection string secret n
 - ``name``: "ConnectionStrings--Default"
 - ``value``: "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
 
-.. admonition:: tip
+.. admonition:: Tip
 
     Recall that secrets are like the other JSON entries in ``application.properties`` that we need to keep private and out of version control. The ``--`` is used as shorthand to define properties of JSON objects in a single "flat" string for the CLI command. In this case it is used to define a property called ``Default`` of a ``ConnectionStrings`` JSON object that would look like this:
 
-    .. sourcecode:: json
+    .. sourcecode:: javascript
 
         "ConnectionStrings": {
             "Default": "<connection string value>"
@@ -489,7 +489,7 @@ It's now time to issue our final command:
 
 If everything went well you should get a confirmation output with a new entry under ``properties.accessPolicies`` for our VM that looks like this:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
     {
         "applicationId": null,

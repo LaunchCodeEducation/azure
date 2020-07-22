@@ -48,7 +48,7 @@ Functions satisfy the **single responsibility principle**, a core philosophy of 
 
 **Modules** are collections of cmdlets and functions that share a common theme of use. They are used to bundle together related functionality into a single package that can be shared. The .NET framework provides the essential modules that include utilities, powershell modifiers and system access.
 
-.. admonition:: note
+.. admonition:: Note
 
    As an introduction this course will not delve into the grittier details between functions, advanced functions and cmdlets. This `PowerShell article <https://letsautomate.it/article/powershell-scripts-functions-modules-cmdlets-oh-my/>`_ offers a great high-level overview. 
    

@@ -12,7 +12,7 @@ Now that we have learned about remote access mechanisms and the IIS Manager it's
 - configure IIS to serve a .NET Web App
 - deploy and connect to a .NET starter Web App served by IIS
 
-.. admonition:: note
+.. admonition:: Note
 
    Some of the ``az CLI`` steps are shown in both Windows/PowerShell and Linux/Bash to illustrate the cross-platform nature of the tool with minor syntactical changes. However, to complete this walkthrough will **require a local Windows machine in order to use RDP**.
   
@@ -63,7 +63,7 @@ Let's assign this value to a variable:
 
 To create our VM we will use most of the same Arguments as we did when creating the Linux machine. Whereas Linux VMs will enable SSH access by default, new Windows Server VMs will have RDP enabled instead. However, recall that RDP uses a basic username and password credential set instead of the RSA keys used in SSH. We will need to provide one additional flag ``--admin-password`` when creating the WS VM:
 
-.. admonition:: warning
+.. admonition:: Warning
 
   It is important that you do not change the admin username (``student``) or password (``LaunchCode-@zure1``). Although it is a poor practice to use the same password for everyone we do so for consistency in order to make it easy to help you debug if somethings goes wrong.
 
@@ -89,7 +89,7 @@ Set up & Explore IIS
 
 Now that we have our Windows Server VM we can get our first taste of using RDP. We will use RDP to enter the desktop of the VM and configure it to deploy our sample application.
 
-.. admonition:: note
+.. admonition:: Note
 
   **You must use a local Windows machine in order to RDP into the VM using** the pre-installed ``mstsc`` utility.
 
@@ -129,7 +129,7 @@ This will begin the RDP authentication process and prompt you to enter your cred
 
 The first time you connect to a remote machine (using default RDP settings) you will need to confirm that you trust it. This is due to the default usage of a self-signed server certificate in the VM. The discussion of Public Key Infrastructure (PKI) and certificates is outside of the scope of this course but in this context the warning is nothing to be concerned about.
 
-.. admonition:: tip
+.. admonition:: Tip
 
   In a production setting you would likely `configure a Group Policy Object <https://www.derekseaman.com/2018/12/trusted-remote-desktop-services-ssl-certs-for-win10-2019.html>`_ (GPO) for enforcing trusted connections. If you are curious feel free to look over that link but do not be concerned if it goes over your head! 
 
@@ -238,7 +238,7 @@ Connect to the default site within the VM
 
 Once IIS has been installed, through the Web Server Role, it immediately begins serving the default Site on port 80. You can open the IE browser within the Server to ``http://localhost`` to view it. Notice how we do not need to include the port because the browser sets ``80`` implicitly as the standard ``http`` protocol port. 
 
-.. admonition:: warning
+.. admonition:: Warning
 
   As part of the Windows Server security defaults IE is locked down to restrict its usage. Unless you have good reason to stray from these defaults you should accept them and proceed to viewing the default Site. 
 
@@ -259,7 +259,7 @@ On your local machine open your browser and navigate to ``http://<your VM public
 
 Before continuing take a moment to consider *why the connection timed out*. Use what you have learned to apply critical thinking to this common issue when hosting on the web. 
 
-.. admonition:: tip
+.. admonition:: Tip
 
   Connection timeouts are an indication of a *network related issue*. If you receive a status code ``5XX`` it means a connection was formed but something went wrong with the Web or Application Server. Receiving no response at all means that some sort of machine or network level firewall has blocked the connection from ever being formed.
 
@@ -301,7 +301,7 @@ You will receive a lengthy output showing the current state of the NSG associate
   ],
   ...
 
-.. admonition:: note
+.. admonition:: Note
 
   This Command opens a port for *all public traffic*. In other words, requests from *any IP address* and *any protocol* will be allowed access to our VM on port 80. This is a quick solution for our purposes. But in a production setting you will likely use more rigorous NSG rules with source IP and protocol restrictions for greater security.
 
@@ -321,7 +321,7 @@ In order to create and host the starter project we will need to install the foll
 
 In your VM open up the PowerShell console by searching for it like you did for the IIS Manager.
 
-.. admonition:: tip
+.. admonition:: Tip
 
   You can right click PowerShell and pin it to the task bar for easy access.
 

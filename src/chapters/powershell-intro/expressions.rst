@@ -130,7 +130,7 @@ This time the subexpression ``("hello" + "world").length`` is **executed**, eval
 
 We will see more examples of subexpressions and grouped expressions later in this course. They are valuable tools to understand for writing "one-liner" commands in the REPL. But they are even more useful when employed in pipelines and scripts.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    Use **grouping expressions** when you want to **control the order of evaluation** (from the inside out).
 

@@ -1,4 +1,6 @@
 {
   "restructuredtext.confPath": "${workspaceFolder}/src",
-  "editor.tabSize": 3
+  "editor.tabSize": 3,
+  "restructuredtext.preview.sphinx.disabled": true,
+  "restructuredtext.linter.disabled": true
 }

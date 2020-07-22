@@ -25,7 +25,7 @@ For this reason they are typically shown in a way that is similar to the Represe
 
 You can think of the shape like a Class definition in an object-oriented codebase:
 
-.. admonition:: example
+.. admonition:: Example
 
    .. sourcecode:: csharp
       :caption: The internal data Model Class (blueprint) of a Coding Event
@@ -37,7 +37,7 @@ You can think of the shape like a Class definition in an object-oriented codebas
          public DateTime Date { get; set; }
       }
 
-   .. sourcecode:: json
+   .. sourcecode:: javascript
       :caption: The output Resource shape (blueprint) of a Coding Event
 
       CodingEvent {
@@ -49,9 +49,9 @@ You can think of the shape like a Class definition in an object-oriented codebas
 
 The JSON Representation of the Resource that the API sends out is then based on the shape. Like an object is based on the blueprint of its Class:
 
-.. admonition:: example
+.. admonition:: Example
    
-   .. sourcecode:: json
+   .. sourcecode:: javascript
       :caption: sample Coding Event JSON Representation
 
       {
@@ -65,9 +65,9 @@ We can think of inputs as a *partial State* provided by the client during **C**\
 
 Consider the following example of an input shape. Notice that the ``Id`` field is not included:
 
-.. admonition:: example
+.. admonition:: Example
 
-   .. sourcecode:: json
+   .. sourcecode:: javascript
       :caption: The input shape (blueprint) used to Create a Coding Event
 
       CodingEvent {
@@ -112,7 +112,7 @@ RESTful APIs separate the Resources they expose into one or more **Resource entr
 
 Let's consider two Resources exposed by a RESTful API:
 
-.. admonition:: example
+.. admonition:: Example
 
    The Coding Events API would have the following familiar Resources (among others):
 
@@ -153,9 +153,9 @@ Consider a request to the following **endpoint** (path and method):
 
 Let's see this in action with our example API. Using what we have learned so far we can expect the State of the Resource collection to be represented in a JSON array, ``[]``:
 
-.. admonition:: example
+.. admonition:: Example
 
-   .. sourcecode:: json
+   .. sourcecode:: javascript
       :caption: response from a request to the GET ``/events`` endpoint
 
       [
@@ -165,10 +165,10 @@ Let's see this in action with our example API. Using what we have learned so far
 
    The State of the ``CodingEvent`` collection is made up of the **collective State** of **each** ``CodingEvent`` **entity** within it.
 
-.. admonition:: example
+.. admonition:: Example
 
    
-   .. sourcecode:: json
+   .. sourcecode:: javascript
       :caption: response from a request to the GET ``/tags`` endpoint
 
       [
@@ -187,7 +187,7 @@ The path to identify a Resource entity would need to include:
 
 Because the unique identifier of the entity is *variable* we use a **path variable** (``{entityId}``) to describe it in a generic way.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    The hierarchy of collections and entities is similar to directories and files. To identify an entity is *like identifying a file within a directory*. 
    
@@ -213,7 +213,7 @@ Consider a request to the following **endpoint** for viewing a single Resource e
 
 Let's take another look at our example API:
 
-.. admonition:: example
+.. admonition:: Example
 
    The generic path to identify a ``CodingEvent`` Resource would be described as ``/events/{codingEventId}``.
    
@@ -221,7 +221,7 @@ Let's take another look at our example API:
    
    We could make a request to the ``GET /events/12`` **endpoint** to **R**\ead its *current State*:
 
-   .. sourcecode:: json
+   .. sourcecode:: javascript
       :caption: response from a GET request to /events/12
 
       {
@@ -256,7 +256,7 @@ As we saw in the previous article, State is something that can be interacted usi
 
 The use case of an API dictates the design of its contract. This includes which actions the client can take on each Resource. In other words, **not every action must be exposed** for each Resource the API manages.
 
-.. admonition:: note
+.. admonition:: Note
 
    If a client tries to take an action on a Resource that is not supported by the API they will receive a ``405`` **status code** or ``Method not allowed`` error response.
 
@@ -282,7 +282,7 @@ Operating On Collections
      - bulk update of entities in the collection
      - remove all entities in the collection
 
-.. admonition:: note
+.. admonition:: Note
 
    Exposing the ability to modify or delete *all of the entities in a collection* at once can be risky. In many cases the design of a RESTful API will only support ``GET`` and ``POST`` endpoints for collections. 
 
@@ -292,13 +292,13 @@ The ``POST`` endpoint of the collection, that the entity belongs to, can be used
 
 Let's take a look at this request in the context of our example API:
 
-.. admonition:: example
+.. admonition:: Example
 
    As we saw earlier, the *input shape* for creating a ``CodingEvent`` only **includes the fields the consumer is responsible for**. The ``Id`` field is then managed internally by the API.
    
    We refer to this shape as a ``NewCodingEvent`` to distinguish it from the ``CodingEvent`` Resource shape:
 
-   .. sourcecode:: json
+   .. sourcecode:: javascript
 
       NewCodingEvent {
          Title: string
@@ -333,7 +333,7 @@ Operating On Entities
      - update the entity State
      - remove the entity from the collection
 
-.. admonition:: note
+.. admonition:: Note
 
    **U**\pdating using ``PUT`` or ``PATCH`` in REST is a choice left to the API designer. This article has a great `breakdown of the subject <https://restfulapi.net/rest-put-vs-post/>`_.
 
@@ -343,7 +343,7 @@ When removing a Resource the client is requesting a **transition to an empty Sta
 
 We can see this behavior in action with a request to the ``DELETE`` endpoint for a single Resource entity in our example API:
 
-.. admonition:: example
+.. admonition:: Example
 
    Let's once again assume a ``CodingEvent`` Resource exists with an ``Id`` of ``12``. If we want to remove this entity we need to issue a request to its **uniquely identified** ``DELETE`` endpoint:
 
@@ -353,7 +353,7 @@ We can see this behavior in action with a request to the ``DELETE`` endpoint for
    
    The ``204``, or ``No Content``, **status code** in the response indicates that the action was successful *and that the response body is empty*. The API transfers back a *representation of empty State* (no response body) to the client. 
 
-.. admonition:: example
+.. admonition:: Example
 
    What would happen if we made another request to the endpoint of a Resource entity that **doesn't exist**, ``DELETE /events/999``?
 
@@ -433,7 +433,7 @@ Let's look at some of the common client error status codes:
 
 A bad request will include an error message in its response. The response will indicate **what the client must change** in their request body to succeed. This failure is seen when **C**\reating or **U**\pdating a Resource entity:
 
-.. admonition:: example
+.. admonition:: Example
 
    In the Coding Events API, **the State** of a ``CodingEvent`` is **validated** using the following criteria:
 
@@ -446,7 +446,7 @@ A bad request will include an error message in its response. The response will i
    
    If their request body contained the following **invalid representation** of partial State (due to a ``Title`` field that is too short):
 
-   .. sourcecode:: json
+   .. sourcecode:: javascript
       :caption: invalid representation in request to PATCH /events/6 endpoint
    
       {
@@ -455,7 +455,7 @@ A bad request will include an error message in its response. The response will i
 
    The API response would have a ``400`` status code alerting the client that they must **correct their representation**. The response body would be used to communicate which aspects were invalid:
 
-   .. sourcecode:: json
+   .. sourcecode:: javascript
       :caption: 400 failed response body
 
       {
@@ -469,7 +469,7 @@ A bad request will include an error message in its response. The response will i
 
    Using the hints in the response the client can fix their request body and reissue the request successfully.
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
    The ``401``, or ``Unauthorized``, status code actually indicates that the consumer is **not authenticated**. This means the consumer has **not proven their identity** to the API.
    
@@ -501,7 +501,7 @@ Headers
      - The created Resource representation can be found at the given URL value
      - ``/resources/{id}``
 
-.. admonition:: tip
+.. admonition:: Tip
 
    The ``Authorization`` **request header** is also commonly used. Later in this course we will learn about **authenticating** with an API using this header and a `JWT access token <https://auth0.com/docs/protocols/oidc>`_.
 

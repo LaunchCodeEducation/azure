@@ -6,7 +6,7 @@ From this point forward all of the commands and examples will be in Bash and nee
 
 This chapter covers the fundamental aspects of working with Bash. Like other programming languages Bash has more depth than can be covered as an introduction. The topics covered here will give you a foundation to build the rest of your learning on top of. 
 
-.. admonition:: note
+.. admonition:: Note
 
    Because PowerShell was inspired by Bash they share many commonalities. This chapter will lay the foundation of working with Shells through the lens of Bash and Linux. In the PowerShell chapter we will focus more on PowerShell syntax rather than explaining the mental model of working from the command-line. 
 

@@ -3,7 +3,7 @@ Studio Solution
 ===============
 
 auto-committing-setup.ps1
-===================
+=========================
 
 Students create this file themselves, and have to move it to the proper directory.
 

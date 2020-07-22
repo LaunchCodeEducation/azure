@@ -15,7 +15,7 @@ The PID can be used to identify a specific process.
 
 You can view running processes on a Windows machine by opening the Windows Task Manager, and viewing more information. You can view the running processes on a UNIX based machine by running ``top`` or ``ps`` in a terminal.
 
-.. admonition:: note
+.. admonition:: Note
 
    If you viewed the running processes you probably noticed there are quite a few processes running in the background of your computer that don't line up with applications you have started. Consider that every facet of your computer needs at least one constantly running process to work correctly, because there is some underlying code that needs to be run in order to interface with all of the things built into your computer. Examples include physical devices like your monitor, camera, microphone, keyboard, mouse, and wifi card which all need some code in order to function properly. Also your operating system comes with tons of software to make your life easier like a clock, calendar, lots of GUI tools like your desktop or folder structure, etc. All of these things and more require lots of processes to be running in the backgroud so that your computer behaves in a way that you can use it.
 
@@ -32,6 +32,6 @@ Now consider a remote server running a web server. You need to access this web s
 
 When you make the request to ``192.168.0.89:80`` your request sends the request to the router, and then the router sends the request to the remote server that has been assigned the IP address ``192.168.0.89``, when the remote server gets the request it sends the request to whatever process is bound to port ``80`` which would be the running web server.
 
-.. admonition:: note
+.. admonition:: Note
 
    Both ports 80, and 443 are reserved ports for web applications using HTTP, or HTTPS. Since this is a widely adopted standard browsers automatically append ``:80``, or ``:443`` to the requests you make in your browser, which is why you don't see them reflected in the URL. This also explains why when we run a web application on our local machines we must make a request to ``127.0.0.1:8080`` or some other port. Since port 80 is reserved for web traffic, we run our application on a differnet port while we are developing, and access it thorugh our browser by manually setting the port. ``127.0.0.1`` is a reserved IP address that is the loopback to your own machine, so when you make the request your router sends it back to the machine that made the request.

@@ -1,6 +1,6 @@
 
 launchcode-repos.ps1
-===================
+====================
 
 The starter script is given to the students, but they are responsible for coming up with PS commands that will solve the prompts.
 
@@ -45,7 +45,7 @@ The starter script is given to the students, but they are responsible for coming
 
 
 powershell-repo.ps1
-==================
+===================
 
 The starter script is given to the students, but they are responsible for coming up with PS commands that will solve the prompts.
 

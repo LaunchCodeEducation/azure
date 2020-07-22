@@ -13,7 +13,7 @@ Azure CLI RunCommand
 
 Recall that both the Azure CLI and the web portal GUI are backed by the same REST API. We have also learned that working from the command-line offers greater portability and automation capability relative to using a browser based GUI. With the ``az CLI`` we are able to use the same RunCommand we experienced in the browser but with all of the benefits of the command-line. 
 
-.. admonition:: tip
+.. admonition:: Tip
 
     Unlike the browser console you can use the ``az CLI`` to issue RunCommands to *multiple machines at once* using their resource IDs (VM identities)!
 
@@ -38,7 +38,7 @@ There are several RunCommand commands that perform pre-defined actions on the re
 
 Using these RunCommand commands is the command-line equivalent of pasting the script into the RunCommand console in the browser. You can run any number of scripts using the ``--scripts`` argument. These can be individual shell commands written in quotes or file path references to pre-written scripts on your local machine.
 
-.. admonition:: tip
+.. admonition:: Tip
 
   For Windows VMs you should use ``RunPowerShellScript`` and for Linux VMs use ``RunShellScript``. Note that **this is in reference to the remote VM you are interacting with**, not the OS of your local machine that is issuing the RunCommand. 
 
@@ -78,7 +78,7 @@ The Remote Desktop Protocol (RDP) is a protocol developed by Microsoft for acces
 
 RDP is often used by technical support staff to help enterprise and consumer customers debug issues on their machines. But RDP is great for DevOps engineers to troubleshoot and configure things manually where a full desktop experience is preferred. 
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
   RDP is used as both a noun, referring to the protocol itself, and as a verb, referring to the "act of RDP-ing into a machine"!
 
@@ -96,7 +96,7 @@ Here is the general form of using ``mstsc``:
 
 This will prompt you for a username and password to access the VM. Once those are entered a new window will appear that provides the full desktop GUI of the remote machine! We will get to practice using RDP in the upcoming exercises.
 
-.. admonition:: note
+.. admonition:: Note
 
   Desktop access over RDP inherently requires the VM to have the desktop GUI shell installed. If the VM is using the ``Windows Server Core`` OS then only a PowerShell terminal is presented during an RDP session.
 
@@ -126,7 +126,7 @@ A session can be used to invoke individual commands using the cmdlet ``Invoke-Co
 
 **Windows Remote Management** (WinRM) is the Microsoft implementation of WS-Management Protocol, a standard SOAP-based protocol that allows for headless remote management.
 
-.. admonition:: note 
+.. admonition:: Note 
 
   Unfortunately, in this class we will not be using PS-Session cmdlets due to their OS requirements. WinRM based tooling is not available on Windows 10 Home edition. It requires Windows Server or a PC running Windows 10 Enterprise, Professional or Education editions. However, they are important tools for gaining access to remote Windows machines and you will use them in your career moving forward. For this reason it is important to at least gain a conceptual understanding of how they work.
 
@@ -137,7 +137,7 @@ New-PSSession
 
 After enabling RPS access on the remote (host) machine you can open a session using ``New-PSSession``. 
 
-.. admonition:: warning
+.. admonition:: Warning
 
    In order to use ``New-PSSession`` and the other PSSession related cmdlets **you must be using Windows 10 Pro, Enterprise, or Education** editions as they all come pre-installed with the Hyper-V Module dependency. This module is not available for download and cannot be installed on Windows 10 Home, as the tool was not created for consumer PCs.
 

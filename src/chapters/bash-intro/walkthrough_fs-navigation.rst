@@ -14,7 +14,7 @@ Navigation Essentials
 
 Let's begin by reviewing the essential commands for navigating the FS from the command-line. If you have not already set up the Ubuntu VM with Bash refer to the installation walkthrough article before continuing.
 
-.. admonition:: note
+.. admonition:: Note
 
    While you can simply read these commands and trust their outputs **it is important that you try them on your own machine**. The only way to integrate a new tool in your workflow is to practice with it!
 
@@ -34,7 +34,7 @@ Most commands will provide documentation through the ``--help`` option or a ``ma
    # scroll up with J key, down with K key
    # quit with Q key
 
-.. admonition:: note
+.. admonition:: Note
 
    Like the ``man`` command you will find that many tools in Bash rely strictly on keyboard input rather than the use of a mouse. While this may seem foreign at first you will eventually get comfortable (and fast) at working without a mouse. Most of the CLI tools will follow the standard conventions for scrolling (``J`` and ``K``) and quitting (``Q``).
    
@@ -195,7 +195,7 @@ You can provide options to ``ls`` to change the behavior of its output.
 
 The ``-a`` option means *all* and modifies ``ls`` to show *all the files*, both visible and **hidden files**. 
 
-.. admonition:: tip
+.. admonition:: Tip
 
       Hidden files are special configuration files that are hidden to prevent accidental changes to them from consumers. However, when working with CLI tools you will often use these **dot files** as a way of configuring the way your tools behave on your machine.
 
@@ -227,7 +227,7 @@ In this output you can view details like the `file type and access mode <http://
 
 We will not go into permission modes and ownership in this class. However, it is worth knowing that regular files are denoted by a ``-`` character and directory files by the ``d`` character (on the far left of each file's information).
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
    Notice how the ``.`` and ``..`` are actually listed as *directory files* (the first ``d`` in the long output).
    

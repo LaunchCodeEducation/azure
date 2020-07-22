@@ -70,7 +70,7 @@ Recall that the general form of using ``choco`` is:
 
    > choco install <package name> -y
 
-.. admonition:: note
+.. admonition:: Note
 
    When installing MySQL you may see a lot of red colored output. Despite red typically meaning "something has gone horribly wrong" there is nothing to be concerned about. Let it finish installing then, like the ``dotnet CLI`` installation, close and reopen PowerShell to start using it.
 
@@ -115,7 +115,7 @@ Since this deployment uses a Windows Server VM we are able to use the native IIS
 
 In this deployment we will have to perform one additional step -- provisioning an SSL certificate and configuring IIS to use that certificate to serve over ``https``. Fortunately IIS makes it easy to provision and use a self-signed certificate using the IIS Manager.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    In a production deployment you would use an SSL certificate signed by an established Certificate Authority (CA). The topic of `Public Key Infrastructure (PKI) <https://www.ssh.com/pki/>`_, which SSL certificates belong to, is beyond the scope of this class. For our purposes the self-signed certificate is a suitable alternative. 
 
