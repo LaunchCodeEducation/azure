@@ -2,23 +2,35 @@
 Cmdlet: Invoke-RestMethod
 =========================
 
-PowerShell is filled with Cmdlets that allow you to accomplish many things. This chapter has done a good job of introducing the foundational features of PowerShell. However, to truly to take advantage of this tool you must be willing and able to continue learning and practicing this tool.
+PowerShell is filled with cmdlets that allow you to accomplish many things. This chapter has done a good job of introducing the foundational features of PowerShell. However, to use PowerShell to its fullest extent you must be willing to continue learning and practicing. This article will introduce a new cmdlet, ``Invoke-RestMethod``. 
 
-We will be working with the `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_.
+`Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ is a cmdlet that gives the ability to send Rest web requests from a powershell session.
+
+.. admonition:: tip
+
+   This article is a great opportunity for you to combine cmdlets, pipes, expressions, variables, etc to build your PowerShell skills. Work through the examples, and then try them out with other things you have learned throughout this chapter.
 
 Command-Line REST
 =================
 
 Throughout this class we have used Postman as a way for making requests to a RESTful API. Postman offers a GUI that is a very pleasant interface to work with, however a GUI is not always the best interface for a given job. 
 
-PowerShell offers multiple cmdlets for making HTTP requests from the CLI. A benefit of making requests from the CLI is that you can combine as many requests as you want and run them in a single script. This gives you the power to script interactions with a RESTful API to automate tasks, like endpoint testing.
+A benefit of making requests from the CLI is that you can combine as many requests as necessary to combine into a single script. This grants the ability to automate interactions with a RESTful API, like endpoint testing.
 
 Invoke-RestMethod
 =================
 
-In a similar vein to Postman, ``Invoke-RestMethod`` allows you to set the request: URI, HTTP method, headers, body, and more all from a PowerShell terminal. 
+In a similar vein to Postman, ``Invoke-RestMethod`` allows you to set the HTTP request: 
 
-The ``Invoke-RestMethod`` cmdlet makes an HTTP request the server returns an HTTP response as a JSON object that can be mapped directly to a `PSCustomObject <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-pscustomobject?view=powershell-7>`_ which can be used directly with PowerShell, or can be saved in a JSON file. 
+- URI
+- HTTP method
+- headers
+- body
+- etc
+
+All of this achievable from a PowerShell session.
+
+The ``Invoke-RestMethod`` cmdlet makes an HTTP request the server returns an HTTP response as a JSON object that can be mapped directly to a `PSCustomObject <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-pscustomobject?view=powershell-7>`_. This object can be used directly within a PowerShell session, or can be saved in a JSON file. You will see examples below.
 
 Open-Notify Examples
 --------------------
@@ -138,16 +150,14 @@ And finally writing this data to a CSV file:
 
 The ``Invoke-RestMethod`` cmdlet is a powerful tool for working with APIs. When combined with our knowledge of PowerShell we have a huge toolbox of things we can do with the data. 
 
-Continue exploring ``Invoke-RestMethod`` and the `Open Notify API <http://api.open-notify.org/>`_. The following studio will require you to use the same PowerShell tools to gather, organize, and write data from the `GitHub Developers API <https://developer.github.com/v3/>`_.
-
 To finish this article we will look at how we could use the ``Invoke-RestMethod`` cmdlet with our CodingEventsAPI.
-
-.. admonition:: note
-
-   The following examples won't work unless you run your application locally.
 
 CodingEventsAPI Examples
 ========================
+
+.. admonition:: warning
+
+   The following examples will not work unless you run your application locally.
 
 Get Example
 -----------
@@ -204,8 +214,8 @@ To delete an existing coding event entity you could use:
 
    > Invoke-RestMethod -Method "Delete" -Uri https://localhost:5000/api/events/{id}
 
-Additional Options
-------------------
+Invoke-RestMethod Additional Options
+------------------------------------
 
 You have seen how the ``-Method`` and ``-Body`` options work. ``-Method`` allow us to define which type of HTTP method to use with our request. ``-Body`` allows us to define the request body that serves as a JSON representation of the data with our request.
 
