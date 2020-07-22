@@ -266,3 +266,8 @@ If you feel you've messed something up, you can easily destroy the entire resour
   > az group delete -n "$rgName"
 
 This command takes a couple of minutes to run because it first has to delete each of the resources inside of the resource group. However, this handy command allows you to cleanup easily, or start over if you've made a mistake!
+
+Submitting Your Work
+====================
+
+After you have finished and executed your deploy script, you will be able to access your running application using HTTPS at the public IP address of your VM. Share this link with your TA so they know you have completed the studio.
