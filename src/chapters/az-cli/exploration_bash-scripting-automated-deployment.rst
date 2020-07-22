@@ -2,7 +2,7 @@
 Exploration: Automated Deployment via Bash Scripting
 ====================================================
 
-A huge benefit of using the Azure CLI from a shell terminal is that we can bundle many commands together in a script. In this exploration article we will explore a Bash script that does a complete deployment using the Az CLI commands we have used throughout this chapter.
+A huge benefit of using the Azure CLI from a shell terminal is that we can bundle many commands together in a script. In this exploration article we will explore a Bash script that does a complete deployment using the Az CLI.
 
 Provision Resources Script
 ==========================
@@ -20,7 +20,7 @@ Let's take a look at the script, and then talk about what it's doing:
    # variables
 
    # TODO: enter your name here in place of 'student'
-   student_name="paul"
+   student_name="student"
 
    # !! do not edit below !!
 
@@ -97,6 +97,9 @@ Let's take a look at the script, and then talk about what it's doing:
 
    # --- end ---
 
+Script Steps
+------------
+
 This script does quite a few things, most of them are related to our Azure resources:
 
 #. declare variables
@@ -113,7 +116,17 @@ This script does quite a few things, most of them are related to our Azure resou
 #. send three separate Bash scripts to the vm using ``az vm run-command invoke``
 #. print out the public IP address of the vm
 
-This script is responsible for setting up, and configuring the resources with the Azure CLI. You will notice the second to last step in the script passes, and invokes three additional scripts to the VM. From our local machine we cannot configure the VM, so we pass the scripts the VM needs in our provision script.
+Script Goal
+-----------
+
+This script is responsible for setting up, and configuring the resources with the Azure CLI. 
+
+Take note of the second to last step in the list: **send three separate Bash scripts to the vm using az vm run-command invoke**. It is passing three additional Bash scripts to be run by the VM. 
+
+We need to do this because we have additional VM configuration steps that we cannot accomplish with just the Azure CLI. However, we can access ``RunCommand`` from the Azure CLI which allows us to run any additional scripts on the VM we need.
+
+VM RunCommand Scripts
+---------------------
 
 It is important that these three scripts run in a specific order and we have defined their order in our ``az vm run-command invoke`` command. These scripts must run in this order:
 
@@ -123,7 +136,7 @@ It is important that these three scripts run in a specific order and we have def
 
 The ``configure-vm.sh`` script should look familiar as it's a collection of the steps we have used multiple times throughout this class. 
 
-The ``configure-ssl.sh`` script is outside the scope of this class, but in a nutshell it downloads and configures the NGINX web server our application uses to enable TLS and HTTPS, so that our app can be used with AADB2C.
+The ``configure-ssl.sh`` script is outside the scope of this class, but in a nutshell it downloads and configures the NGINX web server our application uses to enable TLS and HTTPS so that our app can be used with AADB2C.
 
 Deliver & Deploy Script
 =======================
@@ -212,23 +225,59 @@ The middle section does some VM Operations work, namely creating directories, gr
 
    Unit Files are outside the scope of this class, but allow you to define how an application is run and can be configured to auto-restart the application if it fails. You can learn more by viewing the Digital Ocean `Systemd Unit File <https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files>`_ article.
 
-The final section of the script clones, checks out the solution branch, publishes the project to the directory indicated by the unit file, and then finally starts the service which runs our application. Assuming the sourcecode was error free, and it's appsettings.json file contains the appropriate information about the Key Vault, and AADB2C the application will be deployed.
+The final section of the script clones, checks out the solution branch, publishes the project to the directory indicated by the unit file, and then finally starts the service which runs our application. 
+
+This deployment requires the source code from the solution repository to have an ``appsettings.json`` file that contains information about the Key Vault and AADB2C utilized by the application.
+
+An example of this ``appsettings.json`` file is:
+
+.. sourcecode:: json
+
+   {
+      "Logging": {
+         "LogLevel": {
+            "Default": "Information",
+            "Microsoft": "Warning",
+            "Microsoft.Hosting.Lifetime": "Information"
+         }
+      },
+      "AllowedHosts": "*",
+      "KeyVaultName": "student-cli-scripting-kv",
+      "JWT": {
+         "ADB2C": {
+            "RequireHttpsMetadata": true,
+            "MetadataAddress": "https://student0720tenant.b2clogin.com/paul0720tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_coding-events-api-susi",
+            "TokenValidationParameters": {
+            "ValidAudience": "e13f6217-f8c1-495a-b1e1-b5cd28b26708",
+            "ValidateIssuer": true,
+            "ValidateAudience": true,
+            "ValidateLifetime": true,
+            "ValidateIssuerSigningKey": true
+            }
+         }
+      },
+      "Server": {
+         "Origin": ""
+      }
+   }
+
+Assuming the sourcecode was error free, and it's appsettings.json file contains the appropriate information about the Key Vault, and AADB2C the application will be deployed with no issues.
 
 Conclusion
 ==========
 
-All together the four scripts, that are controlled by the ``provision-resources.sh`` script:
+All together the four scripts, that are controlled by the ``provision-resources.sh`` script accomplish the following tasks:
 
 #. provision resources 
 #. configure resources
 #. deliver source code
 #. deploy source code.
 
-These four steps are similar across most deployments, they can be achieved in different ways:
+These four steps are similar across deployments, they can be achieved in different ways:
 
 - manually with a GUI: Azure Portal
 - manually with a CLI tool: Azure CLI
 - automated via shell scripts: ``provision-resources.sh`` and it's companion scripts
 - automated via Pipelining tools: `Azure Pipelines <https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/what-is-azure-pipelines?view=azure-devops>`_
 
-As you may have come to realize automation is good. It reduces the time to deploy, it decreases the likelihood of manual mistakes, etc. However, you cannot automate a process until you understand the individual steps necessary to write an automation script, or configure a pipelining tool.
+As you may have come to realize **automation is the end-goal** in operations. It reduces the time to deploy, it decreases the likelihood of manual mistakes, etc. However, you cannot automate a process until you understand the individual steps necessary to write achieve automation.
