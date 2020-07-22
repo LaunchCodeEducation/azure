@@ -218,9 +218,24 @@ Create a script (azureProvisionScript.ps1) that accomplishes the following:
 Limited Guidance
 ================
 
+PowerShell Benefits
+-------------------
+
 - bash scripting to get some data for our script (VM public ip address, and VM system assigned identity); this will be easier in PowerShell because of it's object oriented nature.
 
 - you will want to use variables -- you will want to capture the output of az cli commands in a variable or file
+
+Az CLI Help
+-----------
+
+You can get help for any Az CLI command, or sub-command with ``-h`` or the longhand ``--help``:
+
+.. sourcecode:: powershell
+
+   > az vm create -h
+
+Capturing Az CLI Output
+-----------------------
 
 .. sourcecode:: powershell
    :caption: capture az CLI output in variable
@@ -243,8 +258,21 @@ Limited Guidance
 
 Saving the output as a file will allow you to keep the data for as long as you need, if you store it only as a variable if you close your PowerShell session you will lose the data.
 
-- example az vm run-command invoke examples:
+RunCommand from the Az CLI
+--------------------------
 
 .. sourcecode:: powershell
 
   > az vm run-command invoke --command-id RunShellScript --scripts @some-bash-script.sh
+
+Fresh Start
+-----------
+
+If you feel you've messed something up, you can easily destroy the entire resource group using the az cli:
+
+.. sourcecode:: powershell
+
+  > $rgName = "<your-rg-name>"
+  > az group delete -n "$rgName"
+
+This command takes a couple of minutes to run because it first has to delete each of the resources inside of the resource group. However, this handy command allows you to cleanup easily, or start over if you've made a mistake!
