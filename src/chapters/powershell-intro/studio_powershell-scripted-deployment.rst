@@ -2,8 +2,6 @@
 Studio: PowerShell Scripted CodingEventsAPI Deployment
 ======================================================
 
-.. setup https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment
-
 .. it will contain the three scripts they are given, and a folder of practice JSON objects
 
 .. setting up adb2c appsettings.json needs the kv name, the adb2c metadata URL, and the validAudience (audience ID the client ID assigned the Coding Events API application in AADB2C the Client ID, in the token it is the Audience)
