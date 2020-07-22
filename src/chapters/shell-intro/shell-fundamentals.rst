@@ -333,7 +333,7 @@ So how do environment variables relate to calling programs by their name rather 
 
 The PATH variable holds a collection of base paths that the Shell should look in when evaluating a command. When a command is called the Shell will look in each of the base paths until it finds an executable file with the same name. Then it combines the matching base path with the command name to form the absolute path of the file to execute.
 
-For example, in Bash the base directory that the built-in commands are stored in is ``/usr/bin``. Bash includes this base directory in its PATH variable by default. When we call the ``cd`` command it is actually referencing the executable program file at the ``/usr/bin/cd`` path. 
+For example, in Bash the base directory that the built-in commands are stored in is ``/usr/bin``. Bash includes this base directory in its PATH variable by default. When we call the ``ls`` command it is actually referencing the executable program file at the ``/usr/bin/ls`` path. 
 
 Let's assume a PATH variable with 4 base directories in its list (separated by ``:`` characters):
 
@@ -343,13 +343,13 @@ Let's assume a PATH variable with 4 base directories in its list (separated by `
 
 The process looks something like:
 
-#. read the program name (``cd``)
+#. read the program name (``ls``)
 #. recognize that it is a program name and not a path to an executable
-#. check each directory in the PATH list for a file with the name of the command (``cd``)
+#. check each directory in the PATH list for a file with the name of the command (``ls``)
 
-It first checks ``/usr/local/sbin`` but is unable to find the ``cd`` program file. It then checks ``/usr/local/bin`` and ``/usr/sbin`` but still fails to find it. Finally it finds the ``cd`` file in ``/usr/bin`` directory.
+It first checks ``/usr/local/sbin`` but is unable to find the ``ls`` program file. It then checks ``/usr/local/bin`` and ``/usr/sbin`` but still fails to find it. Finally it finds the ``ls`` file in ``/usr/bin`` directory.
 
-The command is then executed by combining the matching base path (``/usr/bin``) with the command name (``cd``) into the absolute path ``/usr/bin/cd``. If it reaches the end of the PATH list then it will output a *command not found* error. 
+The command is then executed by combining the matching base path (``/usr/bin``) with the command name (``ls``) into the absolute path ``/usr/bin/ls``. If it reaches the end of the PATH list then it will output a *command not found* error. 
 
 .. admonition:: note
 

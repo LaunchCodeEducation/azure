@@ -69,10 +69,10 @@ The ``cd`` (change directory) command takes one argument -- the relative or abso
 
 If you want to change to a directory using a relative path that is *under* your CWD this is straightforward. But what if you need to refer to a relative path *above* your CWD? For this Bash includes two special characters for relative references:
 
-- `.` character: a single dot means *this directory*
-- `..` characters: a double dot means *up one directory*
+- `.` character: a single dot refers to *this directory*
+- `..` characters: a double dot refers to the *parent directory* (up one directory)
 
-We will discuss the use of the *this directory* character (``.``) soon. Consider an example about using the **up directory** characters in the following scenario:
+We will discuss the use of the *this directory* character (``.``) soon. Consider the following example:
 
 .. sourcecode:: bash
 
@@ -110,7 +110,8 @@ What if you again start inside ``Videos`` and you want to switch to the ``album`
 
 Relative to where you are, you need to:
 
-- go up one level where ``Media`` and ``Downloads`` are: ``../``
+- go up one directory to the ``Media`` parent directory: ``../``
+- go up one more level (home directory) where ``Media`` and ``Downloads`` are: ``../../``
 - down a level into ``Downloads``: ``../Downloads``
 - then down another level into ``album``: ``../Downloads/album``
 
@@ -230,4 +231,4 @@ We will not go into permission modes and ownership in this class. However, it is
 
    Notice how the ``.`` and ``..`` are actually listed as *directory files* (the first ``d`` in the long output).
    
-   The ``.`` and ``..`` are actually treated as *files* (because *everything is a file* in Linux). They refer to the *current directory file* and *up directory file* respectively.
+   The ``.`` and ``..`` are actually treated as *files* (because *everything is a file* in Linux). They refer to the *current directory file* and *parent (up) directory file* respectively.

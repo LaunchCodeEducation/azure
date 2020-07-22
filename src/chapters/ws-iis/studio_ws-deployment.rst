@@ -1,6 +1,6 @@
-============================================================
-Studio: Coding Events API Deployment to Windows Server & IIS
-============================================================
+======================================================
+Studio: Deploy CodingEventsAPI to Windows Server & IIS
+======================================================
 
 In today's studio you will practice deploying the Coding Events API to a Windows Server VM. You will be using the ``az CLI`` and the new Windows Server tools that you learned about.
 

@@ -1,6 +1,6 @@
-===================
-Studio: Host an API
-===================
+==============================
+Studio: Deploy CodingEventsAPI
+==============================
 
 For our studio today we will be deploying a RESTful API.
 

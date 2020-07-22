@@ -1,6 +1,5 @@
 ==========================================
 Studio: Deploy CodingEventsAPI with AADB2C
-==========================================
 
 
 .. ::
@@ -232,3 +231,5 @@ Studio: Deploy CodingEventsAPI with AADB2C
 .. TODO: auth URL, clientID, scope (in postman)
 
 - 
+=======
+==========================================

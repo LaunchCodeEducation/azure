@@ -16,11 +16,11 @@ The installation of the Azure CLI is straightforward now that you have learned h
 Windows/PowerShell
 ------------------
 
-To install on Windows using PowerShell use the chocolatey package manager:
+To install on Windows using PowerShell use the Chocolatey package manager:
 
 .. sourcecode:: powershell
 
-    > choco install az-cli -y
+    > choco install azure-cli -y
 
 Linux/Bash
 ----------
@@ -29,7 +29,7 @@ To install on Linux machines you should refer to the commands of the respective 
 
 .. sourcecode:: bash
 
-    $ apt install az-cli -y
+    $ apt install azure-cli -y
 
 The Pattern
 ===========

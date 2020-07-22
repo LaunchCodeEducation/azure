@@ -219,7 +219,6 @@ First we need to see what properties are of the parameter help objects that the 
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
-   :emphasize-lines: 
 
    > Get-Help Where-Object -Parameter * | Get-Member
 
