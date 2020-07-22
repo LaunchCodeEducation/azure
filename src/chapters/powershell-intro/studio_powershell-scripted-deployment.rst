@@ -4,11 +4,11 @@ Studio: PowerShell Scripted CodingEventsAPI Deployment
 
 In our studio today we will be using PowerShell to script a complete deployment of the CodingEventsAPI to a Linux VM.
 
-You will write a script that provisions and configures all of the Azure resources we will need for this deployment. Luckily this will be similar to what we did in the Azure CLI chapter. We will simply be combining all of those steps, and our newfound PowerShell skills to perform this task.
+You will write a script that provisions and configures all of the Azure resources we will need for this deployment. Luckily,, this will be similar to what we did in the Azure CLI chapter. We will simply be combining all of those steps, and utilizing our newfound PowerShell skills to perform this task.
 
-Some of the scripts will be provided for you, but it would be in your best interest to read over them, and try to understand what they are doing.
+The VM configuration scripts will be provided for you, but it would be in your best interest to read over them and try to understand what they are doing.
 
-Before we get to writing our PowerShell script for our deployment, let's take a look at the BASH deployment script we saw at the end of the Azure CLI chapter.
+Before we get to writing our PowerShell script for our deployment, let's take a look at the Bash deployment script we saw at the end of the Azure CLI chapter.
 
 Bash Script Breakdown
 =====================
@@ -17,7 +17,7 @@ You saw this script earlier, so instead of breaking down every single line, we w
 
 .. the full breakdown needs to happen as the last part of the Azure CLI chapter we will show them the BASH deployment script, and break it down in the article. Here we will just need to hit some key points to help the students form a mental model of the tasks (and their order) they will need to accomplish with their script.
 
-Let's consider the BASH deployment script we saw at the end of the Azure CLI chapter:
+BASH deployment script:
 
 .. sourcecode:: bash
    :caption: bash az cli deployment
@@ -30,7 +30,7 @@ Let's consider the BASH deployment script we saw at the end of the Azure CLI cha
 
    # variables
 
-   # TODO: enter your name here in place of 'student'
+   # enter your name here in place of 'student'
    student_name=student
 
    # !! do not edit below !!
@@ -108,6 +108,8 @@ Let's consider the BASH deployment script we saw at the end of the Azure CLI cha
 
    # --- end ---
 
+Now group them into sections.
+
 Declare Variables
 -----------------
 
@@ -129,14 +131,18 @@ These variables are used throughout the script. As you can see most of them are 
 Provision Resource Group
 ------------------------
 
-After our variables we start provisioning our Azure resources using the AZ CLI. Recall that the AZ CLI is cross-platform, these commands will work the same regardless of the underlying operating system.
+After our variables we start provisioning our Azure resources using the AZ CLI. Recall that the AZ CLI is cross-platform, these commands will work the same regardless of the underlying operating system. Although this script is a Bash script, our PowerShell script will look very similar.
 
-First up is our Resource Group. It must be provisioned before any of our other resources are provisioned, because it's the container that holds all the other resources. All we have to provide is the resource group name. These names must be unique to your account, so make sure the variable being used doesn't match any resource group names that currently exist in your Azure subscription.
+The Resource Group must be provisioned before any of our other resources are provisioned because it's the container that holds all the other resources. To provision a new Resource Group we need to provide the name. These names must be unique to your subscription.
 
 Provision Virtual Machine
 -------------------------
 
-After the Resource Group we have some flexibility. We could spin up the key vault or virtual machine first, however consider the dependencies. We will eventually need to set an access policy on our key vault that includes information about our virtual machine. For this reason it makes more sense to provision the virtual machine first since our key vault will need some information about our virtual machine.
+After the Resource Group we have some flexibility. 
+
+We could spin up the key vault or virtual machine first, however consider the dependencies. We will eventually need to set an access policy on our key vault that includes information about our virtual machine. 
+
+For this reason it makes more sense to provision the virtual machine first since our key vault will need some information about our virtual machine.
 
 Capture Virtual Machine's System Assigned Identity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -145,6 +151,12 @@ Upon creating our virtual machine we store the output from the command in a Bash
 
 - the virtual machine system managed identity
 - the virtual machine public ip address
+
+.. admonition:: note
+
+   Getting the variables from the Az CLI output is a tedious in Bash. Recall that Bash is a string based scripting language the output from the AZ CLI is a string, so we must manipulate the string to get the information we need. 
+   
+   In PowerShell the Az CLI output will be an object, so accessing properties can be accessed using dot notation. This is something you should explore throughout this studio.
 
 Create Appropriate Network Security Groups
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -156,9 +168,7 @@ The az cli provides a easy to use tool for opening whatever ports we need, in th
 Provision Key Vault
 -------------------
 
-Now that we have a VM and have captured the information we need to create an access policy for a key vault we can provision it next.
-
-First up, provisioning the key vault!
+Now that we have a VM and have captured the information we need to create an access policy for a key vault we should provision it.
 
 Set Key Vault Secret
 ^^^^^^^^^^^^^^^^^^^^
