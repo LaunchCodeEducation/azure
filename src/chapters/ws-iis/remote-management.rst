@@ -19,7 +19,7 @@ Recall that both the Azure CLI and the web portal GUI are backed by the same RES
 
 Within the Azure CLI the ``vm`` Sub-Group ``run-command`` can be used to toggle commonly used machine settings or execute complete scripts remotely. Every RunCommand has a unique name known as its ``command-id`` which you can view using ``list``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
     :caption: assumes the default location has been configured
 
     > az vm run-command list
@@ -29,7 +29,7 @@ Within the Azure CLI the ``vm`` Sub-Group ``run-command`` can be used to toggle 
 
 To issue a RunCommand use the ``invoke`` Command:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
     :caption: assumes a default RG, location and VM have been configured
 
     > az vm run-command invoke --command-id <command ID>
@@ -44,7 +44,7 @@ Using these RunCommand commands is the command-line equivalent of pasting the sc
 
 Here is an example of issuing single shell commands that simply list files in the home directory of the VM. For Windows we use the PowerShell ``Get-ChildItem`` and for Linux, its Bash equivalent, ``ls``. 
 
-.. sourcecode:: powershell
+.. sourcecode:: none
     :caption: assumes a default RG, location and VM have been configured
 
     # for a Windows VM run a PowerShell script (uses PowerShell in the VM)
@@ -57,7 +57,7 @@ For longer scripts than one-off commands like the examples above you will want t
 
 Here is an example that uses a script file located in the home (``~``) directory called ``myscript.<ext>`` with the appropriate extension for PowerShell or Bash corresponding to the CLI shell of the remote VM.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
     :caption: assumes a default RG, location and VM have been configured
 
     # myscript.ps is a PowerShell script
@@ -89,7 +89,7 @@ Windows provides the ``mstsc`` command-line utility for creating an RDP session 
 
 Here is the general form of using ``mstsc``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: mstsc is available on Windows machines
 
   > mstsc /v:<public IP address>
@@ -143,7 +143,7 @@ After enabling RPS access on the remote (host) machine you can open a session us
 
 Here is the most basic example that requires a VM's global identifier. The output of running this cmdlet will be a Session ID which we store in a variable for use with the related cmdlets:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > $SessionId=New-PSSession -VMId 484155ab-b52b-4d554-akk7f1540e80
@@ -157,14 +157,14 @@ Once a session has been created you can begin an interactive mode to gain access
 
 You can enter a PS Session using the ``Enter-PSSession`` command and supplying it the Session ID output from ``New-PSSession``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > Enter-PSSession -Session "$SessionId"
 
 Just as with ``New-PSSession`` there are numerous options that you can read more about `in this documentation article <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/enter-pssession?view=powershell-7>`_. In order to exit the interactive session you can use the aptly named ``Exit-PSSession``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > Exit-PSSession
@@ -176,7 +176,7 @@ Entering an interactive session with ``Enter-PSSession`` allows you to attach to
 
 ``Invoke-Command`` gives you the ability to pass in one PowerShell command, or local PowerShell script, you want to execute on the remote Windows machine:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > Invoke-Command -ComputerName 52.55.134.28 -credential student -filepath c:\user\scripts\some-script.ps

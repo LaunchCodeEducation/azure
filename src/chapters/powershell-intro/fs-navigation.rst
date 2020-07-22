@@ -26,7 +26,7 @@ Get the CWD
 
 In PowerShell you can either use the Bash alias:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > pwd
@@ -34,7 +34,7 @@ In PowerShell you can either use the Bash alias:
 
 Or its underlying cmdlet, ``Get-Location``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Get-Location
@@ -45,7 +45,7 @@ Change directory
 
 The Bash command ``cd`` can still be used with an absolute or relative path:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > cd relative/path
@@ -54,7 +54,7 @@ The Bash command ``cd`` can still be used with an absolute or relative path:
 
 It is an alias for the PowerShell cmdlet ``Set-Location`` which uses the same arguments:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Set-Location relative/path
@@ -66,7 +66,7 @@ List directory contents
 
 In Bash we used the ``ls`` command with or without a path to list the contents of a directory:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > ls
@@ -80,7 +80,7 @@ In Bash we used the ``ls`` command with or without a path to list the contents o
 
 The ``Get-ChildItem`` cmdlet also uses an absolute or relative path of a directory to list the contents of:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Get-ChildItem
@@ -97,14 +97,14 @@ Move a directory or file
 
 The ``mv`` command can be used in Bash or PowerShell with an absolute or relative path for either of its arguments:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > mv path\to\target C:\absolute\path\to\destination
 
 The PowerShell cmdlet behind ``mv`` is the more declaratively named``Move-Item``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Move-Item path\to\target C:\absolute\path\to\destination
@@ -114,7 +114,7 @@ Copy a directory or file
 
 In PowerShell copying an Item can be done using the Bash ``cp``. Recall that we used the ``-r`` (recursive) option when copying a directory with its contents. Whereas for a file we could just use ``cp`` directly:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    # copy a directory recursively
@@ -125,7 +125,7 @@ In PowerShell copying an Item can be done using the Bash ``cp``. Recall that we 
 
 Its cmdlet equivalent ``Copy-Item`` can also be used for files or directories. When copying a directory the ``-Recurse`` option can be used like the Bash ``-r``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    # copy a directory recursively
@@ -148,7 +148,7 @@ However, in PowerShell these options can not be used. Instead we will use the Po
 - ``-Confirm``: confirm each item before being deleted (like ``-i`` interactive mode in Bash)
 - ``-Recurse``: when removing a directory and its contents recursively
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    # delete a directory and contents recursively
@@ -162,7 +162,7 @@ Create a directory or file
 
 In Bash we used the ``mkdir`` command to create new directories. This alias is still available in PowerShell but its underlying cmdlet is much more powerful:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > mkdir relative\path
@@ -181,7 +181,7 @@ The ``New-Item`` cmdlet has the following options:
 
 For example to create a directory:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
    
    > New-Item -Name "dir-name" -ItemType "directory" -Path relative\path
@@ -193,7 +193,7 @@ For example to create a directory:
 
 When creating a file you can use the ``-Value`` option to write content to the file in one command! Remember that extensions matter in Windows. You **must provide the file extension** in the ``-Name`` option:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > New-Item -Name "my-file.txt" -ItemType "file" -Path relative\path -Value "contents of the file"
@@ -211,7 +211,7 @@ Reading file contents
 
 In Bash we learned about the ``cat`` (concatenate) command. We used the side-effect of ``cat`` to print the contents of a file to the Terminal. We *can* use ``cat`` in PowerShell as well:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > cat relative\path\to\file
@@ -220,7 +220,7 @@ In Bash we learned about the ``cat`` (concatenate) command. We used the side-eff
 
 The PowerShell equivalent to ``cat`` is ``Get-Content``. Notice how declarative the naming is -- you are *getting* the *contents* of the *file*:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Get-Content relative\path

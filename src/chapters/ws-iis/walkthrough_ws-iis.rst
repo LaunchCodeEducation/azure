@@ -26,7 +26,7 @@ As always we will begin by creating a resource group. This time we will combine 
 
 Notice how we use the ``--query`` Argument to have the output of the ``create`` Command be just the name of the new RG. We perform all of this within an in-line execution so the output (the RG name) can be assigned as the default group value:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > az configure -d group=$(az group create -n <name>-ws-wt --query "name")
@@ -42,7 +42,7 @@ Create a Windows Server VM
 
 Next let's create our Windows Server VM within the new RG. Windows Server has been around for many years. For our purposes we will use the latest, 2019, edition. Just as we did with the Ubuntu VM let's search the available VM images for the ``urn`` of the 2019 Windows Server image. In this case we need to provide a *compound filter* that will look for a ``urn`` that ``contains`` both ``Windows`` *and* ``2019``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > az vm image list --query "[? contains(urn, 'Windows') && contains(urn, '2019')] | [0].urn"
@@ -50,7 +50,7 @@ Next let's create our Windows Server VM within the new RG. Windows Server has be
 
 Let's assign this value to a variable:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > $WsImageUrn=$(az vm image list --query "[? contains(urn, 'Windows') && contains(urn, '2019')] | [0].urn")
@@ -67,7 +67,7 @@ To create our VM we will use most of the same Arguments as we did when creating 
 
   It is important that you do not change the admin username (``student``) or password (``LaunchCode-@zure1``). Although it is a poor practice to use the same password for everyone we do so for consistency in order to make it easy to help you debug if somethings goes wrong.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > az vm create -n ws-vm --size "Standard_B2s" --image "$WsImageUrn" --admin-username "student" --admin-password "LaunchCode-@zure1" --assign-identity
@@ -79,7 +79,7 @@ To create our VM we will use most of the same Arguments as we did when creating 
 
 Once the VM is created let's set is as the default VM: 
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: either shell
 
   > az configure -d vm=ws-vm
@@ -104,7 +104,7 @@ In order to RDP into a machine you need (at minimum):
 
 Since we have set the VM as our default we can use the ``list-ip-addresses`` Command and a query filter to get its value. We will capture the public IP address in a variable so we can use it to RDP into the machine:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > $VmPublicIp=$(az vm list-ip-addresses --query "[0].virtualMachine.network.publicIpAddresses[0].ipAddress")
@@ -117,7 +117,7 @@ Since we have set the VM as our default we can use the ``list-ip-addresses`` Com
 
 Now we can use the built-in ``mstsc`` command-line utility to open an RDP session with the machine:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > mstsc /v:"$VmPublicIp"
@@ -272,14 +272,14 @@ Adding a new NSG rule
 
 In order to connect to our VM, and therefore the Site, we need to add an additional NSG rule that will allow traffic on port 80. Fortunately this is a quick fix using our trusty ``az CLI`` and the VM ``open-port`` Command.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: assumes a default RG, location and VM have been configured
 
   > az vm open-port --port 80
 
 You will receive a lengthy output showing the current state of the NSG associated with the VM. Most of the output is related to the first property, ``defaultSecurityRules``. Towards the bottom you will see the ``securityRules`` list which includes both the RDP and the new port 80 rules.
 
-.. code-block:: json
+.. code-block:: javascript
   :caption: trimmed securityRules list showing rules allowing RDP and http public traffic
 
   ...
@@ -327,14 +327,14 @@ In your VM open up the PowerShell console by searching for it like you did for t
 
 Now open PowerShell and enter the following command to install ``choco``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 Next we will use the ``choco`` package manager to install the .NET hosting bundle:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   # the -y option skips prompting for confirmation
@@ -342,7 +342,7 @@ Next we will use the ``choco`` package manager to install the .NET hosting bundl
 
 In order for the hosting bundle to be recognized by IIS we need to restart the underlying processes used by IIS. The `Windows Process Activation Service (WAS) <https://docs.microsoft.com/en-us/iis/manage/provisioning-and-managing-iis/features-of-the-windows-process-activation-service-was>`_ and its dependent World Wide Publishing Service (W3SVC) can be restarted by entering the following commands:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   # /y is like -y and is used to skip a confirmation prompt
@@ -355,14 +355,14 @@ In order for the hosting bundle to be recognized by IIS we need to restart the u
 
 Finally let's install the dotnet SDK and CLI tool using ``choco``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > choco install dotnetcore-sdk -y
 
 After installing you **need to close PowerShell and reopen it** before the ``dotnet`` CLI can be used. Then enter the following command to confirm it is installed and usable:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   # expect a single line with the version number as output
@@ -378,7 +378,7 @@ Create the starter Web App
 
 Let's start by creating and switching to a new directory to keep our home directory clean:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   # issue this in the home directory, C:\Users\student
@@ -391,7 +391,7 @@ Let's start by creating and switching to a new directory to keep our home direct
 
 Inside this directory we can create the starter MVC project:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > dotnet new webapp -n StarterApp
@@ -401,7 +401,7 @@ Publish the Web App
 
 Before we publish the Web App we need to create a content directory for IIS to serve. The ``C:\inetpub`` directory is traditionally used by IIS for Site content. We will create a ``StarterApp`` directory in here to hold our published content:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > New-Item -ItemType directory -Path C:\inetpub\StarterApp
@@ -411,7 +411,7 @@ Before we publish the Web App we need to create a content directory for IIS to s
 
 Now we can publish our Web App into this directory so IIS can serve it. If you are not already in the StarterApp directory then switch to it first. We will publish for the `Windows x64 architecture <https://docs.microsoft.com/en-us/dotnet/core/rid-catalog#windows-rids>`_ and output to the new ``C:\inetpub\StarterApp`` directory we just made:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > cd C:\Users\student\WebApps\StarterApp

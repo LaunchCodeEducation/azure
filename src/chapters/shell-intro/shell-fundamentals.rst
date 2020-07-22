@@ -26,7 +26,7 @@ Relative Paths
 
 When you open your File Explorer program it defaults to a *starting point* of your user **home directory**. The same is true when you open your Shell in the Terminal. The home directory can be described by the following paths:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
 
    # Windows file system separates directories with a '\'
    C:\Users\YourUsername
@@ -38,7 +38,7 @@ We call the directory you are currently in the **current working directory (CWD)
 
 Imagine you wanted to provide directions to a file called ``notes.txt`` that you downloaded to your user's ``Downloads`` directory. If you have just opened your Terminal then your CWD is the home directory. From *this particular* CWD you could describe the relative path to the file as:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
 
    # Windows
    Downloads\notes.txt
@@ -63,7 +63,7 @@ On Linux machines the root directory is simply ``/``. Whereas on Windows machine
 
 Let's consider how we could describe the ``notes.txt`` location using an absolute path this time. We begin with the fixed starting point of the root directory. From the root as a reference we provide the relative directions through all the directories that lead to the ``notes.txt`` file location:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
 
    # Windows
    C:\Users\YourUsername\Downloads\notes.txt
@@ -92,7 +92,7 @@ In the File Explorer program you used sidebars and your mouse to navigate throug
 
 When you enter the ``pwd`` command into your Terminal it will print the absolute path of your CWD. Just like the File Explorer the Shell will open to your home directory by default:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > pwd
@@ -106,7 +106,7 @@ When you enter the ``pwd`` command into your Terminal it will print the absolute
 
 If you want to view the contents of the CWD you are in you can use the ``ls`` command:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > ls
@@ -120,7 +120,7 @@ If you want to view the contents of the CWD you are in you can use the ``ls`` co
 
 Finally you can use ``cd`` to change directories to a new working directory which becomes the CWD. Say you wanted to go from your home directory to the ``Downloads`` directory like our previous example. You can provide the relative path to the ``cd`` command to get there:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > cd Downloads
@@ -144,7 +144,7 @@ Finally you can use ``cd`` to change directories to a new working directory whic
 
 You can also provide the absolute path to reach the directory from any CWD:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > cd C:\Users\YourUsername\Downloads
@@ -314,7 +314,7 @@ For example, consider the default behavior we discussed earlier that causes a Sh
 
 By default this value will be the path to the user directory for the logged in user. You can view them using the ``echo`` (print output) command:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > echo "$Env:HOMEPATH"

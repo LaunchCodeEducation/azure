@@ -4,7 +4,7 @@ launchcode-repos.ps1
 
 The starter script is given to the students, but they are responsible for coming up with PS commands that will solve the prompts.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: launchcode-repos.ps1
 
    # how many repositories are returned when making a GET request to ``https://api.github.com/orgs/launchcodeeducation/repos``?
@@ -49,7 +49,7 @@ powershell-repo.ps1
 
 The starter script is given to the students, but they are responsible for coming up with PS commands that will solve the prompts.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: powershell-repo.ps1
 
    # powershell/powershell
