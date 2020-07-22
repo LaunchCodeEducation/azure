@@ -61,6 +61,7 @@ We can check that it delivered the source code properly by looking into the ``co
 
    cd /home/student
    git clone https://github.com/LaunchCodeEducation/coding-events-api
+   cd /home/student/coding-events-api
    git checkout 1-sqlite
    ls /home/student/coding-events-api
 
