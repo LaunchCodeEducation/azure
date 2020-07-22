@@ -10,9 +10,9 @@ Studio: PowerShell Scripted CodingEventsAPI Deployment
 
 In our studio today we will be using PowerShell to script a complete deployment of the CodingEventsAPI to a Linux VM.
 
-You will write a script that provisions and configures all of the Azure resources we will need for this deployment. Luckily,, this will be similar to what we did in the Azure CLI chapter. We will simply be combining all of those steps, and utilizing our newfound PowerShell skills to perform this task.
+We will be writing a PowerShell script that provisions and configures all of the Azure resources we will need for this deployment. The script we will be writing will combine all the steps from the Azure CLI chapter into one script to make for an easy deployment.
 
-The VM configuration scripts will be provided for you, but it would be in your best interest to read over them and try to understand what they are doing.
+You will be writing the PowerShell script the VM you provision will require three Bash configuration scripts. `The VM Bash configuration scripts <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>`_ will be provided for you, but it would be in your best interest to read over them and try to understand what they are doing.
 
 Before we get to writing our PowerShell script for our deployment, let's take a look at the Bash deployment script we saw at the end of the Azure CLI chapter.
 
