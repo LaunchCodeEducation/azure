@@ -2,6 +2,10 @@
 Studio: PowerShell Scripted CodingEventsAPI Deployment
 ======================================================
 
+.. setup https://github.com/LaunchCodeEducation/LaunchCodeEducation-powershell-az-cli-scripting-deployment
+
+.. it will contain the three scripts they are given, and a folder of practice JSON objects
+
 In our studio today we will be using PowerShell to script a complete deployment of the CodingEventsAPI to a Linux VM.
 
 You will write a script that provisions and configures all of the Azure resources we will need for this deployment. Luckily,, this will be similar to what we did in the Azure CLI chapter. We will simply be combining all of those steps, and utilizing our newfound PowerShell skills to perform this task.
@@ -13,102 +17,7 @@ Before we get to writing our PowerShell script for our deployment, let's take a 
 Bash Script Breakdown
 =====================
 
-You saw this script earlier, so instead of breaking down every single line, we will organize it into it's major points.
-
-.. the full breakdown needs to happen as the last part of the Azure CLI chapter we will show them the BASH deployment script, and break it down in the article. Here we will just need to hit some key points to help the students form a mental model of the tasks (and their order) they will need to accomplish with their script.
-
-BASH deployment script:
-
-.. sourcecode:: bash
-   :caption: bash az cli deployment
-
-   #! /usr/bin/env bash
-
-   set -e
-
-   # --- start ---
-
-   # variables
-
-   # enter your name here in place of 'student'
-   student_name=student
-
-   # !! do not edit below !!
-
-   rg_name="${student_name}-cli-scripting-rg"
-
-   # -- vm
-   vm_name="${student_name}-cli-scripting-vm"
-
-   vm_admin_username=student
-   vm_admin_password='LaunchCode-@zure1'
-
-   vm_size=Standard_B2s
-   vm_image=$(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn" -o tsv)
-
-   # -- kv
-   kv_name="${student_name}-cli-scripting-kv"
-   kv_secret_name='ConnectionStrings--Default'
-   kv_secret_value='server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode'
-
-   # set az location default
-
-   az configure --default location=eastus
-
-   # # RG: provision
-
-   az group create -n "$rg_name"
-
-   # # set az rg default
-
-   az configure --default group=$rg_name
-
-   # VM: provision
-
-   # capture vm output for splitting
-   vm_data=$(az vm create -n $vm_name --size $vm_size --image $vm_image --admin-username $vm_admin_username --admin-password $vm_admin_password --authentication-type password --assign-identity --query "[ identity.systemAssignedIdentity, publicIpAddress ]" -o tsv)
-
-   # vm value is (2 lines):
-   # <identity line>
-   # <public IP line>
-
-   # get the 1st line (identity)
-   vm_id=$(echo "$vm_data" | head -n 1)
-
-   # get the 2nd line (ip)
-   vm_ip=$(echo "$vm_data" | tail -n +2)
-
-   # VM: add NSG rule for port 443 (https)
-
-   az vm open-port --port 443
-
-   # set az vm default
-
-   az configure --default vm=$vm_name
-
-   # KV: provision
-
-   az keyvault create -n $kv_name --enable-soft-delete false --enabled-for-deployment true
-
-   # KV: set secret
-
-   az keyvault secret set --vault-name $kv_name --description 'connection string' --name $kv_secret_name --value $kv_secret_value
-
-   # KV: grant access to KV
-
-   az keyvault set-policy --name $kv_name --object-id $vm_id --secret-permissions list get
-
-   # VM setup-and-deploy script
-
-   # az vm run-command invoke --command-id RunShellScript --scripts vm-setup-and-deploy.sh
-
-   # finished print out IP address
-
-   echo "VM available at $vm_ip"
-
-   # --- end ---
-
-Now group them into sections.
+You saw this script earlier, so instead of breaking down every single line, we will organize it into it's major points, and show code snippets of how the Bash script achieves the various tasks.
 
 Declare Variables
 -----------------
@@ -128,12 +37,34 @@ The Bash script first declares a suite of variables:
 
 These variables are used throughout the script. As you can see most of them are used as the parameters for provisioning our Azure resources. All of the name variables use the underlying ``student_name`` variable to create a consist naming pattern. This allows us to easily spin up a new stack by changing this one variable, it is a single source of truth.
 
+.. sourcecode:: bash
+
+   student_name=student
+
+   rg_name="${student_name}-cli-scripting-rg"
+
+   vm_name="${student_name}-cli-scripting-vm"
+
+   vm_admin_username=student
+   vm_admin_password='LaunchCode-@zure1'
+
+   vm_size=Standard_B2s
+   vm_image=$(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn" -o tsv)
+
+   kv_name="${student_name}-cli-scripting-kv"
+   kv_secret_name='ConnectionStrings--Default'
+   kv_secret_value='server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode'
+
 Provision Resource Group
 ------------------------
 
 After our variables we start provisioning our Azure resources using the AZ CLI. Recall that the AZ CLI is cross-platform, these commands will work the same regardless of the underlying operating system. Although this script is a Bash script, our PowerShell script will look very similar.
 
 The Resource Group must be provisioned before any of our other resources are provisioned because it's the container that holds all the other resources. To provision a new Resource Group we need to provide the name. These names must be unique to your subscription.
+
+.. sourcecode:: bash
+
+   az group create -n "$rg_name"
 
 Provision Virtual Machine
 -------------------------
@@ -144,6 +75,10 @@ We could spin up the key vault or virtual machine first, however consider the de
 
 For this reason it makes more sense to provision the virtual machine first since our key vault will need some information about our virtual machine.
 
+.. sourcecode:: bash
+
+   vm_data=$(az vm create -n $vm_name --size $vm_size --image $vm_image --admin-username $vm_admin_username --admin-password $vm_admin_password --authentication-type password --assign-identity --query "[ identity.systemAssignedIdentity, publicIpAddress ]" -o tsv)
+
 Capture Virtual Machine's System Assigned Identity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -151,6 +86,14 @@ Upon creating our virtual machine we store the output from the command in a Bash
 
 - the virtual machine system managed identity
 - the virtual machine public ip address
+
+.. sourcecode:: bash
+
+   # get the 1st line (identity)
+   vm_id=$(echo "$vm_data" | head -n 1)
+
+   # get the 2nd line (ip)
+   vm_ip=$(echo "$vm_data" | tail -n +2)
 
 .. admonition:: note
 
@@ -165,39 +108,64 @@ While we are working with our VM let's go ahead and open the ports necessary for
 
 The az cli provides a easy to use tool for opening whatever ports we need, in this case 443 (HTTPS).
 
+.. sourcecode:: bash
+
+   az vm open-port --port 443
+
 Provision Key Vault
 -------------------
 
 Now that we have a VM and have captured the information we need to create an access policy for a key vault we should provision it.
+
+.. sourcecode:: bash
+
+   az keyvault create -n $kv_name --enable-soft-delete false --enabled-for-deployment true
 
 Set Key Vault Secret
 ^^^^^^^^^^^^^^^^^^^^
 
 After the key vault exists we can add whatever secrets our application will need to run. In this case we only have one secret, a database connection string, we give this secret a name, a key, and a value.
 
+.. sourcecode:: bash
+
+   az keyvault secret set --vault-name $kv_name --description 'connection string' --name $kv_secret_name --value $kv_secret_value
+
 Set Key Vault Access Policy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Finally we use the variable we created earlier that contains the Virtual Machine system assigned identity to create an access policy that grants the VM permission to use our provisioned key vault.
+
+.. sourcecode:: bash
+
+   az keyvault set-policy --name $kv_name --object-id $vm_id --secret-permissions list get
 
 Send Bash Scripts to VM via RunCommand
 --------------------------------------
 
 Now that all of our infrastructure has been provisioned, we need to finish configuring our VM. It will need to have dependencies installed, nginx configured and setup, a user and database created within MySQL, the souce code needs to be delivered, and finally deployed.
 
+.. sourcecode:: bash
+
+   az vm run-command invoke --command-id RunShellScript --scripts @configure-vm.sh, @configure-ssl.sh, @deliver-deploy.sh
+
 These bash scripts are provided for you, however you should look over them as they are commented with what they are doing. Many of the tasks they accomplish go beyond the scope of this course, but are a necessary part of our deployment.
+
+.. admonition:: warning
+
+   Looking in ``deliver-deploy.sh`` the script clones your project repository, and then switches to the ``powershell-az-cli-deploy`` branch. 
+   
+   **You are responsible for creating this branch and pushing the appropriate code**. 
+   
+   You will need to update the ``appsettings.json`` file in this branch to include your Key Vault name, and AADB2C information. You will need to push to this branch before running the ``deliver-deploy.sh`` script.
 
 Print Public IP Address to STDOUT
 ---------------------------------
 
 As a final step to make things easier for us, we print the public IP address to the console to make it easier for us to connect to our deployed application from a web browser.
 
+.. sourcecode:: bash
 
-.. ::
-
-  - we will dissect the bash deployment script what are all the things it's doing?
-  - sections as subheaders: (provision RG, provision VM, set VM assigned identity variable, provision KV, kv set-access policy using vm assigned identity, configure vm, configure ssl, deliver-deploy)
-  - there is some less than desirable code in these scripts (getting the VM assigned identity, keeping track of the VM ip, the variables are all strings) these are limitations of Bash, that we don't have in PowerShell. In ps we would be able to store these variables as objects, and access their properties with .notation, since the output comes in as an object, we can easily access the System Assigned Identity, get the VM public IP address, etc
+   echo "VM available at $vm_ip"
 
 Your Tasks
 ==========
