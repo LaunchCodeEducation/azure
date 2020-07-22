@@ -231,4 +231,4 @@ These four steps are similar across most deployments, they can be achieved in di
 - automated via shell scripts: ``provision-resources.sh`` and it's companion scripts
 - automated via Pipelining tools: `Azure Pipelines <https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/what-is-azure-pipelines?view=azure-devops>`_
 
-As you may have come to realize automation is awesome, it reduces the time to deploy, it decreases the likelihood of manual mistakes, etc. However, you cannot automate a process until you understand the indivdiual steps necessary to write an automation script, or configure a pipelining tool.
+As you may have come to realize automation is good. It reduces the time to deploy, it decreases the likelihood of manual mistakes, etc. However, you cannot automate a process until you understand the individual steps necessary to write an automation script, or configure a pipelining tool.
