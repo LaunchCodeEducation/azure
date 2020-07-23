@@ -288,7 +288,7 @@ CodingEventsAPI Examples
 
    The following examples will only if you are running the Coding Events API locally.
 
-Get Example
+GET Example
 -----------
 
 To get a collection of coding events you could use:
@@ -304,45 +304,7 @@ To get an individual coding event entity you could use:
    > $CodingEventId = 1
    > Invoke-RestMethod -Uri "http://localhost:5000/api/events/$CodingEventId"
 
-Post Example
-------------
-
-To create a new coding event we need to use two additional options:
-
-- ``-Method``: to set the ``POST`` HTTP method
-- ``-Body``: to define the body of the ``POST`` request using a `HashTable object <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-hashtable?view=powershell-7#what-is-a-hashtable>`_.
-
-.. sourcecode:: powershell
-
-   > $body = @{
-       Title = "Halloween Hackathon!"
-       Description = "A gathering of nerdy ghouls..."
-       Date =  "2020-10-30"
-     }
-
-   > $uri = "http://localhost:5000/api/events"
-   > Invoke-RestMethod -Method "Post" -Uri $uri -Body $body
-
-.. admonition:: Note
-
-   The ``HashTable`` object **does not have any commas** and uses the ``=`` assignment operator for defining each field of the object.
-   
-The ``HashTable`` body will automatically be converted to JSON before being sent in the request. After this automatic serialization the request body would look like this:
-
-.. sourcecode:: json
-   :caption: serialized HashTable request body
-   
-   {
-      "Title": "Halloween Hackathon!",
-      "Description": "A gathering of nerdy ghouls...",
-      "Date": "2020-10-31"
-   }
-   
-.. admonition:: Tip
-
-   You can use the same ``HashTable`` syntax for creating and adding bodies to ``PUT`` and ``PATCH`` requests as well.
-
-Delete Example
+DELETE Example
 --------------
 
 To delete an existing coding event entity you could use:
@@ -352,6 +314,72 @@ To delete an existing coding event entity you could use:
    > $CodingEventId = 1
    > $uri = "http://localhost:5000/api/events/$CodingEventId"
    > Invoke-RestMethod -Method "Delete" -Uri $uri
+
+POST Example
+------------
+
+To create a new coding event we need to use two additional options:
+
+- ``-Method``: to set the ``POST`` HTTP method
+- ``-Body``: to define the body of the ``POST`` request
+
+To provide the body of the request you can use a `HashTable object <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-hashtable?view=powershell-7#what-is-a-hashtable>`_ or a `here-string <https://4sysops.com/archives/the-powershell-here-string-preserve-text-formatting/>`_.
+
+The ``HashTable`` object is simple to create:
+
+.. sourcecode:: powershell
+
+   > $body = @{
+       Title = "Halloween Hackathon!"
+       Description = "A gathering of nerdy ghouls..."
+       Date =  "2020-10-30"
+     }
+
+.. admonition:: Note
+
+   The ``HashTable`` object **does not have any commas** and uses the ``=`` assignment operator for defining each key-value entry.
+
+However, before it can be used in the request it **must be converted to JSON** with an appropriate ``Content-Type`` header. 
+
+We can use:
+
+- ``ConvertTo-Json``: in a grouped expression to serialize the ``HashTable`` as a JSON string
+- the ``-ContentType`` option: to automatically set the ``Content-Type`` header of ``application/json``
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > $uri = "http://localhost:5000/api/events"
+   > Invoke-RestMethod -Method "Post" -Uri $uri -Body ($body | ConvertTo-Json) -ContentType "application/json"
+
+Using a JSON file
+^^^^^^^^^^^^^^^^^
+
+You can also load the body from a json file. This allows you to use existing files or a GUI editor to create the JSON body in a more intuitive way.
+
+Let's assume we have a file ``~\coding-event.json`` with the following contents:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Get-Content ~\coding-event.json
+
+   {
+      "Title": "test title is long",
+      "Description": "test description goes here",
+      "Date": "2020-10-31"
+   }
+
+We could use this file as the contents of the request body using a grouped expression:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Invoke-RestMethod -Method Post -Uri $uri -Body (Get-Content ~\coding-event.json) -ContentType "application/json"
+
+.. admonition:: Tip
+
+   You can use any of these ``-Body`` defining approaches for creating and adding bodies to ``PUT`` and ``PATCH`` requests as well. When used on a ``GET`` request the body will be converted to query string parameters in the URI.
 
 Invoke-RestMethod Additional Options
 ------------------------------------
