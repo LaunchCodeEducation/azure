@@ -82,7 +82,7 @@ Let's make a ``GET`` request for the ``Astros`` Resource. If you don't specify t
 Grouping to access fields of the JSON response
 ----------------------------------------------
 
-Using the grouping operator we can access just the ``people`` array property of the Custom Object in the following way:
+Using the grouping operator we can access the ``people`` array property of the Custom Object in the following way:
 
 .. sourcecode:: powershell
 
@@ -98,12 +98,12 @@ Using the grouping operator we can access just the ``people`` array property of 
 
 .. admonition:: Note
 
-   Recall that the grouping operator will cause the ``Invoke-RestMethod`` to be executed *first*. The resulting Custom Object can then have its properties accessed using dot notation on the closing ``)``.
+   The grouping operator will cause the ``Invoke-RestMethod`` to be executed *first*. The resulting Custom Object can then have its properties accessed using dot notation on the closing parenthesis: ``)``.
 
 Piping to access nested fields
 ------------------------------
 
-Because we are working with objects we can filter it down further by piping the ``people`` array object to the ``Select-Object`` cmdlet:
+Because we are working with objects we can filter the response down further by piping the ``people`` array object to the ``Select-Object`` cmdlet:
 
 .. sourcecode:: powershell
 
@@ -218,7 +218,6 @@ We use the ``ConvertTo-Json`` cmdlet to accomplish this *serialization* from an 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
 
-   # (scroll to view)
    > $webRequest.people | Sort-Object -Property name | ConvertTo-Json | Set-Content "people.json"
 
 .. admonition:: Note
@@ -284,9 +283,9 @@ The ``Invoke-RestMethod`` cmdlet is a powerful tool for working with APIs. When 
 CodingEventsAPI Examples
 ========================
 
-.. admonition:: warning
+Let's test this out with our Coding Events API. To keep things simple let's use the ``1-sqlite`` branch so we don't need to worry about setting up a database, a secrets manager, or AADB2C.
 
-   The following examples will only if you are running the Coding Events API locally.
+Run this branch to start the Coding Events API on your local machine.
 
 GET Example
 -----------
@@ -381,21 +380,11 @@ We could use this file as the contents of the request body using a grouped expre
 
    You can use any of these ``-Body`` defining approaches for creating and adding bodies to ``PUT`` and ``PATCH`` requests as well. When used on a ``GET`` request the body will be converted to query string parameters in the URI.
 
-Invoke-RestMethod Additional Options
-------------------------------------
-
-We have covered some of the essential options used by ``Invoke-RestMethod``. Like Postman, there are many additional options we can use to further configure requests. 
-
-You can look over the documentation of `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ to get an understanding of its capabilities. Some other common options you can look into are:
-
-- ``-Headers``: used to define custom headers with our request (using a ``HashTable`` object like the request body)
-- ``-Authentication``: used to define the **basic** or **bearer** authentication type which will automatically set the ``Authorization`` header
-- ``-Token``: used to define the access token to be included in the ``Authorization`` header
-
 Continue Learning
 =================
 
-In an earlier lesson we used Postman to test out our CodingEventsAPI. If you have extra time in this course we recommend writing a PowerShell script that uses the ``Invoke-RestMethod`` cmdlet to send requests to all of the endpoints with the proper information.
+``Invoke-RestMethod``, like Postman, has many additional options we can use to further configure requests. 
 
-You can work with any RESTful APIs using the ``Invoke-RestMethod`` cmdlet. To continue practicing you can self-host your own API, or you can find any publicly available APIs like the `GitHub Developer API <https://developer.github.com/v3/>`_.
+You can look over the documentation of `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ to get an understanding of its capabilities. 
 
+You can work with any RESTful APIs using the ``Invoke-RestMethod`` cmdlet. To continue practicing you can work with any publicly available APIs like the `GitHub Developer API <https://developer.github.com/v3/>`_.
