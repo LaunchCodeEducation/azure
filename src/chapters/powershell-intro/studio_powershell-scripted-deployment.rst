@@ -2,18 +2,23 @@
 Studio: PowerShell Scripted CodingEventsAPI Deployment
 ======================================================
 
-In our studio today we will be using PowerShell to script a complete deployment of the CodingEventsAPI to a Linux VM.
+In this studio we will be using *PowerShell to script a complete deployment of the CodingEventsAPI to a Linux VM*.
 
-This PowerShell script will provisions and configure all of the Azure resources we will need for this deployment. The script will combine all the steps from the Azure CLI chapter into one easily runnable deploy script.
+This PowerShell script will provisions and configure all of the Azure resources we will need for the deployment. The script will combine all the steps from the Azure CLI chapter into one easily runnable deploy-script.
 
 You will be writing the PowerShell script, however the provisioned VM will require three Bash configuration scripts. `The VM Bash configuration scripts <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>`_ will be provided for you, but it would be in your best interest to read over them to make sense of what they are doing.
 
-Before we get to writing our PowerShell script for our deployment, let's take a look at the Bash deployment script we saw at the end of the Azure CLI chapter.
+Before we write the PowerShell script for our deployment, let's take a look at the Bash deployment script we saw at the end of the Azure CLI chapter.
 
 Bash Script Breakdown
 =====================
 
 You saw this Bash script in an earlier chapter, so instead of breaking down every single line we will organize it into its major tasks. We will then look at the code snippets of how the Bash script achieves the various tasks.
+
+.. admonition:: note
+
+   Recall that the AZ CLI is cross-platform, the AZ CLI commands should work the same regardless of the underlying operating system. Although this script is a Bash script our PowerShell script will look very similar.
+
 
 Declare Variables
 -----------------
@@ -54,6 +59,10 @@ These variables are used throughout the script. Most of the variables are used a
 
 All of the name variables use the underlying ``student_name`` variable to create a consist naming pattern. This allows us to easily spin up a new stack by changing this one variable, it is a single source of truth.
 
+.. admonition:: tip
+
+   You will need to know your Azure Key Vault name as you will need to include it in the ``appsettings.json`` of your sourcecode!
+
 Provision Resource Group
 ------------------------
 
@@ -66,16 +75,12 @@ After our variables we start provisioning our Azure resources using the AZ CLI.
 
 The Resource Group must be provisioned before any of our other resources are provisioned because it's the container that holds all the other resources. To provision a new Resource Group we need to provide the name. These names must be unique to your subscription.
 
-.. admonition:: note
-
-   Recall that the AZ CLI is cross-platform, these commands will work the same regardless of the underlying operating system. Although this script is a Bash script our PowerShell script will look very similar.
-
 Provision Virtual Machine
 -------------------------
 
 After the Resource Group we have some flexibility. 
 
-We could spin up the key vault or virtual machine first, however consider the dependencies. We will eventually need to set an access policy on our key vault that includes information about our virtual machine. 
+We could spin up the key vault or virtual machine first, however consider the dependencies of these resources. We will eventually need to set an access policy on our key vault that includes information about our virtual machine. 
 
 For this reason it makes more sense to provision the virtual machine first since our key vault will need some information about our virtual machine.
 
@@ -85,7 +90,9 @@ For this reason it makes more sense to provision the virtual machine first since
 
    vm_data=$(az vm create -n $vm_name --size $vm_size --image $vm_image --admin-username $vm_admin_username --admin-password $vm_admin_password --authentication-type password --assign-identity --query "[ identity.systemAssignedIdentity, publicIpAddress ]" -o tsv)
 
-Take note of how this bash script captures the output of the ``az vm create`` command. We can do the same thing in PowerShell with slightly different syntax.
+.. admonition:: note
+
+   This bash script captures the output of the ``az vm create`` command in the vm_data variable. We can do the same thing in PowerShell with slightly different syntax.
 
 Capture Virtual Machine's System Assigned Identity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -107,12 +114,12 @@ Upon creating our virtual machine we store the output from the command in a Bash
 
 .. admonition:: note
 
-   Getting the variables from the Az CLI output is a tedious in Bash. Recall that Bash is a string based scripting language so the output from the AZ CLI is a string. In Bash we must manipulate the string to get the information we need. 
+   Getting the variables from the AZ CLI output is a tedious in Bash. Recall that Bash is a string based scripting language so the output from the AZ CLI is a string. In Bash we must manipulate the string to get the information we need. 
    
-   In PowerShell the Az CLI output will be an object. Accessing properties can be accomplished using dot notation, a much easier process!
+   In PowerShell the AZ CLI output will be an object. Accessing properties can be accomplished using dot notation, a much easier process!
 
-Create Appropriate Network Security Groups
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Create Appropriate Network Security Group
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Our application hasn't been deployed yet, but let's go ahead and open the HTTPS port so end users can access the CodingEventsAPI.
 
@@ -121,6 +128,10 @@ Our application hasn't been deployed yet, but let's go ahead and open the HTTPS 
 
 
    az vm open-port --port 443
+
+.. admonition:: tip
+
+   Creating the NSG for our VM that contains the proper port is an easy thing to forget so we are opening it while we are working with our VM.
 
 Provision Key Vault
 -------------------
@@ -132,10 +143,20 @@ Now that we have a VM and have the information we need to create an access polic
 
    az keyvault create -n $kv_name --enable-soft-delete false --enabled-for-deployment true
 
+.. sourcecode:: note
+
+   For a VM to access the Key Vault it must be ``enabled-for-deployment``, we also turn off the ``soft-delete`` so the Key Vault can be deleted in less than 30 days.
+
 Set Key Vault Secret
 ^^^^^^^^^^^^^^^^^^^^
 
-After the key vault exists we can add whatever secrets our application will need to run. In this case we only have one secret, a database connection string, we give this secret a name, a key and a value.
+After the key vault has been provisioned we can add whatever secrets our application needs. In this case we only have one secret: a database connection string.
+
+The database connection string secret needs:
+
+- a description
+- name (key)
+- value
 
 .. sourcecode:: bash
    :caption: ``provision-resources.sh``: Add connection string secret to Key Vault
@@ -146,7 +167,7 @@ After the key vault exists we can add whatever secrets our application will need
 Set Key Vault Access Policy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Finally we use the variable we created earlier that contains the Virtual Machine system assigned identity to create an access policy that grants the VM permission to **get** the secrets stored in the key vault.
+Finally we use the variable we created earlier that contains the Virtual Machine system assigned identity to create an access policy that grants the VM permission to **get** secrets stored in the key vault.
 
 .. sourcecode:: bash
    :caption: ``provision-resources.sh``: Create Key vault access policy for VM
@@ -167,15 +188,14 @@ The VM still needs:
 - sourcecode
 - deployed application
 
-We will accomplish these by using the provided scripts.
+We will accomplish these final steps by using the provided scripts and the ``az vm run-command invoke`` command.
 
 .. sourcecode:: bash
    :caption: ``provision-resources.sh``: Send (and invoke) configure scripts to VM
 
-
    az vm run-command invoke --command-id RunShellScript --scripts @configure-vm.sh, @configure-ssl.sh, @deliver-deploy.sh
 
-These bash scripts are provided for you, however you should look over them as they are commented with what they are doing. Many of the tasks they accomplish go beyond the scope of this course, but are a necessary part of our deployment.
+These bash scripts are provided for you, however you should look over them as they are commented with what they are doing. Many of the tasks they accomplish go beyond the scope of this course, but are a necessary part of this deployment.
 
 .. admonition:: warning
 
@@ -201,6 +221,8 @@ Your Tasks
 
 Clone the VM Bash configuration scripts and practice resources `repository <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>`_.
 
+Practice with the provided resources to re-familiarize yourself with PowerShell.
+
 Update your source code and push to a new branch.
 
 Create a script (``azureProvisionScript.ps1``) that accomplishes the following:
@@ -208,19 +230,19 @@ Create a script (``azureProvisionScript.ps1``) that accomplishes the following:
 #. set variables
 #. provision RG
 #. provision VM
-#. capture vm.identity.systemAssignedIdentity
+#. capture the VM systemAssignedIdentity
 #. open vm port 443
 #. provision KV
 #. create KV secret (database connection string)
-#. set KV access-policy (using the vm.identity.systemAssignedIdentity)
-#. send 3 bash scripts to the VM using az vm run-command invoke (configure-vm.sh, configure-ssl.sh, deliver-deploy.sh
+#. set KV access-policy (using the vm systemAssignedIdentity)
+#. send 3 bash scripts to the VM using az vm run-command invoke (``configure-vm.sh``, ``configure-ssl.sh``, ``deliver-deploy.sh``
 #. print VM public IP address to STDOUT or save it as a file
 
 Access your deployed application in your web browser.
 
 .. admonition:: note
 
-   Add your ``azureProvisionScript.ps1`` to the ``powershell-az-cli-scripting-deployment`` repository you cloned, commit it and push when you've completed the tasks.
+   Add your ``azureProvisionScript.ps1`` to the ``powershell-az-cli-scripting-deployment`` repository you cloned, commit it and push when you've completed the tasks and have accessed your deployed application via a web browser.
 
 Limited Guidance
 ================
@@ -230,17 +252,10 @@ Running Custom PowerShell scripts
 
 Recall that Windows will not let you just run a PowerShell script, you must first set the ``ExecutionPolicy`` before you can run any custom PowerShell scripts.
 
-PowerShell Benefits
--------------------
-
-- bash scripting to get some data for our script (VM public ip address, and VM system assigned identity); this will be easier in PowerShell because of it's object oriented nature.
-
-- you will want to use variables -- you will want to capture the output of az cli commands in a variable or file
-
 Azure CLI Response Examples
 ---------------------------
 
-In the cloned repository you will find a folder called ``exampleResources`` this folder contains three JSON files that represent responses from provisioning Azure resources.
+In the cloned repository you will find a folder called ``exampleResources`` this folder contains three JSON files that represent responses from provisioning Azure resources from the CLI.
 
 You can use these example resources to practice getting the information you will need for your scripts.
 
@@ -252,29 +267,29 @@ For example you can examine the Resource Group name with:
 
 .. admonition:: tip
 
-   Your Key Vault will need the VM's ``systemAssignedIdentity`` to properly set an access policy from the Azure CLI.
+   Your Key Vault will need the VM's ``systemAssignedIdentity`` to properly set an access policy from the Azure CLI. See if you can access this property with PowerShell and ``virtualMachine.json``.
 
-Az CLI Help
+AZ CLI Help
 -----------
 
-You can get help for any Az CLI command, or sub-command with ``-h`` or the longhand ``--help``:
+You can get help for any AZ CLI command, or sub-command with ``-h`` or the longhand ``--help``:
 
 .. sourcecode:: powershell
 
    > az vm create -h
 
-Capturing Az CLI Output
+Capturing AZ CLI Output
 -----------------------
 
 .. sourcecode:: powershell
-   :caption: capture az CLI output in variable
+   :caption: capture AZ CLI output in variable
 
    > $someVariable = az vm create -n .....
 
    > $someVariable.someProperty
 
 .. sourcecode:: powershell
-   :caption: capture az CLI output in JSON file
+   :caption: capture AZ CLI output in JSON file
 
    > az vm create -n .... | Set-Content virtualMachine.json
 
@@ -287,23 +302,23 @@ Capturing Az CLI Output
 
 Saving the output as a file will allow you to keep the data for as long as you need, if you store it only as a variable you lose the data when you close your PowerShell session.
 
-RunCommand from the Az CLI
+RunCommand from the AZ CLI
 --------------------------
 
-You can access the ``RunCommand`` for any VMs with the following command: 
+You can access the ``RunCommand`` for any VM with the following command: 
 
 .. sourcecode:: powershell
 
   > az vm run-command invoke --command-id RunShellScript --scripts @some-bash-script.sh
 
-You will have to succesfully invoke the three provided scripts for you application to finish it's deployment.
+You will have to successfully invoke the three provided scripts for you application to finish it's deployment.
 
 Updating the CodingEventsAPI Source Code
 ----------------------------------------
 
 The ``deliver-deploy.sh`` script expects a branch of your CodingEventsAPI repository to contain all the code necessary for deploying your application. This includes the ``appsettings.json`` file.
 
-You will need to manually update this file to include the necessary Key Vault and AADB2C information and then push it to a new branch. You will then need to give your GitHub user name, and repository name to the ``deliver-deploy.sh`` script so it knows where to find your source code.
+You will need to manually update this file to include the necessary Key Vault and AADB2C information and then push it to a new branch. Then you need to give your GitHub user name, and repository name to the ``deliver-deploy.sh`` script so it knows where to find your source code.
 
 The ``appsettings.json`` file needs:
 
@@ -316,7 +331,7 @@ Review the AADB2C studio if you need a refresher on where to find the necessary 
 Fresh Start
 -----------
 
-If you feel you've messed something up, you can easily destroy the entire resource group using the az cli:
+If you feel you've messed something up throughout this deployment, you can easily destroy the entire resource group using the AZ CLI:
 
 .. sourcecode:: powershell
 
@@ -325,10 +340,21 @@ If you feel you've messed something up, you can easily destroy the entire resour
 
 This command takes a couple of minutes to run because it first has to delete each of the resources inside of the resource group. However, this handy command allows you to cleanup easily, or start over if you've made a mistake!
 
+.. admonition:: note
+
+   Your Key Vault will only be properly deleted if you have set ``enable-soft-delete`` to ``false``.
+
 Getting Assistance
 ------------------
 
-Everything your ``provisionResources.ps1`` script accomplishes is something you have done throughout this class. For additional help look over the ``provision-resources.sh`` script, review previous chapters, discuss strategies with your classmates, and finally reach out to your TA.
+Everything your ``provisionResources.ps1`` script accomplishes is something you have done throughout this class. 
+
+For additional help:
+
+- look over the ``provision-resources.sh`` script
+- review previous chapters
+- discuss strategies with your classmates
+- reach out to your TA.
 
 Submitting Your Work
 ====================
