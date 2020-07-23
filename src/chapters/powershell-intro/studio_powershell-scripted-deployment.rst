@@ -325,12 +325,14 @@ If you feel you've messed something up, you can easily destroy the entire resour
 
 This command takes a couple of minutes to run because it first has to delete each of the resources inside of the resource group. However, this handy command allows you to cleanup easily, or start over if you've made a mistake!
 
-Review Previous Chapters
-------------------------
+Getting Assistance
+------------------
 
-Everything your ``provisionResources.ps1`` script accomplishes is something you have done throughout this class. If you need assistance look over the walkthroughs and studios you have already completed.
+Everything your ``provisionResources.ps1`` script accomplishes is something you have done throughout this class. For additional help look over the ``provision-resources.sh`` script, review previous chapters, discuss strategies with your classmates, and finally reach out to your TA.
 
 Submitting Your Work
 ====================
 
-After you have finished and executed your deploy script, you will be able to access your running application using HTTPS at the public IP address of your VM. Share this link, and your ``powershell-az-cli-scripting-deployment`` with your TA so they know you have completed the studio.
+After you have finished and executed your deploy script you will be able to access your running application using HTTPS at the public IP address of your VM. 
+
+Share this link, and your ``powershell-az-cli-scripting-deployment`` with your TA so they know you have completed the studio.
