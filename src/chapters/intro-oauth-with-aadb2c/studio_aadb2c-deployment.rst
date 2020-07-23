@@ -116,16 +116,15 @@ Deliverable
    - client authentication: default but confirm send as basic auth header
    - click request token a pop up will prompt you to login
 
-
-
    .. comment:: END OF POSTMAN GROUP
 
 
 
-   .. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/16copy-user-flow-endpoint.png
       :alt:
 
    - double check your application
 
 
    .. TODO: auth URL, clientID, scope (in postman)
+
+   .. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/16copy-user-flow-endpoint.png
