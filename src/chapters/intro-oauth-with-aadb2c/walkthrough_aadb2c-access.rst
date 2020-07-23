@@ -3,8 +3,8 @@ Walkthrough: Set Up Access Token Authorization with Azure ADB2C
 ===============================================================
 
 
-Setup Postman
-=============
+Set Up Postman
+==============
 
 - import this collection into postman
 - all of the postman photos to the authorization section form (postman/6fill-out-form.png)
@@ -51,8 +51,8 @@ Setup Postman
 
 Leave Postman open on this form, and go to the Azure Portal where we will gather the information we need
 
-Setup API Authorization
-=======================
+Set Up API Authorization
+========================
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/1set-api-scopes.png
    :alt: set api scope
