@@ -15,7 +15,7 @@ Command-Line REST
 
 Throughout this class we have used Postman as a way for making requests to a RESTful API. Postman offers a GUI that is a very pleasant interface to work with, however a GUI is not always the best interface for a given job. 
 
-A benefit of making requests from the CLI is that you can combine as many requests as necessary to combine into a single script. This grants the ability to automate interactions with a RESTful API, like endpoint testing.
+A benefit of making requests from the CLI is that you can combine as many requests as necessary into a single script. This grants the ability to automate interactions with a RESTful API, like endpoint testing.
 
 Invoke-RestMethod
 =================
@@ -28,9 +28,9 @@ In a similar vein to Postman, ``Invoke-RestMethod`` allows you to set the HTTP r
 - body
 - etc
 
-All of this achievable from a PowerShell session.
+The ``Invoke-RestMethod`` cmdlet makes an HTTP request the server returns an HTTP response as a JSON object that can be mapped directly to a `PSCustomObject <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-pscustomobject?view=powershell-7>`_. 
 
-The ``Invoke-RestMethod`` cmdlet makes an HTTP request the server returns an HTTP response as a JSON object that can be mapped directly to a `PSCustomObject <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-pscustomobject?view=powershell-7>`_. This object can be used directly within a PowerShell session, or can be saved in a JSON file. You will see examples below.
+This object can be used directly within a PowerShell session, or can be saved in a JSON file. You will see examples below.
 
 Open-Notify Examples
 --------------------
@@ -45,7 +45,7 @@ To start we will make a request for the ``astros.json`` file:
    ------- ------ ------
    success      5 {@{craft=ISS; name=Chris Cassidy}, @{craft=ISS; name=Anatoly Iv…
 
-Invoke-RestMethod returns a Custom Object that contains a message, and the payload of the request. The request was successful and the payload contains a string representation of JSON containing the number of people in space, and a collection of their names, and the space craft they are currently on.
+Invoke-RestMethod returns a Custom Object that contains a message, and the payload of the request. The request was successful and the payload contains a string representation of JSON containing the number of people in space, a collection of their names, and the space craft they are currently on.
 
 Following is an example of how we could access just the ``people`` property of the Custom Object:
 
@@ -61,7 +61,7 @@ Following is an example of how we could access just the ``people`` property of t
    ISS   Doug Hurley
    ISS   Bob Behnken
 
-In this case we are simply looking at one field associated with the Custom Object, in this case all the astronauts currently in space.
+In this case we are simply looking at one field associated with the Custom Object in this case, all the astronauts currently in space and their spacecraft.
 
 If we want to filter it down further we can use a pipe and the ``Select-Object`` cmdlet:
 
