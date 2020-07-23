@@ -15,7 +15,7 @@ Understanding how grouping expressions works is best discovered through an examp
 
 These types of expressions are evaluated from left to right unless some math operators (like ``+`` and ``*``) are used. Arithmetic expressions are evaluated following the mathematical rules defined in the `PEMDAS order of operations <https://www.purplemath.com/modules/orderops.htm>`_.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > 5 + 5
@@ -27,7 +27,7 @@ In the following example we want to add ``5 + 5`` and multiply *the resulting va
 
 Would this expression evaluate to our goal of ``20``?:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > 5 + 5 * 2
@@ -39,7 +39,7 @@ However, we can control the **order of evaluation** by **grouping expressions** 
 
 If we were to group the addition expression it would be evaluated first *then* its resulting value would be multiplied by ``2``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > (5 + 5) * 2
@@ -49,7 +49,7 @@ We can see that ``(5 + 5)`` was evaluated first, **then the group was replaced w
 
 Consider a more complex example with *nested* groups (a grouped expression inside another):
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > ((10 + 10) * 2) + 5
@@ -64,7 +64,7 @@ The same principle applies to any PowerShell expression within the grouping oper
 
 Consider a simple scenario with string objects rather than numbers. Our goal is to combine (concatenate) two strings together and determine the length of the new string that is formed. *Without grouping* this would be our result:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > "hello" + "world".length
@@ -74,7 +74,7 @@ The string ``"hello"`` is concatenated with the result of ``"world".length`` int
 
 We can use grouping to enforce ``"hello" + "world"`` being evaluated first *and then* checking the ``length`` property of the resulting ``string`` object:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > ("hello" + "world").length
@@ -82,7 +82,7 @@ We can use grouping to enforce ``"hello" + "world"`` being evaluated first *and 
 
 In other words the evaluation and substitution looked like this:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > (string object).length
@@ -103,7 +103,7 @@ Let's see the difference in action by trying to print the length of the combined
 
 First using a grouping operator:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    # the Bash 'echo' command can be used as an alias for Write-Output
@@ -120,7 +120,7 @@ In order for us to execute the length calculating expression **within** the stri
 
 Let's try using a subexpression instead:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Write-Output "The length of the concatenated strings is: $(("hello" + "world").length)"
@@ -130,7 +130,7 @@ This time the subexpression ``("hello" + "world").length`` is **executed**, eval
 
 We will see more examples of subexpressions and grouped expressions later in this course. They are valuable tools to understand for writing "one-liner" commands in the REPL. But they are even more useful when employed in pipelines and scripts.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    Use **grouping expressions** when you want to **control the order of evaluation** (from the inside out).
 

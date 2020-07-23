@@ -6,7 +6,7 @@ We have worked with MySQL throughout this course as the primary database for our
 
 In operations the general term used to describe any service an application needs to function is a ``backing service``.
 
-.. admonition:: note
+.. admonition:: Note
 
     The `12 Factor Manifesto defines <https://12factor.net/backing-services>`_ it as
         
@@ -115,7 +115,7 @@ When you **manage** your own environment you are responsible for every aspect of
 
 In production you would likely rely on **externally managed** solutions. By externally managed we mean the Cloud Service Provider (CSP) handles the infrastructure responsibilities of the managed services. If the CSP manages your services you will pay a premium instead of paying in time and concern.
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
   Azure offers many managed services from `secrets managers like Key vault <https://docs.microsoft.com/en-us/azure/key-vault/general/overview>`_ to `databases <https://azure.microsoft.com/en-us/product-categories/databases/>`_ and even managed `application environments <https://azure.microsoft.com/en-us/services/app-service/>`_.
 

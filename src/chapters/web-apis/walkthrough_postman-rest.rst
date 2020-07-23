@@ -12,7 +12,7 @@ Instead of the browser we can use tools made specifically for interacting with A
 
 In this walkthrough we will work with Postman to explore how APIs can be consumed.
 
-.. admonition:: warning
+.. admonition:: Warning
 
    If you have not already installed ``dotnet`` and ``git`` with PowerShell you will need to go back to the previous walkthrough before continuing with this one. 
 
@@ -34,7 +34,7 @@ After installation Postman should open automatically. Making an account can be u
 .. image:: /_static/images/postman/account.png
    :alt: Postman splash screen for new account
 
-.. admonition:: tip
+.. admonition:: Tip
 
    Once installed you can right-click the Postman icon and pin it to your taskbar for easy access in the future:
 
@@ -51,19 +51,19 @@ Clone the Coding Events API Source Code
 
 Throughout this course we will be using a modified version of the MVC Coding Events application you created. The `Coding Events API <https://github.com/LaunchCodeEducation/coding-events-api/tree/1-sqlite>`_ is designed following the OpenAPI REST specification. Although they are implemented differently you will find that most of the features from the MVC application have been supported through endpoints in the API.
 
-.. admonition:: note
+.. admonition:: Note
 
    Our focus in this course is on operations and as such we will not be going into the development of the API. However, feel free to explore the source code if you are curious about the similarities and differences between the .NET MVC and API implementations.
 
 Let's begin by cloning the repo onto our machine:
 
-.. admonition:: note
+.. admonition:: Note
 
    If you just opened your PowerShell Terminal then it will default to a CWD of your ``HOME`` directory, ``C:\Users\<username>``. 
    
    If you want to clone the repo somewhere else make sure to change to that directory first.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > git clone https://github.com/launchcodeeducation/coding-events-api
@@ -72,7 +72,7 @@ For today's studio we will start with the first branch of the API codebase, ``1-
 
 Let's change into the repo and switch to this branch:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    # cd is an alias (like a nick-name) for the Set-Location cmdlet in PowerShell
@@ -96,7 +96,7 @@ CodingEvent Resource
 
 The *shape* of the ``CodingEvent`` resource describes the general form of its properties and value types:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
    CodingEvent {
       Id: integer
@@ -118,7 +118,7 @@ In our case the ``CodingEvent`` shape is just the properties and types (translat
 
 An example of a real ``CodingEvent`` JSON response would look like this:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
    {
       "id": 1,
@@ -143,7 +143,7 @@ GET Coding Events
 
 Making a ``GET`` request to the entry point of a resource should return a representation of the state of the collection. In our case this representation is a JSON array with ``CodingEvent`` elements:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
    [
       CodingEvent { ... },
@@ -152,7 +152,7 @@ Making a ``GET`` request to the entry point of a resource should return a repres
 
 If the current state of the collection is empty then we will just get back an empty JSON array:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
    []
 
@@ -186,7 +186,7 @@ Finally, as part of our ``POST`` request we will need to send a request body con
 
 The *shape* of the ``NewCodingEvent`` describes the JSON body that the endpoint expects:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
    NewCodingEvent {
       Title: string
@@ -196,7 +196,7 @@ The *shape* of the ``NewCodingEvent`` describes the JSON body that the endpoint 
 
 When making a request you would need to send a JSON body like this to satisfy the general shape:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
    {
       "Title": "Halloween Hackathon!",
@@ -204,7 +204,7 @@ When making a request you would need to send a JSON body like this to satisfy th
       "Date": "2020-10-31"
    }
 
-.. admonition:: note
+.. admonition:: Note
 
    We only provide the *user editable* fields, not the unique ``Id`` which the API handles internally when saving to the database.
 
@@ -212,15 +212,15 @@ Recall that when a ``POST`` request is successful the API should respond with th
 
 The OpenAPI REST spec states that when an entity is created the response should include both this status and the ``Location`` header that provides the URL of the new entity:
 
-.. sourcecode:: json
+.. sourcecode:: none
 
-   Location=<server origin>/api/events/<new entity Id>
+   Location: <server origin>/api/events/<new entity Id>
 
 As an example:
 
-.. sourcecode:: json
+.. sourcecode:: none
 
-   Location=http://localhost:5000/api/events/1
+   Location: http://localhost:5000/api/events/1
 
 You could then issue a ``GET`` request to the ``Location`` header value and view the new entity! In shorthand format this endpoint can be described as:
 
@@ -265,7 +265,7 @@ Start the API Server
 
 In your PowerShell Terminal enter the following commands to run the API from the command-line. We will learn more about the ``dotnet`` tool in later lessons:
 
-.. admonition:: note
+.. admonition:: Note
 
    If you didn't leave your PowerShell window open make sure to navigate back to the ``coding-events-api`` repo directory before issuing the following commands.
 
@@ -275,7 +275,7 @@ If you cloned the repo into your ``HOME`` directory then the absolute path will 
 
 ``C:\Users\<username>\coding-events-api\CodingEventsAPI``
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell, run from coding-events-repo directory
 
    # change to the CodingEventsAPI project directory
@@ -343,7 +343,7 @@ In Postman we can make this request by configuring the following settings:
 - the HTTP method of the endpoint: ``GET``
 - the request header: (``Accept`` ``application/json``)
 
-.. admonition:: note
+.. admonition:: Note
 
    Endpoint are described as *relative paths* with regards to a Server's origin.
    
@@ -360,7 +360,7 @@ To the left of the URL bar is a dropdown selector for HTTP methods. It will defa
 
 Underneath the URL bar are tabs for other aspects of the request. Select the ``Headers`` tab to configure our header. The ``Accept`` header lets the API know that we *accept responses* that are formatted as JSON. 
 
-.. admonition:: note
+.. admonition:: Note
 
    In our context the API *only responds with JSON*. However, some APIs offer multiple `MIME types <https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types>`_ for their responses. It is a best practice to set this header explicitly to the content type the consuming application expects.
 
@@ -386,7 +386,7 @@ If you select the **Headers** tab you can see the API satisfied our ``Accept`` *
 .. image:: /_static/images/postman/response-headers.png
    :alt: Postman response headers
 
-.. admonition:: note
+.. admonition:: Note
 
    If you get a **connection refused** error it means you likely forgot to start the API server or mistyped the URL. Check both of these before attempting the request again.
 
@@ -421,7 +421,7 @@ In addition to the configurations you are now familiar with setting we will need
 
 The body of the request must be in a **raw JSON** format. Once selecting this format enter the following JSON body:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
    {
       "Title": "Halloween Hackathon!",
@@ -450,7 +450,7 @@ Sending a Bad Request
 
 To illustrate the rejection of bad requests let's send one that violates the ``NewCodingEvent`` validation constraints. Send another request with the following JSON body:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
    {
       "Title": "too short",
@@ -478,7 +478,7 @@ For this step we will make a request for **the state of a single entity**. You c
 
 You should get back the following JSON response body:
 
-.. sourcecode:: json
+.. sourcecode:: javascript
 
    {
       "id": 1,
@@ -530,6 +530,6 @@ If you complete this walkthrough early and want some additional practice conside
 - explore the API source code using your IDE debugger to step through the request and response process
 - try consuming the API from the command-line using the Bash `curl <https://linuxhint.com/curl_bash_examples/>`_ program or the PowerShell `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ cmdlet.
 
-.. admonition:: note
+.. admonition:: Note
 
    We will revisit command-line web requests in later lessons. If you are able to complete this bonus mission you are **well ahead** of what is expected of you! 

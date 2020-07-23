@@ -135,7 +135,7 @@ Notice how it copied the ``parent-dir`` and *recursed* into it to copy all of th
 Delete a directory
 ------------------
 
-.. admonition:: warning
+.. admonition:: Warning
 
    The command to delete files is **not to be taken lightly**. When you delete a file or directory through the GUI it will conveniently store the deleted contents in a recycling bin where they can be recovered.
 
@@ -195,7 +195,7 @@ The ``touch`` command can be used to create an empty file. It takes a relative o
 
    $ touch path/to/file-name
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
    Technically the ``touch`` command is used for updating the last time the file was *touched* (the last-accessed or modified timestamp). But most of the time it is used for its *side-effect* of creating the file if it doesn't already exist to be touched!
 

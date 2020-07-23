@@ -21,7 +21,7 @@ We will install ``Chocolatey`` using PowerShell, however it will require elevate
 
 Once you have opened PowerShell in admin mode enter the following command:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell admin mode
 
    > Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
@@ -37,7 +37,7 @@ Getting Help
 
 After installing ``Chocolatey`` you can access help documentation with the ``--help`` option.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > choco --help
@@ -49,7 +49,7 @@ Installing a package
 
 ``Chocolatey`` is modeled after many popular Linux package managers like ``apt``. For this reason the syntax for chocolatey should look familiar:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > choco install <package name> -y
@@ -63,14 +63,14 @@ Upgrading packages in ``Chocolatey`` is again a simple command named ``choco upg
 
 To upgrade the ``dotnetcore-sdk``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > choco upgrade <package name> -y
 
 ``Chocolatey`` also supports upgrading all of the packages it downloaded and installed.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > choco upgrade all -y
@@ -82,7 +82,7 @@ The ``Chocolatey`` package manager is also responsible for keeping track of pack
 
 We will not be adding any sources beyond the default ``Chocolatey`` sources, but an example of the usage would follow this pattern:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > choco add source <source target>
@@ -94,21 +94,21 @@ Course Tools Installation
 
 Two of the CLI tools we will begin using this week are the ``dotnet CLI`` and the ``git`` version control system (VCS). Let's install them now before learning how to use them in the coming days.
 
-.. admonition:: note
+.. admonition:: Note
 
    Whenever you install a new CLI tool using ``choco`` you **must exit all PowerShell sessions** before they can be used. You can exit a PowerShell session by entering the ``exit`` command or by closing **all** of the open PowerShell Terminal windows.
 
 Install .NET SDK
 ----------------
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > choco install dotnetcore-sdk -y
 
 Don't forget to close and re-open PowerShell before entering the following command to test the installation:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > dotnet --version
@@ -119,14 +119,14 @@ Install Git VCS
 
 You likely have been using the **Git Bash** program to access ``git`` and GitHub. What you may not have realized is that Git Bash is a Terminal that emulates basic Bash commands and ``git``. However, now that we are comfortable working from the command-line we can use ``git`` natively within PowerShell and Bash. Let's install ``git`` in PowerShell using ``choco``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > choco install git -y
 
 After **closing and re-opening** PowerShell you can confirm the installation with the following command:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > git --version

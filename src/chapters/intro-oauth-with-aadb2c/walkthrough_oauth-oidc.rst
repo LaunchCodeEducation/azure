@@ -21,7 +21,7 @@ The first step of this walkthrough will use a tool called Visual OAuth. This too
 
 You will run this project locally on your machine. The `Visual OAuth repo <https://github.com/LaunchCodeEducation/visual-oauth>`_ has all of the instructions for setting up and using the tool in its ``README`` file. 
 
-.. admonition:: note
+.. admonition:: Note
    
    Follow the repo link and the instructions **then return to this article** when you have finished.
 
@@ -53,7 +53,7 @@ In the implicit grant flow there are only two steps:
 #. User Authenticates & Authorizes the Client
 #. Provider Redirects to Client with Access Token
 
-.. admonition:: note
+.. admonition:: Note
 
    You can learn more about the OAuth Implicit Grant Flow by exploring:
 
@@ -78,7 +78,7 @@ A **JSON Web Token** (JWT) is a way of securely transferring data over a network
 
 The JSON data is `signed for authenticity <https://auth0.com/docs/tokens/guides/validate-jwts#check-the-signature>`_ and Base64 encoded to make even large payloads easy to transport over HTTP.
 
-.. admonition:: note
+.. admonition:: Note
 
    To learn more about JWTs start with the `jwt.io introduction <https://jwt.io/introduction/>`_.
 
@@ -93,7 +93,7 @@ OpenID Connect (OIDC)
 
 OIDC is an identity management protocol built on top of OAuth. In many ways it is just *a thin layer* over OAuth. Whereas OAuth is about *delegating access* (authorization) using Access Tokens, OIDC provides a mechanism for the secure exchange of a user's identity (authentication) with an Identity Token. 
 
-.. admonition:: note
+.. admonition:: Note
 
    OIDC was developed to **standardize the use of OAuth for authentication**. Before OIDC, developers used `pseudo-authentication with OAuth <https://en.wikipedia.org/wiki/OpenID#OpenID_vs._pseudo-authentication_using_OAuth>`_ which, given that OAuth is an *authorization protocol*, was considered a "hacky" approach.
 
@@ -113,7 +113,7 @@ AADB2C uses OIDC to provide a centralized authentication platform that enables `
 
 Using AADB2C you can implement **User Flows** that bridge the gap between a user, an identity provider and your registered applications. Upon a successful authentication, the AADB2C service can send an Identity Token (OIDC) and, in most cases, an Access Token (OAuth) to your registered application.
 
-.. admonition:: note
+.. admonition:: Note
 
    If you want to learn more about OAuth, OIDC and AADB2C the following videos are a great start:
 

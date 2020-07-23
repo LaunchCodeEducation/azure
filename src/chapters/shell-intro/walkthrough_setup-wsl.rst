@@ -9,7 +9,7 @@ Windows machines can not run Bash natively because of their OS incompatibility. 
 
 Once WSL is enabled you can install a Linux Distribution like Ubuntu and use it as if it were a physical machine. In order to enable WSL and practice in the following chapter you will need to install Ubuntu and Bash through the following steps.
 
-.. admonition:: warning
+.. admonition:: Warning
 
    The WSL is only available for machines running Windows 10. Specifically you must be on **Version 2004, Build 19041** or higher. You can check what version you are on by following the `instructions in this article <https://support.microsoft.com/en-us/help/13443/windows-which-version-am-i-running>`_.
 
@@ -18,7 +18,7 @@ Enable WSL
 
 The first step requires you to open the PowerShell Terminal in **admin mode**. You can find PowerShell by searching from your taskbar. 
 
-.. admonition:: tip
+.. admonition:: Tip
 
    Before opening it right-click the icon and select **pin to taskbar** so it is easier to reach in the future:
 
@@ -32,7 +32,7 @@ From your taskbar right-click on the pinned icon and select **run as administrat
 
 Opening PowerShell normally will open it with User privileges with security restrictions. When you run a Shell as an admin you have **elevated privileges** that allow you to control the OS without restriction. In order to enable WSL we will need these elevated privileges.
 
-.. admonition:: warning
+.. admonition:: Warning
 
    When operating a Shell with admin privileges you **must be careful with the actions you take**. While it is unlikely, you **can do irreparable damage** from the command-line by controlling areas of your machine that the Desktop GUI would normally prevent you from accessing. 
    
@@ -45,7 +45,7 @@ You will be prompted to confirm this decision as a security measure:
 
 With PowerShell open as an admin copy and paste the following commands. Recall that the ``>`` symbol is used to designate **a single PowerShell command** (the contents to the right of it) that you need to copy and paste into your Terminal.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
@@ -57,7 +57,7 @@ Setup Ubuntu
 
 Next enter the following commands to install Ubuntu (the **18.04 LTS** version). As a reminder, each line beginning with ``>`` is its own command:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    # download the Ubuntu OS installer and save it as Ubuntu.appx
@@ -73,7 +73,7 @@ A dialog box will ask you to confirm the installation:
 
 The Ubuntu VM should now open automatically. It will then take a few minutes to complete the installation.
 
-.. admonition:: note
+.. admonition:: Note
 
    If you have any issues with the installation you likely forgot to restart your machine after enabling WSL. For resolving other issues refer to `this troubleshooting article <https://docs.microsoft.com/en-us/windows/wsl/install-win10#troubleshooting-installation>`_.
 
@@ -89,7 +89,7 @@ After installation it will prompt you to enter a username and password for your 
 
 You can set up any number of VMs and customize them to your needs. However, for this class we will use the following values to make troubleshooting and helping you more consistent.
 
-.. admonition:: note
+.. admonition:: Note
 
    When pasting or typing the password the characters will be hidden. Make sure to use these exact values:
 
@@ -127,7 +127,7 @@ Viewing available distributions
 
 You can view the available WSL distributions installed on your machine by using the ``--list`` option:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    # list all the installed VM distributions
@@ -143,7 +143,7 @@ You can also enter the Shell of the VM directly from the PowerShell Terminal rat
 
 You can use the ``--distribution`` option followed by the name of the VM's distribution (one that is installed from the ``--list`` output) to enter the Shell directly:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    # start the machine in the PowerShell Terminal (instead of using the taskbar icon)
@@ -153,7 +153,7 @@ You can use the ``--distribution`` option followed by the name of the VM's distr
 
 The same concept of using the Bash ``exit`` command applies but will now return you to the PowerShell Terminal instead of closing the Ubuntu Terminal application.
 
-.. admonition:: note
+.. admonition:: Note
 
    When entering Bash through PowerShell rather than the Ubuntu taskbar icon it will open to a different starting directory like ``/mnt/c/Users/<username>``. This is *not the home directory* but is a default when entering through PowerShell.
 
@@ -166,7 +166,7 @@ In some cases you want to completely shut down a VM rather than just exiting the
 
 You can shut down a VM from the PowerShell Terminal by using the ``--terminate`` option followed by the name of the VM's distribution (``Ubuntu-18.04``):
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    # shut down the machine

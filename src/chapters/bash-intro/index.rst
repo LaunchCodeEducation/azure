@@ -6,7 +6,6 @@ Introduction to Bash
    :maxdepth: 3
 
    intro
-   cmdlets
    walkthrough_fs-navigation
    walkthrough_dirs-and-files
    scripting
