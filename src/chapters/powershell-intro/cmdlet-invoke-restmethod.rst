@@ -1,57 +1,92 @@
-=========================
-Cmdlet: Invoke-RestMethod
-=========================
+===========================================
+Making API Requests Using Invoke-RestMethod
+===========================================
 
-PowerShell is filled with cmdlets that allow you to accomplish many things. This chapter has done a good job of introducing the foundational features of PowerShell. However, to use PowerShell to its fullest extent you must be willing to continue learning and practicing. This article will introduce a new cmdlet, ``Invoke-RestMethod``. 
+`Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ is a PowerShell cmdlet that gives the ability to send requests from the command-line to a REST API. 
 
-`Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ is a cmdlet that gives the ability to send Rest web requests from a powershell session.
+``Invoke-RestMethod`` can be used to make web requests to any server, but is specifically tuned to work with REST APIs that use JSON as their data representations.
 
-.. admonition:: tip
+.. admonition:: Note
 
-   This article is a great opportunity for you to combine cmdlets, pipes, expressions, variables, etc to build your PowerShell skills. Work through the examples, and then try them out with other things you have learned throughout this chapter.
+    The `Invoke-WebRequest <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-7>`_ cmdlet is a more generalized tool for working with other formats like XML or HTML.
 
 Command-Line REST
 =================
 
 Throughout this class we have used Postman as a way for making requests to a RESTful API. Postman offers a GUI that is a very pleasant interface to work with, however a GUI is not always the best interface for a given job. 
 
-A benefit of making requests from the CLI is that you can combine as many requests as necessary into a single script. This grants the ability to automate interactions with a RESTful API, like endpoint testing.
+A benefit of making requests from the CLI is that you can combine as many requests as necessary into a single script. This grants the ability to automate interactions with a RESTful API.
 
 Invoke-RestMethod
 =================
 
-In a similar vein to Postman, ``Invoke-RestMethod`` allows you to set the HTTP request: 
+In a similar vein to Postman, ``Invoke-RestMethod`` allows you to fully configure each HTTP request including setting the: 
 
 - URI
-- HTTP method
+- method
 - headers
 - body
-- etc
 
-The ``Invoke-RestMethod`` cmdlet makes an HTTP request the server returns an HTTP response as a JSON object that can be mapped directly to a `PSCustomObject <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-pscustomobject?view=powershell-7>`_. 
+The JSON responses received by an ``Invoke-RestMethod`` call are automatically converted from a JSON-formatted string to a `PSCustomObject <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-pscustomobject?view=powershell-7>`_. The fields of the JSON response are then accessible as properties of this object using dot notation.
 
-This object can be used directly within a PowerShell session, or can be saved in a JSON file. You will see examples below.
+.. admonition:: Tip
+
+   These response objects can be used directly within a PowerShell session, in a script or can be saved to a JSON file.
 
 Open-Notify Examples
---------------------
+====================
 
-To start we will make a request for the ``astros.json`` file:
+   Open-Notify is a publicly available REST API that returns information about astronauts in space.
+   
+The `Open-Notify API <http://open-notify.org/>`_ contains live data that is continuously updated. Let's explore this API by making a simple ``GET`` request for its ``Astros`` Resource using ``Invoke-RestMethod``.
+
+Astronaut Resource Shapes
+-------------------------
+
+The ``Astros`` Resource has the following shape:
+
+.. sourcecode:: json
+   :caption: the Astros Resource shape
+
+   {
+      message: integer,
+      number: integer,
+      people: Person[]
+   }
+
+The ``people`` field is an array of ``Person`` Resources with the following shape:
+
+.. sourcecode:: json
+   :caption: Person Resource shape
+
+   {
+      name: string,
+      craft: string
+   }
+
+Making a request
+----------------
+
+Let's make a ``GET`` request for the ``Astros`` Resource. If you don't specify the request method it will default to ``GET``.
+
+``Invoke-RestMethod`` will convert the JSON response to a ``PSCustomObject``. By default these Custom Objects are printed in the Terminal in a table presentation:
 
 .. sourcecode:: powershell
 
-   > Invoke-RestMethod -URI http://api.open-notify.org/astros.json
+   > Invoke-RestMethod -URI "http://api.open-notify.org/astros.json"
 
    message number people
    ------- ------ ------
    success      5 {@{craft=ISS; name=Chris Cassidy}, @{craft=ISS; name=Anatoly Iv…
 
-Invoke-RestMethod returns a Custom Object that contains a message, and the payload of the request. The request was successful and the payload contains a string representation of JSON containing the number of people in space, a collection of their names, and the space craft they are currently on.
+Grouping to access fields of the JSON response
+----------------------------------------------
 
-Following is an example of how we could access just the ``people`` property of the Custom Object:
+Using the grouping operator we can access just the ``people`` array property of the Custom Object in the following way:
 
 .. sourcecode:: powershell
 
-   > (Invoke-RestMethod -URI http://api.open-notify.org/astros.json).people
+   > (Invoke-RestMethod -URI "http://api.open-notify.org/astros.json").people
 
    craft name
    ----- ----
@@ -61,13 +96,19 @@ Following is an example of how we could access just the ``people`` property of t
    ISS   Doug Hurley
    ISS   Bob Behnken
 
-In this case we are simply looking at one field associated with the Custom Object in this case, all the astronauts currently in space and their spacecraft.
+.. admonition:: Note
 
-If we want to filter it down further we can use a pipe and the ``Select-Object`` cmdlet:
+   Recall that the grouping operator will cause the ``Invoke-RestMethod`` to be executed *first*. The resulting Custom Object can then have its properties accessed using dot notation on the closing ``)``.
+
+Piping to access nested fields
+------------------------------
+
+Because we are working with objects we can filter it down further by piping the ``people`` array object to the ``Select-Object`` cmdlet:
 
 .. sourcecode:: powershell
 
-   > (Invoke-RestMethod -URI http://api.open-notify.org/astros.json).people | Select-Object -Property name
+   > $uri = "http://api.open-notify.org/astros.json"
+   > (Invoke-RestMethod -URI $uri).people | Select-Object -Property name
 
    name
    ----
@@ -77,19 +118,16 @@ If we want to filter it down further we can use a pipe and the ``Select-Object``
    Doug Hurley
    Bob Behnken
 
+Storing response objects in a reusable variable
+-----------------------------------------------
+
 Storing the result in a variable becomes useful so we don't have to keep making the same request to access it's data:
 
 .. sourcecode:: powershell
 
-   > $webRequest = Invoke-RestMethod -URI http://api.open-notify.org/astros.json 
+   > $webRequest = Invoke-RestMethod -URI "http://api.open-notify.org/astros.json"
 
-Then accessing the variable:
-
-.. sourcecode:: powershell
-
-   > $webRequest.people[0].name
-
-   Chris Cassidy
+We can then work with the data through the variable. For example, we can access the ``people`` field:
 
 .. sourcecode:: powershell
 
@@ -103,7 +141,18 @@ Then accessing the variable:
    ISS   Doug Hurley
    ISS   Bob Behnken
 
-We can even use our variable to determine how the data is sorted (``Sort-Object``):
+We can also access the nested ``name`` field of one of the astronauts by chaining property and array access:
+
+.. sourcecode:: powershell
+
+   > $webRequest.people[0].name
+
+   Chris Cassidy
+
+Sorting response data
+---------------------
+
+We can even use our variable to control how the ``people`` array is sorted by piping it to the ``Sort-Object`` cmdlet:
 
 .. sourcecode:: powershell
 
@@ -117,7 +166,14 @@ We can even use our variable to determine how the data is sorted (``Sort-Object`
    ISS   Doug Hurley
    ISS   Ivan Vagner
 
-Combining everything so far we can convert our response to CSV:
+Converting to other formats
+---------------------------
+
+We can combine these steps in a longer pipe that:
+
+#. accesses the ``people`` array field
+#. sorts each ``Person`` element by their nested ``name`` field
+#. converts the sorted array into a CSV format
 
 .. sourcecode:: powershell
 
@@ -130,12 +186,16 @@ Combining everything so far we can convert our response to CSV:
    "ISS","Doug Hurley"
    "ISS","Ivan Vagner"
 
-And finally writing this data to a CSV file:
+Saving and loading as CSV files
+-------------------------------
+
+In many cases it is beneficial to save transformed responses to a file for later use. Rather than just printing the converted results we can use the ``Export-Csv`` cmdlet to write it to a file:
 
 .. sourcecode:: powershell
 
    > $webRequest.people | Sort-Object -Property name | Export-Csv "people.csv"
 
+You can then use the ``Get-Content`` cmdlet to view the CSV contents *as strings*:
 
 .. sourcecode:: powershell
 
@@ -148,9 +208,79 @@ And finally writing this data to a CSV file:
    "ISS","Doug Hurley"
    "ISS","Ivan Vagner"
 
-The ``Invoke-RestMethod`` cmdlet is a powerful tool for working with APIs. When combined with our knowledge of PowerShell we have a huge toolbox of things we can do with the data. 
+Saving and loading as JSON files
+--------------------------------
 
-To finish this article we will look at how we could use the ``Invoke-RestMethod`` cmdlet with our CodingEventsAPI.
+If we wanted to save in a JSON format we would need to add an additional step in our pipeline to convert the Custom Object back to a JSON string.
+
+We use the ``ConvertTo-Json`` cmdlet to accomplish this *serialization* from an object back to a JSON string:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   # (scroll to view)
+   > $webRequest.people | Sort-Object -Property name | ConvertTo-Json | Set-Content "people.json"
+
+.. admonition:: Note
+
+   We can also split up this pipeline to make it more readable:
+
+   .. sourcecode:: powershell
+      :caption: Windows/PowerShell
+   
+      > # split for readability
+      > $SortedPeople = $webRequest.people | Sort-Object -Property name
+      > $SortedPeople | ConvertTo-Json | Set-Content "people.json"
+   
+
+This approach is invaluable for practicing with data transformations. Whereas a variable in our PowerShell Terminal will disappear after closing, a file can be reused indefinitely and shared with others.
+
+You can then load the JSON contents *as a string* using ``Get-Content``:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Get-Content "people.json"
+
+   [
+      {
+         "craft": "ISS",
+         "name": "Anatoly Ivanishin"
+      },
+      {
+         "craft": "ISS",
+         "name": "Bob Behnken"
+      },
+      {
+         "craft": "ISS",
+         "name": "Chris Cassidy"
+      },
+      {
+         "craft": "ISS",
+         "name": "Doug Hurley"
+      },
+      {
+         "craft": "ISS",
+         "name": "Ivan Vagner"
+      }
+   ]
+
+However, in order to work with the JSON contents as Custom Objects we need to convert it back (*deserialize*) using the ``ConvertFrom-Json`` cmdlet. This will enable dot notation access of fields like in the original ``Invoke-RestMethod`` output:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > Get-Content "people.json" | ConvertFrom-Json
+
+   craft name
+   ----- ----
+   ISS   Anatoly Ivanishin
+   ISS   Bob Behnken
+   ISS   Chris Cassidy
+   ISS   Doug Hurley
+   ISS   Ivan Vagner
+
+The ``Invoke-RestMethod`` cmdlet is a powerful tool for working with APIs. When combined with our knowledge of PowerShell we have many options for interacting with a REST API and transforming the data we receive.
 
 CodingEventsAPI Examples
 ========================

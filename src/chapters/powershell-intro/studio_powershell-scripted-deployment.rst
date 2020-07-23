@@ -1,6 +1,6 @@
-======================================================
-Studio: PowerShell Scripted CodingEventsAPI Deployment
-======================================================
+=====================================================
+Studio: Automated Deployment of the Coding Events API
+=====================================================
 
 In this studio we will be using *PowerShell to script a complete deployment of the CodingEventsAPI to a Linux VM*.
 
