@@ -2,24 +2,18 @@
 Studio: PowerShell Scripted CodingEventsAPI Deployment
 ======================================================
 
-.. it will contain the three scripts they are given, and a folder of practice JSON objects
-
-.. need to add practice JSON files to https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment
-
-.. setting up adb2c appsettings.json needs the kv name, the adb2c metadata URL, and the validAudience (audience ID the client ID assigned the Coding Events API application in AADB2C the Client ID, in the token it is the Audience)
-
 In our studio today we will be using PowerShell to script a complete deployment of the CodingEventsAPI to a Linux VM.
 
-We will be writing a PowerShell script that provisions and configures all of the Azure resources we will need for this deployment. The script we will be writing will combine all the steps from the Azure CLI chapter into one script to make for an easy deployment.
+This PowerShell script will provisions and configure all of the Azure resources we will need for this deployment. The script will combine all the steps from the Azure CLI chapter into one easily runnable deploy script.
 
-You will be writing the PowerShell script the VM you provision will require three Bash configuration scripts. `The VM Bash configuration scripts <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>`_ will be provided for you, but it would be in your best interest to read over them and try to understand what they are doing.
+You will be writing the PowerShell script, however the provisioned VM will require three Bash configuration scripts. `The VM Bash configuration scripts <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>`_ will be provided for you, but it would be in your best interest to read over them to make sense of what they are doing.
 
 Before we get to writing our PowerShell script for our deployment, let's take a look at the Bash deployment script we saw at the end of the Azure CLI chapter.
 
 Bash Script Breakdown
 =====================
 
-You saw this script earlier, so instead of breaking down every single line, we will organize it into it's major points, and show code snippets of how the Bash script achieves the various tasks.
+You saw this Bash script in an earlier chapter, so instead of breaking down every single line we will organize it into its major tasks. We will then look at the code snippets of how the Bash script achieves the various tasks.
 
 Declare Variables
 -----------------
@@ -195,6 +189,23 @@ PowerShell Benefits
 
 - you will want to use variables -- you will want to capture the output of az cli commands in a variable or file
 
+Azure CLI Response Examples
+---------------------------
+
+In the cloned repository you will find a folder called ``exampleResources`` this folder contains three JSON files that represent responses from provisioning Azure resources.
+
+You can use these example resources to practice getting the information you will need for your scripts.
+
+For example you can examine the Resource Group name with:
+
+.. sourcecode:: powershell
+
+   (Get-Content ./resourceGroup.json | ConvertFrom-Json).name
+
+.. admonition:: tip
+
+   Your Key Vault will need the VM's ``systemAssignedIdentity`` to properly set an access policy from the Azure CLI.
+
 Az CLI Help
 -----------
 
@@ -234,6 +245,21 @@ RunCommand from the Az CLI
 .. sourcecode:: powershell
 
   > az vm run-command invoke --command-id RunShellScript --scripts @some-bash-script.sh
+
+Updating the CodingEventsAPI Source Code
+----------------------------------------
+
+The ``deliver-deploy.sh`` script expects a branch of your CodingEventsAPI repository to contain all the code necessary for deploying your application. This includes the ``appsettings.json`` file.
+
+You will need to manually update this file to include the necessary Key Vault and AADB2C information and then push it to a new branch. You will then need to give your GitHub user name, and repository name to the ``deliver-deploy.sh`` script so it knows where to find your source code.
+
+The ``appsettings.json`` file needs:
+
+- the Key Vault name
+- the AADB2C metadata address
+- the AADB2C Coding Events API client ID
+
+Review the AADB2C studio if you need a refresher on where to find the necessary data.
 
 Fresh Start
 -----------
