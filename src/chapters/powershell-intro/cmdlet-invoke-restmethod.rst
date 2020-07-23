@@ -231,7 +231,6 @@ We use the ``ConvertTo-Json`` cmdlet to accomplish this *serialization* from an 
       > # split for readability
       > $SortedPeople = $webRequest.people | Sort-Object -Property name
       > $SortedPeople | ConvertTo-Json | Set-Content "people.json"
-   
 
 This approach is invaluable for practicing with data transformations. Whereas a variable in our PowerShell Terminal will disappear after closing, a file can be reused indefinitely and shared with others.
 
@@ -287,7 +286,7 @@ CodingEventsAPI Examples
 
 .. admonition:: warning
 
-   The following examples will not work unless you run your application locally.
+   The following examples will only if you are running the Coding Events API locally.
 
 Get Example
 -----------
@@ -296,44 +295,52 @@ To get a collection of coding events you could use:
 
 .. sourcecode:: powershell
 
-   > Invoke-RestMethod -Uri http://localhost:5000/api/events
-
+   > Invoke-RestMethod -Uri "http://localhost:5000/api/events"
 
 To get an individual coding event entity you could use:
 
 .. sourcecode:: powershell
 
-   > Invoke-RestMethod -Uri http://localhost:5000/api/events/{id}
+   > $CodingEventId = 1
+   > Invoke-RestMethod -Uri "http://localhost:5000/api/events/$CodingEventId"
 
 Post Example
 ------------
 
-To post a new coding event entity you could use:
+To create a new coding event we need to use two additional options:
+
+- ``-Method``: to set the ``POST`` HTTP method
+- ``-Body``: to define the body of the ``POST`` request using a `HashTable object <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-hashtable?view=powershell-7#what-is-a-hashtable>`_.
 
 .. sourcecode:: powershell
 
    > $body = @{
-         "Title": "halloween hackathon!",
-         "Description": "A gathering of nerdy ghouls to work on github hacktoberfest contributions",
-         "Date": "2020-10-30"
-      }
+       Title = "Halloween Hackathon!"
+       Description = "A gathering of nerdy ghouls..."
+       Date =  "2020-10-30"
+     }
 
-   > Invoke-RestMethod -Method "Post" -Uri http://localhost:5000/api/events -Body $body
+   > $uri = "http://localhost:5000/api/events"
+   > Invoke-RestMethod -Method "Post" -Uri $uri -Body $body
 
-Put Example
------------
+.. admonition:: Note
 
-To update an existing coding event entity you could use:
+   The ``HashTable`` object **does not have any commas** and uses the ``=`` assignment operator for defining each field of the object.
+   
+The ``HashTable`` body will automatically be converted to JSON before being sent in the request. After this automatic serialization the request body would look like this:
 
-.. sourcecode:: powershell
+.. sourcecode:: json
+   :caption: serialized HashTable request body
+   
+   {
+      "Title": "Halloween Hackathon!",
+      "Description": "A gathering of nerdy ghouls...",
+      "Date": "2020-10-31"
+   }
+   
+.. admonition:: Tip
 
-   > $body = @{
-         "Title": "Halloween Hackathon!",
-         "Description": "A gathering of nerdy ghouls to work on GitHub Hacktoberfest contributions",
-         "Date": "2020-10-31"
-      }
-
-   > Invoke-RestMethod -Method "Put" -Uri http://localhost:5000/api/events/{id} -Body $body
+   You can use the same ``HashTable`` syntax for creating and adding bodies to ``PUT`` and ``PATCH`` requests as well.
 
 Delete Example
 --------------
@@ -342,18 +349,20 @@ To delete an existing coding event entity you could use:
 
 .. sourcecode:: powershell
 
-   > Invoke-RestMethod -Method "Delete" -Uri https://localhost:5000/api/events/{id}
+   > $CodingEventId = 1
+   > $uri = "http://localhost:5000/api/events/$CodingEventId"
+   > Invoke-RestMethod -Method "Delete" -Uri $uri
 
 Invoke-RestMethod Additional Options
 ------------------------------------
 
-You have seen how the ``-Method`` and ``-Body`` options work. ``-Method`` allow us to define which type of HTTP method to use with our request. ``-Body`` allows us to define the request body that serves as a JSON representation of the data with our request.
+We have covered some of the essential options used by ``Invoke-RestMethod``. Like Postman, there are many additional options we can use to further configure requests. 
 
-There are a lot of additional options we can use to further configure the requests sent with ``Invoke-RestMethod``. You should look over the documentation of `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ to get an understanding of everything that can be done, but you will most likely recognize some common flags like:
+You can look over the documentation of `Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ to get an understanding of its capabilities. Some other common options you can look into are:
 
-- ``-Headers``: used to define custom headers with our request
-- ``-Authentication``: used to define the authentication type (bearer, oauth, etc), this automatically creates the proper header
-- ``-Token``: used to define the oauth or bearer token to be included with the request this automatically creates the proper header
+- ``-Headers``: used to define custom headers with our request (using a ``HashTable`` object like the request body)
+- ``-Authentication``: used to define the **basic** or **bearer** authentication type which will automatically set the ``Authorization`` header
+- ``-Token``: used to define the access token to be included in the ``Authorization`` header
 
 Continue Learning
 =================
