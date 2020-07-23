@@ -372,8 +372,8 @@ Selecting the **Claims** tab will switch to a break down of the claims in the pa
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/35final-token-claims.png
    :alt: decoded identity token claims
 
-Notice that these claims describe the relationship between the user (you), the AADB2C tenant (the identity manager) and the client application (the Coding Events API):
+Notice that these claims describe the relationship between the user (you), the AADB2C tenant (the identity manager) and the registered application that receives the token (the Coding Events API) recipient of the token (the Coding Events API):
 
 - **iss[uer]**: the AADB2C tenant is the Active Directory account manager and issuer of the identity token
 - **sub[ject]**: the subject of the token is your OID (unique identifier in the AADB2C tenant directory)
-- **aud[ience]**: the audience, or recipient, of the token is your registered application's identifier
+- **aud[ience]**: the audience, or recipient, of the token is your registered application's identifier (Client ID)
