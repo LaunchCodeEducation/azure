@@ -2,3 +2,194 @@
 Walkthrough: Set Up Access Token Authorization with Azure ADB2C
 ===============================================================
 
+
+Setup Postman
+=============
+
+- import this collection into postman
+- all of the postman photos to the authorization section form (postman/6fill-out-form.png)
+- up to editing the authorization section (picture that shows the form for putting in the client id and auth url, etc)
+
+- import a new collection
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/1import-collection.png
+   :alt: 
+
+- open an import popup select upload files
+- navigate to the file (coding-events-api/CodingEventsAPI/Postman_AADB2C-CodingEventsAPI-Collection.json)
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/2upload-file.png
+   :alt:
+
+- select import
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/3select-import.png
+   :alt:
+
+- 3 dots on collection click edit
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/4edit-collection.png
+   :alt:
+
+- select the authorization tab
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/5select-authorization-tab.png
+   :alt:
+
+- click get new access token button
+- a window will pop up
+- for auth URL
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/6fill-out-form.png
+   :alt:
+
+- token name: access token
+- grant type: choose implicit
+- callback URL: https://www.postman.com/oauth2/callback
+  - warning DO NOT SELECT AUTHORIZE USING BROWSER
+- auth URL: click your meta data endpoint (AADB2C portal)
+
+Leave Postman open on this form, and go to the Azure Portal where we will gather the information we need
+
+Setup API Authorization
+=======================
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/1set-api-scopes.png
+   :alt: set api scope
+
+- sidebar will pop open to set application ID URI (just save and continue)
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/2set-app-id-uri.png
+   :alt: set application uri id
+
+- set-user-impersonation-scope
+- user_impersonation
+- User impersonation access to API
+- Grant access for client application to impersonate a user in requests to the API
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/3set-user-impersonation-scope.png
+   :alt: add user_impersonation scope to API
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/3-5copy-scope-uri.png
+   :alt: add user_impersonation scope to API
+
+Copy the ``Scope`` and ``Client ID`` to the Postman form.
+
+Register the Postman Client Application
+=======================================
+
+- go back to app registrations
+- click new registration
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/4new-app-registration.png
+   :alt: new registration (for client app)
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/5application-completed-registration-form.png
+   :alt:
+
+- leave defaults except for name & redirect URI
+- name: Postman
+- redirect URI: https://www.postman.com/oauth2/callback
+- click the authentication settings and then click implicit flow
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/5-5postman-implicit-flow.png
+   :alt:
+
+- sends you back to the new application dashboard
+- select API permissions
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/6api-permissions.png
+   :alt:
+
+- click add a permission
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/7add-permission.png
+   :alt:
+
+- opens a sidebar select my apis tab and select the codingeventsapi app
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/8my-apis.png
+   :alt:
+
+- select the user_impersonation permission
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/9select-user-impersonation-permission.png
+   :alt:
+
+- click add permission
+
+- grant admin consent for ADB2C
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/10grant-admin-consent.png
+   :alt:
+
+- select yes
+
+- after you select yes you will see:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/11admin-grant-success.png
+   :alt:
+
+Get the Authorization URL
+=========================
+
+
+
+- click the breadcrumb link (takes you to app registrations)
+- select user flows
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/12select-user-flows.png
+   :alt:
+
+- select your flow
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/13select-susi-flow.png
+   :alt:
+
+- click run user flow
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/14run-user-flow.png
+   :alt:
+
+- in the sidebar click access tokens, click resource, choose codingeventsAPI, scopes are already selected, 
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/15user-flow-final.png
+   :alt:
+
+.. admonition:: note
+
+   We are just showing them 
+
+   ideally we would hit copy and paste in the authorization URL, but it doesn't work that way, we will just grab the Auth URL, but it would be helpful to students to see how we selected the resource they requested access, and here is the scopes and then copy that URL and breakdown that URL. if you feel it is beneficial to breakdown that URL
+
+   code block split it into multiple lines, and explain each line
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/7metadata-authorization-endpoint.png
+   :alt:
+
+grab that URL paste it into postman
+
+Get the Postman Access Token
+============================
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/8postman-adb2c-form-signin.png
+   :alt:
+
+- remind default password
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/9postman-access-token-success.png
+   :alt:
+
+- click use token
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman/10postman-auth-tab-complete.png
+   :alt:
+
+- click the update button
+
+- switch back to client auth aadb2c
+
+Next Steps
+==========
+
+.. lead in to studio
