@@ -131,7 +131,7 @@ VM RunCommand Scripts
 It is important that these three scripts run in a specific order and we have defined their order in our ``az vm run-command invoke`` command. These scripts must run in this order:
 
 #. ``configure-vm.sh``: installs dotnet, MySQL, and creates the user, and MySQL database our application needs
-#. ``configure-ssl.sh``: installs and configures the NGINX we server
+#. ``configure-ssl.sh``: installs and configures the NGINX web server
 #. ``deliver-deploy.sh``: delivers, builds, and deploys source code
 
 The ``configure-vm.sh`` script should look familiar as it's a collection of the steps we have used multiple times throughout this class. 
