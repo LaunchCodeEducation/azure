@@ -1,6 +1,6 @@
-==========================================
-Studio: Deploy CodingEventsAPI with AADB2C
-
+============================================
+Studio: Deploy Coding Events API with AADB2C
+============================================
 
 .. ::
 
@@ -70,9 +70,6 @@ Studio: Deploy CodingEventsAPI with AADB2C
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/3set-user-impersonation-scope.png
    :alt: add user_impersonation scope to API
-
-
-.. comment: EVERYTHING ABOVE THIS POINT IS CORRECT below subject to change
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/3-5copy-scope-uri.png
    :alt: add user_impersonation scope to API
@@ -229,7 +226,3 @@ Studio: Deploy CodingEventsAPI with AADB2C
 
 
 .. TODO: auth URL, clientID, scope (in postman)
-
-- 
-=======
-==========================================

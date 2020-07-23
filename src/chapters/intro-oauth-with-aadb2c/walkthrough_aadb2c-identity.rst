@@ -1,6 +1,6 @@
-=====================================
-Walkthrough: Setup Azure ADB2C Tenant
-=====================================
+========================================================
+Walkthrough: Set Up Azure ADB2C Tenant & Identity Tokens
+========================================================
 
 Azure Active Directory B2C (AADB2C) is a service that manages user identities and coordinates their access across the different applications in your organization.  When provisioning an AADB2C service Azure will create a **tenant directory**. 
 
@@ -8,7 +8,13 @@ The tenant directory is an Active Directory instance that centralizes user ident
 
 Each AADB2C tenant uses **User identity flows**, or policies, that customize how a user registers and manages their identity in your organization. These user accounts can be used to authenticate and interact with your organization's **registered applications**. 
 
-In this walkthrough we will register the Coding Events API application and create a user account in our AADB2C tenant directory. We will then inspect the **identity token** received after completing the OIDC flow for our registered API. In the following studio we will then extend this configuration to protect our registered API using its own **access tokens**.
+In this walkthrough we will register the Coding Events API application and create a user account in our AADB2C tenant directory. We will then inspect the **identity token** received after completing the OIDC flow for our registered API.
+
+.. admonition:: note
+
+   Azure ADB2C is a multi-faceted service. In this walkthrough we will focus on the **authentication** configuration using **identity tokens**.  
+
+   In the following walkthrough we will extend this behavior to protect our registered API by configuring its own **access tokens**. We will use these tokens for **authorization** of requests sent from the Postman *client application*.
 
 .. AADB2C can be used for **bi-directional authorization** with your organization's web applications. For example, if a user's identity is linked to a GitHub account your application can request their GitHub access token without ever communicating directly with GitHub. AADB2C would manage the OAuth exchange between the user and GitHub and provide the access token transparently to your application.
 
