@@ -17,7 +17,7 @@ Cloud Services Provider
 
 **Data Centers** are very large buildings that contain **physical infrastructure** including computers, storage disks and networking equipment. This industrial scale hardware in a single data center operates on an unfathomable scale. There are hundreds of data centers!
 
-.. admonition:: fun-fact
+.. admonition:: Fun Fact
 
    A single computer, called a server, can have hundreds of cores and the hard drives are chained together to create an effectively limitless amount of storage.
 
@@ -25,7 +25,7 @@ After you setup an account with a CSP you can rent parts of these servers. The p
 
 Since these servers are stored in a data center they are always on, highly available, very customizable and accessible via the internet.
 
-.. admonition:: note
+.. admonition:: Note
 
    The CSP is responsible for operating the physical hardware and will guarantee a high level of service uptime known as **high availability**. This guarantee of uptime will give you confidence that your deployed applications will be reachable by your end-users when they need access. 
    
@@ -65,7 +65,7 @@ The services provided by a CSP fall into three categories:
 - computation 
 - networking 
 
-.. admonition:: note
+.. admonition:: Note
 
    We will talk about these services in an abstract manner, but this chapter will contain specific examples in Microsoft Azure.
 
@@ -101,7 +101,7 @@ Due to the externalized nature of disk storage they can be scaled with minimal, 
 
 Consider your laptop if you run out of storage space you can mount an additional drive. By mounting we mean adding an external drive, this could be a flash drive or a full external hard drive. Our virtual services operate the same way, we can expand the size of the disk storage by mounting additional drives.
 
-.. admonition:: note
+.. admonition:: Note
 
    An added benefit for cloud services that have externalized disk storage is redundancy. Multiple copies of the data can be provisioned across as many disk storage services you are willing to pay for. This additional cost provides protection from data loss.
 

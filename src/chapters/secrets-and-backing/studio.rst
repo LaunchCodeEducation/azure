@@ -1,13 +1,13 @@
-================================
-Studio: Deploy API with KeyVault
-================================
+============================================
+Studio: Deploy CodingEventsAPI with KeyVault
+============================================
 
 In our Studio today we will be deploying the CodingEventsAPI to an Ubuntu VM. As part of the deployment we will provision an Azure Key vault to manage the database connection string of an embedded MySQL database server.
 
 In this studio you will be given a partially completed Bash script that will configure your VM. You will be responsible for applying what you have learned to complete the automation.
 
 
-.. admonition:: note
+.. admonition:: Note
 
    This week is focused on practicing with Operations and not on learning Development. For this reason we will be using `the solution branch <https://github.com/LaunchCodeEducation/coding-events-api/tree/2-mysql-solution>`_ ``2-mysql-solution`` that includes the development-side changes. Feel free to look over the codebase but remember to focus your time on the deployment.
 
@@ -73,7 +73,7 @@ We recommend the following naming patterns:
 
 Replace <mmyy> with the digits for the month and year for example: March of 2020 would be ``0320``.
 
-.. admonition:: note
+.. admonition:: Note
 
    Azure Key vault names must be globally unique. If you have to adjust your Key vault name make sure to keep track of it as you will need to include it in your source code later.
 
@@ -101,7 +101,7 @@ The line you will be looking for:
 
    "KeyVaultName": "<your-keyvault-name>"
 
-.. admonition:: warning
+.. admonition:: Warning
 
    If you **do not update your code and push it back to your GitHub repository your deployment will fail**.
 
@@ -110,7 +110,7 @@ Developing the Deployment Script
 
 We have been using the RunCommand tool to run Bash scripts on our Virtual Machine. This tool is handy, but not the most pleasant experience because of its inherent processing delay. Instead of running multiple commands through the RunCommand let's put together a single script that will do everything necessary to deploy our application. 
 
-.. admonition:: tip
+.. admonition:: Tip
 
    After learning the specific steps of a deployment process it's almost always a good idea to put those steps together in a script. The more practice you get with Operations, the more saving steps in a script will become second nature. Review previous walkthroughs and studios to combine all of the steps, fom each article, into one script.
 

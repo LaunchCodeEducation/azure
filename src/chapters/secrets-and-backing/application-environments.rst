@@ -40,7 +40,7 @@ Every project has it's own requirements and may utilize different environments. 
 
 ``Local -> Development -> Production``
 
-.. admonition:: note
+.. admonition:: Note
 
    There are two additional common environments: ``Testing`` and ``Staging``. These environments are outside the scope of this class but you can learn more by viewing these sections: `the testing environment <https://en.wikipedia.org/wiki/Deployment_environment#Testing>`_ and `the staging environment <https://en.wikipedia.org/wiki/Deployment_environment#Staging>`_ of the deployment environments wikipedia entry which gives a high level explanation of the purposes of each.
 
@@ -51,7 +51,7 @@ The ``local environment`` is one we are already familiar with, your local develo
 
 In this environment you may be working on a feature branch in which you are the only contributor. As you work on your code you run your application on your local machine to make sure your code behaves the way it should. 
 
-.. admonition:: note
+.. admonition:: Note
 
    Checking the behavior of your code usually includes: automated testing and limited manual Quabity Assuance. 
 
@@ -70,7 +70,7 @@ The ``development environment`` is the environment in which all of the work from
 
 This environment is completely automated in a process called `Continuous Integration (CI) <https://www.atlassian.com/continuous-delivery/continuous-integration>`_. After a Pull Request is merged into the development branch automation software pulls the entire development branch, runs the automated tests in a ``development environment`` and generates test results. If any incompatibilities are found they can be stopped and corrected before reaching a live environment.
 
-.. admonition:: note
+.. admonition:: Note
 
    We will not be using ``CI`` in this class, but it is worth exploring as you will encounter it throughout your career. Effective use of ``CI`` is a modern best practice to prevent regression which enables fast development.
 
@@ -111,6 +111,6 @@ When we run our project locally we want our project to connect to our local MySQ
 
 Traditionally when we run our project in a production environment it should consume an external data store. In that case the connection string would point at the IP address of the remotely hosted database.
 
-.. admonition:: note
+.. admonition:: Note
 
   Because of our simple context we are using a locally hosted database in our production environment achieving near perfect parity. This parity is driven by the cross-platform nature of .NET Core, MySQL and Azure Key vault.

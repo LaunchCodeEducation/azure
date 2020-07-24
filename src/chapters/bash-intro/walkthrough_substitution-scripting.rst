@@ -20,7 +20,7 @@ When defining variables in a script the convention is to use lowercase letters a
 
 Because Bash does not have any data types a variable is simple to declare and assign. First you define the name of the variable followed by an assignment symbol (``=``) and the value of it on the right side.
 
-.. admonition:: note
+.. admonition:: Note
 
    Spaces are use to delimit, or distinguish, different parts of a command called **tokens**. Token splitting is what allows Bash to see a command along with its arguments and options as individual units to be evaluated -- each separated by a space. 
 
@@ -98,7 +98,7 @@ Quoting syntax
 
 You likely noticed that the variables are contained in double-quotes (``""``) when used in commands. This is a best practice when working with substitutions as it can prevent unintended behavior caused by spaces or special characters. This is especially true when scripts receive user input which, as you now know, should never be trusted!
 
-.. admonition:: note
+.. admonition:: Note
 
    You can read more about the behavior of `escape characters and single and double quotes <https://linux.101hacks.com/bash-scripting/quotes-inside-shell-script/>`_ in this article. If it goes over your head it's okay, just follow the best practice to stay safe and come back to understanding the *why* later.
 
@@ -176,7 +176,7 @@ Then execute the script the same way as before:
 
    $ bash ~/bash-examples/command-substitution.sh
 
-.. admonition:: note
+.. admonition:: Note
 
    As a good programmer you are likely miffed by the copy and pasting of an identical statement. Although we won't be getting into `Bash functions <https://linuxize.com/post/bash-functions/>`_ you should be able to make sense of them. 
    

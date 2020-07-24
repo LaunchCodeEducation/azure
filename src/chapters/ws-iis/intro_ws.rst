@@ -13,7 +13,7 @@ A Native Server OS
 
 Windows Server (WS) is built on top of the same base as the PC-grade Windows 10 operating system but has been customized for use as a server. Servers naturally have greater operational demand than Personal Computers (PC). While there are many Windows 10 editions from consumer to enterprise none of them are optimized for server workloads like WS. As a result WS has been designed to manage significantly greater memory and CPU allocations than what someone would run on a PC.
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
     Operating Systems have limits to the hardware they can manage. One machine running Windows Server is capable of managing an incredible 24 **terabytes** of RAM and *any number* of CPU cores!
 

@@ -25,4 +25,16 @@ Chapters
    :hidden:
 
    index-full
-
+   chapters/bash-intro/piping
+   chapters/authorization-and-next-steps/index
+   chapters/authorization-and-next-steps/studio
+   chapters/authorization-and-next-steps/walkthrough
+   chapters/azure-adb2c/index
+   chapters/hosting/studio
+   chapters/intro-oauth-with-aadb2c/authorization
+   chapters/intro-oauth-with-aadb2c/labs-setup
+   chapters/intro-oauth-with-aadb2c/studio_aadb2c-deployment
+   chapters/powershell-intro/instructor/index
+   chapters/powershell-intro/instructor/studio_rest-powershell-scripting
+   chapters/powershell-intro/studio_rest-powershell-scripting
+   chapters/secrets-and-backing/least-privileged-access

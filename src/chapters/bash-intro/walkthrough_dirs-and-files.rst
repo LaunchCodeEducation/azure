@@ -14,7 +14,7 @@ Create a directory
 
 The ``mkdir`` (make directory) command creates directories using a relative or absolute path argument. If just the name of a directory is given then it is created *relative to* the CWD. If the absolute path is provided the directory is created at that *exact* location.
 
-By convention Linux directories do not use spaces in them. Space characters (`` ``) can conflict with the spaces between command arguments so they are avoided. In order to create a multi-word directory name the convention uses dashes (``-``) to separate the words. 
+By convention Linux directories do not use spaces in them. Space characters can conflict with the spaces between command arguments so they are avoided. In order to create a multi-word directory name the convention uses dashes (``-``) to separate the words. 
 
 Let's create a ``parent-dir`` and ``child-dir`` using ``mkdir``:
 
@@ -94,32 +94,6 @@ Let's move the ``child-dir`` from its current parent directory (``/tmp``) into t
    $ ls parent-dir
    child-dir
 
-.. admonition:: warning
-
-   The act of moving a file (remember directories are files) can be used to define a new name for it in the destination path. 
-
-   When renaming files you **must be careful**. If a file of the same name exists at the destination path you provide **the existing file will be overwritten permanently**.
-
-   For example if we create another directory called ``child-dir`` and want to move it into ``parent-dir`` we can *rename it during the move* to not overwrite the existing directory file with the same name:
-
-   .. sourcecode:: bash
-      :caption: Linux/Bash
-
-      $ pwd
-      /home/student
-
-      $ mkdir /tmp/child-dir
-      
-      $ ls parent-dir
-      child-dir
-
-      # rename in the new destination path
-      $ mv /tmp/child-dir parent-dir/child-dir-2
-
-      $ ls parent-dir
-      child-dir
-      child-dir-2
-
 Copy a directory
 ----------------
 
@@ -142,7 +116,6 @@ Let's move our ``parent-dir`` to the ``/tmp`` dir:
    
    $ ls parent-dir
    child-dir
-   child-dir-2
 
    $ cp -r parent-dir /tmp/parent-dir
 
@@ -156,14 +129,13 @@ Now let's confirm the move by checking the ``/tmp`` dir:
 
    $ ls /tmp/parent-dir
    child-dir
-   child-dir-2
 
 Notice how it copied the ``parent-dir`` and *recursed* into it to copy all of the sub-directories as well.
 
 Delete a directory
 ------------------
 
-.. admonition:: warning
+.. admonition:: Warning
 
    The command to delete files is **not to be taken lightly**. When you delete a file or directory through the GUI it will conveniently store the deleted contents in a recycling bin where they can be recovered.
 
@@ -184,7 +156,6 @@ We will also include the ``-i`` (interactive) option as a safety measure. This w
 
    $ ls /tmp/parent-dir
    child-dir
-   child-dir-2
 
    $ rm -i -r /tmp/parent-dir
    # for each prompt type y and hit enter (for yes)
@@ -224,7 +195,7 @@ The ``touch`` command can be used to create an empty file. It takes a relative o
 
    $ touch path/to/file-name
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
    Technically the ``touch`` command is used for updating the last time the file was *touched* (the last-accessed or modified timestamp). But most of the time it is used for its *side-effect* of creating the file if it doesn't already exist to be touched!
 

@@ -26,7 +26,7 @@ Relative Paths
 
 When you open your File Explorer program it defaults to a *starting point* of your user **home directory**. The same is true when you open your Shell in the Terminal. The home directory can be described by the following paths:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
 
    # Windows file system separates directories with a '\'
    C:\Users\YourUsername
@@ -38,7 +38,7 @@ We call the directory you are currently in the **current working directory (CWD)
 
 Imagine you wanted to provide directions to a file called ``notes.txt`` that you downloaded to your user's ``Downloads`` directory. If you have just opened your Terminal then your CWD is the home directory. From *this particular* CWD you could describe the relative path to the file as:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
 
    # Windows
    Downloads\notes.txt
@@ -57,13 +57,13 @@ Absolute paths are based on a fixed starting point, called the **root directory*
 
 On Linux machines the root directory is simply ``/``. Whereas on Windows machines the root directory (in most cases) is the C drive, ``C:``. Within each of these root directories exists the rest of the file system made up of sub-directories, sub-sub-directories and so on.
 
-.. admonition:: tip
+.. admonition:: Tip
 
    An absolute path is just a relative path from a **constant starting point** instead of a variable CWD.
 
 Let's consider how we could describe the ``notes.txt`` location using an absolute path this time. We begin with the fixed starting point of the root directory. From the root as a reference we provide the relative directions through all the directories that lead to the ``notes.txt`` file location:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
 
    # Windows
    C:\Users\YourUsername\Downloads\notes.txt
@@ -82,7 +82,7 @@ In the File Explorer program you used sidebars and your mouse to navigate throug
 - ``ls``: list the contents of a directory
 - ``cd``: change directories
 
-.. admonition:: note
+.. admonition:: Note
 
    These commands originated in Bash but were included in PowerShell as aliases (like a nick-name) for their native PowerShell cmdlet names. We will explore what cmdlets are later, but you should be able to understand them based on how declarative their names are:
 
@@ -92,7 +92,7 @@ In the File Explorer program you used sidebars and your mouse to navigate throug
 
 When you enter the ``pwd`` command into your Terminal it will print the absolute path of your CWD. Just like the File Explorer the Shell will open to your home directory by default:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > pwd
@@ -106,7 +106,7 @@ When you enter the ``pwd`` command into your Terminal it will print the absolute
 
 If you want to view the contents of the CWD you are in you can use the ``ls`` command:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > ls
@@ -120,7 +120,7 @@ If you want to view the contents of the CWD you are in you can use the ``ls`` co
 
 Finally you can use ``cd`` to change directories to a new working directory which becomes the CWD. Say you wanted to go from your home directory to the ``Downloads`` directory like our previous example. You can provide the relative path to the ``cd`` command to get there:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > cd Downloads
@@ -144,7 +144,7 @@ Finally you can use ``cd`` to change directories to a new working directory whic
 
 You can also provide the absolute path to reach the directory from any CWD:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > cd C:\Users\YourUsername\Downloads
@@ -177,7 +177,7 @@ Shell commands are similar to functions. They have a name, input arguments and b
 
 Calling, or executing, a command begins with the name of a CLI **program** followed by **positional arguments** and **options** (modifiers) used by the program.
 
-.. admonition:: note
+.. admonition:: Note
 
    In general terms executing a command looks like this:
 
@@ -272,7 +272,7 @@ Package Managers
 
 **Package managers** are the CLI equivalent of an App Store. They allow you to search for and install custom CLI programs that extend the behavior of the Shell. On Linux machines the package managers are even capable of extending the GUI Shell. While we will use Shell package managers in this class the same term applies to language-based package managers like ``npm`` (for JavaScript) and ``pip`` (for Python).
 
-.. admonition:: note
+.. admonition:: Note
 
    CLI **packages** (installed commands) can range from simple tools to more complex programs like compilers, interpreters and even full-fledged Web Servers.
 
@@ -314,7 +314,7 @@ For example, consider the default behavior we discussed earlier that causes a Sh
 
 By default this value will be the path to the user directory for the logged in user. You can view them using the ``echo`` (print output) command:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > echo "$Env:HOMEPATH"
@@ -333,7 +333,7 @@ So how do environment variables relate to calling programs by their name rather 
 
 The PATH variable holds a collection of base paths that the Shell should look in when evaluating a command. When a command is called the Shell will look in each of the base paths until it finds an executable file with the same name. Then it combines the matching base path with the command name to form the absolute path of the file to execute.
 
-For example, in Bash the base directory that the built-in commands are stored in is ``/usr/bin``. Bash includes this base directory in its PATH variable by default. When we call the ``cd`` command it is actually referencing the executable program file at the ``/usr/bin/cd`` path. 
+For example, in Bash the base directory that the built-in commands are stored in is ``/usr/bin``. Bash includes this base directory in its PATH variable by default. When we call the ``ls`` command it is actually referencing the executable program file at the ``/usr/bin/ls`` path. 
 
 Let's assume a PATH variable with 4 base directories in its list (separated by ``:`` characters):
 
@@ -343,15 +343,15 @@ Let's assume a PATH variable with 4 base directories in its list (separated by `
 
 The process looks something like:
 
-#. read the program name (``cd``)
+#. read the program name (``ls``)
 #. recognize that it is a program name and not a path to an executable
-#. check each directory in the PATH list for a file with the name of the command (``cd``)
+#. check each directory in the PATH list for a file with the name of the command (``ls``)
 
-It first checks ``/usr/local/sbin`` but is unable to find the ``cd`` program file. It then checks ``/usr/local/bin`` and ``/usr/sbin`` but still fails to find it. Finally it finds the ``cd`` file in ``/usr/bin`` directory.
+It first checks ``/usr/local/sbin`` but is unable to find the ``ls`` program file. It then checks ``/usr/local/bin`` and ``/usr/sbin`` but still fails to find it. Finally it finds the ``ls`` file in ``/usr/bin`` directory.
 
-The command is then executed by combining the matching base path (``/usr/bin``) with the command name (``cd``) into the absolute path ``/usr/bin/cd``. If it reaches the end of the PATH list then it will output a *command not found* error. 
+The command is then executed by combining the matching base path (``/usr/bin``) with the command name (``ls``) into the absolute path ``/usr/bin/ls``. If it reaches the end of the PATH list then it will output a *command not found* error. 
 
-.. admonition:: note
+.. admonition:: Note
 
    One of the most common issues beginners face when working with a Shell is encountering a *command not found* error. Assuming the command is not misspelled, this indicates that the command's file is in a directory that is not registered in the PATH list. 
 
@@ -368,7 +368,7 @@ The idea behind piping is simple but its capability is powerful. The first comma
 
 We will get into the syntax of piping in the Bash and PowerShell specific lessons. In general terms piping involves 2 or more commands each separated by the ``|`` pipe character (just above the ``enter`` key on your keyboard).
 
-.. admonition:: note
+.. admonition:: Note
 
    In a general sense this is what piping between two commands looks like. The output of the first command is used as the input (argument) to the second command in the pipeline. 
 

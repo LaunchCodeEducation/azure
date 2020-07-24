@@ -134,7 +134,7 @@ You should look over the output to make sure everything installed properly. Belo
 
 For this walkthrough we are going to deploy a starter .NET MVC Web App that we will create using the ``dotnet CLI``.
 
-.. admonition:: note
+.. admonition:: Note
 
    In your upcoming studio and in future walkthroughs and studios you will have additional configuration steps.
 
@@ -227,7 +227,7 @@ Click the add button to create this outbound rule. After a few seconds you shoul
 
 Double check both the inbound and outbound port rules. If these are not configured correctly you won't be able access your web app from your browser.
 
-.. admonition:: tip 
+.. admonition:: Tip 
    
    Mis-configuring a Network Security Group is a common error when deploying applications and should be one of the first things you check if you receive a connection timeout when connecting to your deployed app.
 
@@ -245,7 +245,7 @@ This command is a little different. Traditionally when you run an executable .NE
 
 .. image:: /_static/images/web-apis/walkthrough-run-command-8.png
 
-.. admonition:: note
+.. admonition:: Note
 
    The reason it appears to be frozen is because the Azure Portal Run Command can only display information once it gets a response from the terminal on the VM that ran our command. Since that terminal is attached to the process associated with our project, and our project runs until it crashes, it will not send a response back to the Azure Portal Run Command window.
 
@@ -262,7 +262,7 @@ In your browser navigate to the public IP address found in the overview section 
 
 The ``hello-world`` app we created on the VM is running and we can connect to it from a browser using it's public IP address!
 
-.. admonition:: note
+.. admonition:: Note
 
    Our NSG rules allow traffic from *any IP address*. This means that anyone can connect to it if they have the public IP of the machine.
 

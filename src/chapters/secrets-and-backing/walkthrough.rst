@@ -215,7 +215,7 @@ The logic for this needs to occur at the entry point of .NET applications, ``Pro
 .. sourcecode:: csharp
    :caption: Program.cs
    :lineno-start: 23
-   :emphasize-lines: 24
+   :emphasize-lines: 2
 
 
    // if not in Production environment (dotnet run) don't setup KeyVault and use the default Secret Storage managed through dotnet user-secrets
@@ -350,7 +350,7 @@ This will take you to the Key vault creation wizard.
 
 Fill out the form with your resource group name ``yourname-rg-secrets`` and your Key vault name we recommend using a pattern like ``yourname-kv-secrets``.
 
-.. admonition:: note
+.. admonition:: Note
 
    Key vault names must be globally unique. This means you may have to try a few different Key vault names to get it to work.
 

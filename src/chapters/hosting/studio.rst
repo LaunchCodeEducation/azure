@@ -136,7 +136,7 @@ Select the command for your OS:
    # the inet address is your machine's IP
    $ ifconfig en0
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows with PowerShell
 
    # the IPv4 entry is your machine's IP
