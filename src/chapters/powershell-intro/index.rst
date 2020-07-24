@@ -10,5 +10,7 @@ Introduction to PowerShell
    fs-navigation
    objects
    expressions
-   piping
    studio_intro-powershell-scripting
+   piping
+   cmdlet-invoke-restmethod
+   studio_powershell-scripted-deployment
