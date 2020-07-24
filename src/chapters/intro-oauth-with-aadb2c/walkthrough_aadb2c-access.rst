@@ -2,6 +2,18 @@
 Walkthrough: Set Up Access Token Authorization with Azure ADB2C
 ===============================================================
 
+In the previous walkthrough we created our AADB2C tenant and configured an identity token flow. These steps enabled our Coding Events API to integrate with AADB2C as an identity manager using OIDC to **authenticate the identity** of our application's users.
+
+In this walkthrough we will explore the other half of AADB2C -- protecting applications using access tokens. Recall that we can use OAuth access tokens as a means of **delegating authorization** for one service to act on behalf of a user when interacting with another service.
+
+Our goal is to configure AADB2C to grant access tokens to a client application (Postman) with a **scope** that **authorizes** it to interact with a protected application (Coding Events API) **on behalf of a user**. To accomplish this task we will need to:
+
+#. Configure a ``user_impersonation`` scope for accessing the Coding Events API
+#. Register the Postman client application
+#. Configure the Postman client application to request access tokens with the ``user_impersonation`` scope
+#. Configure Postman to request access tokens for interacting with the Coding Events API on behalf of an authenticated AADB2C user
+
+In the following Studio you will then update your Coding Events API source code to integrate with AADB2C. Then you will use Postman and an access token to make authorized requests to the final version of the API.
 
 Set Up Postman
 ==============
