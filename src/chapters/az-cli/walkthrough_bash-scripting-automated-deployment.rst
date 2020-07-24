@@ -1,27 +1,149 @@
 ==================================================
-Exploration: Bash Scripts For Automated Deployment
+Walkthrough: Bash Scripts For Automated Deployment
 ==================================================
 
-A huge benefit of using the Azure CLI from a shell terminal is that we can bundle many commands together in a script. In this exploration article we will explore a Bash script that does a complete deployment using the Az CLI.
+A huge benefit of using the Azure CLI from a shell terminal is that we can bundle many commands together in a script. In this walkthrough we will explore a Bash script that does a complete deployment using the Az CLI.
 
-In this walkthrough we will explore several Bash scripts that will be used to:
-
-All together the four scripts, that are controlled by the ``provision-resources.sh`` script accomplish the following tasks:
+The deployment Bash scripts will be used to:
 
 #. provision resources 
 #. configure resources
 #. deliver source code
 #. deploy source code.
 
-Bash Script Breakdown
-=====================
+Bash Scripts Breakdown
+======================
 
-You saw this Bash script in an earlier chapter, so instead of breaking down every single line we will organize it into its major tasks. We will then look at the code snippets of how the Bash script achieves the various tasks.
+To orient ourselves let's take a look at the entrypoint script ``provision-resources.sh``. This is a rather involved script that dictates our deployment. After we look at the script as a file we will break down its individual sections.
 
 .. admonition:: note
 
    Recall that the AZ CLI is cross-platform, the AZ CLI commands should work the same regardless of the underlying operating system. Although this script is a Bash script our PowerShell script will look very similar.
 
+Provision Resources Script
+==========================
+
+Provision Resources Script Steps
+--------------------------------
+
+This script does quite a few things, most of them are related to our Azure resources:
+
+#. declare variables
+#. configure az default: location
+#. provision resource group
+#. configure az default: resource group
+#. provision virtual machine & capture output information in variables
+#. extract data from vm output into useable variables: $vm_id and $vm_ip
+#. open vm port 443
+#. configure az default: virtual machine
+#. provision key vault
+#. create a new secret in the kv with a description, name, and value
+#. attach a new access policy to the kv granting the vm access
+#. send three separate Bash scripts to the vm using ``az vm run-command invoke``
+#. print out the public IP address of the vm
+
+Script Goal
+-----------
+
+This script is responsible for setting up, and configuring the resources with the Azure CLI. 
+
+Take note of the second to last step in the list: **send three separate Bash scripts to the vm using az vm run-command invoke**. It is passing three additional Bash scripts to be run by the VM. 
+
+We need to do this because we have additional VM configuration steps that we cannot accomplish with just the Azure CLI. However, we can access ``RunCommand`` from the Azure CLI which allows us to run any additional scripts on the VM we need.
+
+
+Provision Resources Script
+--------------------------
+
+Let's take a look at the script, and then talk about what it's doing:
+
+.. sourcecode:: bash
+
+   #! /usr/bin/env bash
+
+   set -e
+
+   # --- start ---
+
+   # variables
+
+   student_name="student"
+
+   rg_name="${student_name}-cli-scripting-rg"
+
+   # -- vm
+   vm_name="${student_name}-cli-scripting-vm"
+
+   vm_admin_username=student
+   vm_admin_password='LaunchCode-@zure1'
+
+   vm_size=Standard_B2s
+   vm_image=$(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn" -o tsv)
+
+   # -- kv
+   kv_name="${student_name}-cli-scripting-kv"
+   kv_secret_name='ConnectionStrings--Default'
+   kv_secret_value='server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode'
+
+   # set az location default
+
+   az configure --default location=eastus
+
+   # RG: provision
+
+   az group create -n "$rg_name"
+
+   # set az rg default
+
+   az configure --default group=$rg_name
+
+   # VM: provision
+
+   # capture vm output for splitting
+   vm_data=$(az vm create -n $vm_name --size $vm_size --image $vm_image --admin-username $vm_admin_username --admin-password $vm_admin_password --authentication-type password --assign-identity --query "[ identity.systemAssignedIdentity, publicIpAddress ]" -o tsv)
+
+   # vm value is (2 lines):
+   # <identity line>
+   # <public IP line>
+
+   # get the 1st line (identity)
+   vm_id=$(echo "$vm_data" | head -n 1)
+
+   # get the 2nd line (ip)
+   vm_ip=$(echo "$vm_data" | tail -n +2)
+
+   # VM: add NSG rule for port 443 (https)
+
+   az vm open-port --port 443
+
+   # set az vm default
+
+   az configure --default vm=$vm_name
+
+   # KV: provision
+
+   az keyvault create -n $kv_name --enable-soft-delete false --enabled-for-deployment true
+
+   # KV: set secret
+
+   az keyvault secret set --vault-name $kv_name --description 'connection string' --name $kv_secret_name --value $kv_secret_value
+
+   # KV: grant access to VM
+
+   az keyvault set-policy --name $kv_name --object-id $vm_id --secret-permissions list get
+
+   # VM setup-and-deploy script
+
+   az vm run-command invoke --command-id RunShellScript --scripts @configure-vm.sh @configure-ssl.sh @deliver-deploy.sh
+
+   # finished print out IP address
+
+   echo "VM available at $vm_ip"
+
+   # --- end ---
+
+Provision Resources Script Sections
+===================================
 
 Declare Variables
 -----------------
@@ -219,131 +341,12 @@ As a final step we print the public IP address to the console so we know exactly
 
    echo "VM available at $vm_ip"
 
-Provision Resources Script
-==========================
-
-Script Steps
-------------
-
-This script does quite a few things, most of them are related to our Azure resources:
-
-#. declare variables
-#. configure az default: location
-#. provision resource group
-#. configure az default: resource group
-#. provision virtual machine & capture output information in variables
-#. chop up vm output into useable variables: $vm_id and $vm_ip
-#. open vm port 443
-#. configure az default: virtual machine
-#. provision key vault
-#. create a new secret in the kv with a description, name, and value
-#. attach a new access policy to the kv granting the vm access
-#. send three separate Bash scripts to the vm using ``az vm run-command invoke``
-#. print out the public IP address of the vm
-
-Let's take a look at the script, and then talk about what it's doing:
-
-.. sourcecode:: bash
-
-   #! /usr/bin/env bash
-
-   set -e
-
-   # --- start ---
-
-   # variables
-
-   # TODO: enter your name here in place of 'student'
-   student_name="student"
-
-   # !! do not edit below !!
-
-   rg_name="${student_name}-cli-scripting-rg"
-
-   # -- vm
-   vm_name="${student_name}-cli-scripting-vm"
-
-   vm_admin_username=student
-   vm_admin_password='LaunchCode-@zure1'
-
-   vm_size=Standard_B2s
-   vm_image=$(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn" -o tsv)
-
-   # -- kv
-   kv_name="${student_name}-cli-scripting-kv"
-   kv_secret_name='ConnectionStrings--Default'
-   kv_secret_value='server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode'
-
-   # set az location default
-
-   az configure --default location=eastus
-
-   # RG: provision
-
-   az group create -n "$rg_name"
-
-   # set az rg default
-
-   az configure --default group=$rg_name
-
-   # VM: provision
-
-   # capture vm output for splitting
-   vm_data=$(az vm create -n $vm_name --size $vm_size --image $vm_image --admin-username $vm_admin_username --admin-password $vm_admin_password --authentication-type password --assign-identity --query "[ identity.systemAssignedIdentity, publicIpAddress ]" -o tsv)
-
-   # vm value is (2 lines):
-   # <identity line>
-   # <public IP line>
-
-   # get the 1st line (identity)
-   vm_id=$(echo "$vm_data" | head -n 1)
-
-   # get the 2nd line (ip)
-   vm_ip=$(echo "$vm_data" | tail -n +2)
-
-   # VM: add NSG rule for port 443 (https)
-
-   az vm open-port --port 443
-
-   # set az vm default
-
-   az configure --default vm=$vm_name
-
-   # KV: provision
-
-   az keyvault create -n $kv_name --enable-soft-delete false --enabled-for-deployment true
-
-   # KV: set secret
-
-   az keyvault secret set --vault-name $kv_name --description 'connection string' --name $kv_secret_name --value $kv_secret_value
-
-   # KV: grant access to VM
-
-   az keyvault set-policy --name $kv_name --object-id $vm_id --secret-permissions list get
-
-   # VM setup-and-deploy script
-
-   az vm run-command invoke --command-id RunShellScript --scripts @configure-vm.sh @configure-ssl.sh @deliver-deploy.sh
-
-   # finished print out IP address
-
-   echo "VM available at $vm_ip"
-
-   # --- end ---
-
-Script Goal
------------
-
-This script is responsible for setting up, and configuring the resources with the Azure CLI. 
-
-Take note of the second to last step in the list: **send three separate Bash scripts to the vm using az vm run-command invoke**. It is passing three additional Bash scripts to be run by the VM. 
-
-We need to do this because we have additional VM configuration steps that we cannot accomplish with just the Azure CLI. However, we can access ``RunCommand`` from the Azure CLI which allows us to run any additional scripts on the VM we need.
+The ``provision-resources.sh`` script depends on 
 
 VM RunCommand Scripts
 ---------------------
 
-It is important that these three scripts run in a specific order and we have defined their order in our ``az vm run-command invoke`` command. These scripts must run in this order:
+It is important that the three VM RunCommand scripts run in a specific order. We have defined their order in our ``az vm run-command invoke`` command. These scripts must run in this order:
 
 #. ``configure-vm.sh``: installs dotnet, MySQL, and creates the user, and MySQL database our application needs
 #. ``configure-ssl.sh``: installs and configures the NGINX web server
@@ -457,26 +460,29 @@ An example of this ``appsettings.json`` file is:
          }
       },
       "AllowedHosts": "*",
-      "KeyVaultName": "student-cli-scripting-kv",
-      "JWT": {
-         "ADB2C": {
-            "RequireHttpsMetadata": true,
-            "MetadataAddress": "https://student0720tenant.b2clogin.com/paul0720tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_coding-events-api-susi",
-            "TokenValidationParameters": {
-            "ValidAudience": "e13f6217-f8c1-495a-b1e1-b5cd28b26708",
+      "ServerOrigin": "",
+      "KeyVaultName": "student-bash-kv",
+      "JWTOptions": {
+         "Audience": "e13f6217-f8c1-495a-b1e1-b5cd28b26708",
+         "MetadataAddress": "https://student0720tenant.b2clogin.com/paul0720tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_coding-events-api-susi",
+         "RequireHttpsMetadata": true,
+         "TokenValidationParameters": {
             "ValidateIssuer": true,
             "ValidateAudience": true,
             "ValidateLifetime": true,
             "ValidateIssuerSigningKey": true
-            }
          }
-      },
-      "Server": {
-         "Origin": ""
       }
    }
 
 Assuming the sourcecode was error free, and it's appsettings.json file contains the appropriate information about the Key Vault, and AADB2C the application will be deployed with no issues.
+
+Deploying
+=========
+
+Now that we understand what the Bash scripts are doing, and after the user provides the proper information to the scripts, including a branch with the appropriate ``appsettings.json`` file they can execute the ``provision-resources.sh`` script to automatically deploy the entire application.
+
+Understanding the steps of deploying is a necessary part of creating an automation script. In the PowerShell chapter you will be writing your own automated deployment script.
 
 Conclusion
 ==========
