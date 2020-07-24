@@ -1,6 +1,6 @@
-==================================================
-Walkthrough: Bash Scripts For Automated Deployment
-==================================================
+==========================================================
+Walkthrough: Exploring an Automated Deployment Bash Script
+==========================================================
 
 A huge benefit of using the Azure CLI from a shell terminal is that we can bundle many commands together in a script. In this walkthrough we will explore a Bash script that does a complete deployment using the Az CLI.
 
