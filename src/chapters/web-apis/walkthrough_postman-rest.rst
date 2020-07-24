@@ -63,7 +63,7 @@ Let's begin by cloning the repo onto our machine:
    
    If you want to clone the repo somewhere else make sure to change to that directory first.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > git clone https://github.com/launchcodeeducation/coding-events-api
@@ -72,7 +72,7 @@ For today's studio we will start with the first branch of the API codebase, ``1-
 
 Let's change into the repo and switch to this branch:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    # cd is an alias (like a nick-name) for the Set-Location cmdlet in PowerShell
@@ -214,13 +214,13 @@ Recall that when a ``POST`` request is successful the API should respond with th
 
 The OpenAPI REST spec states that when an entity is created the response should include both this status and the ``Location`` header that provides the URL of the new entity:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    Location: <server origin>/api/events/<new entity Id>
 
 As an example:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    Location: http://localhost:5000/api/events/1
 
@@ -277,7 +277,7 @@ If you cloned the repo into your ``HOME`` directory then the absolute path will 
 
 ``C:\Users\<username>\coding-events-api\CodingEventsAPI``
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell, run from ``coding-events-repo`` directory
 
    # change to the CodingEventsAPI project directory

@@ -26,7 +26,7 @@ Setup
 
 Before we begin you have to log in with your Azure subscription. This command will open your browser to enter your credentials. After logging in you can close the tab and return to your terminal.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az login
 
@@ -35,7 +35,7 @@ Configuring Defaults
 
 Once you are logged in you can make use of the global ``configure`` Command to set defaults for the CLI. This will make working with resources easier by automatically inserting default values for common required Arguments. Let's set a default Azure Location for our resources.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     # -d can also be used as a shorthand for --default 
     > az configure --default location=eastus
@@ -48,7 +48,7 @@ Now any resource that has a required Argument of ``--location`` or ``-l`` will a
     
     You can also view your defaults using the ``--list-defaults`` Argument:
 
-    .. sourcecode:: none
+    .. sourcecode:: powershell
 
         # -l can also be used as a shorthand for --list-defaults
         > az configure --list-defaults
@@ -63,7 +63,7 @@ Exploration
 
 Let's begin by using our trusty help command to learn what management is available for resource groups. Although it's confusing remember that resource groups are accessed under the Group name ``group``.  
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az group -h
 
@@ -74,7 +74,7 @@ Planning
 
 Of the available commands we can see that our goal is to ``create`` the resource. Let's dig into the ``create`` Command to see what Arguments are available.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az group create -h
 
@@ -94,7 +94,7 @@ Provisioning
 
 Now that we have determined the command structure and its arguments we can create our resource group:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az group create -n <name>-cli-wt-rg
 
@@ -121,13 +121,13 @@ Configuring
 
 Earlier we configured a default location, let's configure the default resource group too. Don't forget to enter your new resource group name as the value:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az configure --default group=<name>-cli-wt-rg
 
 You can confirm the default has been set by checking the CLI configuration with the ``-l`` (list) argument and seeing that the "group" has value has been set correctly:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az configure -l
 
@@ -143,7 +143,7 @@ Virtual Machines are naturally more complex to interact with than a simple resou
 
 Once again let's begin by assessing what is available to us:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az vm -h
 
@@ -154,7 +154,7 @@ Recall in the web portal how there were several menus we had to work through to 
 
 Let's see what Arguments are associated with creating a VM:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az vm create -h
 
@@ -173,7 +173,7 @@ Listing Images
 
 In order to define the image for the VM we have to find its URN. In the ``vm create`` help output we saw a note that guided is in discovering these URN values. Let's list the available images using the ``vm`` Sub-Group ``image`` and its associated ``list`` Command:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az vm image list
 
@@ -181,13 +181,13 @@ Many different images are provided in the JSON object list output. But all we ca
 
 The `JMESPath query <https://jmespath.org/>`_ value we will use is ``"[].urn"`` which means take the output list ``[]`` and instead of the complete image objects only output the value for each of their the ``urn`` properties. The result is a list of just URN values which is much easier to work with!
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az vm image list --query "[].urn"
 
 From here we can see the URN we need for the Ubuntu image is ``"Canonical:UbuntuServer:18.04-LTS:latest"``. Let's assign that value to a variable so we don't have to clutter our clipboard:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
     :caption: on Windows/PowerShell
 
     > $ImageURN="Canonical:UbuntuServer:18.04-LTS:latest"
@@ -203,14 +203,14 @@ Now we can reference the URN by its variable name ``$ImageURN`` (PowerShell) or 
 
     You can make use of a slightly more advanced query and in-line execution to do this in one step. Below we use a filter on the list to only output objects whose URN property ``contains`` the string Ubuntu. Then we pipe the filtered list and assign the first element's URN value to the variable.
 
-    .. sourcecode:: none
+    .. sourcecode:: powershell
         :caption: filtering the image list
 
         > az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn"
 
     When we issue this command using in-line execution we can assign output directly to the variable:
 
-    .. sourcecode:: none
+    .. sourcecode:: powershell
         :caption: Windows/PowerShell
 
         > $ImageURN="$(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn")" 
@@ -239,7 +239,7 @@ Now that we have our image URN we can provision the VM. We will use the followin
 
 Let's create our VM! Note that this command will take some time to complete.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
     :caption: Windows/PowerShell
 
     > az vm create -n <name>-linux-vm --size "Standard_B2s" --image "$ImageURN" --admin-username "student" --assign-identity
@@ -316,7 +316,7 @@ Exploration
 
 First explore the command using the ``keyvault`` Group name:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az keyvault -h
 
@@ -336,7 +336,7 @@ Creating a KeyVault
 
 To create a KeyVault we need to know what arguments it requires. Let's use the help command:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az keyvault create -h
 
@@ -351,13 +351,13 @@ Adding a Connection String Secret
 
 Let's see what command and arguments we need for creating the connection string secret:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az keyvault secret -h
 
 We can see that the ``set`` command is used to create or update a secret. What arguments does it require?
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az keyvault secret set -h
 
@@ -372,7 +372,7 @@ Granting VM Access to the KeyVault
 
 After we provision the KeyVault we will need to set its access policy to allow the VM to read the connection string secret. Let's see what arguments the ``set-policy`` command takes:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > az keyvault set-policy -h
 
@@ -396,7 +396,7 @@ This pattern should be unique but if you share a name with another student in th
 
 Before issuing the command let's store the KeyVault name in a variable since we will be using it more than once throughout our remaining tasks:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
     :caption: Windows/PowerShell
 
     > $KeyVaultName="lc-20-<name>-kv"
@@ -424,7 +424,7 @@ After the KeyVault has been provisioned let's set the connection string secret n
             "Default": "<connection string value>"
         }
 
-.. sourcecode:: none
+.. sourcecode:: powershell
     :caption: Windows/PowerShell
 
     > az keyvault secret set --vault-name "$KeyVaultName" -n "ConnectionStrings--Default" --value "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
@@ -448,7 +448,7 @@ The VM ``show`` command provided us with a JSON object of configuration details.
 
 We can capture this value in a variable by combining the VM ``show`` command with a ``--query`` filter:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
     :caption: Windows/PowerShell
 
     > $VmObjectId="$(az vm show --query "identity.principalId")"
@@ -477,7 +477,7 @@ Granting VM Access
 
 It's now time to issue our final command:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
     :caption: Windows/PowerShell
 
     > az keyvault set-policy -n "$KeyVaultName" --object-id "$VmObjectId" --secret-permissions get list 
@@ -513,7 +513,7 @@ Before moving on let's revisit the web portal and see all the resources we creat
 
 After reviewing your resources it's time to clean up after ourselves by deleting the resource group. This will delete all of the resources contained in it so we don't use up our subscription credits. Notice how we don't have to specify the group because it has been set as a default:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     # when prompted enter y for yes
     > az group delete

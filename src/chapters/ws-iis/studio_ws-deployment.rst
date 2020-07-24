@@ -65,7 +65,7 @@ The packages you need to install with ``choco`` have the following names:
 
 Recall that the general form of using ``choco`` is:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > choco install <package name> -y
@@ -83,7 +83,7 @@ The ``mysql CLI`` will open a connection to the database server and start a MySQ
 
 You can open the MySQL shell by issuing the following command from the PowerShell terminal in the VM:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell, connect as the root user to set up the database
 
    > mysql -u root
@@ -101,7 +101,7 @@ Once inside the MySQL shell you can enter the following commands to set up the d
 
 Now confirm everything was set up correctly by connecting to the database with the new user. You will be prompted to enter the password (``launchcode``):
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > mysql -u coding_events -D coding_events -p

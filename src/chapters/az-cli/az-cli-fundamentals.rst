@@ -18,7 +18,7 @@ Windows/PowerShell
 
 To install on Windows using PowerShell use the Chocolatey package manager:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
     > choco install azure-cli -y
 

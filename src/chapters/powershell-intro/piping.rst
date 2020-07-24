@@ -6,7 +6,7 @@ Recall that piping is a mechanism for performing multiple steps in a single expr
 
 A pipeline can be read from left to right as at least 3 steps:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > command | command ...
@@ -29,7 +29,7 @@ Before entering the following pipeline into your PowerShell Terminal take a mome
 
    Get the ChildItem list from (the current directory) **then** take that list and sort it by each item's Name Property 
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-ChildItem | Sort-Object -Property Name
@@ -56,7 +56,7 @@ In this example we will add the contents of a string to a file using the ``Add-C
 
 First let's look at a traditional execution of the single command. Here we *explicitly* assign, or bind, the values for the ``-Value`` and ``-Path`` options:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Add-Content -Value "You found me!" -Path "find-me.txt"
@@ -70,7 +70,7 @@ First let's look at a traditional execution of the single command. Here we *expl
 
 Now let's see how this can be accomplished with a simple pipeline:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > "You found me!" | Add-Content -Path "find-me.txt"
@@ -105,7 +105,7 @@ Because PowerShell is object-oriented the command compatibility is shifted from 
 
 Before we discuss the mechanism in detail let's explore the example we saw earlier:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > "You found me!" | Add-Content -Path "find-me.txt"
@@ -141,7 +141,7 @@ Binding ByPropertyName
 
 Before we discuss ``ByPropertyName`` let's consider an example that shows its difference from ``ByValue`` binding. Here we attempt to assign the ``-Value`` option explicitly and pass the ``-Path`` as a piped input instead:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > ".\find-me.txt" | Add-Content -Value "You found me!"
@@ -172,7 +172,7 @@ The ``Get-Help`` cmdlet includes an option called ``-Parameter`` which will list
 
 Let's look at the ``-Value`` and ``-Path`` parameters in particular. In the parameter output you want to check first line, for its input type, and the **Accept pipeline input?** line, for its binding type(s):
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
    :emphasize-lines: 3,7,12,16
 
@@ -200,7 +200,7 @@ Let's look at the ``-Value`` and ``-Path`` parameters in particular. In the para
   
    When the ``Get-Help`` option ``-Parameter`` is given a wildcard character (``*``) it will list the details for all the parameters of the cmdlet.
 
-   .. sourcecode:: none
+   .. sourcecode:: powershell
       :caption: Windows/PowerShell
 
       > Get-Help Add-Content -Parameter *
@@ -217,7 +217,7 @@ Let's use ``Where-Object`` and piping to learn about the ``Where-Object`` cmdlet
 
 First we need to see what properties are of the parameter help objects that the ``Get-Help`` command outputs. For this task we can pipe them into ``Get-Member`` and view the available properties and methods on the object:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Help Where-Object -Parameter * | Get-Member
@@ -237,7 +237,7 @@ We can generalize our search term to the string ``true`` followed by any other t
 
 When we are searching for something that is *like* a string we can use the ``-Like`` option of ``Where-Object``:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Help Where-Object -Parameters * | Where-Object -Property pipelineInput -Like "true*"

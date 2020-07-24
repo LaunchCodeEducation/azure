@@ -47,7 +47,7 @@ Invoke-RestMethod Examples
 
 To start we will make a request for the ``astros.json`` file:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    > Invoke-RestMethod -URI http://api.open-notify.org/astros.json
 
@@ -59,7 +59,7 @@ Invoke-RestMethod returns a Custom Object that contains a message, and the paylo
 
 Following is an example of how we could access just the ``people`` property of the Custom Object:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    > (Invoke-RestMethod -URI http://api.open-notify.org/astros.json).people
 
@@ -75,7 +75,7 @@ In this case we are simply looking at one field associated with the Custom Objec
 
 If we want to filter it down further we can use a pipe and the ``Select-Object`` cmdlet:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    > (Invoke-RestMethod -URI http://api.open-notify.org/astros.json).people | Select-Object -Property name
 
@@ -89,19 +89,19 @@ If we want to filter it down further we can use a pipe and the ``Select-Object``
 
 Storing the result in a variable becomes useful so we don't have to keep making the same request to access it's data:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    > $webRequest = Invoke-RestMethod -URI http://api.open-notify.org/astros.json 
 
 Then accessing the variable:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    > $webRequest.people[0].name
 
    Chris Cassidy
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    > $webRequest.people
 
@@ -115,7 +115,7 @@ Then accessing the variable:
 
 We can even use our variable to determine how the data is sorted (``Sort-Object``):
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    > $webRequest.people | Sort-Object -Property name
 
@@ -129,7 +129,7 @@ We can even use our variable to determine how the data is sorted (``Sort-Object`
 
 Combining everything so far we can convert our response to CSV:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    > $webRequest.people | Sort-Object -Property name | ConvertTo-Csv
    
@@ -142,12 +142,12 @@ Combining everything so far we can convert our response to CSV:
 
 And finally writing this data to a CSV file:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    > $webRequest.people | Sort-Object -Property name | Export-Csv "people.csv"
 
 
-.. sourcecode:: none
+.. sourcecode:: powershell
 
    > Get-Content people.csv
    
