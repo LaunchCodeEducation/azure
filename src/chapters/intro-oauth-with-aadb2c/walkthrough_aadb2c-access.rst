@@ -66,7 +66,11 @@ From the edit collection modal select the **Authorization** tab:
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/5select-authorization-tab.png
    :alt: Postman collection Authorization tab
 
-This imported collection comes pre-configured for you with many of the Authorization settings. Selecting the **Get New Access Token** button will open the access token modal:
+This imported collection comes pre-configured for you with many of the Authorization settings. From this tab you can see it has been configured to use OAuth for getting access tokens. The access token will be sent in the ``Authorization`` request header using the ``Bearer`` prefix. 
+
+This prefix will be used to indicate that Postman is the *bearer of a token that authorizes its requests* for interacting with the API on behalf of your AADB2C user account. The API then extracts and validates this token before processing the request using its RBAC and ABAC rules.
+
+Selecting the **Get New Access Token** button will open a modal with a form for configuring the access token request:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/6fill-out-form.png
    :alt: Postman Authorization get new access token button
@@ -83,7 +87,7 @@ In the following AADB2C configuration sections you will replace these entries wi
 
    **Do not modify any other settings besides those listed in the instructions**.
 
-Leave this form open in Postman and switch over to the Azure Portal. 
+Leave this form open in Postman and switch over to the Azure Portal.
 
 Protect the Coding Events API
 =============================
@@ -117,6 +121,8 @@ Copy the ``Scope`` and ``Client ID`` to the Postman form.
 
 Register the Postman Client Application
 =======================================
+
+.. todo:: register jwt.ms for exploration of access token
 
 - go back to app registrations
 - click new registration
@@ -174,7 +180,6 @@ Get the Authorization URL
 =========================
 
 
-
 - click the breadcrumb link (takes you to app registrations)
 - select user flows
 
@@ -193,8 +198,19 @@ Get the Authorization URL
 
 - in the sidebar click access tokens, click resource, choose codingeventsAPI, scopes are already selected, 
 
+.. todo:: pic of just metadata address to get auth url
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/7metadata-authorization-endpoint.png
+   :alt:
+
+grab that URL paste it into postman
+
+.. todo:: new picture for JUST the access token and run user flow.
+
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/15user-flow-final.png
    :alt:
+
+.. todo:: show using the flow to see the access token. show the scp, azp and aud
 
 .. admonition:: note
 
@@ -204,10 +220,7 @@ Get the Authorization URL
 
    code block split it into multiple lines, and explain each line
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/7metadata-authorization-endpoint.png
-   :alt:
 
-grab that URL paste it into postman
 
 Get the Postman Access Token
 ============================
