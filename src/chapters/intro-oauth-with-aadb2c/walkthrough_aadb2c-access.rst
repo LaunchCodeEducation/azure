@@ -342,28 +342,58 @@ The API is then **responsible for validating the claims** in the token before pr
 Get the Postman Access Token
 ============================
 
-In the following studio you will deploy the final version of the Coding Events API that integrates with your AADB2C tenant. You will use Postman to request an access token to test out the protected endpoints of the API.
+In the following studio you will deploy the final version of the Coding Events API that integrates with your AADB2C tenant. You will be using Postman to request an access token to test out the protected endpoints of the API. Let's explore this process together so you are prepared to make use of it in your studio tasks.
 
-Switch back to the Postman application to request your first access token! As a reminder **you will need to request a new one after one hour due to its expiration**. However, now that you have everything configured it will be as simple as clicking two buttons:
+Switch back to the Postman access token form you have been updating throughout the walkthrough. There is one final field that needs to be updated, the **State field**. This field can be any arbitrary value but should be **unique to each access token request**. It is used to protect against `CSRF attacks <https://auth0.com/docs/protocols/oauth2/oauth-state>`_.
+
+Typically this parameter is used to store the state of a user on a site (like a page to send them back to) or some other unguessable value. For this case, you can enter anything *random* you would like for the **State field** to complete the form:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/7-1postman-set-state-field.png
+   :alt: Complete the access token request form by setting a random value for the State field
+
+Before issuing the request check that you have updated all of the following fields:
+
+- **Callback URL**: ``https://www.postman.com/oauth2/callback``
+- **Auth URL**: the ``authorization_endpoint`` from the JSON metadata document
+- **Client ID**: your client application identifier from the registered Postman application dashboard
+- **Scope**: the ``user_impersonation`` scope URI you exposed for your registered Coding Events API application
+- **State**: any random string of your choice
+
+.. admonition:: Warning
+
+   Make sure you have left the defaults for the remaining fields and that you **do not select** the option to **authorize using browser**.
+
+If everything has been updated properly you are ready to request your first access token! Select the **Request Token** button. This will open a popup to authenticate with your AADB2C tenant. As a reminder your password should be:
+
+- ``LaunchCode-@zure1``
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/8postman-adb2c-form-signin.png
-   :alt:
+   :alt: AADB2C tenant sign in
 
-- remind default password
+ After successfully authenticating, Postman will receive and store the access token in its tokens list. Select the **Use Token** button to designate the token Postman should use when making requests to the API:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/9postman-access-token-success.png
-   :alt:
+   :alt: Select Use Token for the new access token
 
-- click use token
+Finally you will be returned to the **Authorization** tab in Postman. This time your access token will be populated:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/10postman-auth-tab-complete.png
-   :alt:
+   :alt: Completed Authorization tab in Postman
 
-- click the update button
+Select the **Update** button to save the changes you have made to the collection. As soon as your API is live you will be able to use Postman to make authorized requests to it using the access token!
 
-- switch back to client auth aadb2c
+Getting a New Access Token
+--------------------------
 
-Next Steps
-==========
+As a reminder **you will need to request a new access token after one hour due to its expiration**. If a request fails during the studio it will likely be due to an expired token. 
 
-.. lead in to studio
+Postman can detect when a token is expired and will cross it out in the tokens list when it can no longer be used. These tokens can be discarded using the **trash icon** next to them:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/11postman-expired-token.png
+   :alt: Postman expired token
+
+However, now that you have everything configured it will be a quick process:
+
+#. open the collection settings (three dots next to the collection name)
+#. switch to the **Authorization tab** and select **Get New Access Token**
+#. select **Request Token** to re-authorize and receive a new one
