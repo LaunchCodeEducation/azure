@@ -374,6 +374,6 @@ Selecting the **Claims** tab will switch to a break down of the claims in the pa
 
 Notice that these claims describe the relationship between the user (you), the AADB2C tenant (the identity manager) and the registered application that receives the token (the Coding Events API) recipient of the token (the Coding Events API):
 
-- **iss[uer]**: the AADB2C tenant is the Active Directory account manager and issuer of the identity token
-- **sub[ject]**: the subject of the token is your OID (unique identifier in the AADB2C tenant directory)
-- **aud[ience]**: the audience, or recipient, of the token is your registered application's identifier (Client ID)
+- **iss[uer]**: the AADB2C tenant is the *issuer* of the identity token while behaving (in this context) as the **identity management server**
+- **sub[ject]**: the subject of the token is your OID (unique identifier of your account in the AADB2C tenant directory)
+- **aud[ience]**: the audience, or **intended recipient**, of the token is the Coding Event API application identifier (Client ID)
