@@ -2,30 +2,37 @@
 Studio: Deploy Coding Events API with AADB2C
 ============================================
 
-.. challenging the students to take the things from the previous walkthrough and use in their code for this studio deployment
+In this chapter we have:
 
-Testing Locally
-===============
+#. created an AADB2C tenant
+#. registered and exposed our Coding Events API
+#. created a SUSI user flow for our Coding Events API that can provide identity tokens
+#. created scopes that protect the Coding Events API that grant a client application ``user_impersonation`` delegation available as access tokens
+#. Used access tokens from Postman to access our locally hosted application
 
-Checklist
----------
+For our studio we will be using access tokens from a deployed Coding Events API. Instead of running our Coding Events API locally and consuming it with Postman, we will be deploying our Coding Events API to an Azure VM and then consuming the deployed API with Postman.
 
-Gotchas
--------
-
-Limited Guidance
-----------------
-
-Update Code
-^^^^^^^^^^^
-
-.. THIS IS THEIR ACTUAL TASK!!
+Luckily this deployment will not include anything we haven't seen from previous deployments.
 
 Remote Deployment
 =================
 
 Checklist
 ---------
+
+#. Provision RG
+#. Provision VM
+#. Provision KV
+#. Grant VM access to KV
+#. Add database connection string to KV
+#. Configure VM using RunCommand (dependencies, setup MySQL)
+#. Update source code to include KV name and AADB2C information
+#. Deliver source code to VM using git
+#. Build source code on VM using dotnet publish
+#. Deploy artifacts
+#. Open NSG
+#. Update Postman to consume remote Coding Events API
+#. Test endpoints with Postman
 
 Gotchas
 -------
@@ -36,95 +43,36 @@ Limited Guidance
 Provision Resources
 ^^^^^^^^^^^^^^^^^^^
 
-.. provided script?
+You have provisioned multiple RGs, VMs and KVs at this point in the class. If you need a refresher check out the previous chapter walkthroughs and studios.
+
+Update Source Code
+^^^^^^^^^^^^^^^^^^
+
+You will need to update the ``appsettings.json`` file of your Coding Events API. It will need to include:
+
+- Your Key vault name
+- Your AADB2C metadata URL
+- Your registered Coding Events API client ID 
+
+After getting the information you need from the Azure Portal about these resources, and updating your source code make sure you have pushed your code back to GitHub so you can pull the correct code for your deployment.
 
 Prepare VM
 ^^^^^^^^^^
 
-.. provided script?
+We are not configuring the VM in any new or different ways. You will be able to use the deployment script you created in the Deploy CodingEventsAPI with KeyVault studio.
 
-Deliver Deploy
-^^^^^^^^^^^^^^
+Double check that the script you will send to your VM via the RunCommand covers the following:
 
-.. provided script?
+- sets environment variables
+- updates apt-get
+- download and installs MySQL
+- creates a MySQL database and user
+- downloads and installs the dotnet SDK
+- clones your updated code
+- publishes your updated code
+- deploys your published artifacts
 
 Deliverable
 ===========
 
-
-
-
-
-.. :: original notes when we took pictures
-
-   .. ::
-
-      - everything in the RG from the walkthrough ``aadb2c-deploy-rg``
-      - reuse the tenant from the walkthrough
-      - all values will come from the tenant configuration
-         - app registration
-         - user flows
-      - this deployment is over HTTPS because AADB2C only works over secure connections
-
-
-      #. provision VM (previous walkthroughs for help)
-         - this is where they will get the server origin (VM public IP)
-         - open NSG port 443
-      #. provision KV (previous walkthroughs for help)
-         - configure VM to access KV
-         - setup connection string secret
-      #. modify source code ``4-member-roles`` appsettings.json
-         - public IP address
-         - kv name
-         - aadb2c config stuff
-            - set the redirect URL for this new application (app registrations > authentication > add URI button
-               - it needs to be the swagger redirect URL // this needs to be looked up
-      #. setup VM
-         - TODO script
-            - give them NGINX and SSL script with comments
-            - their tasks
-               - merge in the script from previous studio (mysql, runtime dependencies)
-         - run script
-      #. test it out
-         - public endpoints
-         - login via SUSI
-         - hit the protected owner endpoints
-         - notify your TA and they will act as the member
-
-   - first attempt: valid audience is clientID of the API
-
-
-   .. comment: split this part into a walkthrough (setup) and studio (deploy/fire postman requests)
-
-   # start images/steps
-
-   - go to home page tenant dashboard (AADB2C) (in the tenant directory)
-
-   - go to app registrations
-
-   - select the CodingEventsAPI app
-
-   - get the Client ID (jwt.adb2c.tokenValidationParameters.validAudience)
-
-   - go to expose an API on the sidebar
-
-   - click add a scope
-
-   - client id: registered postman app CLIENT ID
-   - scope: api_user_impersonation scope you copied earlier
-   - state: leave blank
-   - client authentication: default but confirm send as basic auth header
-   - click request token a pop up will prompt you to login
-
-   .. comment:: END OF POSTMAN GROUP
-
-
-
-      :alt:
-
-   - double check your application
-
-
-   .. TODO: auth URL, clientID, scope (in postman)
-
-   .. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/16copy-user-flow-endpoint.png
+Upon completing the deployment and Postman testing of your Coding Events API. Send the public IP address of your deployed Coding Events API, and the link to the code you deployed to your TA.
