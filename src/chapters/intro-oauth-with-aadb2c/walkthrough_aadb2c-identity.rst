@@ -1,19 +1,32 @@
-=====================================
-Walkthrough: Setup Azure ADB2C Tenant
-=====================================
+========================================================
+Walkthrough: Set Up Azure ADB2C Tenant & Identity Tokens
+========================================================
 
-In this walkthrough we will set up our own identity manager using Azure. The Azure Active Directory B2C (AADB2C) service abstracts away the complexity of setting up a Customer Identity Access Manager (CIAM). 
+Azure Active Directory B2C (AADB2C) is a service that manages user identities and coordinates their access across the different applications in your organization.  When provisioning an AADB2C service Azure will create a **tenant directory**. 
 
-It allows us to support any number of identity providers (like Microsoft, LinkedIn or GitHub) to connect users to our organization's applications. In our case we will set up AADB2C using an Email Provider (a generic identity tied to an email address). 
+The tenant directory is an Active Directory instance that centralizes user identities for a SSO experience across your organization. This means that a user can have a **single identity** they create and access through multiple identity providers like Microsoft, GitHub or an Email and password.
 
-When you provision an AADB2C service Azure will create a **tenant directory**. The tenant directory represents the Active Directory that holds our user accounts. Each AADB2C tenant has one or more **User identity flows** that customize how users register and interact with their account. 
+Each AADB2C tenant uses **User identity flows**, or policies, that customize how a user registers and manages their identity in your organization. These user accounts can be used to authenticate and interact with your organization's **registered applications**. 
 
-These accounts can then be accessed by **registered applications** (client services like our Coding Events API). As an identity management service, AADB2C uses the OIDC protocol to provide an **identity token** to our application after a user registers or authenticates.
+In this walkthrough we will register the Coding Events API application and create a user account in our AADB2C tenant directory. We will then inspect the **identity token** received after completing the OIDC flow for our registered API.
+
+.. admonition:: note
+
+   Azure ADB2C is a multi-faceted service. In this walkthrough we will focus on the **authentication** configuration using **identity tokens**.  
+
+   In the following walkthrough we will extend this behavior to protect our registered API by configuring its own **access tokens**. We will use these tokens for **authorization** of requests sent from the Postman *client application*.
+
+.. AADB2C can be used for **bi-directional authorization** with your organization's web applications. For example, if a user's identity is linked to a GitHub account your application can request their GitHub access token without ever communicating directly with GitHub. AADB2C would manage the OAuth exchange between the user and GitHub and provide the access token transparently to your application.
+
+.. We say bi-directional because the inverse scenario can be used as well. AADB2C can be used to **protect access** to your applications through the use of *their own* access tokens. AADB2C abstracts the process of managing access tokens for other client applications to use on behalf of your tenant's users.
+
+Components of AADB2C
+====================
 
 Checklist
 =========
 
-Setting up our AADB2C authority will involve the following steps:
+Setting up our AADB2C service will involve the following steps:
 
 #. create an AADB2C tenant directory
 #. link the tenant directory to an active Azure Subscription
@@ -198,12 +211,6 @@ Claims are used to standardize the identity data that is collected across the id
 
 You can also define `custom claims <https://docs.microsoft.com/en-us/azure/active-directory-b2c/user-profile-attributes>`_ that apply to more specific use cases.
 
-.. admonition:: Tip
-
-   User flows are configured **independently from registered applications**. They can be customized for a single application or *reused* across any number of applications.
-
-   For our purposes we will customize a user flow specific to our Coding Events API application.
-
 In the left sidebar of the **tenant dashboard** switch from App Registrations by selecting the **User Flows** option under *Policies*.
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/17select-user-flows.png
@@ -233,7 +240,7 @@ This will present the SUSI flow form. As mentioned previously we will allow user
    
 For the top half of the form (steps 1-3) configure the following settings:
 
-#. **Name**: after the ``B2C_1_`` prefix enter ``coding-events-api-susi``
+#. **Name**: after the ``B2C_1_`` prefix enter ``susi-flow``
 #. **Providers**: we will use the ``Email signup`` provider
 #. **MFA**: leave ``disabled``
 
@@ -275,7 +282,7 @@ Test the User Flow
 
 Our final step is to test out the SUSI flow we created. We will register our first user accounts in the new AADB2C tenant using this flow. After registering we will inspect the identity token and the returned claims that were included in it.
 
-From the User Flows view select the new flow, ``B2C_1_coding-events-api-susi``. This will take you to the SUSI flow dashboard where you can modify and test (run) the flow:
+From the User Flows view select the new flow, ``B2C_1_susi-flow``. This will take you to the SUSI flow dashboard where you can modify and test (run) the flow:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/26flow-dashboard.png
    :alt: SUSI flow dashboard view
@@ -365,8 +372,8 @@ Selecting the **Claims** tab will switch to a break down of the claims in the pa
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough/35final-token-claims.png
    :alt: decoded identity token claims
 
-Notice that these claims describe the relationship between the user (you), the AADB2C tenant (the identity manager) and the client application (the Coding Events API):
+Notice that these claims describe the relationship between the user (you), the AADB2C tenant (the identity manager) and the registered application that receives the token (the Coding Events API) recipient of the token (the Coding Events API):
 
-- **iss[uer]**: the AADB2C tenant is the Active Directory account manager and issuer of the identity token
-- **sub[ject]**: the subject of the token is your OID (unique identifier in the AADB2C tenant directory)
-- **aud[ience]**: the audience, or recipient, of the token is your registered application's identifier
+- **iss[uer]**: the AADB2C tenant is the *issuer* of the identity token while behaving (in this context) as the **identity management server**
+- **sub[ject]**: the subject of the token is your OID (unique identifier of your account in the AADB2C tenant directory)
+- **aud[ience]**: the audience, or **intended recipient**, of the token is the Coding Event API application identifier (Client ID)
