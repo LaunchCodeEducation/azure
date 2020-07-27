@@ -13,13 +13,13 @@ Azure CLI RunCommand
 
 Recall that both the Azure CLI and the web portal GUI are backed by the same REST API. We have also learned that working from the command-line offers greater portability and automation capability relative to using a browser based GUI. With the ``az CLI`` we are able to use the same RunCommand we experienced in the browser but with all of the benefits of the command-line. 
 
-.. admonition:: tip
+.. admonition:: Tip
 
     Unlike the browser console you can use the ``az CLI`` to issue RunCommands to *multiple machines at once* using their resource IDs (VM identities)!
 
 Within the Azure CLI the ``vm`` Sub-Group ``run-command`` can be used to toggle commonly used machine settings or execute complete scripts remotely. Every RunCommand has a unique name known as its ``command-id`` which you can view using ``list``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
     :caption: assumes the default location has been configured
 
     > az vm run-command list
@@ -29,7 +29,7 @@ Within the Azure CLI the ``vm`` Sub-Group ``run-command`` can be used to toggle 
 
 To issue a RunCommand use the ``invoke`` Command:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
     :caption: assumes a default RG, location and VM have been configured
 
     > az vm run-command invoke --command-id <command ID>
@@ -38,13 +38,13 @@ There are several RunCommand commands that perform pre-defined actions on the re
 
 Using these RunCommand commands is the command-line equivalent of pasting the script into the RunCommand console in the browser. You can run any number of scripts using the ``--scripts`` argument. These can be individual shell commands written in quotes or file path references to pre-written scripts on your local machine.
 
-.. admonition:: tip
+.. admonition:: Tip
 
   For Windows VMs you should use ``RunPowerShellScript`` and for Linux VMs use ``RunShellScript``. Note that **this is in reference to the remote VM you are interacting with**, not the OS of your local machine that is issuing the RunCommand. 
 
 Here is an example of issuing single shell commands that simply list files in the home directory of the VM. For Windows we use the PowerShell ``Get-ChildItem`` and for Linux, its Bash equivalent, ``ls``. 
 
-.. sourcecode:: powershell
+.. sourcecode:: none
     :caption: assumes a default RG, location and VM have been configured
 
     # for a Windows VM run a PowerShell script (uses PowerShell in the VM)
@@ -57,7 +57,7 @@ For longer scripts than one-off commands like the examples above you will want t
 
 Here is an example that uses a script file located in the home (``~``) directory called ``myscript.<ext>`` with the appropriate extension for PowerShell or Bash corresponding to the CLI shell of the remote VM.
 
-.. sourcecode:: powershell
+.. sourcecode:: none
     :caption: assumes a default RG, location and VM have been configured
 
     # myscript.ps is a PowerShell script
@@ -78,7 +78,7 @@ The Remote Desktop Protocol (RDP) is a protocol developed by Microsoft for acces
 
 RDP is often used by technical support staff to help enterprise and consumer customers debug issues on their machines. But RDP is great for DevOps engineers to troubleshoot and configure things manually where a full desktop experience is preferred. 
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
   RDP is used as both a noun, referring to the protocol itself, and as a verb, referring to the "act of RDP-ing into a machine"!
 
@@ -89,14 +89,14 @@ Windows provides the ``mstsc`` command-line utility for creating an RDP session 
 
 Here is the general form of using ``mstsc``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: mstsc is available on Windows machines
 
   > mstsc /v:<public IP address>
 
 This will prompt you for a username and password to access the VM. Once those are entered a new window will appear that provides the full desktop GUI of the remote machine! We will get to practice using RDP in the upcoming exercises.
 
-.. admonition:: note
+.. admonition:: Note
 
   Desktop access over RDP inherently requires the VM to have the desktop GUI shell installed. If the VM is using the ``Windows Server Core`` OS then only a PowerShell terminal is presented during an RDP session.
 
@@ -126,7 +126,7 @@ A session can be used to invoke individual commands using the cmdlet ``Invoke-Co
 
 **Windows Remote Management** (WinRM) is the Microsoft implementation of WS-Management Protocol, a standard SOAP-based protocol that allows for headless remote management.
 
-.. admonition:: note 
+.. admonition:: Note 
 
   Unfortunately, in this class we will not be using PS-Session cmdlets due to their OS requirements. WinRM based tooling is not available on Windows 10 Home edition. It requires Windows Server or a PC running Windows 10 Enterprise, Professional or Education editions. However, they are important tools for gaining access to remote Windows machines and you will use them in your career moving forward. For this reason it is important to at least gain a conceptual understanding of how they work.
 
@@ -137,13 +137,13 @@ New-PSSession
 
 After enabling RPS access on the remote (host) machine you can open a session using ``New-PSSession``. 
 
-.. admonition:: warning
+.. admonition:: Warning
 
    In order to use ``New-PSSession`` and the other PSSession related cmdlets **you must be using Windows 10 Pro, Enterprise, or Education** editions as they all come pre-installed with the Hyper-V Module dependency. This module is not available for download and cannot be installed on Windows 10 Home, as the tool was not created for consumer PCs.
 
 Here is the most basic example that requires a VM's global identifier. The output of running this cmdlet will be a Session ID which we store in a variable for use with the related cmdlets:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > $SessionId=New-PSSession -VMId 484155ab-b52b-4d554-akk7f1540e80
@@ -157,14 +157,14 @@ Once a session has been created you can begin an interactive mode to gain access
 
 You can enter a PS Session using the ``Enter-PSSession`` command and supplying it the Session ID output from ``New-PSSession``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > Enter-PSSession -Session "$SessionId"
 
 Just as with ``New-PSSession`` there are numerous options that you can read more about `in this documentation article <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/enter-pssession?view=powershell-7>`_. In order to exit the interactive session you can use the aptly named ``Exit-PSSession``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > Exit-PSSession
@@ -176,7 +176,7 @@ Entering an interactive session with ``Enter-PSSession`` allows you to attach to
 
 ``Invoke-Command`` gives you the ability to pass in one PowerShell command, or local PowerShell script, you want to execute on the remote Windows machine:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
   :caption: Windows/PowerShell
 
   > Invoke-Command -ComputerName 52.55.134.28 -credential student -filepath c:\user\scripts\some-script.ps

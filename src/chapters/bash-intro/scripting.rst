@@ -13,7 +13,7 @@ You can use any command in a script that you are able to issue manually in the S
 
 A statement, like other languages, is an independent instruction like defining a variable or constructing a loop. We distinguish these from commands which refer to actual CLI programs like those you would call from the Shell REPL.
 
-.. admonition:: note
+.. admonition:: Note
 
    When providing code samples for scripts we will remove the ``$`` character used in REPL examples. Each separate line is its own command or statement.
 
@@ -52,7 +52,7 @@ In other words when we want to execute a script explicitly we (the user) define 
 
 If we try to execute a script with the wrong interpreter it will fail. It would be like handing an English-speaking person a book in Japanese and asking them to interpret it!
 
-.. admonition:: note
+.. admonition:: Note
 
    Implicit execution is when the interpreter is defined inside the script using a special line at the top of the script file called a `shebang <https://linuxize.com/post/bash-shebang/>`_. 
    
@@ -67,6 +67,6 @@ This means that if you (``student``) run a script then all of those commands wil
 
 However, if you try to use ``sudo`` in the script a prompt would require you to authenticate as soon as it is executed -- a manual step that would likely defeat the purpose! 
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
    In the cloud the scripts we execute will run as ``root`` automatically and will not require the use of ``sudo``.

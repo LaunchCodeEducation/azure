@@ -18,7 +18,7 @@ There are multiple factors of authentication the three most common are:
 - **Inherent based**: *something you are* (a fingerprint or face unlock)
 - **Location based**: *where you are* (geo-location coordinates)
 
-.. admonition:: note
+.. admonition:: Note
 
    An application can be made more secure by requiring Multiple Factors for Authentication (MFA). Learn more about `MFA from Microsoft <https://docs.microsoft.com/en-us/azure/active-directory/authentication/concept-mfa-howitworks>`_.
 
@@ -29,7 +29,7 @@ Authorization
 
 As an example think about a user of a bank site. When the user proves their identity with their username and password (*authentication*) they **can access** (*authorized*) **their** account information. However they **cannot access** (*unauthorized*) any **other** user's information. 
 
-.. admonition:: note
+.. admonition:: Note
 
    Understanding and correctly implementing Authentication and Authorization are imperative to the security of your application and business data. You can learn more with the `Microsoft Auth documentation <https://docs.microsoft.com/en-us/azure/active-directory/develop/authentication-vs-authorization>`_.
 
@@ -42,7 +42,7 @@ For example, when you are registering for a Spotify account you can choose to cr
 
 OAuth can also be used to grant *management access* of your data between services. If you allow Spotify to *manage* your Facebook data it can automatically post the music you are listening to *on your behalf*.
 
-.. admonition:: note
+.. admonition:: Note
 
    The upcoming walkthrough will explore how OAuth works from a more detailed perspective. If you require more information take a look at the `Microsoft OAuth technical guide <https://docs.microsoft.com/en-us/advertising/guides/authentication-oauth?view=bingads-13>`_.
 

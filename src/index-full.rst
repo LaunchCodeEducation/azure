@@ -2,7 +2,6 @@ Chapters
 ========
 
 .. toctree::
-   :numbered:
    :maxdepth: 2
    :name: fulltoc
 
@@ -13,9 +12,8 @@ Chapters
    chapters/azure-intro/index
    chapters/secrets-and-backing/index
    chapters/intro-oauth-with-aadb2c/index
-   chapters/powershell-intro/index  
-
    chapters/az-cli/index
+   chapters/powershell-intro/index  
    chapters/ws-iis/index
 
 .. toctree::

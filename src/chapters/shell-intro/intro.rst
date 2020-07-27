@@ -20,7 +20,7 @@ The type of Shell you are most familiar with is a **GUI Shell**. A Graphical Use
 
 In a GUI Shell commands are issued from the user to the computer using a mouse and keyboard. GUI Shells have become the natural standard for *consumer interactions* with computers.
 
-.. admonition:: fun fact
+.. admonition:: Fun Fact
 
    In the Linux world GUI Shells are called **window managers** or **desktop environments**.
 
@@ -81,7 +81,7 @@ Years ago humans interacted with computers using Terminal screens which translat
 
 Terminal Emulators are GUI applications that are used to interact with the CLI Shell of the machine. Because they are emulated in a GUI window they allow some limited use of the mouse for things like copying, pasting and other conveniences.
 
-.. admonition:: note
+.. admonition:: Note
 
    We will refer to the Terminal Emulator programs as Terminals going forward for brevity.
 
@@ -110,7 +110,7 @@ Linux and Bash examples will be labeled as ``Linux/Bash`` and use the ``$`` symb
 
 Windows and PowerShell examples will be labeled as ``Windows/PowerShell`` and use the ``>`` symbol:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > command

@@ -6,7 +6,7 @@ Recall that piping is a mechanism for performing multiple steps in a single expr
 
 A pipeline can be read from left to right as at least 3 steps:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > command | command ...
@@ -29,7 +29,7 @@ Before entering the following pipeline into your PowerShell Terminal take a mome
 
    Get the ChildItem list from (the current directory) **then** take that list and sort it by each item's Name Property 
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Get-ChildItem | Sort-Object -Property Name
@@ -43,7 +43,7 @@ This expression has three steps:
 
 When the ``Get-ChildItem`` cmdlet is executed it evaluates to an ``Array`` object. However, as you noticed the sorting step (``Sort-Object``) operated on **each element** that is *inside*, not the ``Array`` itself. This is a key aspect of how piping works when working with collections of objects, like an ``Array``. 
 
-.. admonition:: tip
+.. admonition:: Tip
 
    When a collection of objects is piped from a command **the next command receives and processes each object in the collection one at a time**. 
    
@@ -56,7 +56,7 @@ In this example we will add the contents of a string to a file using the ``Add-C
 
 First let's look at a traditional execution of the single command. Here we *explicitly* assign, or bind, the values for the ``-Value`` and ``-Path`` options:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Add-Content -Value "You found me!" -Path "find-me.txt"
@@ -70,7 +70,7 @@ First let's look at a traditional execution of the single command. Here we *expl
 
 Now let's see how this can be accomplished with a simple pipeline:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > "You found me!" | Add-Content -Path "find-me.txt"
@@ -80,7 +80,7 @@ Now let's see how this can be accomplished with a simple pipeline:
 In this pipeline the string ``"You found me!"`` was *piped*, or carried over to, the ``Add-Content`` cmdlet. Notice, unlike the traditional execution, that the ``-Value`` parameter is **implicitly** bound to the string object, ``"You found me!"``.
 
 .. Replacing file contents
------------------------
+.. -----------------------
 
 .. Piping Output Destinations
 .. ==========================
@@ -105,7 +105,7 @@ Because PowerShell is object-oriented the command compatibility is shifted from 
 
 Before we discuss the mechanism in detail let's explore the example we saw earlier:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > "You found me!" | Add-Content -Path "find-me.txt"
@@ -118,7 +118,7 @@ Parameter binding is PowerShell's mechanism of aligning the output object (by it
 
 There are two binding types available in piping, ``ByValue`` and ``ByPropertyName``. In the previous example the piped string object was successfully bound to the ``-Value`` option because it **accepts piped input** through the ``ByValue`` mechanism.
 
-.. admonition:: note
+.. admonition:: Note
 
    ``ByValue`` does not mean the option name must be ``-Value``, in fact it means just the opposite! This is just an coincidence of this simplistic example.
 
@@ -141,7 +141,7 @@ Binding ByPropertyName
 
 Before we discuss ``ByPropertyName`` let's consider an example that shows its difference from ``ByValue`` binding. Here we attempt to assign the ``-Value`` option explicitly and pass the ``-Path`` as a piped input instead:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > ".\find-me.txt" | Add-Content -Value "You found me!"
@@ -172,7 +172,7 @@ The ``Get-Help`` cmdlet includes an option called ``-Parameter`` which will list
 
 Let's look at the ``-Value`` and ``-Path`` parameters in particular. In the parameter output you want to check first line, for its input type, and the **Accept pipeline input?** line, for its binding type(s):
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
    :emphasize-lines: 3,7,12,16
 
@@ -196,11 +196,11 @@ Let's look at the ``-Value`` and ``-Path`` parameters in particular. In the para
       Aliases                      None
       Dynamic?                     false
 
-.. admonition:: tip
+.. admonition:: Tip
   
    When the ``Get-Help`` option ``-Parameter`` is given a wildcard character (``*``) it will list the details for all the parameters of the cmdlet.
 
-   .. sourcecode:: powershell
+   .. sourcecode:: none
       :caption: Windows/PowerShell
 
       > Get-Help Add-Content -Parameter *
@@ -217,7 +217,7 @@ Let's use ``Where-Object`` and piping to learn about the ``Where-Object`` cmdlet
 
 First we need to see what properties are of the parameter help objects that the ``Get-Help`` command outputs. For this task we can pipe them into ``Get-Member`` and view the available properties and methods on the object:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Get-Help Where-Object -Parameter * | Get-Member
@@ -237,7 +237,7 @@ We can generalize our search term to the string ``true`` followed by any other t
 
 When we are searching for something that is *like* a string we can use the ``-Like`` option of ``Where-Object``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Get-Help Where-Object -Parameters * | Where-Object -Property pipelineInput -Like "true*"
@@ -256,7 +256,7 @@ When we are searching for something that is *like* a string we can use the ``-Li
       Accept pipeline input?       True (ByValue)
       Accept wildcard characters?  false
 
-.. admonition:: tip
+.. admonition:: Tip
    
    You can read more about ``Where-Object`` and providing search criteria through **script blocks** `in its Microsoft documentation <https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Core/Where-Object?view=powershell-7#description>`_. 
 
@@ -270,7 +270,7 @@ When designing a pipeline it can help to organize the commands and the path the 
 #. what logical steps (Verbs and Nouns) do you need to get from the first output to the last?
 #. how do the command steps need to be ordered for the parameters to bind properly?
 
-.. admonition:: tip
+.. admonition:: Tip
 
    The cmdlets ``Where-Object`` and ``Sort-Object`` that you saw in the examples are utility cmdlets. They can be used as transitions, or interjections between steps, to coordinate the behavior of a pipeline. 
    

@@ -17,8 +17,8 @@ Starting out we will need to create a new resource group for this project. If yo
 
 The only change will be using the following pattern (``your-name-lc-rg-rest-api``) when naming your resource group.
 
-Spin up VM
-==========
+Spin Up a VM
+============
 
 Just like the walkthrough you will need create an ubuntu VM.
 
@@ -61,6 +61,7 @@ We can check that it delivered the source code properly by looking into the ``co
 
    cd /home/student
    git clone https://github.com/LaunchCodeEducation/coding-events-api
+   cd /home/student/coding-events-api
    git checkout 1-sqlite
    ls /home/student/coding-events-api
 
@@ -68,7 +69,7 @@ We can check that it delivered the source code properly by looking into the ``co
 
 Looking into the directory we can see we have some source code. We don't see a ``.csproj`` file though, and that must be present to publish our application. However, we see a nested project directory ``/home/student/coding-events-api/CodingEventsAPI`` which should contain the ``.csproj`` file.
 
-.. sourcecode::
+.. sourcecode:: bash
 
   ls /home/student/coding-events-api/CodingEventsAPI
 

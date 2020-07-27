@@ -85,7 +85,7 @@ Let's revisit the example from earlier. But this time consider the task of provi
 
 Here is a basic example in PowerShell invoking the ``az CLI``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
     :caption: powershell example
 
     for($VmCount=0; $VmCount -lt 1000; ++$VmCount) {
