@@ -14,11 +14,8 @@ For our studio we will be using access tokens from a deployed Coding Events API.
 
 Luckily this deployment will not include anything we haven't seen from previous deployments.
 
-Remote Deployment
-=================
-
 Checklist
----------
+=========
 
 #. Provision RG
 #. Provision VM
@@ -35,18 +32,27 @@ Checklist
 #. Test endpoints with Postman
 
 Gotchas
--------
+=======
+
+- not requesting a new access token from Postman
+- not opening the VM proper port
+- not updating your source code
+- not switching to the branch that has the updated source code
 
 Limited Guidance
-----------------
+================
 
 Provision Resources
-^^^^^^^^^^^^^^^^^^^
+-------------------
 
 You have provisioned multiple RGs, VMs and KVs at this point in the class. If you need a refresher check out the previous chapter walkthroughs and studios.
 
+.. admonition:: note
+
+   Make sure to adopt a naming convention for your resources.
+
 Update Source Code
-^^^^^^^^^^^^^^^^^^
+------------------
 
 You will need to update the ``appsettings.json`` file of your Coding Events API. It will need to include:
 
@@ -56,8 +62,12 @@ You will need to update the ``appsettings.json`` file of your Coding Events API.
 
 After getting the information you need from the Azure Portal about these resources, and updating your source code make sure you have pushed your code back to GitHub so you can pull the correct code for your deployment.
 
+.. admonition:: note
+
+   Make sure you have provisioned your Key vault before you update your source code. Remember that key vault names are globally unique!
+
 Prepare VM
-^^^^^^^^^^
+----------
 
 We are not configuring the VM in any new or different ways. You will be able to use the deployment script you created in the Deploy CodingEventsAPI with KeyVault studio.
 
