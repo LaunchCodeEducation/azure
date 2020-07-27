@@ -47,7 +47,7 @@ You will be prompted to confirm this decision as a security measure:
 
 With PowerShell open as an admin copy and paste the following commands. Recall that the ``>`` symbol is used to designate **a single PowerShell command** (the contents to the right of it) that you need to copy and paste into your Terminal.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
@@ -59,7 +59,7 @@ Setup Ubuntu
 
 Next enter the following commands to install Ubuntu (the **18.04 LTS** version). As a reminder, each line beginning with ``>`` is its own command:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    # download the Ubuntu OS installer and save it as Ubuntu.appx
@@ -129,7 +129,7 @@ Viewing available distributions
 
 You can view the available WSL distributions installed on your machine by using the ``--list`` option:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    # list all the installed VM distributions
@@ -145,7 +145,7 @@ You can also enter the Shell of the VM directly from the PowerShell Terminal rat
 
 You can use the ``--distribution`` option followed by the name of the VM's distribution (one that is installed from the ``--list`` output) to enter the Shell directly:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    # start the machine in the PowerShell Terminal (instead of using the taskbar icon)
@@ -168,7 +168,7 @@ In some cases you want to completely shut down a VM rather than just exiting the
 
 You can shut down a VM from the PowerShell Terminal by using the ``--terminate`` option followed by the name of the VM's distribution (``Ubuntu-18.04``):
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    # shut down the machine

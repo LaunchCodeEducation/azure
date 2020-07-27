@@ -22,7 +22,7 @@ Accessing a property
 
 Let's consider one of the simplest object types, those belonging to the ``String`` `class <https://docs.microsoft.com/en-us/dotnet/api/system.string?view=netcore-3.1>`_. Strings have a ``Length`` property that can be accessed like this:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > "dot notation works!".length
@@ -42,7 +42,7 @@ We can invoke an object's method in PowerShell the same way as we would in C#.
 
 In the following example we will access the ``getType()`` method attached to a ``String`` object. The ``getType()`` method shows details about the object it is called on.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > "hello world".getType()
@@ -62,14 +62,14 @@ Discovering methods and properties
 
 In the following example we use the ``Get-Member`` cmdlet to access the properties and methods of any given object in PowerShell.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Member -InputObject <object>
 
 Let's use this pattern to view the available properties and methods of a common ``String`` object.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/Powershell
 
    > Get-Member -InputObject "a-string"
@@ -92,7 +92,7 @@ Looking at the output we can see many things including a property name ``Length`
 
 .. Let's use ``Get-Member`` to discover the properties and methods of the object outputted by ``getType()``:
 
-.. .. sourcecode:: none
+.. .. sourcecode:: powershell
 ..    :caption: Windows/PowerShell
 
 ..    > Get-Member -InputObject ("hello world".getType())
@@ -135,7 +135,7 @@ Looking at the output we can see many things including a property name ``Length`
 
 .. .. todo:: can a better example be fit in (more practical / realistic)
 
-.. .. sourcecode:: none
+.. .. sourcecode:: powershell
 ..    :caption: Windows/PowerShell
 
 ..    > (Get-Location).getType().Name
@@ -144,7 +144,7 @@ Looking at the output we can see many things including a property name ``Length`
 
 .. Let's break down these steps to understand how chaining works:
 
-.. .. sourcecode:: none
+.. .. sourcecode:: powershell
 ..    :caption: Windows/PowerShell
 
 ..    > (Get-Location).getType().Name
@@ -158,7 +158,7 @@ Looking at the output we can see many things including a property name ``Length`
    
 ..    In a lot of ways chaining is similar to using multiple group expressions. If group expressions clicked with you you can think of the chain above as being evaluated like this:
 
-..    .. sourcecode:: none
+..    .. sourcecode:: powershell
 ..       :caption: Windows/PowerShell
    
 ..       > ((Get-Location).getType()).Name
@@ -167,7 +167,7 @@ Looking at the output we can see many things including a property name ``Length`
 
 .. .. todo:: better example man
 
-.. .. sourcecode:: none
+.. .. sourcecode:: powershell
 ..    :caption: Windows/PowerShell
 
 ..    > (Get-ChildItem)[0].getType().Name
@@ -175,7 +175,7 @@ Looking at the output we can see many things including a property name ``Length`
 
 .. Remember no matter how complex an expression looks it can be broken down methodically:
 
-.. .. sourcecode:: none
+.. .. sourcecode:: powershell
 ..    :caption: Windows/PowerShell
 
 ..    > (Get-ChildItem)[0].getType().Name

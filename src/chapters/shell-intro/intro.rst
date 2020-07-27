@@ -110,7 +110,7 @@ Linux and Bash examples will be labeled as ``Linux/Bash`` and use the ``$`` symb
 
 Windows and PowerShell examples will be labeled as ``Windows/PowerShell`` and use the ``>`` symbol:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > command

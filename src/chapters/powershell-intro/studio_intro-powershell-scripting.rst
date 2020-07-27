@@ -28,7 +28,7 @@ This walkthrough will require you to create and execute PowerShell scripts. As a
 
 We will be using the *least privileged access* necessary to run our scripts which corresponds to the ``RemoteSigned`` execution policy. 
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
@@ -42,7 +42,7 @@ As a reminder, one of the core tenets of Windows is that all files must have a s
 
    You can open a file in ``notepad`` from the command-line using an absolute or relative path to the file:
 
-   .. sourcecode:: none
+   .. sourcecode:: powershell
       :caption: Windows/PowerShell
    
       > notepad path/to/file.ext
@@ -56,7 +56,7 @@ The first script we will write will make use of the variable and sub-expression 
 
 Using the editor of your choice create the ``hello-world.ps1`` file in your home (``~``) directory:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: ~/hello-world.ps1
 
    $Name = 'Your Name'
@@ -82,7 +82,7 @@ In PowerShell the Windows standard for file extensions means that every file's i
 
 Try executing the ``hello-world.ps1`` script:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: execute ~/hello-world.ps1 script
 
    # general form
@@ -138,7 +138,7 @@ Jump Start
 
 In order to jump start your script here are steps 1-4:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: auto-committing-setup.ps1
       
    # declare variables
@@ -158,14 +158,14 @@ To reference **the absolute path of the script** from inside the script itself y
 
 For example if you have a script located at the filepath ``~/scripts/my-script.ps1`` that prints the ``$PSCommandPath`` variable:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: ~/scripts/my-script.ps1
 
    Write-Output "PSCommandPath is: $PSCommandPath"
 
 Executing this script from the home directory would print the following output:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > .\scripts\my-script.ps1
@@ -177,7 +177,7 @@ Setting a commit message
 
 When committing from the command-line you can use the ``-m`` option to attach a message:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > git commit -m "<message in here>"

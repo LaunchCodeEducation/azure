@@ -11,7 +11,7 @@ Cmdlets begin with **Verbs** like ``Get-`` and ``Set-`` followed by the **Noun**
 
 For example the cmdlets ``Get-Location`` and ``Set-Location`` both operate on your ``Location`` in the FS. The former to view your CWD (equivalent to ``pwd`` in Bash) and the latter to change your CWD (equivalent to ``cd``).
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Location
@@ -40,7 +40,7 @@ The analogy of commands and sentences can not be generalized to a single formula
 
    You can view the full list of built-in cmdlets and functions using the ``Get-Command`` cmdlet:
 
-   .. sourcecode:: none
+   .. sourcecode:: powershell
       :caption: Windows/PowerShell
    
       > Get-Command
@@ -53,7 +53,7 @@ PowerShell refers to the many types of inputs to cmdlets as `parameters <https:/
 
 For example the ``Get-Command`` cmdlet has a ``-Type`` option for filtering the results list by types like ``Cmdlet`` and ``Function``:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Command -Type Cmdlet
@@ -66,7 +66,7 @@ PowerShell cmdlets and functions allow for expansion using the ``tab``  key. Thi
 
 For example let's explore the named parameters of ``Get-Command``. If we enter a ``-`` (start of a named parameter) and hit ``tab`` it will show us a list of options available on ``Get-Command``:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Command -
@@ -78,7 +78,7 @@ For example let's explore the named parameters of ``Get-Command``. If we enter a
 
 If we add a few qualifying characters it can narrow the list down for us:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Command -Out         
@@ -86,7 +86,7 @@ If we add a few qualifying characters it can narrow the list down for us:
 
 Whenever enough characters are available to uniquely identify a name it will autocomplete it:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Command -OutV
@@ -100,21 +100,21 @@ Getting Help
 
 While the ``--help`` option is available for *some* CLI tools that we will use in the class, the primary mode of viewing command documentation uses the ``Get-Help`` cmdlet. 
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Help <cmdlet name>
 
 Get-Help by default will display the *summary documentation* for the given cmdlet directly in the PowerShell Terminal. To view the *full documentation* for a cmdlet you can add the ``-Full`` option:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Help <cmdlet name> -Full
 
 Another useful option for ``Get-Help`` is ``-Examples`` which will provide practical examples of using the cmdlet:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Get-Help <cmdlet name> -Examples
@@ -123,7 +123,7 @@ Another useful option for ``Get-Help`` is ``-Examples`` which will provide pract
 
    If you prefer to use the browser, using the ``-Online`` option will automatically open your browser to the *full documentation*:
 
-   .. sourcecode:: none
+   .. sourcecode:: powershell
       :caption: Windows/PowerShell
 
       > Get-Help <cmdlet name> -Online
@@ -135,7 +135,7 @@ PowerShell keeps commonly used documentation locally on your machine so it can b
 
 You can append the ``-Confirm`` option to auto-confirm the download and skip the prompt:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Update-Help -Confirm

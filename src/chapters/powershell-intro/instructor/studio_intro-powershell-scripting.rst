@@ -7,7 +7,7 @@ auto-committing-setup.ps1
 
 Students create this file themselves, and have to move it to the proper directory.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: auto-committing-setup.ps1
       
    # declare variables
@@ -37,7 +37,7 @@ Students would then execute the script. Proof of its success would be be to shar
 
 bonus solution
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: auto-committing-setup.ps1
    
    # declare variables

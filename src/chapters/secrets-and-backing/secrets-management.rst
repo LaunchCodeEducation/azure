@@ -83,7 +83,7 @@ This feature is managed by the aptly name ``.gitignore`` file. Files, and direct
 
 Let's make a new temporary directory, initialize it as a local ``git`` repository and run the ``git status`` command.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
    
    > New-Item -ItemType "directory" -Name temp_directory
@@ -106,7 +106,7 @@ As we expect when creating a new directory, file, and local git repository when 
 
 Let's try adding a ``.gitignore`` file with the entry of ``new-file.txt`` and run the ``git status`` command again.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Set-Location ./temp_directory/
@@ -127,7 +127,7 @@ Our local ``git`` repository has detected a different change. It no long detects
 
 Our local ``git`` repository has detected that a new file is currently untracked: ``.gitignore``. We do want to stage, and commit this file because we can use it as a source of determining which files are not being tracked by ``git``.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > git add .gitignore
@@ -184,7 +184,7 @@ When using ``dotnet user-secrets`` dotnet creates a ``secrets store`` directory 
 
 We can see this in action by creating a new temporary .NET project and printing out the .csproj file:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > dotnet new console -n example-dotnet-user-secret
@@ -203,7 +203,7 @@ We can see this in action by creating a new temporary .NET project and printing 
 
 This is the ``.csproj`` file for a standard dotnet project. Let's initialize a new secret store for this project using ``dotnet user-secrets init``.
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Set-Location ./example-dotnet-user-secret/
@@ -216,7 +216,7 @@ This command did two things for us, it created a new secret store and amended th
 
 We can view the changed ``.csproj`` file with:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
    :emphasize-lines: 10
 	
@@ -237,7 +237,7 @@ Now that our .NET project has an associated secret store we can add as many secr
 
 Let's add a new secret:
 
-.. sourcecode:: none
+.. sourcecode:: powershell
    :caption: Windows/PowerShell
 
    > Set-Location ./example-dotnet-user-secret
