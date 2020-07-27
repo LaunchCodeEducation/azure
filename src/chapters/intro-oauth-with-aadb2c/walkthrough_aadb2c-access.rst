@@ -19,14 +19,15 @@ To accomplish this task we will need to:
 
 In the following Studio you will then update your Coding Events API source code to integrate with AADB2C and deploy it. Then you will use Postman and an access token to make authorized requests to the final version of the API.
 
-.. admonition:: Note
-
-   This walkthrough will require working in both the Azure Portal on AADB2C as well as Postman to configure its requests for access tokens. We will begin by setting up Postman before switching to the Azure Portal.
-   
-   After the initial setup each of the subsequent steps will require you to switch between your browser and Postman to copy values from the Azure Portal into Postman.
-
 Set Up Postman
 ==============
+
+This walkthrough will require working in both the Azure Portal on AADB2C as well as Postman to configure its requests for access tokens. We will begin by setting up Postman before switching to the Azure Portal.
+
+After the initial setup each of the subsequent steps will require you to switch between your browser and Postman to copy values from the Azure Portal into Postman.
+
+The Final Coding Events API Version
+-----------------------------------
 
 The final branch of the Coding Events API includes many additions to the code base. Beyond the AADB2C integration, the update supports **Role Based Access Control (RBAC)** and **Attribute Based Access Control (ABAC)**. While these industry terms sound complicated they describe how the API will restrict access based on the following roles and attributes:
 
@@ -35,9 +36,9 @@ The final branch of the Coding Events API includes many additions to the code ba
 
 .. admonition:: Tip
 
-   If you would like to learn more about RBAC and ABAC `this article <https://www.dnsstuff.com/rbac-vs-abac-access-control>`_ provides a great description of their similarities and differences.
+   If you would like to learn more about RBAC and ABAC `this article <https://www.dnsstuff.com/rbac-vs-abac-access-control>`_ provides a great description of their similarities, differences and usages.
 
-In addition to the ``CodingEvent`` resource the API now includes the ``Member`` and ``Tag`` resources. Because there are many more endpoints available in this version of the API you will find a Postman collection file in the that you can import. 
+In addition to the ``CodingEvent`` resource the API now includes the ``Member`` and ``Tag`` resources. Because there are many more endpoints available in this version of the API you will find a Postman collection file in the repo that you can import. 
 
 Switch to the ``3-aadb2c`` branch in your forked ``coding-events-api`` repo. In the ``coding-events-api/CodingEventsAPI`` project directory is a Postman collection file called ``Postman_AADB2C-CodingEventsAPI-Collection.json``. Let's import this file into Postman.
 
