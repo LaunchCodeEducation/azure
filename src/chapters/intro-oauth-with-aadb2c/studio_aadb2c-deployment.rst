@@ -12,7 +12,9 @@ In this chapter we have:
 
 For our studio we will be using access tokens from a deployed Coding Events API. Instead of running our Coding Events API locally and consuming it with Postman, we will be deploying our Coding Events API to an Azure VM and then consuming the deployed API with Postman.
 
-Luckily this deployment will not include anything we haven't seen from previous deployments.
+The walkthroughs had you create, and configure AADB2C which you will use in your deploy Coding Events API. You will not need to change anything about your AADB2C instance for this studio.
+
+This deployment will not include anything we haven't seen from previous deployments so very little guidance will be provided.
 
 Checklist
 =========
