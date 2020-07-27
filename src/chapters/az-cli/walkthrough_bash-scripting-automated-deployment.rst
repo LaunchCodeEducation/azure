@@ -16,7 +16,7 @@ Bash Scripts Breakdown
 
 To orient ourselves let's take a look at the entrypoint script ``provision-resources.sh``. This is a rather involved script that dictates our deployment. After we look at the script as a file we will break down its individual sections.
 
-.. admonition:: note
+.. admonition:: Note
 
    Recall that the AZ CLI is cross-platform, the AZ CLI commands should work the same regardless of the underlying operating system. Although this script is a Bash script our PowerShell script will look very similar.
 
@@ -268,7 +268,7 @@ Now that we have a VM and have the information we need to create an access polic
 
    az keyvault create -n $kv_name --enable-soft-delete false --enabled-for-deployment true
 
-.. sourcecode:: note
+.. admonition:: note
 
    For a VM to access the Key Vault it must be ``enabled-for-deployment``, we also turn off the ``soft-delete`` so the Key Vault can be deleted in less than 30 days.
 

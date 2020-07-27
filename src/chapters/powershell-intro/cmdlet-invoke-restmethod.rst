@@ -45,7 +45,7 @@ Astronaut Resource Shapes
 
 The ``Astros`` Resource has the following shape:
 
-.. sourcecode:: json
+.. sourcecode:: js
    :caption: the Astros Resource shape
 
    {
@@ -56,7 +56,7 @@ The ``Astros`` Resource has the following shape:
 
 The ``people`` field is an array of ``Person`` Resources with the following shape:
 
-.. sourcecode:: json
+.. sourcecode:: js
    :caption: Person Resource shape
 
    {
@@ -71,7 +71,7 @@ Let's make a ``GET`` request for the ``Astros`` Resource. If you don't specify t
 
 ``Invoke-RestMethod`` will convert the JSON response to a ``PSCustomObject``. By default these Custom Objects are printed in the Terminal in a table presentation:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
 
    > Invoke-RestMethod -URI "http://api.open-notify.org/astros.json"
 
@@ -84,7 +84,7 @@ Grouping to access fields of the JSON response
 
 Using the grouping operator we can access the ``people`` array property of the Custom Object in the following way:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
 
    > (Invoke-RestMethod -URI "http://api.open-notify.org/astros.json").people
 
@@ -105,7 +105,7 @@ Piping to access nested fields
 
 Because we are working with objects we can filter the response down further by piping the ``people`` array object to the ``Select-Object`` cmdlet:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
 
    > $uri = "http://api.open-notify.org/astros.json"
    > (Invoke-RestMethod -URI $uri).people | Select-Object -Property name
@@ -224,7 +224,7 @@ We use the ``ConvertTo-Json`` cmdlet to accomplish this *serialization* from an 
 
    We can also split up this pipeline to make it more readable:
 
-   .. sourcecode:: powershell
+   .. sourcecode:: none
       :caption: Windows/PowerShell
    
       > # split for readability
@@ -235,7 +235,7 @@ This approach is invaluable for practicing with data transformations. Whereas a 
 
 You can then load the JSON contents *as a string* using ``Get-Content``:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Get-Content "people.json"
@@ -358,7 +358,7 @@ You can also load the body from a json file. This allows you to use existing fil
 
 Let's assume we have a file ``~\coding-event.json`` with the following contents:
 
-.. sourcecode:: powershell
+.. sourcecode:: none
    :caption: Windows/PowerShell
 
    > Get-Content ~\coding-event.json
