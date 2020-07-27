@@ -2,11 +2,11 @@
 Walkthrough: Set Up Access Token Authorization with Azure ADB2C
 ===============================================================
 
-In the previous walkthrough we created our AADB2C tenant and configured an identity token flow. These steps enabled our Coding Events API to integrate with AADB2C as an identity manager using OIDC to **authenticate the identity** of our application's users.
+In the previous walkthrough we created our AADB2C tenant and configured an identity token flow. These steps integrated our Coding Events API with our AADB2C tenant as a centralized identity manager. At this point the API can use **OIDC** to **authenticate the identity** of users in the AADB2C tenant.
 
-In this walkthrough we will explore the other half of AADB2C -- protecting applications using access tokens. Recall that we can use OAuth access tokens as a means of **delegating authorization** for one service to act on behalf of a user when interacting with another service.
+In this walkthrough we will explore the other half of AADB2C -- protecting applications using access tokens. Recall that we can use **OAuth** access tokens as a means of **delegating authorization** for one service to interact with another service on behalf of a user.
 
-Because our API is headless we will need a client application, Postman, to consume it. However, we need to protect our API to prevent *unregistered applications* from interacting with it.
+Remember that an API, by definition, can only be must consumed by client applications. We can use AADB2C as an **authorization server** to protect our API by restrict access only to *registered applications*. In our case we will use Postman as the consuming client application
 
 Our goal is to configure AADB2C to grant access tokens to the Postman client application. These tokens will need to include a **scope** that **authorizes** Postman (the token *bearer*) to interact with the protected application (Coding Events API) **on behalf of a user**.
 
@@ -37,9 +37,9 @@ The final branch of the Coding Events API includes many additions to the code ba
 
    If you would like to learn more about RBAC and ABAC `this article <https://www.dnsstuff.com/rbac-vs-abac-access-control>`_ provides a great description of their similarities and differences.
 
-In addition to the ``CodingEvent`` resource the API now includes the ``Member`` and ``Tag`` resources. Because there are many more endpoints available in this version of the API we have provided a Postman collection file that you can import. 
+In addition to the ``CodingEvent`` resource the API now includes the ``Member`` and ``Tag`` resources. Because there are many more endpoints available in this version of the API you will find a Postman collection file in the that you can import. 
 
-In the ``coding-events-api/CodingEventsAPI`` project directory you will find the ``Postman_AADB2C-CodingEventsAPI-Collection.json`` collection file.
+Switch to the ``3-aadb2c`` branch in your forked ``coding-events-api`` repo. In the ``coding-events-api/CodingEventsAPI`` project directory is a Postman collection file called ``Postman_AADB2C-CodingEventsAPI-Collection.json``. Let's import this file into Postman.
 
 Open Postman and select the **Import** button (next to **New**):
 
@@ -54,7 +54,7 @@ Select the **Upload Files** button and navigate to the collection file in your p
 Select the **Import** button to import the collection:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/3select-import.png
-   :alt: Postman import the uploaded collection
+   :alt: Postman import the uploadedthen collection
 
 On the right side of the new collection click the three dots then select **Edit**:
 
@@ -66,9 +66,9 @@ From the edit collection modal select the **Authorization** tab:
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/5select-authorization-tab.png
    :alt: Postman collection Authorization tab
 
-This imported collection comes pre-configured for you with many of the Authorization settings. From this tab you can see it has been configured to use OAuth for getting access tokens. The access token will be sent in the ``Authorization`` request header using the ``Bearer`` prefix. 
+In addition to all of the endpoints and organizing directories, this imported collection comes with many of the Authorization settings pre-configured for you. From this tab you can see it has already been configured to use OAuth for getting an access token. After getting the access token it will be automatically sent in the ``Authorization`` request header for every request made within the collection.
 
-This prefix will be used to indicate that Postman is the *bearer of a token that authorizes its requests* for interacting with the API on behalf of your AADB2C user account. The API then extracts and validates this token before processing the request using its RBAC and ABAC rules.
+The ``Bearer`` prefix will be used to indicate that Postman is the *bearer of a token that authorizes its requests* for interacting with the API *on behalf of its* **sub**\ject, the AADB2C user it was created for. The updated API then extracts and validates this token before processing the request using its RBAC and ABAC rules.
 
 Selecting the **Get New Access Token** button will open a modal with a form for configuring the access token request:
 
@@ -92,32 +92,59 @@ Leave this form open in Postman and switch over to the Azure Portal.
 Protect the Coding Events API
 =============================
 
-In this step we will configure AADB2C to protect our API. We will be setting up and exposing the ``user_impersonation`` scope that Postman will use. At the end of this step you will copy over the value for the **Scope** field in the Postman form.
+In this step we will configure AADB2C to protect our API. We will be setting up and *exposing* the ``user_impersonation`` scope that Postman will use. At the end of this step you will copy over the URI of this scope into the value for the **Scope** field in the Postman form.
 
 First navigate to your AADB2C tenant directory. Then select the Coding Events API under **App Registrations**.
 
-Within the API application dashboard select the **Expose an API** settings:
+Copy the API Client ID
+----------------------
+
+From the Coding Events API application dashboard copy the **client ID**:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/1set-api-scopes.png
    :alt: AADB2C expose an API
 
-- sidebar will pop open to set application ID URI (just save and continue)
+Switch back to Postman and **replace the client ID field** with the copied value.
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/2set-app-id-uri.png
-   :alt: set application uri id
+Expose a user_impersonation Scope for the API
+---------------------------------------------
 
-- set-user-impersonation-scope
-- user_impersonation
-- User impersonation access to API
-- Grant access for client application to impersonate a user in requests to the API
+Next select the **Expose an API** settings from the left panel. From this view we can expose controlled access to our API using scopes.
+
+Select the **Add a scope** button:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/1set-api-scopes.png
+   :alt: AADB2C expose an API
+
+Since this is the first scope exposed for our API we will need to register its **application ID URI**. This is a unique identifier that associates the exposed scopes to this specific registered application. By default it will use the registered application's client ID.
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/2set-scope-app-id-uri.png
+   :alt: AADB2C set application ID URI for new scope
+
+Select **Save and continue** to proceed to the new scope form. 
+
+We will be exposing a ``user_impersonation`` scope for our API. This scope is what the Postman client application will request access to in order to send requests to the API on behalf of the user. Enter the following values for each of the scope form fields:
+
+- **Scope name**: ``user_impersonation``
+- **Admin consent display**: ``User impersonation access to API``
+- **Admin consent description**: ``Allows the Client application to access the API on behalf of the authenticated user``
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/3set-user-impersonation-scope.png
-   :alt: add user_impersonation scope to API
+   :alt: AADB2C add user_impersonation scope to API
+
+After the scope has been registered copy the scope URI (using the blue copy icon next to it):
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/3-5copy-scope-uri.png
-   :alt: add user_impersonation scope to API
+   :alt: AADB2C copy scope URI
 
-Copy the ``Scope`` and ``Client ID`` to the Postman form.
+Switch back to Postman and **replace the scope field** with the copied value.
+
+.. admonition:: Warning
+
+   Before continuing make sure you have updated the Postman form with your **Coding Event API application** values for:
+
+   - **client ID**
+   - **scope URI** for the ``user_impersonation`` scope
 
 Register the Postman Client Application
 =======================================
