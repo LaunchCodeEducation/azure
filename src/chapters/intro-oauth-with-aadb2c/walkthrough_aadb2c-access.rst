@@ -371,7 +371,7 @@ If everything has been updated properly you are ready to request your first acce
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/8postman-adb2c-form-signin.png
    :alt: AADB2C tenant sign in
 
- After successfully authenticating, Postman will receive and store the access token in its tokens list. Select the **Use Token** button to designate the token Postman should use when making requests to the API:
+After successfully authenticating, Postman will receive and store the access token in its tokens list. Select the **Use Token** button to designate the token Postman should use when making requests to the API:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/9postman-access-token-success.png
    :alt: Select Use Token for the new access token
@@ -398,3 +398,7 @@ However, now that you have everything configured it will be a quick process:
 #. open the collection settings (three dots next to the collection name)
 #. switch to the **Authorization tab** and select **Get New Access Token**
 #. select **Request Token** to re-authorize and receive a new one
+#. select **Use Token** (and discard any expired ones)
+#. select **Update** to save the changes to the collection
+
+You should then be able to re-issue the requests using the valid access token.
