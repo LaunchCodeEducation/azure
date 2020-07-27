@@ -96,15 +96,15 @@ In this step we will configure AADB2C to protect our API. We will be setting up 
 
 First navigate to your AADB2C tenant directory. Then select the Coding Events API under **App Registrations**.
 
-Copy the API Client ID
-----------------------
+.. Copy the API Client ID
+.. ----------------------
 
-From the Coding Events API application dashboard copy the **client ID**:
+.. From the Coding Events API application dashboard copy the **client ID**:
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/1set-api-scopes.png
-   :alt: AADB2C expose an API
+.. .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/1set-api-scopes.png
+..    :alt: AADB2C expose an API
 
-Switch back to Postman and **replace the client ID field** with the copied value.
+.. Switch back to Postman and **replace the client ID field** with the copied value.
 
 Expose a user_impersonation Scope for the API
 ---------------------------------------------
@@ -137,75 +137,105 @@ After the scope has been registered copy the scope URI (using the blue copy icon
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/3-5copy-scope-uri.png
    :alt: AADB2C copy scope URI
 
-Switch back to Postman and **replace the scope field** with the copied value.
+Switch back to Postman and **replace the Scope field** with the copied value.
 
 .. admonition:: Warning
 
-   Before continuing make sure you have updated the Postman form with your **Coding Event API application** values for:
+   Before continuing make sure you have updated the Postman form:
 
-   - **client ID**
-   - **scope URI** for the ``user_impersonation`` scope
+   - **Scope** field: the **scope URI** for the ``user_impersonation`` scope
+
+Register & Configure the Postman Client Application
+===================================================
+
+Now that our API has exposed its ``user_impersonation`` scope we will register our Postman client application to consume it. Using the ``Azure AD B2C | App registrations`` breadcrumb link in the top left corner go back to the app registrations view. 
 
 Register the Postman Client Application
-=======================================
+---------------------------------------
 
-.. todo:: register jwt.ms for exploration of access token
-
-- go back to app registrations
-- click new registration
+Select **New registration**:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/4new-app-registration.png
    :alt: new registration (for client app)
 
+Just as before **we will leave all the defaults** except for the name and redirect URI. In the app registration form use the following values:
+
+- **Name**: ``Postman``
+- **redirect URI**: ``https://jwt.ms``
+
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/5application-completed-registration-form.png
-   :alt:
+   :alt: Postman client application completed form
 
-- leave defaults except for name & redirect URI
-- name: Postman
-- redirect URI: https://www.postman.com/oauth2/callback
-- click the authentication settings and then click implicit flow
+We will be registering two redirect URIs for this application. The first will use the Microsoft JWT tool so that we can explore the access token (like we did for the identity token in the previous walkthrough). The second will be the redirect URI used when performing the OAuth flow from Postman. We will register the latter URI in the next section.
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/5-5postman-implicit-flow.png
-   :alt:
+After registering the Postman application it will send you to its application dashboard. Copy the **client ID** to your clipboard using the copy icon to the right of it:
 
-- sends you back to the new application dashboard
-- select API permissions
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/5-1copy-postman-client-id.png
+   :alt: copy Postman client ID
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/6api-permissions.png
-   :alt:
+Switch back to Postman and **replace the Client ID field** with the copied value.
 
-- click add a permission
+.. admonition:: Warning
+
+   Before continuing make sure you have updated the Postman form:
+
+   - **Client ID** field: the **client ID** of your registered **Postman application**
+
+Configure Authentication
+------------------------
+
+We will now configure the Postman application to use the **OAuth implicit flow** and set the redirect URI. On the left sidebar select the **Authentication** settings.
+
+In the **Web - Redirect URIs** add a new entry under the existing one. Select **add URI** and paste in the following value which Postman uses for handling OAuth redirects:
+
+- ``https://www.postman.com/oauth2/callback``
+
+Then scroll down to the **Implicit grant** section and, just as before, select the checkboxes **for both**:
+
+- **Access tokens**
+- **Identity tokens**
+
+Check that your configuration matches the picture below then select **Save**:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/5-2postman-authentication-configuration-complete.png
+   :alt: Postman Authentication configuration completed view
+
+Grant Admin Permissions for Using the Scope
+-------------------------------------------
+
+In this step we will configure the Postman application to use the ``user_impersonation`` scope exposed by the Coding Events API application. To do this we will need to grant admin permissions for this scope.
+
+In the sidebar select the **API permissions** settings. Then select the **Add a permission** button:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/7add-permission.png
-   :alt:
+   :alt: Postman add an API permission
 
-- opens a sidebar select my apis tab and select the codingeventsapi app
+This will open a sidebar for configuring the permissions. Select the **My APIs** tab on the right side then select the **Coding Events API** application from the list:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/8my-apis.png
-   :alt:
+   :alt: Postman grant My APIs - Coding Events API permission
 
-- select the user_impersonation permission
+From here we can select the scopes for the selected API (Coding Events API) that we would like to grant permissions for *this application* (Postman) to use. Select the ``user_impersonation`` scope then select **Add Permission**:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/9select-user-impersonation-permission.png
-   :alt:
+   :alt: add Coding Events API user_impersonation permission to Postman
 
-- click add permission
+This scope **is not valid** until an admin has granted permission for the Postman application to use it. Select the **Grant admin consent for <Name> ADB2C** button to grant it. 
 
-- grant admin consent for ADB2C
+.. admonition:: Note
+   
+   This is a **tenant-wide** permission that will apply to *your* AADB2C tenant. ``Student`` is used as a generic placeholder in the image below.
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/10grant-admin-consent.png
-   :alt:
+   :alt: grant admin permission to user_impersonation scope for Postman
 
-- select yes
-
-- after you select yes you will see:
+After confirming your decision your configuration should match the image below. If it does not, you may need to select the **Refresh** button in the top corner after confirmation or refresh the page entirely.
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/11admin-grant-success.png
-   :alt:
+   :alt: granted admin permission success
 
-Get the Authorization URL
-=========================
-
+Test the User Flow for Access Tokens
+====================================
 
 - click the breadcrumb link (takes you to app registrations)
 - select user flows
@@ -223,21 +253,37 @@ Get the Authorization URL
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/14run-user-flow.png
    :alt:
 
-- in the sidebar click access tokens, click resource, choose codingeventsAPI, scopes are already selected, 
+Get the Authorization URL
+-------------------------
 
-.. todo:: pic of just metadata address to get auth url
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/15user-flow-metadata-document-link.png
+   :alt: OIDC metadata document select authorization URL
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/7metadata-authorization-endpoint.png
-   :alt:
+.. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/16metadata-authorization-endpoint.png
+   :alt: OIDC metadata document copy the authorization endpoint URL
 
-grab that URL paste it into postman
+Switch back to Postman and **replace the Auth URL field** with the copied value.
 
-.. todo:: new picture for JUST the access token and run user flow.
+.. admonition:: Warning
+
+   Before continuing make sure you have updated the Postman form:
+
+   - **Auth URL** field: the **authorization_endpoint** entry in the linked metadata document
+
+Explore the Access Token
+------------------------
+
+- show steps of selecting just user_impersonation scope and running flow for jwt.ms
+- break down 
+
+.. todo:: replace image below with new one (just user_impersonation)
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/15user-flow-final.png
    :alt:
 
-.. todo:: show using the flow to see the access token. show the scp, azp and aud
+.. todo:: screenshot of jwt.ms access token exploration claims
+
+- break down scp, azp and aud
 
 .. admonition:: note
 
@@ -246,8 +292,6 @@ grab that URL paste it into postman
    ideally we would hit copy and paste in the authorization URL, but it doesn't work that way, we will just grab the Auth URL, but it would be helpful to students to see how we selected the resource they requested access, and here is the scopes and then copy that URL and breakdown that URL. if you feel it is beneficial to breakdown that URL
 
    code block split it into multiple lines, and explain each line
-
-
 
 Get the Postman Access Token
 ============================
