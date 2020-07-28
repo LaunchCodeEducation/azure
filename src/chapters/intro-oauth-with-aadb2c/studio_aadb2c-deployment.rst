@@ -2,59 +2,34 @@
 Studio: Deploy Coding Events API with AADB2C
 ============================================
 
-In this chapter we have:
+In this studio your mission is to practice accessing protected resources in the final version of the Coding Events API. You will begin by working with the API locally to make sure that the latest updates are functioning properly. Afterwards, you will deploy the API to Azure to be served securely over HTTPS.
 
-#. created an AADB2C tenant
-#. registered and exposed our Coding Events API
-#. created a SUSI user flow for our Coding Events API that can provide identity tokens
-#. created scopes that protect the Coding Events API that grant a client application ``user_impersonation`` delegation available as access tokens
-#. Used access tokens from Postman to access our locally hosted application
+Before we continue let's consider what we have already configured:
 
-For our studio we will be using access tokens from a deployed Coding Events API. Instead of running our Coding Events API locally and consuming it with Postman, we will be deploying our Coding Events API to an Azure VM and then consuming the deployed API with Postman.
+- An AADB2C tenant for managing user accounts
+- two registered applications -- the Coding Events API and its consumer, the Postman desktop client application
+- A configuration for access tokens with a ``user_impersonation`` scope to protect the API by only allowing requests from the registered Postman application
+- A configuration for the Postman application to request an access token and use it for making requests to the new endpoints available in the Coding Events API collection
 
-The walkthroughs had you create, and configure AADB2C which you will use in your deploy Coding Events API. You will not need to change anything about your AADB2C instance for this studio.
+At a high level this studio will require you to:
 
-This deployment will not include anything we haven't seen from previous deployments so very little guidance will be provided.
+- Update the Coding Events API source code with settings to integrate with your AADB2C tenant and validate the access tokens it receives from Postman
+- Deploy the API to Azure with the correct VM, Key vault and security configurations that you have seen in previous deployments
+- Run two new setup scripts that configure the VM to serve the API over a secure connection as a *background service*
+- Test out the protected endpoints on your own or with a partner
 
-Checklist
-=========
+Setup
+=====
 
-#. Provision RG
-#. Provision VM
-#. Provision KV
-#. Grant VM access to KV
-#. Add database connection string to KV
-#. Configure VM using RunCommand (dependencies, setup MySQL)
-#. Update source code to include KV name and AADB2C information
-#. Deliver source code to VM using git
-#. Build source code on VM using dotnet publish
-#. Deploy artifacts
-#. Open NSG
-#. Update Postman to consume remote Coding Events API
-#. Test endpoints with Postman
-
-Gotchas
-=======
-
-- not requesting a new access token from Postman
-- not opening the proper port on the VM
-- not updating your source code
-- not switching to the branch that has the updated source code
-
-Limited Guidance
-================
-
-Provision Resources
--------------------
-
-You have provisioned multiple RGs, VMs and KVs at this point in the class. If you need a refresher check out the previous chapter walkthroughs and studios.
-
-.. admonition:: note
-
-   Make sure to adopt a naming convention for your resources.
-
-Update Source Code
+Set Up Local MySQL
 ------------------
+
+- what mysql GUI are they using?
+- how to enter script? (screenshot)
+- mysql setup script
+
+Update the Coding Events API
+----------------------------
 
 You will need to update the ``appsettings.json`` file of your Coding Events API. It will need to include:
 
@@ -68,23 +43,104 @@ After getting the information you need from the Azure Portal about these resourc
 
    Make sure you have provisioned your Key vault before you update your source code. Remember that key vault names are globally unique!
 
-Prepare VM
-----------
+- switch final branch
+- update appsettings
+   - describe (high level) what the fields are used for
+- note / tip about where in codebase to see
+   - jwt business
+   - RBAC/ABAC (in model DTO methods)
 
-We are not configuring the VM in any new or different ways. You will be able to use the deployment script you created in the Deploy CodingEventsAPI with KeyVault studio.
+Get an Access Token
+-------------------
 
-Double check that the script you will send to your VM via the RunCommand covers the following:
+- copy from end of access walkthrough
+- note on refreshing
 
-- sets environment variables
-- updates apt-get
-- download and installs MySQL
-- creates a MySQL database and user
-- downloads and installs the dotnet SDK
-- clones your updated code
-- publishes your updated code
-- deploys your published artifacts
+Run Locally
+===========
+
+Checklist
+---------
+
+Viewing Documentation
+---------------------
+
+Make Requests to Protected Endpoints
+------------------------------------
+
+- run the API
+- use access token to hit protected endpoints
+- endpoints / instructions
+   - create event
+   - create tag
+   - add tag to event
+   - delete coding event
+- tip: try without access token and see errors
+   - add screenshot of 401
+      - expired or missing token
+
+Limited Guidance
+================
+
+Gotchas
+-------
+
+- expired or missing access token
+- incorrect configuration in appsettings
+- must open the correct HTTPS port
+
+Deploy the Coding Events API
+----------------------------
+
+- same as you have seen
+- runcommand has the following two new scripts
+   - will be exploring and using these in upcoming lessons
+
+Configuring the VM
+------------------
+
+- `link to script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/deliver-deploy.sh>`_
+- this script is setting up a background service using a `unit file <>`_
+   - sets up a service user (for security)
+   - sets up working directories and permissions
+      - link permissions from bash article
+- otherwise similar to what you have seen
+- feel free to explore it on your own or just use it brah
+
+Configuring Nginx for TLS Termination
+-------------------------------------
+
+- `link to script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/2configure-ssl.sh>`_
+- nginx alternative to kestrel
+   - will learn about web servers in upcoming WS / IIS chapter
+   - used for TLS termination in a `reverse proxy arrangement <https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/>`_
+- openssl used to provision the self-signed cert
+   - link to HTTPS / TLS termination
+   - like the cert they have set up locally w dotnet
+   - must be accepted in the browser
+      - screenshot (from WS / IIS chapter)
+
+Interact With the Deployed API
+==============================
+
+Setup
+-----
+
+- two email addresses
+- partner with other student
+- show how to update the public IP for ``baseURL``
+
+Make Requests to Protected Endpoints
+------------------------------------
 
 Deliverable
 ===========
 
-Upon completing the deployment and Postman testing of your Coding Events API. Send the public IP address of your deployed Coding Events API, and the link to the code you deployed to your TA.
+- public IP
+- the state of the resources should be (at minimum)
+   - one owner
+   - one member
+   - one coding event
+   - one tag (associated w coding event)
+
+
