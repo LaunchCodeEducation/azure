@@ -30,7 +30,7 @@ Let's take a basic MVC .NET application and run it with the ``dotnet run`` CLI.
 
 .. image:: /_static/images/azure-intro-hosting/dotnet-run.png
 
-When we navigate to ``http://locahost:5000/`` we see:
+When we navigate to ``http://localhost:5000/`` we see:
 
 .. image:: /_static/images/azure-intro-hosting/dotnet-run-view.png
 
