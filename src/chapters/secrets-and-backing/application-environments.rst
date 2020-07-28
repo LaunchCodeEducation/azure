@@ -53,7 +53,7 @@ In this environment you may be working on a feature branch in which you are the 
 
 .. admonition:: Note
 
-   Checking the behavior of your code usually includes: automated testing and limited manual Quabity Assuance. 
+   Checking the behavior of your code usually includes: automated testing and limited manual Quality Assurance. 
 
    .. that's not it, but we're close!
 
