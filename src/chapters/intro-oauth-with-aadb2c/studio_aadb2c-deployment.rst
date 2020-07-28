@@ -37,7 +37,7 @@ Gotchas
 =======
 
 - not requesting a new access token from Postman
-- not opening the VM proper port
+- not opening the proper port on the VM
 - not updating your source code
 - not switching to the branch that has the updated source code
 
