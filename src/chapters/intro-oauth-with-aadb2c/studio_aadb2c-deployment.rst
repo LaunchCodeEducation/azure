@@ -21,46 +21,132 @@ At a high level this studio will require you to:
 Setup
 =====
 
+Before you deploy the API you will set up a local environment to test it in. For this setup you will need to:
+
+#. set up a local MySQL ``coding_events`` database
+#. update your Coding Events API ``appsettings.json`` to integrate with AADB2C
+#. get an access token through Postman
+
 Set Up Local MySQL
 ------------------
 
-- what mysql GUI are they using?
-- how to enter script? (screenshot)
-- mysql setup script
+You will use the MySQL Workbench GUI program you installed in the previous unit to run the user and database setup script. This is the same script you have seen in previous deployments:
+
+.. sourcecode:: mysql
+   :caption: Coding Events API MySQL database setup script
+
+   CREATE DATABASE coding_events;
+   CREATE USER 'coding_events'@'localhost' IDENTIFIED BY 'launchcode';
+   GRANT ALL PRIVILEGES ON coding_events.* TO 'coding_events'@'localhost';
+   FLUSH PRIVILEGES;
+
+First open the MySQL Workbench application by searching for it in your taskbar:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/mysql-open-workbench.png  
+   :alt: Windows search for MySQL Workbench application
+
+Then log in to your local server instance:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/mysql-login-local-instance.png  
+   :alt: MySQL Workbench log in to local server instance
+
+In the script area paste in the setup script from above:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/mysql-paste-setup-script.png  
+   :alt: MySQL Workbench paste in setup script
+
+You can run the script using the lightning icon, ``ctrl+shift+enter`` or using the menu option at the top:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/mysql-run-setup-script.png  
+   :alt: MySQL Workbench paste in setup script
+
+You should then see a success output from the executed script like the image below:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/mysql-setup-script-success.png  
+   :alt: MySQL Workbench paste in setup script
 
 Update the Coding Events API
 ----------------------------
 
-You will need to update the ``appsettings.json`` file of your Coding Events API. It will need to include:
+.. admonition:: Warning
 
-- Your Key vault name
-- Your AADB2C metadata URL
-- Your registered Coding Events API client ID 
+   Before continuing make sure you are working from inside **your forked repo directory** on the ``3-aadb2c`` branch.
 
-After getting the information you need from the Azure Portal about these resources, and updating your source code make sure you have pushed your code back to GitHub so you can pull the correct code for your deployment.
+In the ``appsettings.json`` project configuration file you will notice some familiar fields as well as a few new ones: 
 
-.. admonition:: note
+.. sourcecode:: json
+   :caption: coding-events-api/CodingEventsAPI/appsettings.json
 
-   Make sure you have provisioned your Key vault before you update your source code. Remember that key vault names are globally unique!
+   {
+      "Logging": {
+         "LogLevel": {
+            "Default": "Information",
+            "Microsoft": "Warning",
+            "Microsoft.Hosting.Lifetime": "Information"
+         }
+      },
+      "AllowedHosts": "*",
+      "ServerOrigin": "",
+      "KeyVaultName": "",
+      "JWTOptions": {
+         "Audience": "",
+         "MetadataAddress": "",
+         "RequireHttpsMetadata": true,
+         "TokenValidationParameters": {
+            "ValidateIssuer": true,
+            "ValidateAudience": true,
+            "ValidateLifetime": true,
+            "ValidateIssuerSigningKey": true
+         }
+      }
+   }
 
-- switch final branch
-- update appsettings
-   - describe (high level) what the fields are used for
-- note / tip about where in codebase to see
-   - jwt business
-   - RBAC/ABAC (in model DTO methods)
+To complete this studio you will need to update the following fields before deploying the API:
 
-Get an Access Token
--------------------
+- ``KeyVaultName``: you can populate this field *after provisioning your resources* used in the deployment
+- ``ServerOrigin``: a new field (discussed below)
+- ``JWTOptions``: a new object field (discussed below)
 
-- copy from end of access walkthrough
-- note on refreshing
+``ServerOrigin``
+^^^^^^^^^^^^^^^^
+
+The ``ServerOrigin`` field is used to define the the **origin** of a server. The API has been configured to use this origin for creating resource links (for actions or relations to other resources). The term origin is defined by the **where the server is hosted** and is comprised of:
+
+- the protocol (``http`` or ``https``)
+- the `Fully Qualified Domain Name (FQDN) <>`_
+- the port (if it differs from the implicit port derived from the protocol)
+
+Locally, your API ``ServerOrigin`` will be:
+
+- ``https://localhost:5001`` (as seen in the ``appsettings.Development.json`` file).
+
+However, **after you deploy the API** the ``ServerOrigin`` will **need to be updated** to reference the new location it is hosted from (the VM host's public IP address):
+
+- ``https://<public IP>`` (where port ``443`` is *implied* by the ``https`` protocol in the origin)
+
+``JWTOptions``
+^^^^^^^^^^^^^^
+
+The ``JWTOptions`` are used to configure the `JWT authentication middleware <https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer?view=aspnetcore-3.0>`_ used by the API to validate the access tokens it receives. The two fields in this object entry that you will need to update are:
+
+- ``MetadataAddress``: the URL of the JSON metadata document that describes the OIDC capabilities and endpoints for your AADB2C service
+- ``Audience``: the application ID (client ID) of the **intended audience** for the token
+
+You may need to refer to your notes or previous walkthroughs to get these values.
+
+.. admonition:: Tip
+
+   Be careful with the ``Audience`` field. Consider which registered application client ID is appropriate, that of your Postman client application or of the Coding Events API.
 
 Run Locally
 ===========
 
 Checklist
 ---------
+
+- set up your ``coding_events`` database locally
+- update the AADB2C fields of your ``appsettings.json`` file
+- request a valid access token (refer to the previous walkthrough for a refresher on this process)
 
 Viewing Documentation
 ---------------------
@@ -89,15 +175,18 @@ Gotchas
 - incorrect configuration in appsettings
 - must open the correct HTTPS port
 
-Deploy the Coding Events API
-----------------------------
+Provision Resources
+-------------------
 
 - same as you have seen
 - runcommand has the following two new scripts
    - will be exploring and using these in upcoming lessons
+- after setting up:
+   - update KV name
+   - update server origin
 
-Configuring the VM
-------------------
+Configure the VM
+----------------
 
 - `link to script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/deliver-deploy.sh>`_
 - this script is setting up a background service using a `unit file <>`_
@@ -107,8 +196,8 @@ Configuring the VM
 - otherwise similar to what you have seen
 - feel free to explore it on your own or just use it brah
 
-Configuring Nginx for TLS Termination
--------------------------------------
+Configure Nginx for TLS Termination
+-----------------------------------
 
 - `link to script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/2configure-ssl.sh>`_
 - nginx alternative to kestrel
@@ -119,6 +208,11 @@ Configuring Nginx for TLS Termination
    - like the cert they have set up locally w dotnet
    - must be accepted in the browser
       - screenshot (from WS / IIS chapter)
+
+Deliver & Deploy the Coding Events API
+--------------------------------------
+
+- `link to script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/1configure-vm.sh>`_
 
 Interact With the Deployed API
 ==============================
