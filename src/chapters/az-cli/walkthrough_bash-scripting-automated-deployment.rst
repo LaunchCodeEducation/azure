@@ -295,7 +295,7 @@ Set Key Vault Access Policy
 Finally we use the variable we created earlier that contains the Virtual Machine system assigned identity to create an access policy that grants the VM permission to **get** secrets stored in the key vault.
 
 .. sourcecode:: bash
-   :caption: ``provision-resources.sh``: Create Key vault access policy for VM
+   :caption: ``provision-resources.sh``: Create Key Vault access policy for VM
 
    az keyvault set-policy --name $kv_name --object-id $vm_id --secret-permissions list get
 
