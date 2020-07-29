@@ -37,3 +37,4 @@ Chapters
    chapters/powershell-intro/instructor/index
    chapters/powershell-intro/instructor/studio_rest-powershell-scripting
    chapters/secrets-and-backing/least-privileged-access
+   chapters/intro-oauth-with-aadb2c/instructor/studio_aadb2c-deployment.rst
