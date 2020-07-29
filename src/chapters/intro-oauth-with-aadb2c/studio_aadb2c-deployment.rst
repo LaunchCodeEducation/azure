@@ -7,7 +7,7 @@ In this studio your mission is to practice accessing protected resources in the 
 Before we continue let's consider what we have already configured:
 
 - An AADB2C tenant for managing user accounts
-- two registered applications -- the Coding Events API and its consumer, the Postman desktop client application
+- Two registered applications: the Coding Events API and its consumer, the Postman desktop client application
 - A configuration for access tokens with a ``user_impersonation`` scope to protect the API by only allowing requests from the registered Postman application
 - A configuration for the Postman application to request an access token and use it for making requests to the new endpoints available in the Coding Events API collection
 
@@ -66,7 +66,7 @@ You should then see a success output from the executed script like the image bel
 
 .. admonition:: Warning
 
-   Recall that the Key vault that provides the database connection string to the API is **only used** in the ``Production`` environment. 
+   Recall that the Key vault that provides the database connection string to the API is **used only** in the ``Production`` environment. 
    
    When *working locally* (in the ``Development`` environment) your API will expect the default connection string to be available via the ``dotnet user-secrets``. Refer to your notes or the secrets management chapter for a refresher of how to configure this.
 
@@ -116,10 +116,10 @@ To complete this studio you will need to update the following fields before depl
 ``ServerOrigin``
 ^^^^^^^^^^^^^^^^
 
-The ``ServerOrigin`` field is used to define the the **origin** of a server. The API has been configured to use this origin for creating resource links (for actions or relations to other resources). The term origin is defined by the **where the server is hosted** and is comprised of:
+The ``ServerOrigin`` field is used to define the the **origin** of a server. The API has been configured to use this origin for creating resource links (for actions or relations to other resources). The term origin is defined by **where the server is hosted** and is comprised of:
 
 - the protocol (``http`` or ``https``)
-- the `Fully Qualified Domain Name (FQDN) <>`_
+- the `Fully Qualified Domain Name (FQDN) <https://networkencyclopedia.com/fully-qualified-domain-name-fqdn/>`_
 - the port (if it differs from the implicit port derived from the protocol)
 
 Locally, your API ``ServerOrigin`` will be:
@@ -161,7 +161,7 @@ Checklist
 Viewing Documentation
 ---------------------
 
-Just as before the API serves documentation from the Swagger UI page at the root of the server. This time you will notice that the endpoints have been separated into the respective Roles (RBAC) and Attributes (ABAC) used for authorization of requests. Although you will be using Postman to issue requests, the Swagger UI is a helpful resource for exploring the endpoints and resource schemas.
+The API serves documentation from the Swagger UI page at the root of the server. This time you will notice that the endpoints have been separated into the respective Roles (RBAC) and Attributes (ABAC) used for authorization of requests. Although you will be using Postman to issue requests, the Swagger UI is a helpful resource for exploring the endpoints and resource schemas.
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/swagger-ui-overview.png
    :alt: Swagger UI for final version of Coding Events API
@@ -183,9 +183,13 @@ After getting everything running make requests to the following endpoints:
 Limited Guidance
 ================
 
-The majority of this deployment will be familiar to you based on your previous learning. However, the setup scripts may seem daunting at first glance.
+The majority of this deployment will be familiar to you based on your previous learning. However, the setup scripts will be new to you.
 
-Take some time to look over and discuss them with your mates to decipher what they are doing. Even if you don't believe that *currently* you are capable of writing them, you will surprise yourself with how much you are able understand. We will explore these in more detail in upcoming scripting lessons.
+The scripts will be responsible for:
+
+- ``configure-vm.sh``: similar to the script you wrote in your most previous deployment
+- ``configure-ssl.sh``: installs and configures the NGINX web server and provisions a `self-signed certificate <https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs#generating-ssl-certificates>`_
+- ``deliver-deploy.sh``: creates a unit file for the Coding Events API, delivers, and deploys the source code as a `Systemd unit <https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files>`_
 
 Provision Resources
 -------------------
@@ -196,8 +200,15 @@ For this deployment you will need to provision all of the same resources as you 
 
    After setting up the VM and Key vault you will need to update the entries in your ``appsettings.json``. **Don't forget to commit and push** these changes before deploying!
 
+Configuration Scripts
+---------------------
+
+Some of the code for the scripts are provided for you, but you are responsible for finishing the scripts before running them. Take time to look over and discuss these scripts with your classmates and TA to decipher what they are doing. We will explore these in more detail in upcoming scripting lessons.
+
+Take some time to look over and discuss them with your classmates to decipher what they are doing. Even if you don't believe that *currently* you are capable of writing them, you will surprise yourself with how much you are able understand. We will explore these in more detail in upcoming scripting lessons.
+
 Configure the VM
-----------------
+^^^^^^^^^^^^^^^^
 
 The `configure-vm.sh script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/1configure-vm.sh>`_ should look familiar to you based on the script you wrote in the previous deployment. It is designed to:
 
