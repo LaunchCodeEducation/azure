@@ -15,7 +15,7 @@ At a high level this studio will require you to:
 
 - Update the Coding Events API source code with settings to integrate with your AADB2C tenant and validate the access tokens it receives from Postman
 - Deploy the API to Azure with the correct VM, Key vault and security configurations that you have seen in previous deployments
-- Run two new setup scripts that configure the VM to serve the API over a secure connection as a *background service*
+- Run setup scripts that configure the VM and serve the API over a secure connection as a *background service*
 - Test out the protected endpoints on your own or with a partner
 
 Setup
@@ -25,7 +25,6 @@ Before you deploy the API you will set up a local environment to test it in. For
 
 #. set up a local MySQL ``coding_events`` database
 #. update your Coding Events API ``appsettings.json`` to integrate with AADB2C
-#. get an access token through Postman
 
 Set Up Local MySQL
 ------------------
@@ -65,6 +64,12 @@ You should then see a success output from the executed script like the image bel
 .. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/mysql-setup-script-success.png  
    :alt: MySQL Workbench paste in setup script
 
+.. admonition:: Warning
+
+   Recall that the Key vault that provides the database connection string to the API is **only used** in the ``Production`` environment. 
+   
+   When *working locally* (in the ``Development`` environment) your API will expect the default connection string to be available via the ``dotnet user-secrets``. Refer to your notes or the secrets management chapter for a refresher of how to configure this.
+
 Update the Coding Events API
 ----------------------------
 
@@ -76,6 +81,7 @@ In the ``appsettings.json`` project configuration file you will notice some fami
 
 .. sourcecode:: json
    :caption: coding-events-api/CodingEventsAPI/appsettings.json
+   :emphasize-lines: 10,13,14
 
    {
       "Logging": {
@@ -127,16 +133,20 @@ However, **after you deploy the API** the ``ServerOrigin`` will **need to be upd
 ``JWTOptions``
 ^^^^^^^^^^^^^^
 
-The ``JWTOptions`` are used to configure the `JWT authentication middleware <https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer?view=aspnetcore-3.0>`_ used by the API to validate the access tokens it receives. The two fields in this object entry that you will need to update are:
+The ``JWTOptions`` are used to configure the `JWT authentication middleware <https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer?view=aspnetcore-3.0>`_ used by the API to validate the access tokens it receives. The nested ``TokenValidationParameters`` object set the boolean flags for controlling which claims in the token should be validated.
+
+The two fields within the ``JWTOptions`` object entry that you will need to update are:
 
 - ``MetadataAddress``: the URL of the JSON metadata document that describes the OIDC capabilities and endpoints for your AADB2C service
-- ``Audience``: the application ID (client ID) of the **intended audience** for the token
+- ``Audience``: the application ID (client ID) of the **intended audience** for the token.
 
 You may need to refer to your notes or previous walkthroughs to get these values.
 
 .. admonition:: Tip
 
    Be careful with the ``Audience`` field. Consider which registered application client ID is appropriate, that of your Postman client application or of the Coding Events API.
+   
+   Hint -- look at the claims on the access token from the previous walkthrough. One of these client IDs refers to the **authorized party** while the other is the **audience** you are after.
 
 Run Locally
 ===========
@@ -145,48 +155,54 @@ Checklist
 ---------
 
 - set up your ``coding_events`` database locally
-- update the AADB2C fields of your ``appsettings.json`` file
+- update the AADB2C fields (``JWTOptions``) of your ``appsettings.json`` file
 - request a valid access token (refer to the previous walkthrough for a refresher on this process)
 
 Viewing Documentation
 ---------------------
 
+Just as before the API serves documentation from the Swagger UI page at the root of the server. This time you will notice that the endpoints have been separated into the respective Roles (RBAC) and Attributes (ABAC) used for authorization of requests. Although you will be using Postman to issue requests, the Swagger UI is a helpful resource for exploring the endpoints and resource schemas.
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/swagger-ui-overview.png
+   :alt: Swagger UI for final version of Coding Events API
+
 Make Requests to Protected Endpoints
 ------------------------------------
 
-- run the API
-- use access token to hit protected endpoints
-- endpoints / instructions
-   - create event
-   - create tag
-   - add tag to event
-   - delete coding event
-- tip: try without access token and see errors
-   - add screenshot of 401
-      - expired or missing token
+Before you deploy the API you should practice making a few requests to ensure that you have configured everything properly. It is much easier to debug and fix issues locally than wasting time and resources troubleshooting a deployed application.
+
+For this step make sure the API is listening on ``https://localhost:5001`` (to match the pre-configured ``baseUrl`` variable in the Postman collection)
+
+After getting everything running make requests to the following endpoints:
+
+- ``POST /api/events``
+- ``POST /api/tags``
+- ``PUT /api/events/{codingEventId}/tags/{tagId}``
+- ``DELETE /api/events/{codingEventId}``
 
 Limited Guidance
 ================
 
-Gotchas
--------
+The majority of this deployment will be familiar to you based on your previous learning. However, the setup scripts may seem daunting at first glance.
 
-- expired or missing access token
-- incorrect configuration in appsettings
-- must open the correct HTTPS port
+Take some time to look over and discuss them with your mates to decipher what they are doing. Even if you don't believe that *currently* you are capable of writing them, you will surprise yourself with how much you are able understand. We will explore these in more detail in upcoming scripting lessons.
 
 Provision Resources
 -------------------
 
-- same as you have seen
-- runcommand has the following two new scripts
-   - will be exploring and using these in upcoming lessons
-- after setting up:
-   - update KV name
-   - update server origin
+For this deployment you will need to provision all of the same resources as you have in the previous studio. Configuring these resources will be similar as well with the exception of the three new scripts that must be executed using the RunCommand console.
+
+.. admonition:: Note
+
+   After setting up the VM and Key vault you will need to update the entries in your ``appsettings.json``. **Don't forget to commit and push** these changes before deploying!
 
 Configure the VM
 ----------------
+
+The `configure-vm.sh script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/1configure-vm.sh>`_ should look familiar to you based on the script you wrote in the previous deployment. It is designed to:
+
+#. install the runtime dependencies of the API
+#. set up the MySQL backing service
 
 - `link to script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/deliver-deploy.sh>`_
 - this script is setting up a background service using a `unit file <>`_
@@ -194,7 +210,6 @@ Configure the VM
    - sets up working directories and permissions
       - link permissions from bash article
 - otherwise similar to what you have seen
-- feel free to explore it on your own or just use it brah
 
 Configure Nginx for TLS Termination
 -----------------------------------
@@ -212,7 +227,7 @@ Configure Nginx for TLS Termination
 Deliver & Deploy the Coding Events API
 --------------------------------------
 
-- `link to script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/1configure-vm.sh>`_
+- 
 
 Interact With the Deployed API
 ==============================
@@ -227,14 +242,53 @@ Setup
 Make Requests to Protected Endpoints
 ------------------------------------
 
+- show how to update the baseURL 
+
+Gotchas
+=======
+
+Expired or Missing Access Token
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If your request fails due to a missing access token you will, expectedly, receive a ``401`` (failed authentication) response:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman-401-missing-token.png
+   :alt: Postman failed authentication due to missing token
+
+Similarly if your access token has expired you will receive a ``401`` response indicating this failure in the `WWW-Authenticate (challenge) header <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate>`_.
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/postman-401-expired-token.png
+   :alt: Postman failed authentication due to expired token
+
+Refer to your notes or the previous walkthrough for a solution to this issue.
+
+Incorrect Configuration in ``appsettings.json``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The JWT authentication middleware is fickle. As it should be -- there is no margin for error in the security space of a project. In addition to the JWT settings the API will crash if the Key vault and origin values are not configured correctly. 
+
+Make sure that all of the following fields are updated before deploying the API:
+
+- ``ServerOrigin``: available after provisioning your Azure VM
+- ``KeyVaultName``: available after provisioning your Azure Key vault
+- ``JWTOptions:Audience``: available in the AADB2C tenant, updated in the local steps
+- ``JWTOptions:MetadataAddress``: available in the AADB2C tenant, updated in the local steps
+
+Opening the Correct Port
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+For this deployment the API will be served over ``https``. For security reasons AADB2C does not support authentication over insecure connections. You will need to open the correct port for your deployed API to function properly.
+
 Deliverable
 ===========
 
-- public IP
-- the state of the resources should be (at minimum)
-   - one owner
-   - one member
-   - one coding event
-   - one tag (associated w coding event)
+At the end of this studio you will need to provide your TA with the public IP address of your deployed API. Before submitting the IP, you will need to have made requests to the deployed API to prove that everything was configured and deployed properly. 
+
+Your TA will check that the **minimum state** of the resources includes:
+
+- one coding event with two members
+- one owner of a coding event
+- one member in a coding event
+- one tag that is associated with a coding event
 
 
