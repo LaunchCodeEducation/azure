@@ -199,7 +199,7 @@ The scripts will be responsible for:
 
 - ``configure-vm.sh``: configures the runtime environment for the API, nearly identical to the script you wrote in your previous deployment
 - ``configure-ssl.sh``: installs and configures the NGINX web server and provisions a self-signed certificate for serving the API over a secure connection
-- ``deliver-deploy.sh``: delivers and deploys the source code as a `Systemd unit <https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files>`_  to run the API as a background service in the VM
+- ``deliver-deploy.sh``: delivers and deploys Coding Events API as a *background service* running in the VM
 
 Provision Resources
 -------------------
@@ -221,13 +221,18 @@ Aside from the first script the other two will appear foreign to you. Even if yo
 
 Take some time to look over and discuss these scripts with your classmates and TA to decipher what they are doing. We will explore these in more detail in the upcoming scripting lessons.
 
+.. admonition:: Warning
+
+   You **must run these scripts in the following order**:
+
+   #. ``configure-vm.sh``
+   #. ``configure-ssl.sh``
+   #. ``deliver-deploy.sh``
+
 Configure the VM
 ^^^^^^^^^^^^^^^^
 
-The `configure-vm.sh script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/1configure-vm.sh>`_ should look familiar to you based on the script you wrote in the previous deployment. It is designed to:
-
-#. install the runtime dependencies of the API
-#. set up the MySQL backing service
+The `configure-vm.sh script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/1configure-vm.sh>`_ should look familiar to you based on the script you wrote in the previous deployment.
 
 Configure Nginx for TLS Termination
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -260,14 +265,31 @@ As the middle-man, NGINX is responsible for decrypting incoming requests and enc
 Deliver & Deploy the Coding Events API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- `link to script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/deliver-deploy.sh>`_
-- this script is setting up a background service using a `unit file <>`_
-   - sets up a service user (for security)
-   - sets up working directories and permissions
-      - link permissions from bash article
-- otherwise similar to what you have seen
+The final script will configure the VM to run the Coding Events API as a `Systemd unit <https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files>`_ instead of executing the API manually *in the foreground* as you have done before. Aside from how the API artifact is executed, the majority of the script (cloning and publishing) should look familiar to you.
 
-- 
+.. admonition:: Note
+
+   Configuring an application to run as a **background service** provides many benefits including:
+
+   - the service can be configured to start automatically when the VM starts up
+   - the service runs in the background (does not attach to the Terminal)
+   - the service and any output logs can be easily monitored using the ``systemctl`` program
+   - the service can be automatically restarted if it fails
+
+The `deliver-deploy.sh script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/deliver-deploy.sh>`_ will **require you to fill in** the following two environment variables used in the delivery step:
+
+- ``github_username``: your username used to create the URL of your forked repo
+- ``solution_branch``: the updated ``3-aadb2c`` branch)
+
+In addition to creating the Systemd Unit file describing the API service it will set up a new user account, ``api-user``. This service account **can not be logged into** like a traditional user account such as ``student``.
+
+As a security best practice, the ``api-user`` account is used **exclusively** to execute the API artifact that starts the underlying ``dotnet`` process of the background service.
+
+.. admonition:: Note
+
+   The script sets up the permissions that restrict all users except ``root`` and the ``api-user`` service account from reading, writing or executing the published API artifact.
+   
+   By compartmentalizing the service account from the login account (``student``). An attacker who is able to enter the VM as the ``student`` user will be restricted from controlling the API service or accessing its related files. 
 
 Interact With the Deployed API
 ==============================
