@@ -294,8 +294,72 @@ As a security best practice, the ``api-user`` account is used **exclusively** to
 Interact With the Deployed API
 ==============================
 
+These tasks will require you to interact using two different user accounts in an AADB2C tenant. One of these accounts will be used as the owner of a coding event, and the other will be a member of a coding event. Using the two accounts together you can see ABAC processing and the differences between the API responses.
+
+The owner will be working with the following endpoints:
+
+- ``POST /api/events``
+- ``GET /api/events/{codingEventId}``
+- ``GET /api/events/{codingEventId}/members
+- ``POST /api/tags``
+- ``PUT /api/events/{codingEventId}/tags/{tagId}``
+- ``DELETE /api/events/tags/{tagId}``
+- ``DELETE /api/events/{codingEventId}/members/{memberId}``
+
+The member will be working with the following endpoints:
+
+- ``GET /api/events``
+- ``GET /api/events/{codingEventsId}``
+- ``GET /api/events/{codingEventsId}/members``
+- ``POST /api/events/{codingEventsId}/members``
+- ``POST /api/tags``
+- ``PUT /api/events/{codingEventId}/tags/{tagId}``
+- ``DELETE /api/events/tags/{tagId}``
+- ``DELETE /api/events/{codingEventId}``
+- ``DELETE /api/events/{codingEventId}/members/{memberId}``
+
+.. admonition:: note
+
+   If you are doing this studio remotely you may find it easier to use two email accounts to act as both the owner and the member.
+
 Setup
 -----
+
+Before you can make requests to the deployed Coding Events API you will need to change the ``base_url`` environment variable to point to the public IP address of the API you are connecting to. You will then need to get an access token by registering, or logging into an account. Make sure to use this token with the following requests.
+
+Owner Setup
+^^^^^^^^^^^
+
+Member Setup
+^^^^^^^^^^^^
+
+Tasks
+-----
+
+Compare the headers, status codes, and bodies you get in the responses between the Coding Event Owner, Coding Event Member, and Coding Event non member.
+
+View Member
+^^^^^^^^^^^
+
+Add Tags
+^^^^^^^^
+
+Remove Tags
+^^^^^^^^^^^
+
+Remove Members
+^^^^^^^^^^^^^^
+
+Leave Event
+^^^^^^^^^^^
+
+
+Member Steps
+^^^^^^^^^^^^
+
+.. get a partner (one of you is owner, and one of you is the member and then swap positions)
+
+.. will need public IP and update the base_url in postman to reflect that new IP address
 
 - two email addresses
 - partner with other student
