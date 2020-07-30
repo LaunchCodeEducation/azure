@@ -4,9 +4,9 @@ Studio: Deploy Coding Events API with AADB2C
 
 In this studio your mission is to practice accessing protected resources in the final version of the Coding Events API. You will begin by working with the API locally to make sure that the latest updates are functioning properly. Afterwards, you will deploy the API to Azure to be served securely over HTTPS.
 
-Before we continue let's consider what we have already configured:
+Before we continue let's consider what we have already set up in the previous walkthroughs:
 
-- An AADB2C tenant for managing user accounts
+- An AADB2C tenant for managing user identity accounts
 - Two registered applications: the Coding Events API and its consumer, the Postman desktop client application
 - A configuration for access tokens with a ``user_impersonation`` scope to protect the API by only allowing requests from the registered Postman application
 - A configuration for the Postman application to request an access token and use it for making requests to the new endpoints available in the Coding Events API collection
@@ -64,11 +64,16 @@ You should then see a success output from the executed script like the image bel
 .. image:: /_static/images/intro-oauth-with-aadb2c/studio_aadb2c-deployment/mysql-setup-script-success.png  
    :alt: MySQL Workbench paste in setup script
 
+Set Up Local Secrets Manager
+----------------------------
+
+Recall that the Key vault that provides the database connection string, ``ConnectionStrings--Default``, to the API is **only used** in the deployed ``Production`` environment. 
+   
+When *working locally*, in the ``Development`` environment, your API will expect the default connection string to be available via the ``dotnet user-secrets`` tool. Refer to the previous chapter for a refresher on how to use this tool.
+
 .. admonition:: Warning
 
-   Recall that the Key vault that provides the database connection string to the API is **used only** in the ``Production`` environment. 
-   
-   When *working locally* (in the ``Development`` environment) your API will expect the default connection string to be available via the ``dotnet user-secrets``. Refer to your notes or the secrets management chapter for a refresher of how to configure this.
+   The syntax for local secret names is slightly different than what you have used for the Key vault. You will need to use ``ConnectionStrings:Default`` as the name of the local secret.
 
 Update the Coding Events API
 ----------------------------
@@ -133,7 +138,12 @@ However, **after you deploy the API** the ``ServerOrigin`` will **need to be upd
 ``JWTOptions``
 ^^^^^^^^^^^^^^
 
-The ``JWTOptions`` are used to configure the `JWT authentication middleware <https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer?view=aspnetcore-3.0>`_ used by the API to validate the access tokens it receives. The nested ``TokenValidationParameters`` object set the boolean flags for controlling which claims in the token should be validated.
+The ``JWTOptions`` are used to configure the `JWT authentication middleware <https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer?view=aspnetcore-3.0>`_ used by the API to validate the access tokens it receives. The nested ``TokenValidationParameters`` object set the boolean flags for controlling which claims in the token should be validated:
+
+- the issuer is your AADB2C tenant
+- the audience is the client ID for the correct registered application
+- the token is not expired
+- the token was signed using your AADB2C tenant signing key (which it automatically retrieves from the metadata document)
 
 The two fields within the ``JWTOptions`` object entry that you will need to update are:
 
@@ -144,7 +154,7 @@ You may need to refer to your notes or previous walkthroughs to get these values
 
 .. admonition:: Tip
 
-   Be careful with the ``Audience`` field. Consider which registered application client ID is appropriate, that of your Postman client application or of the Coding Events API.
+   Be careful with the ``Audience`` field. Consider which registered application client ID is appropriate, that of your Postman client application or of the Coding Events API. If the incorrect client ID is used you will receive a ``401`` response from the API.
    
    Hint -- look at the claims on the access token from the previous walkthrough. One of these client IDs refers to the **authorized party** while the other is the **audience** you are after.
 
@@ -187,25 +197,29 @@ The majority of this deployment will be familiar to you based on your previous l
 
 The scripts will be responsible for:
 
-- ``configure-vm.sh``: similar to the script you wrote in your most previous deployment
-- ``configure-ssl.sh``: installs and configures the NGINX web server and provisions a `self-signed certificate <https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs#generating-ssl-certificates>`_
-- ``deliver-deploy.sh``: creates a unit file for the Coding Events API, delivers, and deploys the source code as a `Systemd unit <https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files>`_
+- ``configure-vm.sh``: configures the runtime environment for the API, nearly identical to the script you wrote in your previous deployment
+- ``configure-ssl.sh``: installs and configures the NGINX web server and provisions a self-signed certificate for serving the API over a secure connection
+- ``deliver-deploy.sh``: delivers and deploys the source code as a `Systemd unit <https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files>`_  to run the API as a background service in the VM
 
 Provision Resources
 -------------------
 
-For this deployment you will need to provision all of the same resources as you have in the previous studio. Configuring these resources will be similar as well with the exception of the three new scripts that must be executed using the RunCommand console.
+For this deployment you will need to provision the same resources as you did in the previous studio. Configuring these resources will be similar as well, with the exception of the three new scripts that must be executed using the RunCommand console. 
+
+Rather than creating a new resource group you should provision and configure the VM and Key vault within the ``adb2c-deploy-rg`` group created in the first AADB2C walkthrough. 
 
 .. admonition:: Note
 
-   After setting up the VM and Key vault you will need to update the entries in your ``appsettings.json``. **Don't forget to commit and push** these changes before deploying!
+   After setting up the VM and Key vault you will need to update the entries in your ``appsettings.json``.
+   
+   **Don't forget to commit and push** these changes before deploying!
 
 Configuration Scripts
 ---------------------
 
-Some of the code for the scripts are provided for you, but you are responsible for finishing the scripts before running them. Take time to look over and discuss these scripts with your classmates and TA to decipher what they are doing. We will explore these in more detail in upcoming scripting lessons.
+Aside from the first script the other two will appear foreign to you. Even if you don't believe that *currently* you are capable of writing them, you will likely surprise yourself with how much you are able understand. 
 
-Take some time to look over and discuss them with your classmates to decipher what they are doing. Even if you don't believe that *currently* you are capable of writing them, you will surprise yourself with how much you are able understand. We will explore these in more detail in upcoming scripting lessons.
+Take some time to look over and discuss these scripts with your classmates and TA to decipher what they are doing. We will explore these in more detail in the upcoming scripting lessons.
 
 Configure the VM
 ^^^^^^^^^^^^^^^^
@@ -215,28 +229,43 @@ The `configure-vm.sh script <https://raw.githubusercontent.com/LaunchCodeEducati
 #. install the runtime dependencies of the API
 #. set up the MySQL backing service
 
+Configure Nginx for TLS Termination
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As mentioned previously, AADB2C requires a secure connection for authenticating and requesting an access token. In order to support the ``https`` **encrypted connection** a Web Server uses a `SSL certificate <https://www.cloudflare.com/learning/ssl/what-is-an-ssl-certificate/>`_ to perform something called a `TLS handshake <https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/>`_.
+
+.. admonition:: Tip
+
+   The Secure Socket Layer (**SSL**) protocol was succeeded by the more recent Transport Layer Security (**TLS**) protocol. Although TLS is what is used in modern development, the term *SSL* was ubiquitous for so long that SSL and TLS are often used interchangeably.
+   
+   If you are curious `this TLS/SSL article <https://www.globalsign.com/en/blog/ssl-vs-tls-difference>`_ provides a great breakdown of the history behind these protocols and terms.
+
+In a production environment you would fully utilize `Public Key Infrastructure (PKI) <https://docs.microsoft.com/en-us/windows/win32/seccertenroll/public-key-infrastructure>`_ to ensure the security of communication between your applications and their users. However, delving into these topics would require an entire course dedicated to exploring them!
+
+Because we are in a learning environment we will relax our security considerations and use a `self-signed certificate <https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs#generating-ssl-certificates>`_ instead. This certificate is similar to the one you set up when first running a dotnet project locally on your machine. 
+
+While all of this is complex there are numerous tools available for simplifying the process. We will narrow the scope of our learning by abstracting this process behind the `configure-ssl.sh script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/2configure-ssl.sh>`_ that utilizes the following tools:
+
+- ``openssl``: a `CLI tool <https://openssl.org>`_ that will create the self-signed certificate
+- ``nginx``: a web server that will perform `TLS/SSL termination <https://docs.nginx.com/nginx/admin-guide/security-controls/terminating-ssl-http/>`_ using the self-signed certificate
+
+.. admonition:: Note
+
+   We will cover Web Servers in the upcoming lessons and discuss the shortcomings of the built-in `Kestrel Web Server <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-3.1>`_ used by dotnet Web Applications. One of these shortcomings is the inability to perform the TLS handshake used for securing connections.
+
+For now all you need to understand is that within the VM there will be two Web Servers, NGINX and the built-in Kestrel Web Server of the Coding Events API. The NGINX Web Server acts as a `reverse proxy <https://www.nginx.com/resources/glossary/reverse-proxy-server/>`_ (a request middle-man) for requests to and from the API.
+
+As the middle-man, NGINX is responsible for decrypting incoming requests and encrypting outgoing responses from the API. Effectively, requests go *through* NGINX to reach the API.
+
+Deliver & Deploy the Coding Events API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 - `link to script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/deliver-deploy.sh>`_
 - this script is setting up a background service using a `unit file <>`_
    - sets up a service user (for security)
    - sets up working directories and permissions
       - link permissions from bash article
 - otherwise similar to what you have seen
-
-Configure Nginx for TLS Termination
------------------------------------
-
-- `link to script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/2configure-ssl.sh>`_
-- nginx alternative to kestrel
-   - will learn about web servers in upcoming WS / IIS chapter
-   - used for TLS termination in a `reverse proxy arrangement <https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/>`_
-- openssl used to provision the self-signed cert
-   - link to HTTPS / TLS termination
-   - like the cert they have set up locally w dotnet
-   - must be accepted in the browser
-      - screenshot (from WS / IIS chapter)
-
-Deliver & Deploy the Coding Events API
---------------------------------------
 
 - 
 
