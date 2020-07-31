@@ -2,7 +2,9 @@
 Studio Part 1: Deploy Coding Events API with AADB2C
 ===================================================
 
-In this studio your mission is to practice accessing protected resources in the final version of the Coding Events API. You will begin by working with the API locally to make sure that the latest updates are functioning properly. Afterwards, you will deploy the API to Azure to be served securely over HTTPS.
+In this studio your mission is to practice accessing protected resources in the final version of the Coding Events API. 
+
+You will begin by working with the API locally to make sure that the latest updates are functioning properly. Afterwards, you will deploy the API to Azure to be served securely over HTTPS.
 
 Before we continue let's consider what we have already set up in the previous walkthroughs:
 
@@ -23,7 +25,7 @@ At the end of the studio you will share the public IP address of your deployed A
 Setup
 =====
 
-Before you deploy the API you will set up a local environment to test it in. For this setup you will need to:
+Before you deploy the API you will set up a local environment to test it. For this setup you will need to:
 
 #. set up a local MySQL ``coding_events`` database
 #. update your Coding Events API ``appsettings.json`` to integrate with AADB2C
@@ -31,7 +33,7 @@ Before you deploy the API you will set up a local environment to test it in. For
 Set Up Local MySQL
 ------------------
 
-You will use the MySQL Workbench GUI program you installed in the previous unit to run the user and database setup script. This is the same script you have seen in previous deployments:
+You will use the MySQL Workbench GUI you installed in the previous unit to run the user and database setup script. This is the same script you have seen in previous deployments:
 
 .. sourcecode:: mysql
    :caption: Coding Events API MySQL database setup script
@@ -116,14 +118,14 @@ In the ``appsettings.json`` project configuration file you will notice some fami
 
 To complete this studio you will need to update the following fields before deploying the API:
 
-- ``KeyVaultName``: you can populate this field *after provisioning your resources* used in the deployment
+- ``KeyVaultName``: populate this field *after provisioning your resources* used in the deployment
 - ``ServerOrigin``: a new field (discussed below)
 - ``JWTOptions``: a new object field (discussed below)
 
 ``ServerOrigin``
 ^^^^^^^^^^^^^^^^
 
-The ``ServerOrigin`` field is used to define the the **origin** of a server. The API has been configured to use this origin for creating resource links (for actions or relations to other resources). The term origin is defined by **where the server is hosted** and is comprised of:
+The ``ServerOrigin`` field is used to define the **origin** of a server. The API has been configured to use this origin for creating resource links (for actions or relations to other resources). The term origin is defined by **where the server is hosted** and is comprised of:
 
 - the protocol (``http`` or ``https``)
 - the `Fully Qualified Domain Name (FQDN) <https://networkencyclopedia.com/fully-qualified-domain-name-fqdn/>`_
@@ -133,7 +135,7 @@ Locally, your API ``ServerOrigin`` will be:
 
 - ``https://localhost:5001`` (as seen in the ``appsettings.Development.json`` file).
 
-However, **after you deploy the API** the ``ServerOrigin`` will **need to be updated** to reference the new location it is hosted from (the VM host's public IP address):
+However, **after you deploy the API** the ``ServerOrigin`` will **need to be updated** to reference the new location it is hosted from (the host VM's public IP address):
 
 - ``https://<public IP>`` (where port ``443`` is *implied* by the ``https`` protocol in the origin)
 
@@ -192,8 +194,8 @@ After getting everything running make requests to the following endpoints:
 - ``PUT /api/events/{codingEventId}/tags/{tagId}``
 - ``DELETE /api/events/{codingEventId}``
 
-Limited Guidance
-================
+Limited Guidance: API Deployment
+================================
 
 The majority of this deployment will be familiar to you based on your previous learning. However, the setup scripts will be new to you.
 
@@ -258,7 +260,9 @@ While all of this is complex there are numerous tools available for simplifying 
 
 .. admonition:: Note
 
-   We will cover Web Servers in the upcoming lessons and discuss the shortcomings of the built-in `Kestrel Web Server <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-3.1>`_ used by dotnet Web Applications. One of these shortcomings is the inability to perform the TLS handshake used for securing connections.
+   In production settings on Linux servers NGINX is the standard because of it's `advanced features and performance <https://www.nginx.com/resources/wiki/community/why_use_it/>`_. 
+   
+   In an upcoming lesson we will deploy the API to Windows Server and use the IIS web server instead of NGINX. On Windows server machines the Microsoft IIS web server is the clear choice because of it's native Windows and .NET integrations.
 
 For now all you need to understand is that within the VM there will be two Web Servers, NGINX and the built-in Kestrel Web Server of the Coding Events API. The NGINX Web Server acts as a `reverse proxy <https://www.nginx.com/resources/glossary/reverse-proxy-server/>`_ (a request middle-man) for requests to and from the API.
 
@@ -275,15 +279,15 @@ The final script will configure the VM to run the Coding Events API as a `System
 
    - the service can be configured to start automatically when the VM starts up
    - the service runs in the background (does not attach to the Terminal)
-   - the service and any output logs can be easily monitored using the ``systemctl`` program
+   - the service and any output logs can be easily monitored using ``systemctl``
    - the service can be automatically restarted if it fails
 
 The `deliver-deploy.sh script <https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/deliver-deploy.sh>`_ will **require you to fill in** the following two environment variables used in the delivery step:
 
 - ``github_username``: your username used to create the URL of your forked repo
-- ``solution_branch``: the updated ``3-aadb2c`` branch)
+- ``solution_branch``: the updated ``3-aadb2c`` branch
 
-In addition to creating the Systemd Unit file describing the API service it will set up a new user account, ``api-user``. This service account **can not be logged into** like a traditional user account such as ``student``.
+This file creates a Systemd Unit file which describes the API service. In addition, it will set up a new user account: ``api-user``. This service account **can not be logged into** like a traditional user account such as ``student``.
 
 As a security best practice, the ``api-user`` account is used **exclusively** to execute the API artifact that starts the underlying ``dotnet`` process of the background service.
 

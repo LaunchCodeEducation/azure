@@ -2,8 +2,6 @@
 Studio Part 2: Explore Authorization With the Deployed API
 ==========================================================
 
-.. studio lead in
-
 These tasks will require you and a partner to interact using two different user accounts **that are both registered** within a single AADB2C tenant. One of these accounts will be used as the **Owner** of a coding event, and the other will be a **Member** of that coding event. Using the two accounts together you can reflect on the authorization process by comparing the similarities and differences between the API responses.
 
 Task Roles
