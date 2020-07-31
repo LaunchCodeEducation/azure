@@ -37,7 +37,7 @@ The final branch of the Coding Events API includes many additions to the code ba
 
 This version of the Coding Events API includes logic that restricts access to resources based on the following:
 
-- **Roles**: ``Public User``, ``Authenticated User``
+- **Roles**: ``Public User``, ``Authenticated User``, ``Member``, ``Owner``
 - **Attributes**: ``Coding Event Membership``, ``Coding Event Ownership``
 
 
