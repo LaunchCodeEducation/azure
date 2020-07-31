@@ -119,47 +119,72 @@ Tasks
 
 Compare the headers, status codes, and bodies you get in the responses between the Coding Event Owner, Coding Event Member, and Coding Event non member.
 
+.. note about both of them will need accounts with the tenant they are working on, they will both need to sign in, they will both need to update their access token
+
+.. for every prompt both the owner and member should attempt to complete the task take note that it might not always be possible due to your level of authorization. YOu will be expected to include the HTTP refsponse status, headers, and bodies for all successful and unsuccessful attempts.
+
 Add a Tag to a Coding Event
 ---------------------------
 
-prompt: add a tag to an existing coding event
+prompt: try to add a tag to an existing coding event
+
+Planning
+^^^^^^^^
+
+What is the current state?
+
+- currently there are no existing coding events
+- currently there are no existing tags
+
+What should the initial state be for this task?
+
+#. 1 coding event
+#. 1 unattached tag
+
+Steps to achieve initial state:
+
+#. owner: ``POST /api/events``
+#. owner: ``POST /api/tags
 
 State
 ^^^^^
 
-- what endpoints, what order, who issued to achieve initial state?
+Prompt: try to add a tag to an existing coding event
 
-- what was the initial state and what requests were needed, and by who, to achieve that state?
-   #.
-   #.
 - what requests were fired, and by who, after achieving the initial state?
-   #. 
-   #.
+   #. member: ``PUT /api/events/{CodingEventsId}/tags/{tagId}``
+   #. owner: ``PUT /api/events/{CodingEventsId}/tags/{tagId}``
+
 - what is the new state after firing these new requests?
-   #. 
+   #. 1 coding event with 1 member and 1 attached tag
 
 Authorization
 ^^^^^^^^^^^^^
 
+.. turn these into tables
+
 - what happened when the member tried to add a tag?
-   - status code: 401
-   - body
-   - headers
+   - status code: 403 Forbidden
+   - body: Not an owner of the Coding Event
+   - headers: 
 
 - what happened when the owner tried to add a tag?
-   - status code:
-   - body: 
+   - status code: 204
+   - body: No content success
    - headers: 
 
 
 View Member
 ^^^^^^^^^^^
 
-Remove Tags
-^^^^^^^^^^^
+Remove Tag
+^^^^^^^^^^
 
-Remove Members
-^^^^^^^^^^^^^^
+Join Event
+^^^^^^^^^^
+
+Remove Member
+^^^^^^^^^^^^^
 
 Leave Event
 ^^^^^^^^^^^
