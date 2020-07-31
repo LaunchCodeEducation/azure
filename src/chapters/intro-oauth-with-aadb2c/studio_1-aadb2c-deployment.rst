@@ -1,6 +1,6 @@
-============================================
-Studio: Deploy Coding Events API with AADB2C
-============================================
+===================================================
+Studio Part 1: Deploy Coding Events API with AADB2C
+===================================================
 
 In this studio your mission is to practice accessing protected resources in the final version of the Coding Events API. You will begin by working with the API locally to make sure that the latest updates are functioning properly. Afterwards, you will deploy the API to Azure to be served securely over HTTPS.
 
@@ -17,6 +17,8 @@ At a high level this studio will require you to:
 - Deploy the API to Azure with the correct VM, Key vault and security configurations that you have seen in previous deployments
 - Run setup scripts that configure the VM and serve the API over a secure connection as a *background service*
 - Test out the protected endpoints on your own or with a partner
+
+At the end of the studio you will share the public IP address of your deployed API to your TA for review.
 
 Setup
 =====
@@ -291,85 +293,6 @@ As a security best practice, the ``api-user`` account is used **exclusively** to
    
    By compartmentalizing the service account from the login account (``student``). An attacker who is able to enter the VM as the ``student`` user will be restricted from controlling the API service or accessing its related files. 
 
-Interact With the Deployed API
-==============================
-
-These tasks will require you to interact using two different user accounts in an AADB2C tenant. One of these accounts will be used as the owner of a coding event, and the other will be a member of a coding event. Using the two accounts together you can see ABAC processing and the differences between the API responses.
-
-The owner will be working with the following endpoints:
-
-- ``POST /api/events``
-- ``GET /api/events/{codingEventId}``
-- ``GET /api/events/{codingEventId}/members
-- ``POST /api/tags``
-- ``PUT /api/events/{codingEventId}/tags/{tagId}``
-- ``DELETE /api/events/tags/{tagId}``
-- ``DELETE /api/events/{codingEventId}/members/{memberId}``
-
-The member will be working with the following endpoints:
-
-- ``GET /api/events``
-- ``GET /api/events/{codingEventsId}``
-- ``GET /api/events/{codingEventsId}/members``
-- ``POST /api/events/{codingEventsId}/members``
-- ``POST /api/tags``
-- ``PUT /api/events/{codingEventId}/tags/{tagId}``
-- ``DELETE /api/events/tags/{tagId}``
-- ``DELETE /api/events/{codingEventId}``
-- ``DELETE /api/events/{codingEventId}/members/{memberId}``
-
-.. admonition:: note
-
-   If you are doing this studio remotely you may find it easier to use two email accounts to act as both the owner and the member.
-
-Setup
------
-
-Before you can make requests to the deployed Coding Events API you will need to change the ``base_url`` environment variable to point to the public IP address of the API you are connecting to. You will then need to get an access token by registering, or logging into an account. Make sure to use this token with the following requests.
-
-Owner Setup
-^^^^^^^^^^^
-
-Member Setup
-^^^^^^^^^^^^
-
-Tasks
------
-
-Compare the headers, status codes, and bodies you get in the responses between the Coding Event Owner, Coding Event Member, and Coding Event non member.
-
-View Member
-^^^^^^^^^^^
-
-Add Tags
-^^^^^^^^
-
-Remove Tags
-^^^^^^^^^^^
-
-Remove Members
-^^^^^^^^^^^^^^
-
-Leave Event
-^^^^^^^^^^^
-
-
-Member Steps
-^^^^^^^^^^^^
-
-.. get a partner (one of you is owner, and one of you is the member and then swap positions)
-
-.. will need public IP and update the base_url in postman to reflect that new IP address
-
-- two email addresses
-- partner with other student
-- show how to update the public IP for ``baseURL``
-
-Make Requests to Protected Endpoints
-------------------------------------
-
-- show how to update the baseURL 
-
 Gotchas
 =======
 
@@ -408,13 +331,4 @@ For this deployment the API will be served over ``https``. For security reasons 
 Deliverable
 ===========
 
-At the end of this studio you will need to provide your TA with the public IP address of your deployed API. Before submitting the IP, you will need to have made requests to the deployed API to prove that everything was configured and deployed properly. 
-
-Your TA will check that the **minimum state** of the resources includes:
-
-- one coding event with two members
-- one owner of a coding event
-- one member in a coding event
-- one tag that is associated with a coding event
-
-
+At the end of this setup studio you will need to provide your TA with the public IP address of your fully functional deployed API.
