@@ -133,18 +133,20 @@ Planning
 
 What is the current state?
 
+- currently 2 authenticated users and no members
 - currently there are no existing coding events
 - currently there are no existing tags
 
 What should the initial state be for this task?
 
-#. 1 coding event
+#. 1 coding event with 1 owner and 1 member
 #. 1 unattached tag
 
 Steps to achieve initial state:
 
 #. owner: ``POST /api/events``
 #. owner: ``POST /api/tags
+#. member: ``PUT /api/events/{event
 
 State
 ^^^^^
