@@ -30,24 +30,28 @@ State
 Prompt: try to join an existing coding event
 
 - what request is used to completed the task?
-   #. authenticated user (Member): ``POST /api/events/{CodingEventsId}/members``
-   #. Owner: ``POST /api/events/{CodingEventsId}/members``
 
-- what is the new state after completing the task?
-   #. 1 coding event with 2 members (Owner & Member)
+#. authenticated user (Member): ``POST /api/events/{CodingEventsId}/members``
+#. Owner: ``POST /api/events/{CodingEventsId}/members``
+
+- what is the final state after completing the task?
+
+#. 1 coding event with 2 members (Owner & Member)
 
 Authorization
 ^^^^^^^^^^^^^
 
 .. turn these into tables
 
-- what happened when the authenticated user (Member) tried to join the coding event?
-   - status code: 204 No Content
-   - body: empty
+what happened when the authenticated user (Member) tried to join the coding event?
 
-- what happened when the Owner tried to join the coding event?
-   - status code: 400
-   - body: JSON object describing the error
+- status code: 204 No Content
+- body: empty
+
+what happened when the Owner tried to join the coding event?
+
+- status code: 400
+- body: JSON object describing the error
 
 .. sourcecode:: json
    :caption: body of Owner request
@@ -86,26 +90,29 @@ State
 
 Prompt: try to add a tag to an existing coding event
 
-- what requests were fired, and by who, after achieving the initial state?
-   #. Member: ``PUT /api/events/{CodingEventsId}/tags/{tagId}``
-   #. Owner: ``PUT /api/events/{CodingEventsId}/tags/{tagId}``
+What requests were fired, and by who, after achieving the initial state?
 
-- what is the new state after firing these new requests?
-   #. 1 coding event with 2 members and 1 attached tag
+#. Member: ``PUT /api/events/{CodingEventsId}/tags/{tagId}``
+#. Owner: ``PUT /api/events/{CodingEventsId}/tags/{tagId}``
+
+What is the final state after firing these new requests?
+
+#. 1 coding event with 2 members and 1 attached tag
 
 Authorization
 ^^^^^^^^^^^^^
 
 .. turn these into tables
 
-- what happened when the Member tried to add a tag?
-   - status code: 403 Forbidden
-   - body: Not an owner of the Coding Event
+What happened when the Member tried to add a tag?
 
-- what happened when the Owner tried to add a tag?
-   - status code: 204
-   - body: No content success
+- status code: 403 Forbidden
+- body: Not an owner of the Coding Event
 
+What happened when the Owner tried to add a tag?
+
+- status code: 204
+- body: No content success
 
 Remove a Tag from a Coding Event
 --------------------------------
@@ -132,25 +139,29 @@ State
 
 Prompt: remove a tag from an existing coding event
 
-- what requests were fired, and by who, after achieving the initial state?
-   #. Member: ``DELETE /api/events/{CodingEventsId}/tags/{tagId}``
-   #. Owner: ``DELETE /api/events/{CodingEventsId}/tags/{tagId}``
+What requests were fired, and by who, after achieving the initial state?
 
-- what is the new state after firing these new requests?
-   #. 1 coding event with 2 members and 0 attached tags
+#. Member: ``DELETE /api/events/{CodingEventsId}/tags/{tagId}``
+#. Owner: ``DELETE /api/events/{CodingEventsId}/tags/{tagId}``
+
+What is the final state after firing these new requests?
+ 
+#. 1 coding event with 2 members and 0 attached tags
 
 Authorization
 ^^^^^^^^^^^^^
 
 .. turn these into tables
 
-- what happened when the Member tried to remove a tag?
-   - status code: 403 Forbidden
-   - body: Not an owner of the Coding Event
+What happened when the Member tried to remove a tag?
 
-- what happened when the Owner tried to remove a tag?
-   - status code: 204
-   - body: No content success
+- status code: 403 Forbidden
+- body: Not an owner of the Coding Event
+
+What happened when the Owner tried to remove a tag?
+
+- status code: 204
+- body: No content success
 
 Remove a Member from a Coding Event
 -----------------------------------
@@ -177,25 +188,29 @@ State
 
 Prompt: try to remove a member from an existing coding event
 
-- what requests were fired, and by who, after achieving the initial state?
-   #. Member: ``DELETE /api/events/{CodingEventsId}/members/{memberId}``
-   #. Owner: ``DELETE /api/events/{CodingEventsId}/members/{memberId}``
+What requests were fired, and by who, after achieving the initial state?
 
-- what is the new state after firing these new requests?
-   #. 1 coding event with 1 member (Owner)
+#. Member: ``DELETE /api/events/{CodingEventsId}/members/{memberId}``
+#. Owner: ``DELETE /api/events/{CodingEventsId}/members/{memberId}``
+
+What is the final state after firing these new requests?
+
+#. 1 coding event with 1 member (Owner)
 
 Authorization
 ^^^^^^^^^^^^^
 
 .. turn these into tables
 
-- what happened when the Member tried to remove a member?
-   - status code: 403 Forbidden
-   - body: Not an owner of the Coding Event
+What happened when the Member tried to remove a member?
 
-- what happened when the Owner tried to remove a member?
-   - status code: 204 No content
-   - body: empty
+- status code: 403 Forbidden
+- body: Not an owner of the Coding Event
+
+What happened when the Owner tried to remove a member?
+
+- status code: 204 No content
+- body: empty
 
 Leave a Coding Event
 --------------------
@@ -222,12 +237,14 @@ State
 
 Prompt: try to leave an existing coding event
 
-- what requests were fired, and by who, after achieving the initial state?
-   #. Member: ``DELETE /api/events/{CodingEventsId}/members``
-   #. Owner: ``DELETE /api/events/{CodingEventsId}/members``
+What requests were fired, and by who, after achieving the initial state?
 
-- what is the new state after firing these new requests?
-   #. 1 coding event with 1 member (Owner)
+#. Member: ``DELETE /api/events/{CodingEventsId}/members``
+#. Owner: ``DELETE /api/events/{CodingEventsId}/members``
+
+What is the final state after firing these new requests?
+
+#. 1 coding event with 1 member (Owner)
 
 .. admonition:: Note
 
@@ -238,13 +255,15 @@ Authorization
 
 .. turn these into tables
 
-- what happened when the Member tried to leave the event?
-   - status code: 204 No Contnet
-   - body: empty
+What happened when the Member tried to leave the event?
 
-- what happened when the Owner tried to leave the event?
-   - status code: 400
-   - body: JSON object describing the error
+- status code: 204 No Contnet
+- body: empty
+
+What happened when the Owner tried to leave the event?
+
+- status code: 400
+- body: JSON object describing the error
 
 Cancel a Coding Event
 ---------------------
@@ -271,22 +290,26 @@ State
 
 Prompt: try to cancel an existing coding event
 
-- what requests were fired, and by who, after achieving the initial state?
-   #. Member: ``DELETE /api/events/{CodingEventsId}``
-   #. Owner: ``DELETE /api/events/{CodingEventsId}``
+What requests were fired, and by who, after achieving the initial state?
 
-- what is the new state after firing these new requests?
-   #. 0 coding events
+#. Member: ``DELETE /api/events/{CodingEventsId}``
+#. Owner: ``DELETE /api/events/{CodingEventsId}``
+
+What is the final state after firing these new requests?
+
+#. 0 coding events
 
 Authorization
 ^^^^^^^^^^^^^
 
 .. turn these into tables
 
-- what happened when the Member tried to cancel the event?
-   - status code: 403 Forbidden
-   - body: JSON object describing the error
+What happened when the Member tried to cancel the event?
 
-- what happened when the Owner tried to cancel the event?
-   - status code: 204 No content
-   - body: empty
+- status code: 403 Forbidden
+- body: JSON object describing the error
+
+What happened when the Owner tried to cancel the event?
+
+- status code: 204 No content
+- body: empty
