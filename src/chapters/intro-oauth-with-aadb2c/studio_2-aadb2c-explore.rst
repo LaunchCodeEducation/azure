@@ -2,29 +2,16 @@
 Studio Part 2: Explore Authorization With the Deployed API
 ==========================================================
 
-.. :: TEMPLATE for TASKS
+In this studio you will work with a partner to explore the effect of authorization in requests sent to the API. After an initial setup you will explore tasks that will require you both to plan, execute and reflect on the results.
 
-   Add a Tag to a Coding Event
-   ---------------------------
+These tasks will require you and a partner to interact using two different user accounts **that are both registered** within a single AADB2C tenant. One of these accounts will be used as the **Owner** of a coding event, and the other will be a **Member** of that coding event. 
 
-   prompt: add a tag to an existing coding event
+Using the two accounts together you can reflect on the authorization process by comparing the similarities and differences between the API responses.
 
-   State
-   ^^^^^
+Your learning goals for this studio are:
 
-   - what was the initial state and what requests were needed to achieve that state?
-   - what requests were fired after achieving the initial state?
-   - what is the new state after firing these new requests?
-
-   Authorization
-   ^^^^^^^^^^^^^
-
-   Compare the headers, status codes, and response bodies of the requests.
-
-   - what happened when the member tried to add a tag?
-   - what happened when the owner tried to add a tag?
-
-These tasks will require you and a partner to interact using two different user accounts **that are both registered** within a single AADB2C tenant. One of these accounts will be used as the **Owner** of a coding event, and the other will be a **Member** of that coding event. Using the two accounts together you can reflect on the authorization process by comparing the similarities and differences between the API responses.
+#. Explore the effect of external (AADB2C) and internal (ABAC) authorization when making requests to the API
+#. Apply your knowledge of RESTful interactions to transition and reflect on the state of API resources
 
 Task Roles
 ==========
@@ -38,61 +25,62 @@ The **Owner** will be responsible for providing the **Member** with:
    
    If you would like to complete this studio on your own you can use two of your email addresses to create the AADB2C user accounts.
 
-In each task the **Owner** and the **Member** will work together to set up an **initial state** with the API. Then both of you will make requests to complete the task and reflect on the responses and state transitions encountered along the way.
+In each task the **Owner** and the **Member** will work together to set up an initial state with the API. Then both of you will make requests to complete the task and reflect on the responses and resource state transitions encountered along the way.
 
-Each task will require you and your partner to:
 
-#. plan the requests that will be needed to complete the task
-#. make requests to set up the initial state
-#. make task requests and compare the response status code, headers and bodies
-#. reflect on how the state transitioned from the requests
+Limited Guidance: Completing a Task
+===================================
 
-Planning
-========
+General Steps
+-------------
 
-While planning out how you and your partner will complete each task consider the following:
+In general, each task will require you and your partner to:
 
-- which endpoints will be used
-- what order the requests need to be made in
-- which of you (**Owner** or **Member**) will need to make each request
+#. plan the requests that will be needed to set up and complete the task
+#. make setup requests to establish the initial state of API resources needed to complete the task
+#. make the request needed to complete the task
+#. reflect on differences in the response status codes and bodies
+#. reflect on how the state of the API resources transitioned after the requests
 
-.. turn into checkbox form for submission
+Planning Tips
+-------------
 
-.. - ``POST /api/events``
-.. - ``GET /api/events/{codingEventId}``
-.. - ``GET /api/events/{codingEventId}/members
-.. - ``POST /api/tags``
-.. - ``PUT /api/events/{codingEventId}/tags/{tagId}``
-.. - ``DELETE /api/events/tags/{tagId}``
-.. - ``DELETE /api/events/{codingEventId}/members/{memberId}``
-.. - ``GET /api/events``
-.. - ``GET /api/events/{codingEventsId}``
-.. - ``GET /api/events/{codingEventsId}/members``
-.. - ``POST /api/events/{codingEventsId}/members``
-.. - ``POST /api/tags``
-.. - ``PUT /api/events/{codingEventId}/tags/{tagId}``
-.. - ``DELETE /api/events/tags/{tagId}``
-.. - ``DELETE /api/events/{codingEventId}``
-.. - ``DELETE /api/events/{codingEventId}/members/{memberId}``
+In order to coordinate and plan these steps you and your partner will need to consider:
+
+- what is the *current state* of the resources in the API (from previous requests)?
+- what *initial state* is needed to accomplish the task?
+- what setup requests will be needed to set up the *initial state*?
+- what task requests are needed to accomplish the task
+- who (**Owner** or **Member**) will need to issue each request?
+- what order do the requests need to be issued in?
 
 Setup
 =====
 
-Their are multiple ways to set up Postman. The simpler mechanism is to share the client ID of the **Owner's** Postman application with the **Member**. However, if you are looking for a challenge the Bonus below will have the **Owner** register an independent client application for the **Member** to use.
+There are multiple ways to set up Postman so both you and your partner can request access tokens from the **Owner's** AADB2C service. The simpler mechanism is to share the client ID of the **Owner's** Postman application with the **Member**. 
 
-Both of these approaches will require you to update the Coding Events API collection in Postman.
+However, if you are looking for a challenge the bonus section below will have the **Owner** register a new client application with its own client ID for the **Member** to use. Either of these approaches **will require you to update** the Coding Events API collection in Postman.
 
 Update Postman
 --------------
 
-Before you can make requests to the deployed Coding Events API you will both need to change the ``baseUrl`` environment variable to point to the public IP address of the **Owner's** deployed API. Whoever is the **Owner** should send the public IP of the API to the **Member**.
+Before you can make requests to the Coding Events API both you and your partner will need to change the ``baseUrl`` environment variable in the Postman collection. The ``baseUrl`` will need its value updated to point at the public IP address of the **Owner's** deployed API.
 
-In Postman, edit the collection (using the three dots to the right of its name) and select the **Variables** tab. In the **Current Value** entry on the right side replace ``https://localhost:5001`` with the public IP address:
+.. admonition:: Note
+
+   The **Owner** must send the public IP of their hosted API to the **Member**.
+
+In Postman, edit the collection (using the three dots to the right of its name) and select the **Variables** tab. In the **Current Value** entry on the right side replace the current value, ``https://localhost:5001``, with the public IP address:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/studio_2-aadb2c-explore/postman-update-baseurl.png
    :alt: Postman update the baseUrl variable with the public IP address of the API
 
-In addition to sharing the public IP, the **Owner** will need to provide the client ID of their Postman application with the **Member**. The **Member** will then need to select the **Authorization** tab and update their access token form to use the **Owner's** Postman client ID. 
+In addition to sharing the public IP, the **Owner** will need to provide the client ID of *their Postman application* with the **Member**. The **Member** will then need to select the **Authorization** tab and update their access token form to use the **Owner's** Postman client ID. 
+
+Get Access Tokens
+-----------------
+
+The **Owner** should already have an account registered in *their* AADB2C tenant. However, the **Member** will need to register *their own* account in the **Owner's** tenant. As a reminder, the **Member** can use the **sign up now** link at the bottom of the login form. 
 
 .. admonition:: Warning
 
@@ -108,102 +96,276 @@ Bonus: Multiple Front-end Client Applications
 
 You can simulate a system that has several different client applications that interact with a single API. In this system each client application must register with the AADB2C tenant and identify themselves with their client ID in each request to the protected API. 
 
-For this bonus mission, instead of the **Owner** sharing the client ID of *their* Postman application, they will register a new one. This will simulate a multi-client system using AADB2C.
+For this bonus mission, instead of the **Owner** sharing the client ID of *their* Postman application, they will register a new one in their AADB2C tenant. This will allow you and your partner to simulate a multi-client system using AADB2C.
 
-The **Owner** will register another application in their AADB2C tenant that corresponds to the **Member's** Postman application. The ``Member Client`` application will need to be registered and granted access to use the ``user_impersonation`` scope of the API.
+The **Owner** will register another application in their AADB2C tenant that corresponds to the **Member's** Postman application. The ``<Member Name> Postman`` application will need to be registered and granted access to use the ``user_impersonation`` scope of the API.
 
-After completing the registration and configuration the **Owner** will share the ``Member Client`` client ID with the **Member** so they can update their access token form in Postman. You can refer to the access token walkthrough as a refresher of this process.
+After completing the registration and configuration the **Owner** will share the new ``<Member Name> Postman`` client ID with the **Member** so they can update their access token form in Postman. 
+
+.. admonition:: Note
+
+   You can refer to the access token walkthrough as a refresher of this process.
+
+   After completing this bonus mission the **Owner's** AADB2C tenant should have 2 registered front-end client applications (**Owner's** Postman and the new ``<Member Name> Postman``). Each of these should have admin consent for using the ``user_impersonation`` scope to access the protected API.
+
+Completing a Task
+=================
+
+Each task will begin with a plain-English action to be performed on the state of one or more resources. Following this prompt will be a series of questions related to the actions and results:
+
+- **Action**: analyzing current state, setting up initial state and required task requests
+- **Reflection**: reflect on the differences in responses between the **Owner** and the **Member** along with the final state of the resources
+
+Both the **Owner** and **Member** will attempt to complete each task. However, due to the different authorization attributes (ABAC) that each of you have, not all requests will be successful. It is equally important to consider the response behavior for both successful and unsuccessful requests.
+
+Before you begin working on these tasks let's explore a solution to the first one -- Joining a Coding Event.
+
+Example Solution: Join a Coding Event
+-------------------------------------
+
+   Try to join an existing coding event
+
+Action
+^^^^^^
+
+**What is the current state of the resources?**
+
+- no coding events
+- no members (only 2 authenticated users, the Owner and Member)
+
+**What should be the initial state of the resources to complete this task?**
+
+- 1 coding event
+- 1 member of the coding event (Owner)
+- 1 authenticated user (Member) that is not *currently* a member of the coding event
+
+**What requests will need to be made, in what order, and who must issue them to achieve this initial state?**
+
+#. Owner: ``POST /api/events/``
+
+**What endpoint will you need to use to complete this task?**
+
+- ``POST /api/events/{CodingEventsId}/members``
+
+Reflection
+^^^^^^^^^^
+
+**What was the response when the authenticated user (Member) tried to join the Owner's coding event?**
+
+- status code: 204 No Content
+- body: empty
+
+**What was the response when the Owner tried to join their own coding event?**
+
+- status code: 400
+- body: Bad Request
+
+.. admonition:: Note
+
+   The actual response body is formatted in a JSON object:
+
+   .. sourcecode:: json
+      :caption: response body of failed Owner request
+
+      {
+         "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+         "title": "Bad Request",
+         "status": 400,
+         "traceId": "|239addd7-409244e32d9104cb."
+      }
+
+**What is the final state of the API resources after completing the task?**
+
+- 1 coding event
+- 2 members (Owner and Member) 
 
 Tasks
 =====
 
-Compare the headers, status codes, and bodies you get in the responses between the Coding Event Owner, Coding Event Member, and Coding Event non member.
+Use the example above as a solution template as you work with your partner to complete each task. Before making each request discuss what you expect to happen with your partner based on your respective authorizations.
 
-.. note about both of them will need accounts with the tenant they are working on, they will both need to sign in, they will both need to update their access token
+If the results do not align with your expectations consider:
 
-.. for every prompt both the owner and member should attempt to complete the task take note that it might not always be possible due to your level of authorization. YOu will be expected to include the HTTP refsponse status, headers, and bodies for all successful and unsuccessful attempts.
+- was your initial state correct?
+- did the order of the requests have an effect?
+
+Join a Coding Event
+-------------------
+
+   Try to join an existing coding event
+
+Action
+^^^^^^
+
+#. What is the current state of the resources?
+
+#. What should be the initial state of the resources to complete this task?
+
+#. What requests will need to be made, in what order, and who must issue them to achieve this initial state?
+
+#. What endpoint will you need to use to complete this task?
+
+Reflection
+^^^^^^^^^^
+
+#. What was the response when the authenticated user (Member) tried to join the Owner's coding event?
+
+#. What was the response when the Owner tried to join their own coding event?
+
+#. What is the final state of the API resources after completing the task?
+
+View Coding Event Members
+-------------------------
+
+   Try to access the email addresses of coding event members
+
+Action
+^^^^^^
+
+#. What is the current state of the resources?
+
+#. What should be the initial state of the resources to complete this task?
+
+#. What requests will need to be made, in what order, and who must issue them to achieve this initial state?
+
+#. What endpoint will you need to use to complete this task?
+
+Reflection
+^^^^^^^^^^
+
+#. Was the ``email`` field available in the response to the Member?
+
+#. Was the ``email`` field available in the response to the Owner?
+
+#. What other differences were present in the *shape* of the responses?
+
+#. Was there a transition of state for any resources while completing this task?
 
 Add a Tag to a Coding Event
 ---------------------------
 
-prompt: try to add a tag to an existing coding event
+   Try to add a new tag to the coding event
 
-Planning
-^^^^^^^^
+Action
+^^^^^^
 
-What is the current state?
+#. What is the current state of the resources?
 
-- currently 2 authenticated users and no members
-- currently there are no existing coding events
-- currently there are no existing tags
+#. What should be the initial state of the resources to complete this task?
 
-What should the initial state be for this task?
+#. What requests will need to be made, in what order, and who must issue them to achieve this initial state?
 
-#. 1 coding event with 1 owner and 1 member
-#. 1 unattached tag
+#. What endpoint will you need to use to complete this task?
 
-Steps to achieve initial state:
-
-#. owner: ``POST /api/events``
-#. owner: ``POST /api/tags
-#. member: ``PUT /api/events/{event
-
-State
-^^^^^
-
-Prompt: try to add a tag to an existing coding event
-
-- what requests were fired, and by who, after achieving the initial state?
-   #. member: ``PUT /api/events/{CodingEventsId}/tags/{tagId}``
-   #. owner: ``PUT /api/events/{CodingEventsId}/tags/{tagId}``
-
-- what is the new state after firing these new requests?
-   #. 1 coding event with 1 member and 1 attached tag
-
-Authorization
-^^^^^^^^^^^^^
-
-.. turn these into tables
-
-- what happened when the member tried to add a tag?
-   - status code: 403 Forbidden
-   - body: Not an owner of the Coding Event
-   - headers: 
-
-- what happened when the owner tried to add a tag?
-   - status code: 204
-   - body: No content success
-   - headers: 
-
-
-View Member
-^^^^^^^^^^^
-
-Remove Tag
+Reflection
 ^^^^^^^^^^
 
-Join Event
+#. What was the response when the Member tried to add the tag to the coding event?
+
+#. What was the response when the Owner tried to add the tag to the coding event?
+
+#. What is the final state of the API resources after completing the task?
+
+Remove a Tag From a Coding Event
+--------------------------------
+
+   Try to remove the tag from the coding event
+
+Action
+^^^^^^
+
+#. What is the current state of the resources?
+
+#. What should be the initial state of the resources to complete this task?
+
+#. What requests will need to be made, in what order, and who must issue them to achieve this initial state?
+
+#. What endpoint will you need to use to complete this task?
+
+Reflection
 ^^^^^^^^^^
 
-Remove Member
-^^^^^^^^^^^^^
+#. What was the response when the Member tried to remove the tag from the coding event?
 
-Leave Event
-^^^^^^^^^^^
+#. What was the response when the Owner tried to remove the tag from the coding event?
 
+#. What is the final state of the API resources after completing the task?
 
-Member Steps
-^^^^^^^^^^^^
+Remove a Member From a Coding Event
+-----------------------------------
 
-.. get a partner (one of you is owner, and one of you is the member and then swap positions)
+   Try to remove a Member from the coding event
 
-.. will need public IP and update the base_url in postman to reflect that new IP address
+Action
+^^^^^^
 
-- two email addresses
-- partner with other student
-- show how to update the public IP for ``baseUrl``
+#. What is the current state of the resources?
 
-Make Requests to Protected Endpoints
-------------------------------------
+#. What should be the initial state of the resources to complete this task?
 
-- show how to update the baseUrl 
+#. What requests will need to be made, in what order, and who must issue them to achieve this initial state?
+
+#. What endpoint will you need to use to complete this task?
+
+Reflection
+^^^^^^^^^^
+
+#. What was the response when the Member tried to remove thine self from the coding event?
+
+#. What was the response when the Owner tried to remove the Member from the coding event?
+
+#. What is the final state of the API resources after completing the task?
+
+Leave a Coding Event
+--------------------
+
+   Try to leave the coding event
+
+.. admonition:: Note
+
+   In the previous task the Member was removed from the coding event. In order for both you and your partner to complete this task the Member will need to re-join the coding event.
+
+Action
+^^^^^^
+
+#. What is the current state of the resources?
+
+#. What should be the initial state of the resources to complete this task?
+
+#. What requests will need to be made, in what order, and who must issue them to achieve this initial state?
+
+#. What endpoint will you need to use to complete this task?
+
+Reflection
+^^^^^^^^^^
+
+#. What was the response when the Member tried to leave the coding event?
+
+#. What was the response when the Owner tried to leave their own coding event?
+
+#. What is the final state of the API resources after completing the task?
+
+Cancel a Coding Event
+---------------------
+
+   Try to cancel the coding event
+
+Action
+^^^^^^
+
+#. What is the current state of the resources?
+
+#. What should be the initial state of the resources to complete this task?
+
+#. What requests will need to be made, in what order, and who must issue them to achieve this initial state?
+
+#. What endpoint will you need to use to complete this task?
+
+Reflection
+^^^^^^^^^^
+
+#. What was the response when the Member tried to cancel the coding event?
+
+#. What was the response when the Owner tried to cancel their coding event?
+
+#. What is the final state of the API resources after completing the task?
