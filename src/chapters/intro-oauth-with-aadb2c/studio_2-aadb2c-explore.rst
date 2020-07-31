@@ -2,6 +2,28 @@
 Studio Part 2: Explore Authorization With the Deployed API
 ==========================================================
 
+.. :: TEMPLATE for TASKS
+
+   Add a Tag to a Coding Event
+   ---------------------------
+
+   prompt: add a tag to an existing coding event
+
+   State
+   ^^^^^
+
+   - what was the initial state and what requests were needed to achieve that state?
+   - what requests were fired after achieving the initial state?
+   - what is the new state after firing these new requests?
+
+   Authorization
+   ^^^^^^^^^^^^^
+
+   Compare the headers, status codes, and response bodies of the requests.
+
+   - what happened when the member tried to add a tag?
+   - what happened when the owner tried to add a tag?
+
 These tasks will require you and a partner to interact using two different user accounts **that are both registered** within a single AADB2C tenant. One of these accounts will be used as the **Owner** of a coding event, and the other will be a **Member** of that coding event. Using the two accounts together you can reflect on the authorization process by comparing the similarities and differences between the API responses.
 
 Task Roles
@@ -93,15 +115,45 @@ The **Owner** will register another application in their AADB2C tenant that corr
 After completing the registration and configuration the **Owner** will share the ``Member Client`` client ID with the **Member** so they can update their access token form in Postman. You can refer to the access token walkthrough as a refresher of this process.
 
 Tasks
------
+=====
 
 Compare the headers, status codes, and bodies you get in the responses between the Coding Event Owner, Coding Event Member, and Coding Event non member.
 
+Add a Tag to a Coding Event
+---------------------------
+
+prompt: add a tag to an existing coding event
+
+State
+^^^^^
+
+- what endpoints, what order, who issued to achieve initial state?
+
+- what was the initial state and what requests were needed, and by who, to achieve that state?
+   #.
+   #.
+- what requests were fired, and by who, after achieving the initial state?
+   #. 
+   #.
+- what is the new state after firing these new requests?
+   #. 
+
+Authorization
+^^^^^^^^^^^^^
+
+- what happened when the member tried to add a tag?
+   - status code: 401
+   - body
+   - headers
+
+- what happened when the owner tried to add a tag?
+   - status code:
+   - body: 
+   - headers: 
+
+
 View Member
 ^^^^^^^^^^^
-
-Add Tags
-^^^^^^^^
 
 Remove Tags
 ^^^^^^^^^^^
