@@ -83,7 +83,7 @@ What should the initial state be for this task?
 
 Steps to achieve initial state:
 
-#. owner: ``POST /api/tags
+#. owner: ``POST /api/tags``
 
 State
 ^^^^^
