@@ -59,12 +59,12 @@ Setup
 
 There are multiple ways to set up Postman so both you and your partner can request access tokens from the **Owner's** AADB2C service. The simpler mechanism is to share the client ID of the **Owner's** Postman application with the **Member**. 
 
-However, if you are looking for a challenge the bonus section below will have the **Owner** register a new client application with its own client ID for the **Member** to use. Either of these approaches **will require you to update** the Coding Events API collection in Postman.
+However, if you are looking for a challenge the bonus section below will have the **Owner** register a new client application with its own client ID for the **Member** to use. Either of these approaches **will require you to update** the ``CodingEventsAPI`` collection in Postman.
 
 Update Postman
 --------------
 
-Before you can make requests to the Coding Events API both you and your partner will need to change the ``baseUrl`` environment variable in the Postman collection. The ``baseUrl`` will need its value updated to point at the public IP address of the **Owner's** deployed API.
+Before you can make requests to the ``CodingEventsAPI`` both you and your partner will need to change the ``baseUrl`` environment variable in the Postman collection. The ``baseUrl`` will need its value updated to point at the public IP address of the **Owner's** deployed API.
 
 .. admonition:: Note
 
