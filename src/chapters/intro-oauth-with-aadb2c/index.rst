@@ -1,6 +1,6 @@
-======================================
-Introduction to OAuth with Azure ADB2C
-======================================
+================================================================
+Introduction to Authentication & Authorization with Azure AD B2C
+================================================================
 
 .. toctree::
    :maxdepth: 3
