@@ -37,6 +37,9 @@ A common example of authentication would be logging into your email account. Whe
 
 You have to provide your *credentials*, an email address and a password, to prove your identity to your email provider before they *authorize you* to access your emails. This process of authenticating yourself is how trust is supported in an anonymous digital space. 
 
+Authentication Factors
+^^^^^^^^^^^^^^^^^^^^^^
+
 Authenticating using *something you know* like credentials is certainly the most common form of authentication. But there are actually *multiple factors of authentication* in the digital world that can be used:
 
 - **Knowledge based**: *something you know* (credentials like a username and password)
@@ -71,16 +74,29 @@ In the earlier example of checking your email your authorization was *implied* a
 
 In more generalized terms we can refer to the core elements of authorization as:
 
-- **resource**: the data to be accessed
+- **resource**: the data to be accessed (an image, video or other application data)
 - **consumer**: an entity that *tries to access* the resource
 - **policy**: one or more rules that define the authorization needed to access the resource
 
-On the web a resource is managed by a **resource server** like the email provider in the example. In simple cases the logic to enforce policies can be written within the resource server itself. In other words, the resource server is responsible for both managing resources as well handling authorization.
+Server Roles
+^^^^^^^^^^^^
 
-In more complex cases the authorization responsibility can be separated from the resource server into an **authorization server**. We will explore this concept further in upcoming lessons. In either case, access to resources is controlled by applying logical policy rules based on:
+On the web, a resource is managed by a **resource server** -- like the email provider in the earlier example. In simple cases the logic to enforce policies can be written within the resource server itself. In other words, the resource server can take responsibility for both managing resources as well handling authorization.
+
+.. admonition:: Tip
+
+  We label the different servers to indicate their role in system. Although they may sound fancy they are just an API *with a specialized purpose*.
   
+  Our Coding Events API is an example of a resource server because it specializes in managing the resources related to coding events.
+
+Later in this chapter we will use Azure AD B2C as another specialized API called an **authorization server** to protect our API from unauthorized requests. An authorization server separates some or all of the authorization responsibility from the resource server.
+
+In either design, access to resources is controlled by applying logical policy rules based on:
+  
+  - the resource
   - the consumer's identity
   - the consumer's relationship with the resource
+  - what access to the resource is being requested
 
 Access control systems can define policies associated with other consumer attributes beyond just ownership. For example, there could be policies based on the consumer's role in an organization or membership to a specific group.
 
@@ -103,16 +119,18 @@ Delegation is used when an application asks for the **consent** of a user (owner
 Delegation Between Two Entities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A common example of delegation between just these two entities is a desktop or mobile application requesting consent from a user to access the photos *that are managed by* a user's device. Because the user (resource owner) is in control of the phone or computer that manage the photos (resource) they are said to be *in direct control* of the resource itself.
+A common example of delegation between just these two entities is a desktop or mobile application requesting consent from a user to access some data on the device. For example, an application might request the photos *that are managed by* a user's device.
+
+Because the user (resource owner) is in control of the device that manage the photos (resource) they are *in direct control* of the resource itself. This contrasts with a *remote resource* on the web where a user controls resources *indirectly through the resource server*.
 
 Delegation Across Three Entities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When an entity *other than the resource owner* is in direct control of the resource we can refer to it generally as the **resource manager**. Because the resource owner is *not in direct control of the resource* they need a mechanism for granting the client authorization to access resources on their behalf.
+When an entity *other than the resource owner* is in direct control of the resource we can refer to it generally as the **resource manager**. Because the resource owner is *not in direct control of the resource* they need a mechanism for granting the client authorization to access resource *on their behalf*.
 
-Consider the process of opening a new credit card. Your credit score is a resource managed by a credit agency. The credit card company is *not authorized* to access your credit score without *your permission*. As the *owner of the credit score resource* you can choose to *delegate authorization* to the credit card company or deny their request.
+Consider the process of opening a new credit card. Your credit score is a resource that you *manage indirectly* through a credit agency. The credit card company is *not authorized* to access your credit score without *proof of your permission*. As the *owner of the credit score resource* you can choose to *delegate authorization* to the credit card company or deny their request -- effectively denying yours too!
 
-You can accept the request by *consenting to* the credit card company's request for accessing your credit score. The credit card company can then provide the document that proves your consent as a *token that authorizes them* to access your credit score. The credit agency accepts the token and authorizes the credit card company to access your data on your behalf.
+You can **grant permission** for the credit agency to share your score by *consenting to* the credit card company's request. The credit card company can then provide the physical or digital proof of your consent as a *token that authorizes them* to access your credit score. The credit agency accepts the token and authorizes the credit card company to access your data on your behalf.
 
 Let's consider the three entities involved in the delegation of your credit score *resource*:
 
@@ -120,28 +138,29 @@ Let's consider the three entities involved in the delegation of your credit scor
 - **client**: the credit card company *requests authorization to access* your credit score
 - **resource owner**: you choose to *delegate authorization* for the client to access your credit score
 
-In more general terms we can describe the entities involved in delegated authorization:
+In more general terms we can describe the entities involved in this delegation as:
 
-- **resource manager**: an entity that manages the owner's resources
-- **client**: an entity that needs authorization to access an owner's resource
-- **resource owner**: the entity that authorizes the resource manager to grant access to the client
+- **resource manager**: an entity that manages the owner's data
+- **client**: an entity that needs authorization to access an owner's data
+- **resource owner**: the entity that can authorize the resource manager to grant access to the client
 
 OAuth & OIDC
 ------------
 
-Delegation across these three entities on the web is slightly more complex due to the inherent anonymity. A resource owner could provide their credentials to the client but that would be terribly insecure!
+Delegation across these three entities on the web is slightly more complex due to the inherent anonymity. In order for the client to access the resources on behalf of the owner they need way to *assume the owner's identity*. A resource owner could provide their credentials to the client so it can authenticate as the owner but that would be terribly insecure!
 
-The industry standard that enables the *secure delegation of access* across a resource owner, client and resource manager (resource server) is the **OAuth protocol**. 
+The industry standard that enables the *secure delegation of access* across a resource owner, client and resource server is the **OAuth protocol**. 
 
 .. admonition:: Note
 
-  As mentioned previously the resource server is often distinct from an authorization server that handles OAuth. Generally speaking we refer to the OAuth authorization server as an **OAuth provider** such as Microsoft, GitHub or LinkedIn.
+  As mentioned previously the resource server can, and often is, distinct from an authorization server that handles OAuth. Generally speaking we refer to the OAuth authorization server as an **OAuth provider** such as Microsoft, GitHub or LinkedIn.
 
 In OAuth a user (resource owner) **delegates authorization** to a client through the use of a digital token. The client uses this **access token** to prove that they are authorized to access resources according to permissions granted by the user. If you have ever accepted a consent screen for a client service requesting access to your data on your behalf you were using OAuth!
 
-We will explore OAuth and a relatively recent protocol built over it called **OIDC** in the upcoming lessons. The OIDC protocol functions similarly but **delegates authentication** through the use of an **identity token**. In relatable terms, OIDC is what allows you to log in to many different client services across the web using a single identity. 
+We will explore OAuth and a relatively recent protocol built over it called **OIDC** in the upcoming lessons. The OIDC protocol functions similarly but **delegates authentication** through the use of an **identity token**. 
+
+Rather than carrying proof of authorization for a client, an identity token *proves the identity* of the user (the owner of the account resource). In relatable terms, OIDC is what enables `Single Sign On (SSO) <https://www.youtube.com/watch?v=T1fpulzHYcs>`_ on the web. SSO is what allows you to log in to many different client services using a single identity account. 
 
 .. admonition:: Note
 
-  In OIDC the server that provides identity tokens is referred to as an **identity provider**.
-  
+  Because OIDC is built over OAuth the authorization server provides both access and identity tokens depending on the type of request it receives. When an authorization server is exchanging an identity token it is sometimes referred to as an **identity provider**.
