@@ -3,13 +3,11 @@
 Introduction and Key Concepts
 =============================
 
-Up until this point all of the endpoints of our Coding Events API have been *publicly accessible*. In this chapter we will introduce **authentication** and **authorization** along with several ubiquitous **protocols** that describe how to perform each of these processes securely on the web.
+Until this point all of the endpoints of our Coding Events API have been *publicly accessible*. In this chapter we will introduce **authentication** and **authorization** along with several ubiquitous **protocols** that describe how to perform each of these processes securely on the web.
 
-Web security is inherently a deep topic that spans across both the development and operations side of a system. As a result this chapter is rich with complex concepts and configurations you likely have not encountered before. Fortunately, we will manage this complexity by learning through hands-on application. 
+Web security is inherently a deep topic that spans across both development and operations. As a result this chapter is rich with complex concepts and configurations. Fortunately, we will manage this complexity by learning through hands-on application. 
 
-While we will continue to direct our learning towards the operations side, later in this chapter you will get to work with the new development-side changes provided to you in the final branch of the API.
-
-After learning the fundamentals of two *security protocols*, **OAuth** and **OIDC**, we will see how Azure can be used to implement them. Azure Active Directory Business to Customer (**AADB2C**) will be our primary learning focus in this chapter. We will learn how to use it to securely manage interactions between our own applications and user accounts.
+We will learn the fundamentals of two *security protocols*: **Oauth** and **OIDC**. We will then learn how Azure can be used to implement them. We will spend a lot of time learning and configuring Azure Active Directory Business to Customer (**AADB2C**) which we will use to securely manage interactions between our applications and user accounts.
 
 .. Because this chapter can be overwhelming we will use diagrams to help build the mental model of how it all works. Let's take a moment to consider what our system looks like currently:
 
@@ -18,11 +16,13 @@ After learning the fundamentals of two *security protocols*, **OAuth** and **OID
 Key Concepts
 ============
 
-The following are the essential concepts and terms we will be using throughout this chapter. While others will be introduced they will all be related to these fundamentals. In the upcoming lessons we will move beyond abstract definitions and explore them in practical settings to make them easier to relate to.
+This article will introduce the abstract definitions of the key concepts of this chapter. In the upcoming lessons we will  explore the key concepts in more practical settings.
 
 There are many moving parts to keep track of and at times it may seem overwhelming. However, these concepts are essential aspects of modern web development. 
 
-Keep in mind that the goal of this chapter is not to become an expert but to gain functional experience and proficiency in common web security terminology. If you get confused remember that everything we are doing relates back to these fundamentals.
+.. admonition:: note
+
+  Keep in mind that the goal of this chapter is not to become an expert but to gain functional experience and proficiency in common web security terminology.
 
 Authentication
 --------------
@@ -35,7 +35,7 @@ An entity can be a an application user or even another server that interacts pro
 
 A common example of authentication would be logging into your email account. When you make a request to log in the email provider server doesn't know who you are or what emails you are trying to access. This *interaction* begins with the email provider sending you a form to prove your identity.
 
-You have to provide your *credentials*, an email address and a password, to prove your identity to your email provider before they *authorize you* to access your emails. This process of authenticating yourself is how trust is supported in an anonymous digital space. 
+You have to provide your *credentials*, an email address and a password, to prove your identity to your email provider before they *authorize you* to access your emails. This process of authenticating yourself is how trust is enabled in an anonymous digital space. 
 
 Authentication Factors
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -56,15 +56,21 @@ Authorization
 
    **Authorization**: the permission needed to access a protected resource
 
-Any physical or digital resource (data) can be protected by *restricting access* to it. Only entities that are *granted permission*, or **authorized**, to access the resource are permitted to do so. In the context of digital authorization, **access** means any actions (like reading or writing) that can be taken on a resource. 
+Any physical or digital resource (data) can be protected by *restricting access* to it. Only entities that are **authorized** to access the resource are permitted to do so. In the context of digital authorization, **access** means any actions (like reading or writing) that can be taken on a resource.
 
-Authorization can refer to a permission itself or more broadly to the overall process of verifying a permission. In the digital world an **access control system** defines rules, or **policies**. Policies are used for approving or denying access to a resource based on the authorization of the requestor.
+Authorization can refer to a specific permission or to the overall process of verifying a permission. In the digital world an **access control system** defines rules (**policies**). The policies are used for approving or denying access to a resource based on the authorization of the requestor.
 
 .. admonition:: Note
 
-  In most contexts it is understood that authorization is preceded by authentication. However, policies can also define how the resources in a system can be accessed by *anonymous*, or unauthenticated, entities.
+  In most contexts it is understood that authorization is preceded by authentication. However, policies can also define how the resources in a system can be accessed by unauthenticated (*anonymous*) entities.
 
-In the simplest case authorization is implied after authentication. After an entity authenticates, or proves their identity, they are authorized to access certain resources based on the relationship between their identity and the resources. This type of authorization would use a policy that states the resources and actions the particular authenticated entity is allowed to perform.
+After an entity authenticates they are authorized to access certain resources based on the relationship between their identity and the resources. This type of authorization would use a policy that states the resources and actions the particular authenticated entity is allowed to perform.
+
+.. admonition:: Tip
+
+  In the previous Secrets Management chapter we created a Key Vault and added a secret to it. However, we also had to grant our Virtual Machine access to the Key Vault. 
+  
+  To grant access we had to explicitly state the VM had full access to the secrets in the Key Vault. The VM would not have access to any keys, or credentials in the Key Vault.
 
 In the earlier example of checking your email your authorization was *implied* after authenticating. Because *you owned* the collection of emails (the resource) you were implicitly *authorized* to access them. Let's label each element in this scenario:
 
@@ -81,11 +87,11 @@ In more generalized terms we can refer to the core elements of authorization as:
 Server Roles
 ^^^^^^^^^^^^
 
-On the web, a resource is managed by a **resource server** -- like the email provider in the earlier example. In simple cases the logic to enforce policies can be written within the resource server itself. In other words, the resource server can take responsibility for both managing resources as well handling authorization.
+On the web, a resource is managed by a **resource server** -- like the email provider in the earlier example. In simple cases the logic to enforce policies can be written within the resource server itself. The resource server can take responsibility for both managing resources as well handling authorization.
 
 .. admonition:: Tip
 
-  We label the different servers to indicate their role in system. Although they may sound fancy they are just an API *with a specialized purpose*.
+  We label the different servers to indicate their role in the system. Although they may sound fancy they are just an API *with a specialized purpose*.
   
   Our Coding Events API is an example of a resource server because it specializes in managing the resources related to coding events.
 
@@ -102,7 +108,7 @@ Access control systems can define policies associated with other consumer attrib
 
 .. admonition:: Tip
 
-  If the authorization server determines the consumer is *unauthorized to access the resource* then it will send back a ``403, Forbidden`` response.
+  If the authorization server determines the consumer is *unauthorized to access the resource* then it will send back a ``403 Forbidden`` response.
 
 Delegation
 ----------
@@ -111,7 +117,9 @@ Delegation
 
 When a third party needs access to a resource the *authorization to do so must be granted* from the owner of the resource to the external entity. We say the third party is external because it *neither owns nor manages* the resource. The only way for the external entity to access the resource is to do so *on behalf of* the owner. 
 
-Delegation is used when an application asks for the **consent** of a user (owner) to access a resource managed by another entity *on the owner's behalf*. In general terms we refer to these entities as:
+Delegation is used when an application asks for the **consent** of a user (owner) to access a resource managed by another entity *on the owner's behalf*.
+
+We refer to these entities as:
 
 - **client**: the *requesting entity* (the third party)
 - **resource owner**: the *consenting entity* (a user)
@@ -128,7 +136,7 @@ Delegation Across Three Entities
 
 When an entity *other than the resource owner* is in direct control of the resource we can refer to it generally as the **resource manager**. Because the resource owner is *not in direct control of the resource* they need a mechanism for granting the client authorization to access resource *on their behalf*.
 
-Consider the process of opening a new credit card. Your credit score is a resource that you *manage indirectly* through a credit agency. The credit card company is *not authorized* to access your credit score without *proof of your permission*. As the *owner of the credit score resource* you can choose to *delegate authorization* to the credit card company or deny their request -- effectively denying yours too!
+Consider the process of opening a new credit card. Your credit score is a resource that you *manage indirectly* through a credit agency. The credit card company is *not authorized* to access your credit score without *proof of your permission*. As the *owner of the credit score resource* you can choose to *delegate authorization* to the credit card company or deny their request.
 
 You can **grant permission** for the credit agency to share your score by *consenting to* the credit card company's request. The credit card company can then provide the physical or digital proof of your consent as a *token that authorizes them* to access your credit score. The credit agency accepts the token and authorizes the credit card company to access your data on your behalf.
 
@@ -153,7 +161,7 @@ The industry standard that enables the *secure delegation of access* across a re
 
 .. admonition:: Note
 
-  As mentioned previously the resource server can, and often is, distinct from an authorization server that handles OAuth. Generally speaking we refer to the OAuth authorization server as an **OAuth provider** such as Microsoft, GitHub or LinkedIn.
+  As mentioned previously the resource server can be, and often is, distinct from an authorization server that handles OAuth. Generally speaking we refer to the OAuth authorization server as an **OAuth provider** such as Microsoft, GitHub or LinkedIn.
 
 In OAuth a user (resource owner) **delegates authorization** to a client through the use of a digital token. The client uses this **access token** to prove that they are authorized to access resources according to permissions granted by the user. If you have ever accepted a consent screen for a client service requesting access to your data on your behalf you were using OAuth!
 
