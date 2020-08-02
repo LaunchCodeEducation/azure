@@ -159,7 +159,7 @@ In OAuth a user (resource owner) **delegates authorization** to a client through
 
 We will explore OAuth and a relatively recent protocol built over it called **OIDC** in the upcoming lessons. The OIDC protocol functions similarly but **delegates authentication** through the use of an **identity token**. 
 
-Rather than carrying proof of authorization for a client, an identity token *proves the identity* of the user (the owner of the account resource). In relatable terms, OIDC is what enables `Single Sign On (SSO) <https://www.youtube.com/watch?v=T1fpulzHYcs>`_ on the web. SSO is what allows you to log in to many different client services using a single identity account. 
+Rather than carrying proof of authorization for a client, an identity token *proves the identity* of the user (the owner of the account resource). In relatable terms, OIDC is what enables `Single Sign On (SSO) <https://auth0.com/docs/api-auth/tutorials/adoption/single-sign-on>`_ on the web. SSO is what allows you to log in to many different client services using a single identity account. 
 
 .. admonition:: Note
 
