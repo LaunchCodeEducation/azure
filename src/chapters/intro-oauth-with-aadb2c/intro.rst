@@ -44,10 +44,10 @@ Authentication Factors
 
 Authenticating using *something you know* like credentials is certainly the most common form of authentication. But there are actually *multiple* factors of authentication in the digital world that can be used:
 
-  - **Knowledge factor**: something you *know* (credentials like a username and password)
-  - **Possession factor**: something you *have* (`a digital certificate <https://www.ssl.com/faqs/what-is-an-x-509-certificate/>`_)
-  - **Inherent factor**: something you *are* (a fingerprint or facial topography)
-  - **Location factor**: *where* you are (geo-location coordinates)
+- **Knowledge factor**: something you *know* (credentials like a username and password)
+- **Possession factor**: something you *have* (`a digital certificate <https://www.ssl.com/faqs/what-is-an-x-509-certificate/>`_)
+- **Inherent factor**: something you *are* (a fingerprint or facial topography)
+- **Location factor**: *where* you are (geo-location coordinates)
 
 .. admonition:: Note
 
@@ -80,15 +80,15 @@ After an entity authenticates, they are authorized to access certain resources b
 
 In the earlier example of checking your email, your authorization was *implied* after authenticating. Because you *owned* the collection of emails (the resource) you were implicitly *authorized* to access them. Let's label each element in this scenario:
 
-  - **Resource**: your collection of emails
-  - **Consumer**: you (the authenticated user)
-  - **Policy**: authenticated users are *authorized to access* any collection of emails that they own
+- **Resource**: your collection of emails
+- **Consumer**: you (the authenticated user)
+- **Policy**: authenticated users are *authorized to access* any collection of emails that they own
 
 In more general terms, we can refer to the core elements of authorization as:
 
-  - **Resource**: the data to be accessed (an image, video, or other application data)
-  - **Consumer**: an entity that *tries to access* the resource
-  - **Policy**: one or more rules that define the authorization needed to access the resource
+- **Resource**: the data to be accessed (an image, video, or other application data)
+- **Consumer**: an entity that *tries to access* the resource
+- **Policy**: one or more rules that define the authorization needed to access the resource
 
 Server Roles
 ^^^^^^^^^^^^
@@ -105,10 +105,10 @@ Later in this chapter we will use Azure AD B2C as another specialized API called
 
 In either design, access to resources is controlled by applying logical policy rules based on:
   
-  - the resource
-  - the consumer's identity
-  - the consumer's relationship with the resource
-  - what access to the resource is being requested
+- The resource
+- The consumer's identity
+- The consumer's relationship with the resource
+- What access to the resource is being requested
 
 Access control systems can define policies associated with other consumer attributes beyond just ownership. For example, there could be policies based on the consumer's role in an organization or membership to a specific group.
 
@@ -127,8 +127,8 @@ Delegation is used when an application asks for the **consent** of a user (owner
 
 We refer to these entities as:
 
-  - **client**: the *requesting entity* (the third party)
-  - **resource owner**: the *consenting entity* (a user)
+- **client**: the *requesting entity* (the third party)
+- **resource owner**: the *consenting entity* (a user)
 
 Local Delegation
 ^^^^^^^^^^^^^^^^
@@ -152,9 +152,9 @@ You can **grant permission** for the credit agency to share your score by *conse
 
 Let's consider the three entities involved in the delegation of your credit score *resource*:
 
-  - **resource manager**: the credit agency that manages your credit score resource
-  - **client**: the credit card company *requests authorization to access* your credit score
-  - **resource owner**: you choose to *delegate authorization* for the client to access your credit score
+- **Resource manager**: the credit agency that manages your credit score resource
+- **Client**: the credit card company *requests authorization to access* your credit score
+- **Resource owner**: you choose to *delegate authorization* for the client to access your credit score
 
 In more general terms we can describe the entities involved in this delegation as:
 
