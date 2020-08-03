@@ -22,7 +22,7 @@ Fork the Repo
 
 We will begin by forking the API repo into our own accounts. This will allow us to make and push changes we make throughout the week. 
 
-First go to ```CodingEventsAPI`` Repo <https://github.com/launchcodeeducation/coding-events-api>`_. 
+First go to `Coding Events API Repo <https://github.com/launchcodeeducation/coding-events-api>`_. 
 
 At the top right corner select the *Fork* option:
 

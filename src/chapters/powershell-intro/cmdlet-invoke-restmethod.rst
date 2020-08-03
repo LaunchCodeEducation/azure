@@ -283,9 +283,9 @@ The ``Invoke-RestMethod`` cmdlet is a powerful tool for working with APIs. When 
 CodingEventsAPI Examples
 ========================
 
-Let's test this out with our ``CodingEventsAPI``. To keep things simple let's use the ``1-sqlite`` branch so we don't need to worry about setting up a database, a secrets manager, or AADB2C.
+Let's test this out with our Coding Events API. To keep things simple let's use the ``1-sqlite`` branch so we don't need to worry about setting up a database, a secrets manager, or AADB2C.
 
-Run this branch to start the ``CodingEventsAPI`` on your local machine.
+Run this branch to start the Coding Events API on your local machine.
 
 GET Example
 -----------

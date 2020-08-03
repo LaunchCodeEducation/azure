@@ -1,8 +1,8 @@
-=======================================================
-Studio: Automated Deployment of the ``CodingEventsAPI``
-=======================================================
+=====================================================
+Studio: Automated Deployment of the Coding Events API
+=====================================================
 
-In this studio we will be using *PowerShell to script a complete deployment of the ``CodingEventsAPI`` to a Linux VM*.
+In this studio we will be using *PowerShell to script a complete deployment of the Coding Events API to a Linux VM*.
 
 This PowerShell script will provision and configure all of the Azure resources we will need for the deployment. The script will combine all the steps from the Azure CLI chapter into one easily runnable deploy-script.
 
@@ -61,7 +61,7 @@ After completing the script you will need to update the ``KeyVaultName`` in your
 Update the Deliver & Deploy Script
 ----------------------------------
 
-The ``deliver-deploy.sh`` script will require you to set your GitHub username and the branch of your ``CodingEventsAPI`` that includes the updated ``appsettings.json``. These are the variables at the top of the script:
+The ``deliver-deploy.sh`` script will require you to set your GitHub username and the branch of your Coding Events API that includes the updated ``appsettings.json``. These are the variables at the top of the script:
 
 - ``github_username=`` (your username)
 - ``solution_branch=`` (``3-aadb2c``)
