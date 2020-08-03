@@ -10,8 +10,6 @@ Each AADB2C tenant uses **User identity flows**, or policies, that customize how
 
 In this walkthrough we will register the Coding Events API application and create a user account in our AADB2C tenant directory. We will then inspect the **identity token** received after completing the OIDC flow for our registered API.
 
-.. creating: AADB2C tenant, registered application, SUSI flow
-
 .. admonition:: note
 
    Azure ADB2C is a multi-faceted service. In this walkthrough we will focus on the **authentication** configuration using **identity tokens**.  
@@ -21,9 +19,6 @@ In this walkthrough we will register the Coding Events API application and creat
 .. AADB2C can be used for **bi-directional authorization** with your organization's web applications. For example, if a user's identity is linked to a GitHub account your application can request their GitHub access token without ever communicating directly with GitHub. AADB2C would manage the OAuth exchange between the user and GitHub and provide the access token transparently to your application.
 
 .. We say bi-directional because the inverse scenario can be used as well. AADB2C can be used to **protect access** to your applications through the use of *their own* access tokens. AADB2C abstracts the process of managing access tokens for other client applications to use on behalf of your tenant's users.
-
-Components of AADB2C
-====================
 
 Checklist
 =========
@@ -35,18 +30,7 @@ Setting up our AADB2C service will involve the following steps:
 #. register our Coding Events API application
 #. configure a **S**\ign **U**\p and **S**\ign **I**\n (SUSI) flow using an Email provider
 
-After we have completed these steps we will register an identity using the SUSI flow and inspect the resulting JWT (identity token). We will be using the Microsoft `JWT decoder tool <https://jwt.ms>`_ to verify the authenticity of and claims within the identity token.
-
-
-- your Azure resources
-  - your default directory
-  - AADB2C tenant directory
-    - registered applications [API]
-    - user identities
-      - local account provider
-    - policies
-      - SUSI flow
-  - show request going into each box and returning identity token to MS JWT tool
+After we have completed these steps we will register an identity using the SUSI flow and inspect the resulting JWT (identity token). We will be using the Microsoft `JWT decoder tool <https://jwt.ms>`_ to inspect the claims within the identity token.
 
 .. admonition:: Note
 
