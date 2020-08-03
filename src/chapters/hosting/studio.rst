@@ -14,7 +14,7 @@ The Development Machine
 
 As the **development machine** you are simulating where the source code is developed (your local machine).
 
-Open the ``CodingEventsAPI/Startup.cs`` file. then edit the code so your partner can tell it's *your* ``CodingEventsAPI``.
+Open the ``CodingEventsAPI/Startup.cs`` file. then edit the code so your partner can tell it's *your* Coding Events API.
 
 .. warning::
 
@@ -33,7 +33,7 @@ You will see a configuration for Swagger on ``line 25``:
             "v1",
             new OpenApiInfo {
                Version = "v1",
-               Title = "``CodingEventsAPI``",
+               Title = "Coding Events API",
                Description = "REST API for managing Coding Events"
             }
          );

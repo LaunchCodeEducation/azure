@@ -86,8 +86,8 @@ You can leave this PowerShell Terminal window open, we will return to it in a la
 .. image:: /_static/images/postman/powershell-in-repo-dir.png
    :alt: PowerShell in coding-events-api repo directory on 1-sqlite branch
 
-``CodingEventsAPI``
-===================
+Coding Events API
+=================
 
 This branch of the API starts things simple by only exposing a single resource and 4 endpoints for interacting with it.
 
@@ -122,8 +122,8 @@ An example ``CodingEvent`` JSON response would look like this:
 
    {
       "id": 1,
-      "title": "Consuming the ``CodingEventsAPI`` With Postman",
-      "description": "Learn how to use Postman to interact with the ``CodingEventsAPI``!",
+      "title": "Consuming the Coding Events API With Postman",
+      "description": "Learn how to use Postman to interact with the Coding Events API!",
       "date": "2020-07-24"
    }
 

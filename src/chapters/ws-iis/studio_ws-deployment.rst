@@ -2,7 +2,7 @@
 Studio: Deploy CodingEventsAPI to Windows Server & IIS
 ======================================================
 
-In today's studio you will practice deploying the ``CodingEventsAPI`` to a Windows Server VM. You will be using the ``az CLI`` and the new Windows Server tools that you learned about.
+In today's studio you will practice deploying the Coding Events API to a Windows Server VM. You will be using the ``az CLI`` and the new Windows Server tools that you learned about.
 
 This studio will be more hands-off than you are used to. This is an opportunity to step out of your comfort zone and take ownership of your abilities. Applied learning "off the tracks" is the best way to solidify your understanding and build confidence. 
 
@@ -13,7 +13,7 @@ We will provide some high-level planning and guidance for new steps you haven't 
 Checklist
 =========
 
-This studio will be considered complete when your ``CodingEventsAPI`` is accessible over ``https`` at the public IP address of the VM and all of the features are functioning properly. The following is a checklist of tasks you will need to complete. 
+This studio will be considered complete when your Coding Events API is accessible over ``https`` at the public IP address of the VM and all of the features are functioning properly. The following is a checklist of tasks you will need to complete. 
 
 Note that this list is neither exhaustively detailed nor necessarily in a specific order:
 

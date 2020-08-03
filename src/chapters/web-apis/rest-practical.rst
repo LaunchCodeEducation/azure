@@ -116,7 +116,7 @@ Let's consider two resources exposed by a RESTful API:
 
 .. admonition:: Example
 
-   The ``CodingEventsAPI`` would have the following familiar resources (among others):
+   The Coding Events API would have the following familiar resources (among others):
 
    .. list-table:: Resource and corresponding collection entry-point
 
@@ -443,7 +443,7 @@ A bad request will include an error message in its response. The response will i
 
 .. admonition:: Example
 
-   In the ``CodingEventsAPI``, the *state* of a ``CodingEvent`` is validated using the following criteria:
+   In the Coding Events API, the *state* of a ``CodingEvent`` is validated using the following criteria:
 
    - ``Title``: 10-100 characters
    - ``Description``: less than 1000 characters
