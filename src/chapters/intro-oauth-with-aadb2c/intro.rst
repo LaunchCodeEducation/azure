@@ -42,10 +42,10 @@ Authentication Factors
 
 Authenticating using *something you know* like credentials is certainly the most common form of authentication. But there are actually *multiple factors of authentication* in the digital world that can be used:
 
-- **Knowledge based**: *something you know* (credentials like a username and password)
-- **Possession based**: *something you have* (`a digital certificate <https://www.ssl.com/faqs/what-is-an-x-509-certificate/>`_)
-- **Inherent based**: *something you are* (a fingerprint or facial topography)
-- **Location based**: *where you are* (geo-location coordinates)
+  - **Knowledge based**: *something you know* (credentials like a username and password)
+  - **Possession based**: *something you have* (`a digital certificate <https://www.ssl.com/faqs/what-is-an-x-509-certificate/>`_)
+  - **Inherent based**: *something you are* (a fingerprint or facial topography)
+  - **Location based**: *where you are* (geo-location coordinates)
 
 .. admonition:: Note
 
@@ -68,15 +68,15 @@ In the simplest case authorization is implied after authentication. After an ent
 
 In the earlier example of checking your email your authorization was *implied* after authenticating. Because *you owned* the collection of emails (the resource) you were implicitly *authorized* to access them. Let's label each element in this scenario:
 
-- **resource**: your collection of emails
-- **consumer**: you (the authenticated user)
-- **policy**: authenticated users are *authorized to access* any collection of emails that they own
+  - **resource**: your collection of emails
+  - **consumer**: you (the authenticated user)
+  - **policy**: authenticated users are *authorized to access* any collection of emails that they own
 
 In more generalized terms we can refer to the core elements of authorization as:
 
-- **resource**: the data to be accessed (an image, video or other application data)
-- **consumer**: an entity that *tries to access* the resource
-- **policy**: one or more rules that define the authorization needed to access the resource
+  - **resource**: the data to be accessed (an image, video or other application data)
+  - **consumer**: an entity that *tries to access* the resource
+  - **policy**: one or more rules that define the authorization needed to access the resource
 
 Server Roles
 ^^^^^^^^^^^^
@@ -113,8 +113,8 @@ When a third party needs access to a resource the *authorization to do so must b
 
 Delegation is used when an application asks for the **consent** of a user (owner) to access a resource managed by another entity *on the owner's behalf*. In general terms we refer to these entities as:
 
-- **client**: the *requesting entity* (the third party)
-- **resource owner**: the *consenting entity* (a user)
+  - **client**: the *requesting entity* (the third party)
+  - **resource owner**: the *consenting entity* (a user)
 
 Delegation Between Two Entities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -134,15 +134,15 @@ You can **grant permission** for the credit agency to share your score by *conse
 
 Let's consider the three entities involved in the delegation of your credit score *resource*:
 
-- **resource manager**: the credit agency manages your credit score resource
-- **client**: the credit card company *requests authorization to access* your credit score
-- **resource owner**: you choose to *delegate authorization* for the client to access your credit score
+  - **resource manager**: the credit agency manages your credit score resource
+  - **client**: the credit card company *requests authorization to access* your credit score
+  - **resource owner**: you choose to *delegate authorization* for the client to access your credit score
 
 In more general terms we can describe the entities involved in this delegation as:
 
-- **resource manager**: an entity that manages the owner's data
-- **client**: an entity that needs authorization to access an owner's data
-- **resource owner**: the entity that can authorize the resource manager to grant access to the client
+  - **resource manager**: an entity that manages the owner's data
+  - **client**: an entity that needs authorization to access an owner's data
+  - **resource owner**: the entity that can authorize the resource manager to grant access to the client
 
 OAuth & OIDC
 ------------
