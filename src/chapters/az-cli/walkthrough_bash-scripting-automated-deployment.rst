@@ -215,7 +215,7 @@ For this reason it makes more sense to provision the virtual machine first since
 
    vm_data=$(az vm create -n $vm_name --size $vm_size --image $vm_image --admin-username $vm_admin_username --admin-password $vm_admin_password --authentication-type password --assign-identity --query "[ identity.systemAssignedIdentity, publicIpAddress ]" -o tsv)
 
-.. admonition:: note
+.. admonition:: Note
 
    This bash script captures the output of the ``az vm create`` command in the vm_data variable. We can do the same thing in PowerShell with slightly different syntax.
 
@@ -237,7 +237,7 @@ Upon creating our virtual machine we store the output from the command in a Bash
    # get the 2nd line (ip)
    vm_ip=$(echo "$vm_data" | tail -n +2)
 
-.. admonition:: note
+.. admonition:: Note
 
    Getting the variables from the AZ CLI output is a tedious in Bash. Recall that Bash is a string based scripting language so the output from the AZ CLI is a string. In Bash we must manipulate the string to get the information we need. 
    
@@ -268,7 +268,7 @@ Now that we have a VM and have the information we need to create an access polic
 
    az keyvault create -n $kv_name --enable-soft-delete false --enabled-for-deployment true
 
-.. admonition:: note
+.. admonition:: Note
 
    For a VM to access the Key Vault it must be ``enabled-for-deployment``, we also turn off the ``soft-delete`` so the Key Vault can be deleted in less than 30 days.
 
@@ -395,7 +395,7 @@ The ``deliver-deploy.sh`` script has a couple of variables that need to be set b
    # generate API unit file
    cat << EOF > /etc/systemd/system/coding-events-api.service
    [Unit]
-   Description=Coding Events API
+   Description=``CodingEventsAPI``
    [Install]
    WantedBy=multi-user.target
    [Service]
@@ -439,7 +439,7 @@ This final script needs to know the GitHub user account name, and the repository
 
 The middle section does some VM Operations work, namely creating directories, granting privileges to those directories, and creates a Systemd Unit File we will use to deploy our application.
 
-.. admonition:: note
+.. admonition:: Note
 
    Unit Files are outside the scope of this class, but allow you to define how an application is run and can be configured to auto-restart the application if it fails. You can learn more by viewing the Digital Ocean `Systemd Unit File <https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files>`_ article.
 

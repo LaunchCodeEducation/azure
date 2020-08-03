@@ -28,7 +28,7 @@ You will see a configuration for Swagger on ``line 25``:
             "v1",
             new OpenApiInfo {
                Version = "v1",
-               Title = "Coding Events API",
+               Title = "``CodingEventsAPI``",
                Description = "REST API for managing Coding Events"
             }
          );

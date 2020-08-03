@@ -27,25 +27,27 @@ There are many moving parts to keep track of and at times it may seem overwhelmi
 Authentication
 --------------
 
-   **Authentication**: the process used by an entity to prove their identity
+.. index:: ! authentication
+
+**Authentication** is the process used by an entity to prove their identity.
    
 Authentication is a process used in both the physical and digital world. We use the term entity in our context to describe anything on the web that proves its identity as part of interactions with a server.
 
-An entity can be a an application user or even another server that interacts programmatically. Any entity can authenticate as long as it has a means of *uniquely identifying itself to a system*.
+An entity can be an application user or even another server that interacts with an application programmatically. Any entity can authenticate as long as it has a means of *uniquely* identifying itself to a system.
 
-A common example of authentication would be logging into your email account. When you make a request to log in the email provider server doesn't know who you are or what emails you are trying to access. This *interaction* begins with the email provider sending you a form to prove your identity.
+A common example of authentication is logging into your email account. When you make a request to log in the email provider, the server doesn't know who you are or what emails you are trying to access. This *interaction* begins with the email provider sending you a form to prove your identity.
 
-You have to provide your *credentials*, an email address and a password, to prove your identity to your email provider before they *authorize you* to access your emails. This process of authenticating yourself is how trust is enabled in an anonymous digital space. 
+You have to provide your *credentials*, an email address and a password, to prove your identity to your email provider before they *authorize* you to access your emails. This process of authenticating yourself is how trust is enabled in an anonymous digital space. 
 
 Authentication Factors
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Authenticating using *something you know* like credentials is certainly the most common form of authentication. But there are actually *multiple factors of authentication* in the digital world that can be used:
+Authenticating using *something you know* like credentials is certainly the most common form of authentication. But there are actually *multiple* factors of authentication in the digital world that can be used:
 
-  - **Knowledge factor**: *something you know* (credentials like a username and password)
-  - **Possession factor**: *something you have* (`a digital certificate <https://www.ssl.com/faqs/what-is-an-x-509-certificate/>`_)
-  - **Inherent factor**: *something you are* (a fingerprint or facial topography)
-  - **Location factor**: *where you are* (geo-location coordinates)
+- **Knowledge factor**: something you *know* (credentials like a username and password)
+- **Possession factor**: something you *have* (`a digital certificate <https://www.ssl.com/faqs/what-is-an-x-509-certificate/>`_)
+- **Inherent factor**: something you *are* (a fingerprint or facial topography)
+- **Location factor**: *where* you are (geo-location coordinates)
 
 .. admonition:: Note
 
@@ -54,35 +56,39 @@ Authenticating using *something you know* like credentials is certainly the most
 Authorization
 -------------
 
-   **Authorization**: the permission needed to access a protected resource
+.. index:: ! authorization
 
-Any physical or digital resource (data) can be protected by *restricting access* to it. Only entities that are **authorized** to access the resource are permitted to do so. In the context of digital authorization, **access** means any actions (like reading or writing) that can be taken on a resource.
+**Authorization** is the permission needed to access a protected resource.
 
-Authorization can refer to a specific permission or to the overall process of verifying a permission. In the digital world an **access control system** defines rules (**policies**) for managing authorization. The policies are used for approving or denying access to a resource based on the authorization of the requestor.
+Any physical or digital resource (i.e. data) can be protected by *restricting* access to it. Only entities that are authorized to access the resource are permitted to do so. In the context of digital authorization, *access* means any actions (like reading or writing) that can be taken on a resource.
+
+.. index:: ! access control system
+
+Authorization can refer to a specific permission or to the overall process of verifying a permission. In the digital world an **access control system** defines rules (aka policies) for managing authorization. The policies are used for approving or denying access to a resource based on the authorization of the requestor.
 
 .. admonition:: Note
 
-  In most contexts it is understood that authorization is preceded by authentication. However, policies can also define how the resources in a system can be accessed by unauthenticated (*anonymous*) entities.
+  In most contexts it is understood that authorization is preceded by authentication. However, policies can also define how the resources in a system can be accessed by unauthenticated (i.e. *anonymous*) entities.
 
-After an entity authenticates they are authorized to access certain resources based on the logical relationship between their identity and the resources. This type of authorization would use a policy that states the resources the *particular authenticated entity* is allowed to access.
+After an entity authenticates, they are authorized to access certain resources based on the logical relationship between their identity and the resources. This type of authorization uses a policy that states the resources the *specific* authenticated entity is allowed to access.
 
 .. admonition:: Example
 
-  In the previous Secrets Management chapter we created a Key Vault and added a secret to it. However, we also *had to grant* our Virtual Machine *access* to the Key Vault. 
+  In the Secrets Management chapter, we created a Key Vault and added a secret to it. However, we also had to *grant* our virtual machine *access* to the Key Vault. 
   
-  When granting access to the VM we had to *associated its identity* with scopes that defined what Key Vault resources it could access. In our case we *authorized the VM* to ``get`` and ``list`` secret resources managed by the Key Vault. 
+  When granting access to the VM we had to *associate* its identity with scopes that defined which Key Vault resources it could access. In our case, we *authorized the VM* to ``get`` and ``list`` secret resources managed by the Key Vault. 
 
-In the earlier example of checking your email your authorization was *implied* after authenticating. Because *you owned* the collection of emails (the resource) you were implicitly *authorized* to access them. Let's label each element in this scenario:
+In the earlier example of checking your email, your authorization was *implied* after authenticating. Because you *owned* the collection of emails (the resource) you were implicitly *authorized* to access them. Let's label each element in this scenario:
 
-  - **resource**: your collection of emails
-  - **consumer**: you (the authenticated user)
-  - **policy**: authenticated users are *authorized to access* any collection of emails that they own
+- **Resource**: your collection of emails
+- **Consumer**: you (the authenticated user)
+- **Policy**: authenticated users are *authorized to access* any collection of emails that they own
 
-In more generalized terms we can refer to the core elements of authorization as:
+In more general terms, we can refer to the core elements of authorization as:
 
-  - **resource**: the data to be accessed (an image, video or other application data)
-  - **consumer**: an entity that *tries to access* the resource
-  - **policy**: one or more rules that define the authorization needed to access the resource
+- **Resource**: the data to be accessed (an image, video, or other application data)
+- **Consumer**: an entity that *tries to access* the resource
+- **Policy**: one or more rules that define the authorization needed to access the resource
 
 Server Roles
 ^^^^^^^^^^^^
@@ -99,10 +105,10 @@ Later in this chapter we will use Azure AD B2C as another specialized API called
 
 In either design, access to resources is controlled by applying logical policy rules based on:
   
-  - the resource
-  - the consumer's identity
-  - the consumer's relationship with the resource
-  - what access to the resource is being requested
+- The resource
+- The consumer's identity
+- The consumer's relationship with the resource
+- What access to the resource is being requested
 
 Access control systems can define policies associated with other consumer attributes beyond just ownership. For example, there could be policies based on the consumer's role in an organization or membership to a specific group.
 
@@ -121,8 +127,8 @@ Delegation is used when an application asks for the **consent** of a user (owner
 
 We refer to these entities as:
 
-  - **client**: the *requesting entity* (the third party)
-  - **resource owner**: the *consenting entity* (a user)
+- **client**: the *requesting entity* (the third party)
+- **resource owner**: the *consenting entity* (a user)
 
 Local Delegation
 ^^^^^^^^^^^^^^^^
@@ -146,9 +152,9 @@ You can **grant permission** for the credit agency to share your score by *conse
 
 Let's consider the three entities involved in the delegation of your credit score *resource*:
 
-  - **resource manager**: the credit agency that manages your credit score resource
-  - **client**: the credit card company *requests authorization to access* your credit score
-  - **resource owner**: you choose to *delegate authorization* for the client to access your credit score
+- **Resource manager**: the credit agency that manages your credit score resource
+- **Client**: the credit card company *requests authorization to access* your credit score
+- **Resource owner**: you choose to *delegate authorization* for the client to access your credit score
 
 In more general terms we can describe the entities involved in this delegation as:
 
@@ -159,6 +165,8 @@ In more general terms we can describe the entities involved in this delegation a
 OAuth & OIDC
 ------------
 
+.. index:: ! OAuth
+
 Delegation across these three entities on the web is slightly more complex due to the inherent anonymity. In order for the client to access the resources on behalf of the owner they need way to *assume the owner's identity*. A resource owner could provide their credentials to the client so it can authenticate as the owner but that would be terribly insecure!
 
 The industry standard that enables the *secure delegation of access* across a resource owner, client and resource server is the **OAuth protocol**. 
@@ -167,10 +175,12 @@ The industry standard that enables the *secure delegation of access* across a re
 
   As mentioned previously the resource server can be, and often is, distinct from an authorization server that handles OAuth. Generally speaking we refer to the OAuth authorization server as an **OAuth provider** such as Microsoft, GitHub or LinkedIn.
 
-In OAuth a user (resource owner) **delegates authorization** to a client through the use of a digital token. The client uses this **access token** to prove that they are authorized to access resources according to permissions granted by the user. If you have ever accepted a consent screen for a client service requesting access to your data on your behalf you were using OAuth!
+In OAuth a user (resource owner) delegates authorization to a client through the use of a digital token. The client uses this **access token** to prove that they are authorized to access resources according to permissions granted by the user. If you have ever accepted a consent screen for a client service requesting access to your data on your behalf you were using OAuth!
 
 OIDC
 ^^^^
+
+.. index:: ! OIDC
 
 We will also explore another protocol called **OIDC** which is built over OAuth. Rather than delegating authorization, OIDC is used to **delegate authentication** through the use of an **identity token**. This is another mechanism you have likely used before which allowed you to sign in to one service using *your identity* that was managed by another service.
 
