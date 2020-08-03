@@ -16,9 +16,9 @@ We will learn the fundamentals of two *security protocols*: **Oauth** and **OIDC
 Key Concepts
 ============
 
-This article will introduce the abstract definitions of the key concepts of this chapter. In the upcoming lessons we will  explore the key concepts in more practical settings.
+This article will introduce the fundamental concepts used throughout this chapter. In the upcoming lessons we will build on these concepts in more practical settings.
 
-There are many moving parts to keep track of and at times it may seem overwhelming. However, these concepts are essential aspects of modern web development. 
+There are many moving parts to keep track of and at times it may seem overwhelming. However, these concepts are worth learning as they are essential aspects of modern web development. 
 
 .. admonition:: note
 
@@ -42,10 +42,10 @@ Authentication Factors
 
 Authenticating using *something you know* like credentials is certainly the most common form of authentication. But there are actually *multiple factors of authentication* in the digital world that can be used:
 
-  - **Knowledge based**: *something you know* (credentials like a username and password)
-  - **Possession based**: *something you have* (`a digital certificate <https://www.ssl.com/faqs/what-is-an-x-509-certificate/>`_)
-  - **Inherent based**: *something you are* (a fingerprint or facial topography)
-  - **Location based**: *where you are* (geo-location coordinates)
+  - **Knowledge factor**: *something you know* (credentials like a username and password)
+  - **Possession factor**: *something you have* (`a digital certificate <https://www.ssl.com/faqs/what-is-an-x-509-certificate/>`_)
+  - **Inherent factor**: *something you are* (a fingerprint or facial topography)
+  - **Location factor**: *where you are* (geo-location coordinates)
 
 .. admonition:: Note
 
@@ -58,19 +58,19 @@ Authorization
 
 Any physical or digital resource (data) can be protected by *restricting access* to it. Only entities that are **authorized** to access the resource are permitted to do so. In the context of digital authorization, **access** means any actions (like reading or writing) that can be taken on a resource.
 
-Authorization can refer to a specific permission or to the overall process of verifying a permission. In the digital world an **access control system** defines rules (**policies**). The policies are used for approving or denying access to a resource based on the authorization of the requestor.
+Authorization can refer to a specific permission or to the overall process of verifying a permission. In the digital world an **access control system** defines rules (**policies**) for managing authorization. The policies are used for approving or denying access to a resource based on the authorization of the requestor.
 
 .. admonition:: Note
 
   In most contexts it is understood that authorization is preceded by authentication. However, policies can also define how the resources in a system can be accessed by unauthenticated (*anonymous*) entities.
 
-After an entity authenticates they are authorized to access certain resources based on the relationship between their identity and the resources. This type of authorization would use a policy that states the resources and actions the particular authenticated entity is allowed to perform.
+After an entity authenticates they are authorized to access certain resources based on the logical relationship between their identity and the resources. This type of authorization would use a policy that states the resources the *particular authenticated entity* is allowed to access.
 
-.. admonition:: Tip
+.. admonition:: Example
 
-  In the previous Secrets Management chapter we created a Key Vault and added a secret to it. However, we also had to grant our Virtual Machine access to the Key Vault. 
+  In the previous Secrets Management chapter we created a Key Vault and added a secret to it. However, we also *had to grant* our Virtual Machine *access* to the Key Vault. 
   
-  To grant access we had to explicitly state the VM had full access to the secrets in the Key Vault. The VM would not have access to any keys, or credentials in the Key Vault.
+  When granting access to the VM we had to *associated its identity* with scopes that defined what Key Vault resources it could access. In our case we *authorized the VM* to ``get`` and ``list`` secret resources managed by the Key Vault. 
 
 In the earlier example of checking your email your authorization was *implied* after authenticating. Because *you owned* the collection of emails (the resource) you were implicitly *authorized* to access them. Let's label each element in this scenario:
 
@@ -124,17 +124,21 @@ We refer to these entities as:
   - **client**: the *requesting entity* (the third party)
   - **resource owner**: the *consenting entity* (a user)
 
-Delegation Between Two Entities
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Local Delegation
+^^^^^^^^^^^^^^^^
 
-A common example of delegation between just these two entities is a desktop or mobile application requesting consent from a user to access some data on the device. For example, an application might request the photos *that are managed by* a user's device.
+A common example of delegation between just these two entities is a desktop or mobile application requesting consent from a user to access some data on the device. For example, an application might request the photos *that are managed by* a user's device. Notice how this delegation occurs *locally on the user's device*.
 
 Because the user (resource owner) is in control of the device that manage the photos (resource) they are *in direct control* of the resource itself. This contrasts with a *remote resource* on the web where a user controls resources *indirectly through the resource server*.
 
-Delegation Across Three Entities
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Remote Delegation
+^^^^^^^^^^^^^^^^^
 
-When an entity *other than the resource owner* is in direct control of the resource we can refer to it generally as the **resource manager**. Because the resource owner is *not in direct control of the resource* they need a mechanism for granting the client authorization to access resource *on their behalf*.
+Remote delegation involves three entities: the resource owner (user), a resource manager that is separate from the owner and a client who needs to access the resource. Because the resource owner is *not in direct control of the resource* they need a mechanism for granting the client authorization to access the resource *on their behalf*.
+
+.. admonition:: Note
+
+  On the web we call the entity who manages the user's data a **resource server** because it *serves to manage resources*. In more general terms the resource server can be referred to as a **provider** because it *provides data*. We will learn about several different types of providers in the upcoming lessons.
 
 Consider the process of opening a new credit card. Your credit score is a resource that you *manage indirectly* through a credit agency. The credit card company is *not authorized* to access your credit score without *proof of your permission*. As the *owner of the credit score resource* you can choose to *delegate authorization* to the credit card company or deny their request.
 
@@ -142,7 +146,7 @@ You can **grant permission** for the credit agency to share your score by *conse
 
 Let's consider the three entities involved in the delegation of your credit score *resource*:
 
-  - **resource manager**: the credit agency manages your credit score resource
+  - **resource manager**: the credit agency that manages your credit score resource
   - **client**: the credit card company *requests authorization to access* your credit score
   - **resource owner**: you choose to *delegate authorization* for the client to access your credit score
 
