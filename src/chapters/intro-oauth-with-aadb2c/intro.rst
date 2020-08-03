@@ -165,10 +165,22 @@ The industry standard that enables the *secure delegation of access* across a re
 
 In OAuth a user (resource owner) **delegates authorization** to a client through the use of a digital token. The client uses this **access token** to prove that they are authorized to access resources according to permissions granted by the user. If you have ever accepted a consent screen for a client service requesting access to your data on your behalf you were using OAuth!
 
-We will explore OAuth and a relatively recent protocol built over it called **OIDC** in the upcoming lessons. The OIDC protocol functions similarly but **delegates authentication** through the use of an **identity token**. 
+OIDC
+^^^^
+
+We will also explore another protocol called **OIDC** which is built over OAuth. Rather than delegating authorization, OIDC is used to **delegate authentication** through the use of an **identity token**. This is another mechanism you have likely used before which allowed you to sign in to one service using *your identity* that was managed by another service.
 
 Rather than carrying proof of authorization for a client, an identity token *proves the identity* of the user (the owner of the account resource). In relatable terms, OIDC is what enables `Single Sign On (SSO) <https://auth0.com/docs/api-auth/tutorials/adoption/single-sign-on>`_ on the web. SSO is what allows you to log in to many different client services using a single identity account. 
 
 .. admonition:: Note
 
   Because OIDC is built over OAuth the authorization server provides both access and identity tokens depending on the type of request it receives. When an authorization server is exchanging an identity token it is sometimes referred to as an **identity provider**.
+
+Learn More
+==========
+
+OAuth, OIDC and the Azure AD B2C service that we will use to implement them can be confusing to understand. While we will work with each of these in the upcoming lessons you can seek out other learning resources to help solidify your understanding. The following two videos offer a great overview and introduction to these protocols and AADB2C:
+
+- `OAuth & OIDC explained simply by Nate Barbettini (YouTube) <https://www.youtube.com/watch?v=996OiexHze0>`_
+- `Microsoft AADB2C overview (YouTube) <https://www.youtube.com/watch?v=GmBKlXED9Ug>`_
+
