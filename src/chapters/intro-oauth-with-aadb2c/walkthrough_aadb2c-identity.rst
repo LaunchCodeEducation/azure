@@ -4,11 +4,13 @@ Walkthrough: Set Up Azure ADB2C Tenant & Identity Tokens
 
 Azure Active Directory B2C (AADB2C) is a service that manages user identities and coordinates their access across the different applications in your organization.  When provisioning an AADB2C service Azure will create a **tenant directory**. 
 
-The tenant directory is an Active Directory instance that centralizes user identities for a SSO experience across your organization. This means that a user can have a **single identity** they create and access through multiple identity providers like Microsoft, GitHub or an Email and password.
+The tenant directory is an Active Directory instance that centralizes user identities for a SSO experience across your organization. This means that a user can have a **single identity** they create and access through multiple identity providers like Microsoft, GitHub or a **local account** provider that uses an Email and password.
 
 Each AADB2C tenant uses **User identity flows**, or policies, that customize how a user registers and manages their identity in your organization. These user accounts can be used to authenticate and interact with your organization's **registered applications**. 
 
 In this walkthrough we will register the Coding Events API application and create a user account in our AADB2C tenant directory. We will then inspect the **identity token** received after completing the OIDC flow for our registered API.
+
+.. creating: AADB2C tenant, registered application, SUSI flow
 
 .. admonition:: note
 
@@ -34,6 +36,17 @@ Setting up our AADB2C service will involve the following steps:
 #. configure a **S**\ign **U**\p and **S**\ign **I**\n (SUSI) flow using an Email provider
 
 After we have completed these steps we will register an identity using the SUSI flow and inspect the resulting JWT (identity token). We will be using the Microsoft `JWT decoder tool <https://jwt.ms>`_ to verify the authenticity of and claims within the identity token.
+
+
+- your Azure resources
+  - your default directory
+  - AADB2C tenant directory
+    - registered applications [API]
+    - user identities
+      - local account provider
+    - policies
+      - SUSI flow
+  - show request going into each box and returning identity token to MS JWT tool
 
 .. admonition:: Note
 
