@@ -43,7 +43,6 @@ This version of the Coding Events API includes logic that restricts access to re
 - **Roles**: ``Public User``, ``Authenticated User``, ``Member``, ``Owner``
 - **Attributes**: ``Coding Event Membership``, ``Coding Event Ownership``
 
-
 In addition to this authorization logic and the ``CodingEvent`` resource you saw before, the API now includes the ``Member`` and ``Tag`` resources. Because there are many more endpoints available in this version of the API you will find a Postman collection file in the repo that you can import. 
 
 Switch to the ``3-aadb2c`` branch in your forked ``coding-events-api`` repo. In the ``coding-events-api/CodingEventsAPI`` project directory is a Postman collection file called ``Postman_AADB2C-CodingEventsAPI-Collection.json``. Let's import this file into Postman.
@@ -84,6 +83,10 @@ Selecting the **Get New Access Token** button will open a modal with a form for 
 
 This form allows you to define all of the information needed to request an access token. At this point it is populated with example entries for the AADB2C access token request.
 
+.. admonition:: Warning
+
+  The **Grant Type** field should be set to ``Implicit``. This should be the default but if it is not then you will need to update it.
+
 In the following AADB2C configuration sections **you will replace these entries** with the values for your own tenant. You will need to update the following fields:
 
 - **Auth URL**: the **authorization URL** for the SUSI User Flow policy we created before
@@ -92,7 +95,7 @@ In the following AADB2C configuration sections **you will replace these entries*
 
 .. admonition:: Warning
 
-   **Do not modify any other settings besides those listed in the instructions**.
+   **Do not modify any other settings besides those listed in the instructions**. 
 
 Leave this form open in Postman and switch over to the Azure Portal.
 
