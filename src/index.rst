@@ -29,7 +29,6 @@ Chapters
    chapters/authorization-and-next-steps/index
    chapters/authorization-and-next-steps/studio
    chapters/authorization-and-next-steps/walkthrough
-   chapters/azure-adb2c/index
    chapters/hosting/studio
    chapters/intro-oauth-with-aadb2c/labs-setup
    chapters/powershell-intro/instructor/index

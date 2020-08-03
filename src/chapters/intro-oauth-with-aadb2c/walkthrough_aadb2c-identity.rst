@@ -4,7 +4,7 @@ Walkthrough: Set Up Azure ADB2C Tenant & Identity Tokens
 
 .. index:: ! tenant directory
 
-Azure Active Directory B2C (AADB2C) is a service that manages user identities and coordinates their access across the different applications in your organization.  When provisioning an AADB2C service, Azure will create a **tenant directory**. 
+The tenant directory is an Active Directory instance that centralizes user identities for a SSO experience across your organization. This means that a user can have a **single identity** they create and access through multiple identity providers like Microsoft, GitHub or a **local account** provider that uses an Email and password.
 
 The tenant directory is an Active Directory instance that centralizes user identities for a single sign on (SSO) experience across your organization. This means that a user can have a *single identity* they create and access through multiple identity providers like Microsoft, GitHub, or an email and password.
 
@@ -24,9 +24,6 @@ In this walkthrough, we will register the ``CodingEventsAPI`` application and cr
 
 .. We say bi-directional because the inverse scenario can be used as well. AADB2C can be used to **protect access** to your applications through the use of *their own* access tokens. AADB2C abstracts the process of managing access tokens for other client applications to use on behalf of your tenant's users.
 
-Components of AADB2C
-====================
-
 Checklist
 =========
 
@@ -39,7 +36,11 @@ Setting up our AADB2C service will involve the following steps:
 #. Register our ``CodingEventsAPI`` application.
 #. configure a **sign up and sign in** (SUSI) flow using an email provider
 
+<<<<<<< HEAD
 After we have completed these steps, we will register an identity using the SUSI flow and inspect the resulting JWT (identity token). We will be using the Microsoft `JWT decoder tool <https://jwt.ms>`_ to verify the authenticity of and claims within the identity token.
+=======
+After we have completed these steps we will register an identity using the SUSI flow and inspect the resulting JWT (identity token). We will be using the Microsoft `JWT decoder tool <https://jwt.ms>`_ to inspect the claims within the identity token.
+>>>>>>> master
 
 .. admonition:: Note
 

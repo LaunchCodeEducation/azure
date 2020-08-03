@@ -9,7 +9,10 @@ In this walkthrough, we will explore the other half of AADB2C, protecting applic
 .. index:: 
    :single: authorization; server
 
-An API can only be consumed by client applications. We can use AADB2C as an **authorization server** to protect our API by restricting access to only *registered* applications. In our case, we will use Postman as the consuming client application.
+Checklist
+=========
+
+The goal of this walkthrough is to configure AADB2C to grant access tokens to the Postman client application. These tokens will need to include a **scope** that **authorizes** Postman (the token *bearer*) to interact with the protected application (Coding Events API) **on behalf of a user**.
 
 .. index:: ! scope
 
