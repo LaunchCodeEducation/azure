@@ -130,7 +130,7 @@ Each of the components of the JWT are color-coded:
 Claims
 ^^^^^^
 
-Claims are entries in the payload that describe information about the authorization or identity of a user. At minimum, they include information that can be used to **verify the token's authenticity**. In addition to the authenticity claims a token can contain:
+Claims are entries in the payload that describe information about the delegated authorization or identity of a user. At minimum, they include information that can be used to **verify the token's authenticity**. In addition to the authenticity claims a token can contain:
 
 - **identity claims**: information about the user
 - **authorization claims**: information about what the Client is authorized to access 
