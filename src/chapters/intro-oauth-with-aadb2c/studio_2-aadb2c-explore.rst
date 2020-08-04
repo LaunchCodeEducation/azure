@@ -19,11 +19,7 @@ Task Roles
 The **Owner** will be responsible for providing the **Member** with:
 
 - the public IP of the **Owner's** hosted API
-- the **Owner's** Postman client ID
-
-.. admonition:: Note
-   
-   If you would like to complete this studio on your own you can use two of your email addresses to create the AADB2C user accounts.
+- the **Owner's** Postman access token settings
 
 In each task the **Owner** and the **Member** will work together to set up an initial state with the API. Then both of you will make requests to complete the task and reflect on the responses and resource state transitions encountered along the way.
 
@@ -57,7 +53,7 @@ In order to coordinate and plan these steps you and your partner will need to co
 Setup
 =====
 
-There are multiple ways to set up Postman so both you and your partner can request access tokens from the **Owner's** AADB2C service. The simpler mechanism is to share the client ID of the **Owner's** Postman application with the **Member**. 
+There are multiple ways to set up Postman so both you and your partner can request access tokens from the **Owner's** AADB2C service. The simpler mechanism is to share *all of the* **Owner's** *Postman access token settings* with the **Member**. This will include the Client ID of the Owner's registered Postman application. 
 
 However, if you are looking for a challenge the bonus section below will have the **Owner** register a new client application with its own client ID for the **Member** to use. Either of these approaches **will require you to update** the Coding Events API collection in Postman.
 
@@ -68,39 +64,46 @@ Before you can make requests to the Coding Events API both you and your partner 
 
 .. admonition:: Note
 
-   The **Owner** must send the public IP of their hosted API to the **Member**.
+   The **Owner** must send the Postman access token form settings to the **Member**.
 
 In Postman, edit the collection (using the three dots to the right of its name) and select the **Variables** tab. In the **Current Value** entry on the right side replace the current value, ``https://localhost:5001``, with the public IP address:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/studio_2-aadb2c-explore/postman-update-baseurl.png
    :alt: Postman update the baseUrl variable with the public IP address of the API
 
-In addition to sharing the public IP, the **Owner** will need to provide the client ID of *their Postman application* with the **Member**. The **Member** will then need to select the **Authorization** tab and update their access token form to use the **Owner's** Postman client ID. 
+In addition to sharing the public IP, the **Owner** will need to provide:
+
+- **Auth URL**: the URL of the authorization endpoint for the SUSI User Flow policy we created before
+- **Client ID**: the ID of the new Postman client application we will be registering (the *authorized party*, or bearer, of the access token)
+- **Scope**: the ``user_impersonation`` scope exposed by the registered Coding Events API application
+
+The **Member** will then need to select the **Authorization** tab and update their access token settings to use the **Owner's** Postman access token settings and request a token.
+
+.. admonition:: note
+
+   Initially each of your settings will reference your respective tenants. However, the Member must update their settings to match the Owner's settings so the member can create an account with the Owner's tenant. 
 
 Get Access Tokens
 -----------------
 
 The **Owner** should already have an account registered in *their* AADB2C tenant. However, the **Member** will need to register *their own* account in the **Owner's** tenant. As a reminder, the **Member** can use the **sign up now** link at the bottom of the login form. 
 
-.. admonition:: Warning
-
-   Before continuing with the studio make sure that both you and your partner are able to successfully request an access token.
-   
-   If either of you receive the following message when requesting an access token it indicates that the client ID was not updated correctly:
-
-   .. image:: /_static/images/intro-oauth-with-aadb2c/studio_2-aadb2c-explore/postman-invalid-client-id.png
-      :alt: Postman failed access token request due to invalid client ID
-
 Bonus: Multiple Front-end Client Applications
 ---------------------------------------------
 
-You can simulate a system that has several different client applications that interact with a single API. In this system each client application must register with the AADB2C tenant and identify themselves with their client ID in each request to the protected API. 
+You can simulate a system that has several different client applications that interact with a single protected API. In this system each client application must register with the AADB2C tenant in order to uniquely identify itself. By doing so requests from each client application can be individually monitored and controlled.
 
 For this bonus mission, instead of the **Owner** sharing the client ID of *their* Postman application, they will register a new one in their AADB2C tenant. This will allow you and your partner to simulate a multi-client system using AADB2C.
 
+.. admonition:: note
+
+   **The Member will still need to update their access token settings to reference the Owner's tenant information.**
+
+   After updating the access token settings, this bonus will require the Member to update the client ID field to reference the newly created client ID of the ``<Member Name> Postman`` application.
+
 The **Owner** will register another application in their AADB2C tenant that corresponds to the **Member's** Postman application. The ``<Member Name> Postman`` application will need to be registered and granted access to use the ``user_impersonation`` scope of the API.
 
-After completing the registration and configuration the **Owner** will share the new ``<Member Name> Postman`` client ID with the **Member** so they can update their access token form in Postman. 
+After completing the registration and configuration the **Owner** will share the new ``<Member Name> Postman`` client ID with the **Member** so they can update the client ID field of the access token form in Postman.
 
 .. admonition:: Note
 
@@ -188,6 +191,15 @@ If the results do not align with your expectations consider:
 
 - was your initial state correct?
 - did the order of the requests have an effect?
+
+.. admonition:: Warning
+
+   Before continuing with the studio make sure that both you and your partner are able to successfully request an access token.
+   
+   If either of you receive the following message when requesting an access token it indicates that the client ID was not updated correctly:
+
+   .. image:: /_static/images/intro-oauth-with-aadb2c/studio_2-aadb2c-explore/postman-invalid-client-id.png
+      :alt: Postman failed access token request due to invalid client ID
 
 Join a Coding Event
 -------------------
