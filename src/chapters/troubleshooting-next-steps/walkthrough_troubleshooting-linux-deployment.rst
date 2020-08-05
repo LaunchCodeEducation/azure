@@ -2,10 +2,6 @@
 Group Walkthrough: Troubleshooting a Linux Deployment
 =====================================================
 
-.. TAs will have their own login account to the VM that has full permissions
-
-.. students will have a different login account that is read only
-
 This walkthrough is different than any walkthroughs you have done so far. Troubleshooting skills can only be developed through experience. The methodologies and tools can be taught, but the experience is invaluable to your ability to solve real-world problems. You will be working as a group, like you would be on a professional team. Together your group will be troubleshooting a broken deployment. You will need to work together to engage in a troubleshooting discussion to reach a resolution to the issues presented in the deployment.
 
 Each student will be given read-only access to Azure resources and to the VM used in the deployment. Your TA will be the only member of your group with administrative access. For each issue the group encounters your TA will facilitate discussion and take any actions the group agrees upon.
@@ -29,9 +25,6 @@ After setting up access of the group members you will have one hour to reach a f
 Troubleshooting Tools
 =====================
 
-...note you are bound by the tools on the remote machine
-...dependence of tools on the host machine
-
 For our troubleshooting exercise we will need troubleshooting tools to work with our broken deployment. Luckily some of these tools will look familiar as we have worked with them throughout this course.
 
 .. admonition:: Note
@@ -40,11 +33,6 @@ For our troubleshooting exercise we will need troubleshooting tools to work with
 
 Our Troubleshooting Tools
 -------------------------
-
-...working in the production environment on a linux machine...
-...consider the available tools for this system...
-...in addition to standard FS navigation tools...
-...these are the tools you will be using...
 
 In large scale systems you would rely on bulk remote management tools, but in our case we only need to manage one machine. For our Linux machine we will use ``ssh`` (Secure Shell) to securely connect to the shell of the provisioned VM.
 
@@ -61,11 +49,6 @@ Outside of the host machine we will use the following tools for external trouble
 - ``browser dev tools``: to inspect response behavior in the browser
 - ``Invoke-RestMethod``: to make network requests from your Windows development machine
 
-...we will be using remote management to enter a machine, however there are other remote management tools (scaled systems don't have
-
-...- ``ssh``: to access the machine remotely
-
-
 Using ``service``
 ^^^^^^^^^^^^^^^^^
 
@@ -80,25 +63,35 @@ Using ``journalctl``
 
 journalctl -fu [service-name]
 
-Using ``Invoke-RestMethod``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Working with Self-Signed Certificates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-...Use the ``-SkipCertificateCheck`` option when working with self-signed certificates...
+The nature of a self-signed certificate is that there is no external `certificate authority (CA) <>`_ to validate the certificate. By default http client applications like your browser and CLI tools will automatically reject self-signed certificates as a security measure. Recall when you connected to your website from your browser you had to accept the self-signed certificate. The CLI tools can be configured to also accept self signed certificates.
+
+When working with ``Invoke-RestMethod`` cmdlet the default certificate validation behavior for self-signed certificates is:
+
+.. sourcecode:: powershell
+
+   Invoke-RestMethod: The remote certificate is invalid according to the validation procedure.
+
+We can override the validation procedure by using the ``-SkipCertificateCheck`` option:
 
 .. sourcecode:: powershell
   :caption: Windows/PowerShell
 
   > Invoke-RestMethod -Uri https://<PUBLIC IP> -SkipCertificateCheck
 
-Using ``curl``
-^^^^^^^^^^^^^^
-
-...curl can be used externally as well (not calling localhost)
-...explain -k being similar to -SkipCertificateCheck
+Similarly, when working in the Linux machine the validation can be skipped with ``curl`` by using the ``-k`` option:
 
 .. sourcecode:: powershell
 
    # curl localhost:5000 -k
+
+When troubleshooting within a VM you can use ``curl`` to rule out external networking related issues. If you are able to connect successfully from inside the machine, but you cannot connect externally it indicates that an internal firewall or external network rule is the issue.
+
+.. admonition:: Note
+
+   In Ubuntu the ``ufw`` tool is used for managing internal firewall rules.
 
 Setup
 =====
