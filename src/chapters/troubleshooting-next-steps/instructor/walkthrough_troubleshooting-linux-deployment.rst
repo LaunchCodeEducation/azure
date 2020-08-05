@@ -2,6 +2,10 @@
 Walkthrough: Troubleshooting a Linux Deployment
 ===============================================
 
+.. TAs will have their own login account to the VM that has full permissions
+
+.. students will have a different login account that is read only
+
 In this walkthrough we will explore a broken deployment on a Linux machine.
 
 - separate into TA groups

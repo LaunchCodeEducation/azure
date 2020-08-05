@@ -1,26 +1,30 @@
-===============================================
-Walkthrough: Troubleshooting a Linux Deployment
-===============================================
+=====================================================
+Group Walkthrough: Troubleshooting a Linux Deployment
+=====================================================
 
-In this walkthrough we will explore a broken deployment on a Linux machine.
+.. TAs will have their own login account to the VM that has full permissions
 
-- separate into TA groups
-  - students OBSERVE ONLY
-  - discuss and reach consensus
-    - NOTE: refer to previous article for tips on your approach
-  - TA issues mutating actions
-- see if your group is able to troubleshoot and resolve on your own 
-  - dont be pressured to resolve it
-  - the value is in the exploration
-  - afterwards instructor will go through the full solution step by step
+.. students will have a different login account that is read only
 
-LEARNING GOALS  
-- exploration
-- discussion
+This walkthrough is different than any walkthroughs you have done so far. Troubleshooting skills can only be developed through experience. The methodologies and tools can be taught, but the experience is invaluable to your ability to solve real-world problems. You will be working as a group, like you would be on a professional team. Together your group will be troubleshooting a broken deployment. You will need to work together to engage in a troubleshooting discussion to reach a resolution to the issues presented in the deployment.
 
-.. admonition:: Warning
+Each student will be given read-only access to Azure resources and to the VM used in the deployment. Your TA will be the only member of your group with administrative access. For each issue the group encounters your TA will facilitate discussion and take any actions the group agrees upon.
 
-  You will be collaborating with your group mates and TA. **Make sure you do not change anything in the machine**. Your role is **purely observational**. The TA will perform any mutating actions to ensure a manageable process for everyone in the group.
+After setting up access of the group members you will have one hour to reach a functional deployment. After the time is up your instructor will walkthrough each issue and it's resolution.
+
+.. admonition:: note
+
+   Take your time on each issue.
+   
+   The purpose of this exercise is to engage in a dialogue around identifying, isolating, and resolving issues in a live deployment. If you do finish early there is a bonus section your group can work on.
+
+... TODO: VM access can be restricted
+
+.. ::
+
+   .. admonition:: Warning
+
+   You will be collaborating with your group mates and TA. **Make sure you do not change anything in the machine**. Your role is **purely observational**. The TA will perform any mutating actions to ensure a manageable process for everyone in the group.
 
 Taking Inventory
 ================
@@ -210,11 +214,18 @@ prompts
 
   Remember that fixing one issue may expose another. Through each phase of troubleshooting remember to consider *the new state* of the system and adapt your approach. 
 
-An Unexpected Bug
------------------
+Bonus
+=====
 
-   validation on coding event
+Customer Reports Unexpected Bug
+-------------------------------
 
-When an application is running successfully, but not beahving the way it should it may be a code issue. Maybe there is a coding bug that is causing the improper behavior. To solve this we will need to know what conditions cause the incorrect behavior.
+  validation on coding event
 
-In this case our API is representing date data as null when a user with the proper level of authorization accesses X. Let's look at the code to determine where this error may be occurring.
+A customer opened an issue that they were seeing some unexpected behaviors. The QA team reports that this bug is happening in the model at this line, it is up to us to solve the issue and redeploy the application.
+
+It is up to you on how you approach this, but we recommend using a debugger, and looking into the Microsoft validation module.
+
+Consider taking the same approach you used before, by asking some questions on where this is happening, why, and how to resolve the issue.
+
+If you and your group are able to fix the issue locally let your TA know how it can be fixed, and as a group observe as the TA deploys the fix.
