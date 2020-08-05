@@ -29,9 +29,14 @@ After setting up access of the group members you will have one hour to reach a f
 Troubleshooting Tools
 =====================
 
-... every deployment is different
-... this list is not exhaustive
-... you will learn about more troubleshooting tools throughout your career
+...note you are bound by the tools on the remote machine
+...dependence of tools on the host machine
+
+For our troubleshooting exercise we will need troubleshooting tools to work with our broken deployment. Luckily some of these tools will look familiar as we have worked with them throughout this course.
+
+.. admonition:: Note
+
+   The tools we use in this exercise are not exhaustive. Due to the variable nature of deployments many different tools have been created to assist in troubleshooting. Throughout your career you will use many of these different tools as a response to different systems, tech stack, or team preferences.
 
 Our Troubleshooting Tools
 -------------------------
@@ -41,13 +46,25 @@ Our Troubleshooting Tools
 ...in addition to standard FS navigation tools...
 ...these are the tools you will be using...
 
-- ``ssh``: to access the machine remotely
-- ``az CLI``: for information about each resource component (or the Azure web portal)
+In large scale systems you would rely on bulk remote management tools, but in our case we only need to manage one machine. For our Linux machine we will use ``ssh`` (Secure Shell) to securely connect to the shell of the provisioned VM.
+
+We are bound to the tools that come included in the selected Ubuntu image. This includes the File System navigation tools you learned in the Bash chapter, and the following:
+
 - ``cat`` or ``less``: to inspect configuration files
 - ``service``: to view the status of the services
-- ``Invoke-RestMethod``: to make network requests from the CLI
-- ``browser dev tools``: to inspect response behavior in the browser
 - ``journalctl``: to view log outputs
+- ``curl``: to make network requests from inside the Ubuntu machine
+
+Outside of the host machine we will use the following tools for external troubleshooting:
+
+- ``az CLI``: for information about each resource component (or the Azure web portal)
+- ``browser dev tools``: to inspect response behavior in the browser
+- ``Invoke-RestMethod``: to make network requests from your Windows development machine
+
+...we will be using remote management to enter a machine, however there are other remote management tools (scaled systems don't have
+
+...- ``ssh``: to access the machine remotely
+
 
 Using ``service``
 ^^^^^^^^^^^^^^^^^
@@ -72,6 +89,16 @@ Using ``Invoke-RestMethod``
   :caption: Windows/PowerShell
 
   > Invoke-RestMethod -Uri https://<PUBLIC IP> -SkipCertificateCheck
+
+Using ``curl``
+^^^^^^^^^^^^^^
+
+...curl can be used externally as well (not calling localhost)
+...explain -k being similar to -SkipCertificateCheck
+
+.. sourcecode:: powershell
+
+   # curl localhost:5000 -k
 
 Setup
 =====
