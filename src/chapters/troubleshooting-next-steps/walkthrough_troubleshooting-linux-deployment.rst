@@ -26,69 +26,15 @@ After setting up access of the group members you will have one hour to reach a f
 
    You will be collaborating with your group mates and TA. **Make sure you do not change anything in the machine**. Your role is **purely observational**. The TA will perform any mutating actions to ensure a manageable process for everyone in the group.
 
-Taking Inventory
-================
+Troubleshooting Tools
+=====================
 
-...before starting any troubleshooting you must always take inventory...
-...in your groups discuss each component and what could break with each of them...
+... every deployment is different
+... this list is not exhaustive
+... you will learn about more troubleshooting tools throughout your career
 
-Deployment Components
----------------------
-
-Network Level
-^^^^^^^^^^^^^
-
-- NSG rules for controlling access at the network level
-- what rules do you expect?
-  - SSH (22)
-  - HTTP (80)
-  - HTTPS (443)
-
-Service Level
-^^^^^^^^^^^^^
-
-- KeyVault
-  - what configuration is expected?
-    - a secret: database connection string
-    - an access policy for our VM
-- AADB2C
-  - what configuration is expected?
-    - tenant dir
-    - protected API (user_impersonation scope)
-    - Postman client application
-    - SUSI flow
-
-Hosting Environment Level
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- VM external configuration
-  - what configuration is expected?
-    - size
-    - image (defines available tools)
-    - system assigned identity for KV access
-- VM internal configuration
-  - what configuration is expected?
-    - runtime dependencies (dotnet, mysql, nginx)
-    - self-signed SSL cert
-  - what services are expected?
-    - embedded MySQL
-    - NGINX web server (reverse proxy)
-    - API service
-- MySQL db server
-  - user and database for the API
-- NGINX
-  - RP configuration
-  - using SSL cert
-
-Application Level
-^^^^^^^^^^^^^^^^^
-
-- appsettings (external configuration)
-- source code
-  - could have issues but we will assume it is working as expected
-
-Available Tools
----------------
+Our Troubleshooting Tools
+-------------------------
 
 ...working in the production environment on a linux machine...
 ...consider the available tools for this system...
@@ -104,7 +50,7 @@ Available Tools
 - ``journalctl``: to view log outputs
 
 Using ``service``
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 
 service nginx status
 
@@ -167,6 +113,76 @@ USE NAMES
 - rg: linux-ts-rg
 - vm: broken-linux-vm
 
+Taking Inventory
+================
+
+In a live deployment any misconfigured component could be the cause of an issue. It is important to have a mental model of the system and the *current* state of each component in it. To gain an understanding of the deployment and it's state your group should discuss the components, listed below, and how they could be misconfigured.
+
+...this course is an introduction so we are taking inventory up front, but this isn't how it's always done in the real-world usually inventory for just the level where you believe the issue is happening
+
+.. admonition:: Warning
+
+   Recall that when troubleshooting any changes made to the state of a component needs to be accounted for. As your group makes changes, record them, and adjust your mental model accordingly. 
+
+Deployment Components
+---------------------
+
+Let's consider the components in each layer of our system.
+
+Network Level
+^^^^^^^^^^^^^
+
+...Network related issues are always based around routing behavior and access rules. As an introductory course we have only explored access rules in the form of our network security groups. To that end consider the three components of an access rule
+
+- NSG rules for controlling access at the network level
+- what rules do you expect?
+  - SSH (22)
+  - HTTP (80)
+  - HTTPS (443)
+
+Service Level
+^^^^^^^^^^^^^
+
+- KeyVault
+  - what configuration is expected?
+    - a secret: database connection string
+    - an access policy for our VM
+- AADB2C
+  - what configuration is expected?
+    - tenant dir
+    - protected API (user_impersonation scope)
+    - Postman client application
+    - SUSI flow
+
+Hosting Environment Level
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- VM external configuration
+  - what configuration is expected?
+    - size
+    - image (defines available tools)
+    - system assigned identity for KV access
+- VM internal configuration
+  - what configuration is expected?
+    - runtime dependencies (dotnet, mysql, nginx)
+    - self-signed SSL cert
+  - what services are expected?
+    - embedded MySQL
+    - NGINX web server (reverse proxy)
+    - API service
+- MySQL db server
+  - user and database for the API
+- NGINX
+  - RP configuration
+  - using SSL cert
+
+Application Level
+^^^^^^^^^^^^^^^^^
+
+- appsettings (external configuration)
+- source code
+  - could have issues but we will assume it is working as expected
+
 Deployment Issues
 =================
 
@@ -181,11 +197,12 @@ Experiencing a Connection Timeout
 .. browser screenshot of timeout
 
 prompts
+- what clues have been discovered so far?
 - what level is this issue related to?
 - what components are involved?
 - what tools will you use to identify the issue?
 - what action do you suggest should be taken?
-- what happened after your TA attempted to fix the issue?
+- what clues are presented after the TA attempted to fix the issue?
 
 Receiving a 502 Bad Gateway Error
 ---------------------------------
@@ -205,10 +222,11 @@ Receiving a 502 Bad Gateway Error
     nginx
 
 prompts
+- what clues have been discovered so far?
 - what level is this issue related to?
 - what components are involved?
 - what tools will you use to identify the issue?
-- what action do you suggest should be taken?
+- what clues are presented after the TA attempted to fix the issue?
 
 .. admonition:: Note
 
