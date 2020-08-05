@@ -52,16 +52,39 @@ Outside of the host machine we will use the following tools for external trouble
 Using ``service``
 ^^^^^^^^^^^^^^^^^
 
-service nginx status
+``service`` is a wrapper around `systemctl <>`_ available on some Linux distributions like Ubuntu. ``service`` can be used to interact with background services running on the machine. 
 
-service mysql-server status
+.. admonition:: Warning
 
-service coding-events-api status
+   As you may have noticed from the deployment scripts ``service`` can be used to control service units on the machine. Be mindful of the other students in your group, and only use for observation with the ``status`` command.
+
+.. sourcecode:: bash
+
+   service <service-name> status
+
+For example if you want to check the status of the Coding Events API service:
+
+.. sourcecode:: bash
+
+   service coding-events-api status
+
+.. :: FOR TAS
+
+   service nginx status
+
+   service mysql-server status
+
+   service coding-events-api status
 
 Using ``journalctl``
 ^^^^^^^^^^^^^^^^^^^^
 
-journalctl -fu [service-name]
+.. sourcecode:: bash
+
+   journalctl -fu <service-name>
+
+- ``-u``: the unit name of the service
+- ``-f``: follow the journal entries and start at the end
 
 Working with Self-Signed Certificates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
