@@ -151,6 +151,10 @@ In order to jump start your script here are steps 1-4:
 
    # TODO: complete steps 5-9
 
+.. admonition:: Warning
+
+   Before you can clone the repository from your account you must `fork the LaunchCode repository <https://github.com/LaunchCodeEducation/powershell-practice>`_ first!
+
 Referencing the script path
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
