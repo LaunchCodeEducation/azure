@@ -66,7 +66,7 @@ journalctl -fu [service-name]
 Working with Self-Signed Certificates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The nature of a self-signed certificate is that there is no external `certificate authority (CA) <>`_ to validate the certificate. By default http client applications like your browser and CLI tools will automatically reject self-signed certificates as a security measure. Recall when you connected to your website from your browser you had to accept the self-signed certificate. The CLI tools can be configured to also accept self signed certificates.
+The nature of a self-signed certificate is that there is no external `certificate authority (CA) <https://www.ssl.com/faqs/what-is-a-certificate-authority/>`_ to validate the certificate. By default http client applications like your browser and CLI tools will automatically reject self-signed certificates as a security measure. Recall when you connected to your website from your browser you had to accept the self-signed certificate. The CLI tools can be configured to also accept self signed certificates.
 
 When working with ``Invoke-RestMethod`` cmdlet the default certificate validation behavior for self-signed certificates is:
 
