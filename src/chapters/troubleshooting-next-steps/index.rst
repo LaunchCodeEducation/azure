@@ -7,4 +7,3 @@ Introduction to Troubleshooting & Next Steps
 
    troubleshooting
    walkthrough_troubleshooting-linux-deployment
-   next-steps
