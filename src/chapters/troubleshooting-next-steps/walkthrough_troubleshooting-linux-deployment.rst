@@ -157,6 +157,75 @@ Before the troubleshooting timer begins you will need to work with your TA to se
 Access Troubleshooting Subscription
 -----------------------------------
 
+For this exercise an Azure subscription will be setup for your group. Your TA will be the administrator of this group and each student will have read-only access. You will be able to view the deployment, but will need to work together with your team to diagnose the issue and tell your TA how to resolve it.
+
+Even though you already have an account with Microsoft it is only associated with one subscription. You will be able to create a new subscription using your same email, but will have to provide a new password ('LaunchCode-@zure1').
+
+To use this new subscription you will need to:
+
+#. accept the email for the new subscription
+#. create a new account (for this new subscription) by using your same email address and a new password: ``LaunchCode-@zure1``
+#. setup your AZ CLI to use the new account
+
+Accept Email
+^^^^^^^^^^^^
+
+The first step is accessing the email that was sent from Microsoft on your TAs behalf. The email will include a link that will allow you to associate your email address with a new account under the subscription the TA administers.
+
+Upon clicking the link you will be taken to a Microsoft web-page that will prompt you to create an account for this new subscription.
+
+Create Account for New Subscription
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The form will come pre-populated with your email address (since you navigated to the webpage from your email client) and you will need to enter a password.
+
+This account, and subscription, will be temporary so we are all going to use the same password to make things consistent.
+
+Use the password: ``LaunchCode-@zure1``
+
+After entering your password submit the form.
+
+You may be automatically redirected to the new subscription home page, but if you currently have an Azure account in the browser's memory you may be prompted to login.
+
+If you login you will need to make sure you select the correct account, as there will be two accounts associated with your email address. You will need to select ``Use another account``:
+
+.. image:: /_static/images/troubleshooting-next-steps/exercises/pick-another-account.png
+
+Microsoft will inform you that your email address is associated with multiple accounts. You will need to select the account listed under ``Work or school account``:
+
+.. image:: /_static/images/troubleshooting-next-steps/exercises/work-or-school-account.png
+
+From here you will be presented with a form to provide the password you entered above (``LaunchCode-@zure1``).
+
+You will be redirected to the subscription home screen in the Azure portal. Take a look around you should be able to read (but not mutate) any resources.
+
+Setup AZ CLI
+^^^^^^^^^^^^
+
+We have worked with the AZ CLI throughout this class, however it is currently configured to work with your personal Azure subscription. We will need to reconfigure it to work with the new subscription. Luckily the AZ CLI gives us a pretty easy way to do this.
+
+First up we need to clear the AZ CLI cache:
+
+.. sourcecode:: PowerShell
+
+  > az account clear
+
+Now we need to login again which will present us with the form to authenticate:
+
+.. sourcecode:: PowerShell
+
+  > az account login
+
+.. admonition:: Warning
+
+  Make sure to select the correct account (``Work or school account``) and use the correct password (``LaunchCode-@zure1``)!
+  
+  The section immediately before this contains pictures of what this will look like.
+
+Once the authentication is complete the AZ CLI will output some information about your subscription to STDOUT.
+
+You have already used the AZ CLI, but it is currently configured to work with the subscription you used earlier in this course. We will need to clear our old account, authenticate with the credentials for our new subscription and then configure the AZ CLI defaults.
+
 - accept invitation
   - Reader role only
   - create new account (in the TA directory)
