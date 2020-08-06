@@ -69,8 +69,8 @@ Service Level
 - configuration
 - access / authorization
 
-Hosting Environment Level
--------------------------
+Host Level
+----------
 
 - our db is embedded but typically would be in service level
 

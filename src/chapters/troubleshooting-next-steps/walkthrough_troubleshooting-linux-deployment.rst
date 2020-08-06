@@ -4,23 +4,17 @@ Group Walkthrough: Troubleshooting a Linux Deployment
 
 This walkthrough is different than any walkthroughs you have done so far. Troubleshooting skills can only be developed through experience. The methodologies and tools can be taught, but the experience is invaluable to your ability to solve real-world problems. You will be working as a group, like you would be on a professional team. Together your group will be troubleshooting a broken deployment. You will need to work together to engage in a troubleshooting discussion to reach a resolution to the issues presented in the deployment.
 
-Each student will be given read-only access to the Azure resources and file system of the VM used in the deployment. Your TA will be the only member of your group with administrative access. For each issue the group encounters your TA will facilitate discussion and take any actions the group agrees upon.
+Each student will be given read-only access to the Azure resources used in the deployment. Your TA will be the only member of your group with administrative access. For each issue the group encounters your TA will facilitate discussion and take any actions the group agrees upon.
+
+.. admonition:: Warning
+
+You will be collaborating with your group mates and TA. **Make sure you do not change anything in the machine**. Your role is **purely observational**. The TA will perform any mutating actions to ensure a manageable process for everyone in the group.
 
 After setting up access of the group members you will have one hour to reach a functional deployment. After the time is up your instructor will walkthrough each issue and it's resolution.
 
-.. admonition:: note
+.. admonition:: Note
 
-   Take your time on each issue.
-   
-   The purpose of this exercise is to engage in a dialogue around identifying, isolating, and resolving issues in a live deployment. If you do finish early there is a bonus section your group can work on.
-
-... TODO: VM access can be restricted
-
-.. ::
-
-   .. admonition:: Warning
-
-   You will be collaborating with your group mates and TA. **Make sure you do not change anything in the machine**. Your role is **purely observational**. The TA will perform any mutating actions to ensure a manageable process for everyone in the group.
+   Take your time on each issue. The purpose of this exercise is to engage as a team in identifying, isolating and resolving issues in a live deployment.
 
 Troubleshooting Tools
 =====================
@@ -34,16 +28,16 @@ For this troubleshooting exercise we will need troubleshooting tools to work wit
 Our Troubleshooting Tools
 -------------------------
 
-In large scale systems you would rely on bulk remote management tools, but in our case we only need to manage one machine. For our Linux machine we will use ``ssh`` (Secure Shell) to securely connect to the shell of the provisioned VM.
+In large scale systems you would rely on bulk remote management tools, but in our case we only need to manage one machine. For our Linux machine we will use ``ssh`` to securely connect to the shell of the provisioned VM.
 
-We are bound to the tools that come included in the selected Ubuntu image. This includes the File System navigation tools you learned in the Bash chapter, and the following:
+We are bound to the tools that come included in the selected Ubuntu image. This includes the FS navigation tools you learned in the Bash chapter, and the following:
 
 - ``cat`` or ``less``: to inspect configuration files
 - ``service``: to view the status of the services
 - ``journalctl``: to view log outputs
 - ``curl``: to make network requests from inside the Ubuntu machine
 
-Outside of the host machine we will use the following tools for external troubleshooting:
+Outside of the host machine we will use the following tools for *external* troubleshooting:
 
 - ``az CLI``: for information about each resource component (or the Azure web portal)
 - ``browser dev tools``: to inspect response behavior in the browser
@@ -52,33 +46,21 @@ Outside of the host machine we will use the following tools for external trouble
 SSH Into the Machine
 ^^^^^^^^^^^^^^^^^^^^
 
-...TODO: review this location change
+Within the Setup section of this walkthrough your TA will invite you to your ``Reader`` role for accessing the Azure resources related to this broken deployment. *After you have accepted the invitation* and configured your default resource group and VM in the ``az CLI`` you can request the public IP address of the VM.
 
-After configuring your default resource group and VM you can request the public IP address of the VM using the ``az CLI``:
+Using the ``az CLI`` you can store the public IP in a variable so it can be used as the host component of the ``ssh`` command:
 
 .. sourcecode:: powershell
   :caption: Windows/PowerShell
 
-  > $VmPublicIp = az vm list-ip-addresses --query '[0].virtualMachine.network.publicIpAddresses[0].ipAddress'
+  > $VmPublicIp = az vm list-ip-addresses --query '[0].virtualMachine.network.publicIpAddresses[0].ipAddress' 
 
-After storing the public IP you can use it for the ``ssh`` host address. 
-
-The first time you connect to a machine over SSH you will be prompted to trust or reject the remote host. When prompted enter ``yes`` to continue.
+The first time you connect to a machine over SSH you will be prompted to trust or reject the remote host. When prompted enter ``yes`` to trust the host and connect to it:
 
 .. sourcecode:: powershell
   :caption: Windows/PowerShell
 
   > ssh student@$VmPublicIp
-  # trust the remote host
-  # enter password: LaunchCode-@zure1
-
-If you are not on a Windows machine, remember that you will need to output in TSV format using the ``-o tsv`` option:
-
-.. sourcecode:: bash
-  :caption: Linux/BASH
-
-  $ vm_public_ip=$(az vm list-ip-addresses -o tsv --query '[0].virtualMachine.network.publicIpAddresses[0].ipAddress')
-  $ ssh student@"$vm_public_ip"
   # trust the remote host
   # enter password: LaunchCode-@zure1
 
@@ -88,7 +70,19 @@ If you are not on a Windows machine, remember that you will need to output in TS
   
   We will authenticate using credentials to avoid detouring away from the learning goals of this troubleshooting exercise.
 
-...for each of the following issues use SSH and the tools above to investigate...
+Once you have connected to the machine you will be able to navigate and use Bash and the tools listed above to gather information and plan a solution with your group.
+
+.. admonition:: Note
+
+  If you are not on a Windows machine, remember that you will need to output in TSV format using the ``-o tsv`` option:
+
+  .. sourcecode:: bash
+    :caption: Linux/BASH
+
+    $ vm_public_ip=$(az vm list-ip-addresses -o tsv --query '[0].virtualMachine.network.publicIpAddresses[0].ipAddress')
+    $ ssh student@"$vm_public_ip"
+    # trust the remote host
+    # enter password: LaunchCode-@zure1
 
 Using ``service``
 ^^^^^^^^^^^^^^^^^
@@ -124,14 +118,6 @@ For example if you were to check the status of a *functioning* API service you w
       Tasks: 16 (limit: 4648)
     CGroup: /system.slice/coding-events-api.service
             └─18196 /usr/bin/dotnet /opt/coding-events-api/CodingEventsAPI.dll
-
-.. :: FOR TAS
-
-   service nginx status
-
-   service mysql-server status
-
-   service coding-events-api status
 
 Using ``journalctl``
 ^^^^^^^^^^^^^^^^^^^^
@@ -190,12 +176,37 @@ When troubleshooting within a VM you can use ``curl`` to *isolate* networking re
 
    In Ubuntu the default `ufw tool <https://help.ubuntu.com/community/UFW>`_ is used for managing *internal* firewall rules.
 
-Assumptions of State
-====================
+Discussion: Components of a Functioning System
+==============================================
 
-Before we set up our deployment to practice troubleshooting, let's first discuss the expectations of the system as a whole.
+When troubleshooting your first step is to form a mental model of the system you are working on. Due to the introductory nature of this course you and your group will begin by discussing what you know about a fully functioning system. Consider all of the deployment components you have learned about throughout this course. Pay particular attention to the components that have given you trouble in your previous studios.
 
-In your group, led by your TA, talk about all the components related to the deployment. Most importantly consider the things that broke in your previous deployments.
+For each component you should define what expectations need to be met for it to operate in a *healthy state* and which misconfigurations could lead to a *failed state*. By thinking about the system holistically you will be able to keep track of which expectations are not met and collectively decide on the actions needed to reach a resolution.
+
+These assumptions will be the starting points for troubleshooting once your group gains access to Azure. Any expectations that are not met in the broken deployment will offer a clue as to what needs to be fixed.
+
+Your TA will lead your group in this discussion. For each of the network, service, host and application levels consider the following:
+
+- What components are in this level?
+- How does each component need to be configured to function properly?
+- What common misconfigurations have you encountered with each component and what was the behavior that led to discovering an issue?
+
+You do not need to be exhaustive but every expectation you define will help guide you when you begin troubleshooting. For example, if you were to describe the components in the service level:
+
+- AADB2C
+- Key vault
+
+You could then proceed to listing some of the expectations of an operational AADB2C component:
+
+- A tenant directory linked to an active subscription
+- At least two registered applications -- the Coding Events API and Postman client
+- A SUSI flow that uses the local email account provider
+- an exposed ``user_impersonation`` scope for restricting access to the API that has been granted to the Postman client
+- Postman is configured to use the implicit flow and the hosted postman redirect URI 
+
+.. admonition:: Note
+
+  After you gain experience with troubleshooting you will be able to hone in on one component or level at a time. However, when you are just starting out it is beneficial to think about the system as a whole.
 
 Setup
 =====
@@ -288,36 +299,60 @@ You can verify everything worked by looking at the default VM. It should be iden
 
    You only have read-access to this Azure subscription. Feel free to look around all you want, however any Azure commands will need to be run by your TA.
 
-
-.. ::
-
-   - accept invitation
-   - Reader role only
-   - create new account (in the TA directory)
-      - your email
-      - LaunchCode-@zure1
-   - az account clear
-   - az login
-   - select other account
-   - enter your email
-   - select the Work or School account created by IT admin (TA email) option
-      - (SCREENSHOT)
-   - az configure -d group=linux-ts-rg vm=broken-linux-vm
-   - az group show and az vm show
-   - you now have read access to all resources for investigating
-
-   USE NAMES
-   - rg: linux-ts-rg
-   - vm: broken-linux-vm
-
 Configure Postman
 -----------------
 
-...TODO: copy over the central AADB2C settings
+For this walkthrough you will use a Postman collection that has the AADB2C details pre-configured as variables. 
+
+Import the Final Postman Collection
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can import this collection by selecting the **Import** button and then selecting the **Link** tab in the import window. Paste in the following link then select **Continue**:
+
+- `postman collection link (GitHub gist file) <https://gist.githubusercontent.com/lc-education-ci-user/5e4c91152702502c10ceea28899c29ff/raw/9537c5f7974d719c2001a0043a8cedc5201b5640/postman_coding-events-api.json>`_
+
+.. image:: /_static/images/troubleshooting-next-steps/exercises/postman-import-gist-collection.png
+  :alt: Postman import collection from gist URL
+
+Update Access Token Settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+After importing you will need to update your access token settings to use the following pre-defined variables (from top to bottom of the access token form). As a reminder you can access this by selecting the **three dots** next to the collection name, selecting **Edit** then from the **Authorization** tab select **Get New Access Token**:
+
+- **Token Name**: ``{{TokenName}}``
+- **Redirect URL**: ``{{RedirectURL}}``
+- **Auth URL**: ``{{AuthURL}}``
+- **Client ID**: ``{{ClientID}}``
+- **Scopes**: ``{{Scopes}}``
+- **State**: ``{{State}}``
+
+.. admonition:: Note
+
+  You can copy and paste each ``{{Variable}}`` value into the settings form. If you misspell any variable it will turn red.
+
+  If you would like to preserve your existing settings you can copy them to another document before pasting in the variable references.
+
+After updating the form your settings should match the image below:
+
+.. image:: /_static/images/troubleshooting-next-steps/exercises/postman-access-token-variables.png
+  :alt: Postman configure access token variables
+
+You can now request an access token and **create a new account** in this shared AADB2C tenant. After receiving your access token leave the edit collection window open. 
+
+Update the ``baseURL`` Variable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+From the **Authorization** tab select the **Variables** tab. Then (as seen in a previous studio) in the **Current Value** entry on the right side replace the current value, ``https://localhost:5001``, with the public IP address of your group's VM:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_2-aadb2c-explore/postman-update-baseurl.png
+   :alt: Postman update the baseUrl variable with the public IP address of the API
+
+Although you will not be able to access the API due to the broken deployment you are ready to use Postman in the final step of this walkthrough.
 
 Deployment Issues
 =================
 
+.. FUTURE THOUGHTS:
 .. use GitHub issues to have students engage in a realistic setting 
 .. someone raises issue -> people diagnose and work towards solution
   .. TA has a script for responding to student questions / suggestions
@@ -325,15 +360,26 @@ Deployment Issues
 
 .. admonition:: Warning
 
-   Recall that when troubleshooting any changes made to the state of a component needs to be accounted for. As your group makes changes, record them, and adjust your mental model accordingly. 
+   Recall that when troubleshooting any changes made to the state of a component needs to be accounted for. Defer to your TA for taking any mutating actions -- **do not make changes on your own**.
+   
+   As your TA makes changes consider the outcome and adjust your mental model accordingly. 
 
-prompts
-- what clues have been discovered so far?
-- what level is this issue related to?
-- what components are involved?
-- what tools will you use to identify the issue?
-- what action do you suggest should be taken?
-- what clues are presented after the TA attempted to fix the issue?
+Once everyone in your group has configured access to Azure you can begin troubleshooting! You can start by using external tools for diagnosis (like the browser, ``az CLI`` or ``Invoke-RestMethod``). Then for each issue you discover you can use the following revolving prompts to discuss and progress towards resolving it:
+
+- What clues have been discovered so far?
+- What level do you think the issue related to?
+- What components do you think are involved?
+- What tools will you need to use to identify the issue?
+- What action do you suggest should be taken and why?
+- What clues are presented after your TA attempted to fix the issue?
+
+Final Mission
+=============
+
+If you and your group are able to fix the deployment you will be able to load the Swagger documentation at the public IP of the host machine. At this point the API will be fully functional and you can complete your final mission using Postman:
+
+- Create an account in the AADB2C tenant to get an access token
+- Join the coding event with an ID of ``1`` and read its description!
 
 .. ::
 
