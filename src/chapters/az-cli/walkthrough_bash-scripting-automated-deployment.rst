@@ -340,8 +340,6 @@ As a final step, we print the public IP address to the console. This shows us ex
 
    echo "VM available at $vm_ip"
 
-The ``provision-resources.sh`` script depends on 
-
 VM RunCommand Scripts
 ---------------------
 
