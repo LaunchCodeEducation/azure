@@ -106,6 +106,18 @@ Application Level
 - source code
   - could have issues but we will assume it is working as expected
 
+.. ::
+
+  SETUP clone `this repository <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>` switch to the ``tps-reports`` branch and run the full-deployment.ps1 script in powershell.
+  
+  The script will setup the entire deployment and you can begin troubleshooting with your group.
+
+  in ubuntu ``who`` command will show you all the active sessions (and their IP addresses) to see if the students have connected
+
+  in ubuntu ``uptime`` gives some information 
+
+
+
 VM is not Running
 =================
 
@@ -114,7 +126,7 @@ Diagnosis
 
 #. make an **external** request through: postman, browser, Invoke-RestMethod (network error: connection timeout)
 #. try to SSH into the box (timeout)
-#. is the VM running (Azure Portal Virtual Machine)
+#. is the VM running (Azure Portal `broken-linux-vm` status: Stopped)
 
 Solution
 --------
@@ -148,7 +160,7 @@ Diagnosis
 Solution
 --------
 
-#. ``service nginx start``
+#. ``sudo service nginx start``
 #. ``service nginx status`` (active (running))
 
 MySQL
@@ -173,7 +185,7 @@ Diagnosis
 ---------
 
 #. make an internal request with curl (HTTP status: 502 bad gateway)
-#. ``journalctl -fu coding-events-api`` (``Unhandled exception. System.Net.Http.HttpRequestException: Name or service not known``)
+#. ``journalctl -fu coding-events-api`` (``Unhandled exception. System.UriFormatException: Invalid URI: The hostname could not be parsed.``)
 #. research error message
 #. ``cat /opt/coding-events-api/appsettings.json`` (notice the value for ``KeyVaultName`` is blank)
 
@@ -183,7 +195,7 @@ Solution
 #. get the name for the Key Vault (``az keyvault list --query '[0].name'`` or use the Azure Portal)
 #. edit the file (``sudo nano /opt/coding-events-api/appsettings.json``)
 #. enter the value for ``KeyVaultName`` you found in step one
-#. save the file in ``nano`` editor with ``ctrl+o``
+#. save the file in ``nano`` editor with ``ctrl+o`` and then hit enter to confirm
 #. exit ``nano`` editor with ``ctrl+x``
 #. restart the service to reload the ``appsettings.json`` file (``sudo service coding-events-api restart``)
 
