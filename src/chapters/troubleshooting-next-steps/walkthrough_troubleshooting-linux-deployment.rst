@@ -4,7 +4,7 @@ Group Walkthrough: Troubleshooting a Linux Deployment
 
 This walkthrough is different than any walkthroughs you have done so far. Troubleshooting skills can only be developed through experience. The methodologies and tools can be taught, but the experience is invaluable to your ability to solve real-world problems. You will be working as a group, like you would be on a professional team. Together your group will be troubleshooting a broken deployment. You will need to work together to engage in a troubleshooting discussion to reach a resolution to the issues presented in the deployment.
 
-Each student will be given read-only access to Azure resources and to the VM used in the deployment. Your TA will be the only member of your group with administrative access. For each issue the group encounters your TA will facilitate discussion and take any actions the group agrees upon.
+Each student will be given read-only access to the Azure resources and file system of the VM used in the deployment. Your TA will be the only member of your group with administrative access. For each issue the group encounters your TA will facilitate discussion and take any actions the group agrees upon.
 
 After setting up access of the group members you will have one hour to reach a functional deployment. After the time is up your instructor will walkthrough each issue and it's resolution.
 
@@ -52,21 +52,37 @@ Outside of the host machine we will use the following tools for external trouble
 Using ``service``
 ^^^^^^^^^^^^^^^^^
 
-``service`` is a wrapper around `systemctl <>`_ available on some Linux distributions like Ubuntu. ``service`` can be used to interact with background services running on the machine. 
+The `service <http://manpages.ubuntu.com/manpages/bionic/man8/service.8.html>`_ program is a wrapper that simplifies how several of the `init systems <http://www.troubleshooters.com/linux/init/features_and_benefits.htm>`_ on a Linux machine can be managed through a single tool. Init systems are used to *initialize* and manage background processes running on Linux systems. 
+
+On Ubuntu machines the `systemd init system <>`_ and its client program `systemctl <>`_ (system control manager) are used by default to manage *service units*. In the configuration script of our final deployments we created a *systemd unit file* to define how our Coding Events API would be operated a background service on the Ubuntu VM.  The script also used the ``service`` tool (rather than the underlying ``systemctl`` it wraps) to make our script portable across supporting Linux distributions.
+
+In addition to controlling services, the ``service`` tool can be used to view the status of any registered service units like our ``coding-events-api``, ``nginx`` and ``mysql``:
 
 .. admonition:: Warning
 
-   As you may have noticed from the deployment scripts ``service`` can be used to control service units on the machine. Be mindful of the other students in your group, and only use for observation with the ``status`` command.
+   Be mindful of your group's effort in troubleshooting the deployment. **Only use** the ``service`` tool **for observation** with the ``status`` command.
+   
+   After reaching a group consensus your TA can issue the ``service`` commands that mutate service state.
 
 .. sourcecode:: bash
+  :caption: Linux/BASH
 
    service <service-name> status
 
-For example if you want to check the status of the Coding Events API service:
+For example if you were to check the status of a *functioning* API service you would receive the following output:
 
 .. sourcecode:: bash
+  :caption: Linux/BASH
 
-   service coding-events-api status
+  $ service coding-events-api status
+
+  ● coding-events-api.service - Coding Events API
+    Loaded: loaded (/etc/systemd/system/coding-events-api.service; disabled; vendor preset: enabled)
+    Active: active (running) since Tue 2020-10-31 19:04:51 UTC; 1 day 4h ago
+  Main PID: 18196 (dotnet)
+      Tasks: 16 (limit: 4648)
+    CGroup: /system.slice/coding-events-api.service
+            └─18196 /usr/bin/dotnet /opt/coding-events-api/CodingEventsAPI.dll
 
 .. :: FOR TAS
 
@@ -79,60 +95,64 @@ For example if you want to check the status of the Coding Events API service:
 Using ``journalctl``
 ^^^^^^^^^^^^^^^^^^^^
 
+The `journalctl <https://www.freedesktop.org/software/systemd/man/journalctl.html>`_ tool can be used to view the logs written by systemd services. You can use it to view the logs of a particular service unit using the ``-u`` (unit name) option:
+
 .. sourcecode:: bash
+  :caption: Linux/BASH
 
-   journalctl -fu <service-name>
+  $ journalctl -u <service-name>
 
-- ``-u``: the unit name of the service
-- ``-f``: follow the journal entries and start at the end
+The systemd journal can store thousands of logs and lines within them. Often it is useful to view just the most recent logs. The ``-f`` option will *follow* the logs starting from the last 10 lines and continuously display new lines as they are written:
+
+.. sourcecode:: bash
+  :caption: Linux/BASH
+
+  $ journalctl -f -u <service-name>
+
+  # shorthand (-u comes after to pair with the service name argument)
+  $ journalctl -fu <service-name>
+
+.. admonition:: Note
+
+  Like other *foreground* CLI programs that attach to your Terminal, you can use ``ctrl+c`` to exit ``journalctl``.
 
 Working with Self-Signed Certificates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The nature of a self-signed certificate is that there is no external `certificate authority (CA) <https://www.ssl.com/faqs/what-is-a-certificate-authority/>`_ to validate the certificate. By default http client applications like your browser and CLI tools will automatically reject self-signed certificates as a security measure. Recall when you connected to your website from your browser you had to accept the self-signed certificate. The CLI tools can be configured to also accept self signed certificates.
+A self-signed certificate means that the signature used to sign the certificate is not recognized by an external `certificate authority (CA) <https://www.ssl.com/faqs/what-is-a-certificate-authority/>`_. These certificates can still be used for TLS encryption but are not *inherently trusted* like traditional SSL certificates due to their unknown signing authority. By default HTTP client applications like browsers or CLI tools will automatically reject self-signed certificates as a security measure. 
 
-When working with ``Invoke-RestMethod`` cmdlet the default certificate validation behavior for self-signed certificates is:
+In our ``configure-ssl.sh`` deployment script our VM *internally generated* the signing key used to sign the SSL certificate with the ``openssl`` tool. Recall that when you first connected to the Swagger documentation of your API in the browser you had to bypass the warning and accept (*explicitly trust*) the self-signed certificate. CLI tools can be configured similarly to also accept self-signed certificates.
+
+When working with ``Invoke-RestMethod`` cmdlet the default certificate validation behavior for self-signed certificates results in the following error for servers using self-signed certificates:
 
 .. sourcecode:: powershell
+  :caption: Windows/PowerShell
 
    Invoke-RestMethod: The remote certificate is invalid according to the validation procedure.
 
-We can override the validation procedure by using the ``-SkipCertificateCheck`` option:
+We can override the default validation procedure by using the ``-SkipCertificateCheck`` option:
 
 .. sourcecode:: powershell
   :caption: Windows/PowerShell
 
   > Invoke-RestMethod -Uri https://<PUBLIC IP> -SkipCertificateCheck
 
-Similarly, when working in the Linux machine the validation can be skipped with ``curl`` by using the ``-k`` option:
+Similarly, when working *inside* the Ubuntu VM with ``curl`` the validation can be skipped using the ``-k`` option:
 
 .. sourcecode:: powershell
 
-   # curl localhost:5000 -k
+   # curl https://localhost -k
 
-When troubleshooting within a VM you can use ``curl`` to rule out external networking related issues. If you are able to connect successfully from inside the machine, but you cannot connect externally it indicates that an internal firewall or external network rule is the issue.
+When troubleshooting within a VM you can use ``curl`` to *isolate* networking related issues. If you are able to connect successfully from inside the machine, but cannot connect externally, it indicates that an internal firewall or external network security rule is the issue.
 
 .. admonition:: Note
 
-   In Ubuntu the ``ufw`` tool is used for managing internal firewall rules.
+   In Ubuntu the default `ufw tool <https://help.ubuntu.com/community/UFW>`_ is used for managing *internal* firewall rules.
 
 Setup
 =====
 
-have students use SSH w/ username/pass
-
-- **username**: ``student``
-- **password**: ``LaunchCode-@zure1``
-
-.. sourcecode:: bash
-
-   ssh student@[vm-ip-address]
-
-.. admonition:: Warning
-
-  this is very insecure you should use RSA keys with SSH but PKI is out of the scope of this class
-
-...for each of the following issues use SSH and the tools above to investigate...
+Before the troubleshooting timer begins you will need to work with your TA to set up your access to the Azure resources and VM. For this walkthrough your TA will grant you ``Reader`` access to their directory and lab subscription. Once you have registered with their directory and assumed the ``Reader`` role you will be able to access the public IP address of the VM and ``ssh`` into the machine.
 
 Access Troubleshooting Subscription
 -----------------------------------
@@ -155,6 +175,45 @@ Access Troubleshooting Subscription
 USE NAMES
 - rg: linux-ts-rg
 - vm: broken-linux-vm
+
+SSH Into the Machine
+--------------------
+
+After configuring your default resource group and VM you can request the public IP address of the VM using the ``az CLI``:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > $VmPublicIp = az vm list-ip-addresses --query '[0].virtualMachine.network.publicIpAddresses[0].ipAddress'
+
+After storing the public IP you can use it for the ``ssh`` host address. 
+
+The first time you connect to a machine over SSH you will be prompted to trust or reject the remote host. When prompted enter ``yes`` to continue.
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > ssh student@$VmPublicIp
+  # trust the remote host
+  # enter password: LaunchCode-@zure1
+
+If you are not on a Windows machine, remember that you will need to output in TSV format using the ``-o tsv`` option:
+
+.. sourcecode:: bash
+  :caption: Linux/BASH
+
+  $ vm_public_ip=$(az vm list-ip-addresses -o tsv --query '[0].virtualMachine.network.publicIpAddresses[0].ipAddress')
+  $ ssh student@"$vm_public_ip"
+  # trust the remote host
+  # enter password: LaunchCode-@zure1
+
+.. admonition:: Warning
+
+  Using *knowledge-based* authentication (username and password) is much less secure than using something *owned* like a private (digital) key.  The topic of using `RSA keys with SSH <https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_ falls outside the scope of this course but you should know it is **the more secure and preferred mechanism.**
+  
+  We will authenticate using credentials to avoid detouring away from the learning goals of this troubleshooting exercise.
+
+...for each of the following issues use SSH and the tools above to investigate...
 
 Taking Inventory
 ================
