@@ -25,7 +25,7 @@ After setting up access of the group members you will have one hour to reach a f
 Troubleshooting Tools
 =====================
 
-For our troubleshooting exercise we will need troubleshooting tools to work with our broken deployment. Luckily some of these tools will look familiar as we have worked with them throughout this course.
+For this troubleshooting exercise we will need troubleshooting tools to work with our broken deployment. Luckily some of these tools will look familiar as we have worked with them throughout this course.
 
 .. admonition:: Note
 
@@ -304,13 +304,13 @@ If you are not on a Windows machine, remember that you will need to output in TS
 Taking Inventory
 ================
 
-In a live deployment any misconfigured component could be the cause of an issue. It is important to have a mental model of the system and the *current* state of each component in it. To gain an understanding of the deployment and it's state your group should discuss the components, listed below, and how they could be misconfigured.
+In a live deployment any misconfigured component could be the cause of an issue. It is important to have a mental model of the system and the *current* state of each component in it. To gain an understanding of the deployment and it's state your group should discuss the components and how they could be misconfigured.
 
-...this course is an introduction so we are taking inventory up front, but this isn't how it's always done in the real-world usually inventory for just the level where you believe the issue is happening
+.. admonition:: Note
 
-.. admonition:: Warning
-
-   Recall that when troubleshooting any changes made to the state of a component needs to be accounted for. As your group makes changes, record them, and adjust your mental model accordingly. 
+   Due to the introductory nature of this course we will be taking inventory of our entire deployment. After you gain experience with troubleshooting you may find yourself taking inventory of just one component, or layer. 
+   
+   The ability to look at one component in isolation will come with experience, but when you are just starting out it is beneficial to think about the entire system. 
 
 Deployment Components
 ---------------------
@@ -378,6 +378,10 @@ Deployment Issues
 .. someone raises issue -> people diagnose and work towards solution
   .. TA has a script for responding to student questions / suggestions
   .. no progress TA slips in a breadcrumb
+
+.. admonition:: Warning
+
+   Recall that when troubleshooting any changes made to the state of a component needs to be accounted for. As your group makes changes, record them, and adjust your mental model accordingly. 
 
 Experiencing a Connection Timeout
 ---------------------------------

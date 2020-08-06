@@ -270,7 +270,7 @@ API Improper Behavior
 
    validation on coding event
 
-When an application is running successfully, but not beahving the way it should it may be a code issue. Maybe there is a coding bug that is causing the improper behavior. To solve this we will need to know what conditions cause the incorrect behavior.
+When an application is running successfully, but not behaving the way it should it may be a code issue. Maybe there is a coding bug that is causing the improper behavior. To solve this we will need to know what conditions cause the incorrect behavior.
 
 In this case our API is representing date data as null when a user with the proper level of authorization accesses X. Let's look at the code to determine where this error may be occurring.
 
