@@ -208,13 +208,13 @@ First up we need to clear the AZ CLI cache:
 
 .. sourcecode:: PowerShell
 
-  > az account clear
+   > az account clear
 
 Now we need to login again which will present us with the form to authenticate:
 
 .. sourcecode:: PowerShell
 
-  > az account login
+   > az account login
 
 .. admonition:: Warning
 
@@ -224,26 +224,43 @@ Now we need to login again which will present us with the form to authenticate:
 
 Once the authentication is complete the AZ CLI will output some information about your subscription to STDOUT.
 
-You have already used the AZ CLI, but it is currently configured to work with the subscription you used earlier in this course. We will need to clear our old account, authenticate with the credentials for our new subscription and then configure the AZ CLI defaults.
+After configuring the AZ CLI to use the new subscription let's setup our AZ CLI defaults for the correct resource group and virtual machine:
 
-- accept invitation
-  - Reader role only
-  - create new account (in the TA directory)
-    - your email
-    - LaunchCode-@zure1
-- az account clear
-- az login
-  - select other account
-  - enter your email
-  - select the Work or School account created by IT admin (TA email) option
-    - (SCREENSHOT)
-- az configure -d group=linux-ts-rg vm=broken-linux-vm
-- az group show and az vm show
-- you now have read access to all resources for investigating
+.. sourcecode:: PowerShell
 
-USE NAMES
-- rg: linux-ts-rg
-- vm: broken-linux-vm
+   > az configure -d group=linux-ts-rg vm=broken-linux-vm
+
+You can verify everything worked by looking at the default VM. It should be identical to your groupmates and TA:
+
+.. sourcecode:: PowerShell
+
+   > az vm show
+
+.. admonition:: Note
+
+   You only have read-access to this Azure subscription. Feel free to look around all you want, however any Azure commands will need to be run by your TA.
+
+
+.. ::
+
+   - accept invitation
+   - Reader role only
+   - create new account (in the TA directory)
+      - your email
+      - LaunchCode-@zure1
+   - az account clear
+   - az login
+   - select other account
+   - enter your email
+   - select the Work or School account created by IT admin (TA email) option
+      - (SCREENSHOT)
+   - az configure -d group=linux-ts-rg vm=broken-linux-vm
+   - az group show and az vm show
+   - you now have read access to all resources for investigating
+
+   USE NAMES
+   - rg: linux-ts-rg
+   - vm: broken-linux-vm
 
 SSH Into the Machine
 --------------------
