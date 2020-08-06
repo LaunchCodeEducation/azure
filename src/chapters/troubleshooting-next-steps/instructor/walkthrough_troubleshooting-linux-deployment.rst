@@ -2,6 +2,134 @@
 Walkthrough: Troubleshooting a Linux Deployment
 ===============================================
 
+General Hints
+=============
+
+#. X number of issues
+#. 1 network level, 1 app level, 1 VM level
+#. help students with diagnosis steps
+#. help students with solution steps
+
+Issues
+======
+
+This is the logical order starting from the outside and working your way in.
+
+#. NSG 
+#. NGINX is down (connection refused)
+#. MySQL is down
+#. appsettings.json doesn't contain the correct KV name
+#. VM no access to KV
+
+As a TA your rule should be whatever they solve you pick the lowest number if they are stuck. Distribute the hints from hardest to easiest.
+
+Instructor
+==========
+
+#. make a request through: postman, browser, Invoke-RestMethod (connection timeout)
+#. is the VM running (no)
+#. start the vm with ``az vm start``
+#. ssh into box and curl the web server ``curl https://localhost -k``
+#. curl the API ``curl http://localhost:5000``
+#. check your NSGs
+
+VM is not Running
+=================
+
+Diagnosis
+---------
+
+#. make a request through: postman, browser, Invoke-RestMethod (connection timeout)
+#. try to SSH into the box (timeout)
+#. is the VM running (Azure Portal Virtual Machine)
+
+Solution
+--------
+
+#. start the vm with ``az vm start``
+#. SSH into the box
+
+NSG
+===
+
+Diagnosis
+---------
+
+#. make a request through: postman, browser, Invoke-RestMethod (connection timeout)
+#. check your NSGs (NSG does not contain an inbound rule for port 443)
+
+Solution
+--------
+
+#. create a new NSG inbound rule for port 443 
+
+NGINX
+=====
+
+Diagnosis
+---------
+
+#. make a request through: postman, browser, Invoke-RestMethod (connection refused)
+#. check the web server from box ``service ngingx status`` (inactive (dead))
+
+Solution
+--------
+
+#. ``service nginx start``
+#. ``service nginx status`` (active (running))
+
+MySQL
+=====
+
+Diagnosis
+---------
+
+#. make a request through: postman, browser, Invoke-RestMethod (bad gateway)
+#. check the mysql service from box ``service mysql status`` (inactive (dead))
+
+Solution
+--------
+
+#. ``service mysql start``
+#. ``service mysql status`` (active (running))
+
+Wrong KV name
+=============
+
+Diagnosis
+---------
+
+#. make a request through: postman, browser, Invoke-RestMethod (bad gateway)
+#. ``journalctl -fu coding-events-api`` (401 forbidden)
+#. research error message
+#. ``cat /opt/coding-events-api/appsettings.json``
+#. compare the KV name to the KV name in the Azure Portal (THEY DO NOT MATCH)
+
+Solution
+--------
+
+#. ``sudo nano /opt/coding-events-api/appsettings.json``
+#. change the KV name to match the KV name in the Azure Portal
+#. save the file with ``ctrl+o``
+#. exit nano with ``ctrl+x``
+#. ``sudo service coding-events-api restart ``
+
+KV access policy
+================
+
+Diagnosis
+---------
+
+#. make a request through: postman, browser, Invoke-RestMethod (bad gateway)
+#. ``journalctl -fu coding-events-api`` (401 forbidden)
+#. check KV access policies for VM (it's missing)
+
+Solution
+--------
+
+#. create new KV secrets access policy for VM
+
+
 .. TAs will have their own login account to the VM that has full permissions
 
 .. students will have a different login account that is read only
