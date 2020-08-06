@@ -49,6 +49,47 @@ Outside of the host machine we will use the following tools for external trouble
 - ``browser dev tools``: to inspect response behavior in the browser
 - ``Invoke-RestMethod``: to make network requests from your Windows development machine
 
+SSH Into the Machine
+^^^^^^^^^^^^^^^^^^^^
+
+...TODO: review this location change
+
+After configuring your default resource group and VM you can request the public IP address of the VM using the ``az CLI``:
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > $VmPublicIp = az vm list-ip-addresses --query '[0].virtualMachine.network.publicIpAddresses[0].ipAddress'
+
+After storing the public IP you can use it for the ``ssh`` host address. 
+
+The first time you connect to a machine over SSH you will be prompted to trust or reject the remote host. When prompted enter ``yes`` to continue.
+
+.. sourcecode:: powershell
+  :caption: Windows/PowerShell
+
+  > ssh student@$VmPublicIp
+  # trust the remote host
+  # enter password: LaunchCode-@zure1
+
+If you are not on a Windows machine, remember that you will need to output in TSV format using the ``-o tsv`` option:
+
+.. sourcecode:: bash
+  :caption: Linux/BASH
+
+  $ vm_public_ip=$(az vm list-ip-addresses -o tsv --query '[0].virtualMachine.network.publicIpAddresses[0].ipAddress')
+  $ ssh student@"$vm_public_ip"
+  # trust the remote host
+  # enter password: LaunchCode-@zure1
+
+.. admonition:: Warning
+
+  Using *knowledge-based* authentication (username and password) is much less secure than using something *owned* like a private (digital) key.  The topic of using `RSA keys with SSH <https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_ falls outside the scope of this course but you should know it is **the more secure and preferred mechanism.**
+  
+  We will authenticate using credentials to avoid detouring away from the learning goals of this troubleshooting exercise.
+
+...for each of the following issues use SSH and the tools above to investigate...
+
 Using ``service``
 ^^^^^^^^^^^^^^^^^
 
@@ -148,6 +189,13 @@ When troubleshooting within a VM you can use ``curl`` to *isolate* networking re
 .. admonition:: Note
 
    In Ubuntu the default `ufw tool <https://help.ubuntu.com/community/UFW>`_ is used for managing *internal* firewall rules.
+
+Assumptions of State
+====================
+
+Before we set up our deployment to practice troubleshooting, let's first discuss the expectations of the system as a whole.
+
+In your group, led by your TA, talk about all the components related to the deployment. Most importantly consider the things that broke in your previous deployments.
 
 Setup
 =====
@@ -262,114 +310,10 @@ You can verify everything worked by looking at the default VM. It should be iden
    - rg: linux-ts-rg
    - vm: broken-linux-vm
 
-SSH Into the Machine
---------------------
+Configure Postman
+-----------------
 
-After configuring your default resource group and VM you can request the public IP address of the VM using the ``az CLI``:
-
-.. sourcecode:: powershell
-  :caption: Windows/PowerShell
-
-  > $VmPublicIp = az vm list-ip-addresses --query '[0].virtualMachine.network.publicIpAddresses[0].ipAddress'
-
-After storing the public IP you can use it for the ``ssh`` host address. 
-
-The first time you connect to a machine over SSH you will be prompted to trust or reject the remote host. When prompted enter ``yes`` to continue.
-
-.. sourcecode:: powershell
-  :caption: Windows/PowerShell
-
-  > ssh student@$VmPublicIp
-  # trust the remote host
-  # enter password: LaunchCode-@zure1
-
-If you are not on a Windows machine, remember that you will need to output in TSV format using the ``-o tsv`` option:
-
-.. sourcecode:: bash
-  :caption: Linux/BASH
-
-  $ vm_public_ip=$(az vm list-ip-addresses -o tsv --query '[0].virtualMachine.network.publicIpAddresses[0].ipAddress')
-  $ ssh student@"$vm_public_ip"
-  # trust the remote host
-  # enter password: LaunchCode-@zure1
-
-.. admonition:: Warning
-
-  Using *knowledge-based* authentication (username and password) is much less secure than using something *owned* like a private (digital) key.  The topic of using `RSA keys with SSH <https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_ falls outside the scope of this course but you should know it is **the more secure and preferred mechanism.**
-  
-  We will authenticate using credentials to avoid detouring away from the learning goals of this troubleshooting exercise.
-
-...for each of the following issues use SSH and the tools above to investigate...
-
-Taking Inventory
-================
-
-In a live deployment any misconfigured component could be the cause of an issue. It is important to have a mental model of the system and the *current* state of each component in it. To gain an understanding of the deployment and it's state your group should discuss the components and how they could be misconfigured.
-
-.. admonition:: Note
-
-   Due to the introductory nature of this course we will be taking inventory of our entire deployment. After you gain experience with troubleshooting you may find yourself taking inventory of just one component, or layer. 
-   
-   The ability to look at one component in isolation will come with experience, but when you are just starting out it is beneficial to think about the entire system. 
-
-Deployment Components
----------------------
-
-Let's consider the components in each layer of our system.
-
-Network Level
-^^^^^^^^^^^^^
-
-...Network related issues are always based around routing behavior and access rules. As an introductory course we have only explored access rules in the form of our network security groups. To that end consider the three components of an access rule
-
-- NSG rules for controlling access at the network level
-- what rules do you expect?
-  - SSH (22)
-  - HTTP (80)
-  - HTTPS (443)
-
-Service Level
-^^^^^^^^^^^^^
-
-- KeyVault
-  - what configuration is expected?
-    - a secret: database connection string
-    - an access policy for our VM
-- AADB2C
-  - what configuration is expected?
-    - tenant dir
-    - protected API (user_impersonation scope)
-    - Postman client application
-    - SUSI flow
-
-Hosting Environment Level
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- VM external configuration
-  - what configuration is expected?
-    - size
-    - image (defines available tools)
-    - system assigned identity for KV access
-- VM internal configuration
-  - what configuration is expected?
-    - runtime dependencies (dotnet, mysql, nginx)
-    - self-signed SSL cert
-  - what services are expected?
-    - embedded MySQL
-    - NGINX web server (reverse proxy)
-    - API service
-- MySQL db server
-  - user and database for the API
-- NGINX
-  - RP configuration
-  - using SSL cert
-
-Application Level
-^^^^^^^^^^^^^^^^^
-
-- appsettings (external configuration)
-- source code
-  - could have issues but we will assume it is working as expected
+...TODO: copy over the central AADB2C settings
 
 Deployment Issues
 =================
@@ -383,11 +327,6 @@ Deployment Issues
 
    Recall that when troubleshooting any changes made to the state of a component needs to be accounted for. As your group makes changes, record them, and adjust your mental model accordingly. 
 
-Experiencing a Connection Timeout
----------------------------------
-
-.. browser screenshot of timeout
-
 prompts
 - what clues have been discovered so far?
 - what level is this issue related to?
@@ -396,46 +335,20 @@ prompts
 - what action do you suggest should be taken?
 - what clues are presented after the TA attempted to fix the issue?
 
-Receiving a 502 Bad Gateway Error
----------------------------------
+.. ::
 
-.. Invoke-RestMethod to check if the connection works
+   Bonus
+   =====
 
-.. todo:: get snippet and output
+   Customer Reports Unexpected Bug
+   -------------------------------
 
-.. sourcecode:: powershell
-  :caption: Windows/PowerShell
+   validation on coding event
 
-  > Invoke-RestMethod -Uri https://<PUBLIC IP> -SkipCertificateCheck
+   A customer opened an issue that they were seeing some unexpected behaviors. The QA team reports that this bug is happening in the model at this line, it is up to us to solve the issue and redeploy the application.
 
-    Invoke-RestMethod: 
-    502 Bad Gateway
-    502 Bad Gateway
-    nginx
+   It is up to you on how you approach this, but we recommend using a debugger, and looking into the Microsoft validation module.
 
-prompts
-- what clues have been discovered so far?
-- what level is this issue related to?
-- what components are involved?
-- what tools will you use to identify the issue?
-- what clues are presented after the TA attempted to fix the issue?
+   Consider taking the same approach you used before, by asking some questions on where this is happening, why, and how to resolve the issue.
 
-.. admonition:: Note
-
-  Remember that fixing one issue may expose another. Through each phase of troubleshooting remember to consider *the new state* of the system and adapt your approach. 
-
-Bonus
-=====
-
-Customer Reports Unexpected Bug
--------------------------------
-
-  validation on coding event
-
-A customer opened an issue that they were seeing some unexpected behaviors. The QA team reports that this bug is happening in the model at this line, it is up to us to solve the issue and redeploy the application.
-
-It is up to you on how you approach this, but we recommend using a debugger, and looking into the Microsoft validation module.
-
-Consider taking the same approach you used before, by asking some questions on where this is happening, why, and how to resolve the issue.
-
-If you and your group are able to fix the issue locally let your TA know how it can be fixed, and as a group observe as the TA deploys the fix.
+   If you and your group are able to fix the issue locally let your TA know how it can be fixed, and as a group observe as the TA deploys the fix.

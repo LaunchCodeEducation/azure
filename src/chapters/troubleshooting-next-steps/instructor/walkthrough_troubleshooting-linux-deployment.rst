@@ -23,15 +23,88 @@ This is the logical order starting from the outside and working your way in.
 
 As a TA your rule should be whatever they solve you pick the lowest number if they are stuck. Distribute the hints from hardest to easiest.
 
-Instructor
-==========
+Assumptions of State
+====================
 
-#. make a request through: postman, browser, Invoke-RestMethod (connection timeout)
-#. is the VM running (no)
-#. start the vm with ``az vm start``
-#. ssh into box and curl the web server ``curl https://localhost -k``
-#. curl the API ``curl http://localhost:5000``
-#. check your NSGs
+In a live deployment any misconfigured component could be the cause of an issue. It is important to have a mental model of the system and the *current* state of each component in it. To gain an understanding of the deployment and it's state your group should discuss the components and how they could be misconfigured.
+
+.. admonition:: Note
+
+   Due to the introductory nature of this course we will be thinking about our entire deployment. After you gain experience with troubleshooting you may find yourself thinking about one component or layer at a time. 
+   
+   The ability to look at one component in isolation will come with experience, but when you are just starting out it is beneficial to think about the entire system. 
+
+Deployment Components
+---------------------
+
+Let's consider the components in each layer of our system.
+
+.. admonition:: Warning
+
+   Don't have students check each of these things. This is simply a thought exercise for students to have an understanding of the entire system, which will help them troubleshoot.
+
+.. admonition:: Note
+
+   This should be a group discussion. Encourage points that aren't listed below. 
+
+   There isn't an exact script for this section. Encourage students to discuss for up to twenty minutes. At the ten minute mark if you haven't completed half of the different levels move the discussion forward in the following pattern:
+
+   Use the top level bullet as a prompt to start a dialogue around that component. Follow each sub-list down so everything is covered.
+
+Network Level
+^^^^^^^^^^^^^
+
+...Network related issues are always based around routing behavior and access rules. As an introductory course we have only explored access rules in the form of our network security groups. To that end consider the three components of an access rule
+
+- NSG rules for controlling access at the network level
+- what rules do you expect?
+  - SSH (22)
+  - HTTP (80)
+  - HTTPS (443)
+
+Service Level
+^^^^^^^^^^^^^
+
+- KeyVault
+  - what configuration is expected?
+    - a secret: database connection string
+    - an access policy for our VM
+- AADB2C
+  - what configuration is expected?
+    - tenant dir
+    - protected API (user_impersonation scope)
+    - Postman client application
+    - SUSI flow
+
+Hosting Environment Level
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- VM external configuration
+  - what configuration is expected?
+    - size
+    - status
+    - image (defines available tools)
+    - system assigned identity for KV access
+- VM internal configuration
+  - what configuration is expected?
+    - runtime dependencies (dotnet, mysql, nginx)
+    - self-signed SSL cert
+  - what services are expected?
+    - embedded MySQL
+    - NGINX web server (reverse proxy)
+    - API service
+- MySQL db server
+  - user and database for the API
+- NGINX
+  - RP configuration
+  - using SSL cert
+
+Application Level
+^^^^^^^^^^^^^^^^^
+
+- appsettings.json (external configuration)
+- source code
+  - could have issues but we will assume it is working as expected
 
 VM is not Running
 =================
@@ -39,7 +112,7 @@ VM is not Running
 Diagnosis
 ---------
 
-#. make a request through: postman, browser, Invoke-RestMethod (connection timeout)
+#. make an **external** request through: postman, browser, Invoke-RestMethod (network error: connection timeout)
 #. try to SSH into the box (timeout)
 #. is the VM running (Azure Portal Virtual Machine)
 
@@ -55,7 +128,7 @@ NSG
 Diagnosis
 ---------
 
-#. make a request through: postman, browser, Invoke-RestMethod (connection timeout)
+#. make an **external** request through: postman, browser, Invoke-RestMethod (network error: connection timeout)
 #. check your NSGs (NSG does not contain an inbound rule for port 443)
 
 Solution
@@ -69,7 +142,7 @@ NGINX
 Diagnosis
 ---------
 
-#. make a request through: postman, browser, Invoke-RestMethod (connection refused)
+#. make an internal request with curl (network error: connection refused)
 #. check the web server from box ``service ngingx status`` (inactive (dead))
 
 Solution
@@ -84,7 +157,7 @@ MySQL
 Diagnosis
 ---------
 
-#. make a request through: postman, browser, Invoke-RestMethod (bad gateway)
+#. make an internal request with curl (HTTP status: 502 bad gateway)
 #. check the mysql service from box ``service mysql status`` (inactive (dead))
 
 Solution
@@ -99,20 +172,20 @@ Wrong KV name
 Diagnosis
 ---------
 
-#. make a request through: postman, browser, Invoke-RestMethod (bad gateway)
-#. ``journalctl -fu coding-events-api`` (401 forbidden)
+#. make an internal request with curl (HTTP status: 502 bad gateway)
+#. ``journalctl -fu coding-events-api`` (``Unhandled exception. System.Net.Http.HttpRequestException: Name or service not known``)
 #. research error message
-#. ``cat /opt/coding-events-api/appsettings.json``
-#. compare the KV name to the KV name in the Azure Portal (THEY DO NOT MATCH)
+#. ``cat /opt/coding-events-api/appsettings.json`` (notice the value for ``KeyVaultName`` is blank)
 
 Solution
 --------
 
-#. ``sudo nano /opt/coding-events-api/appsettings.json``
-#. change the KV name to match the KV name in the Azure Portal
-#. save the file with ``ctrl+o``
-#. exit nano with ``ctrl+x``
-#. ``sudo service coding-events-api restart ``
+#. get the name for the Key Vault (``az keyvault list --query '[0].name'`` or use the Azure Portal)
+#. edit the file (``sudo nano /opt/coding-events-api/appsettings.json``)
+#. enter the value for ``KeyVaultName`` you found in step one
+#. save the file in ``nano`` editor with ``ctrl+o``
+#. exit ``nano`` editor with ``ctrl+x``
+#. restart the service to reload the ``appsettings.json`` file (``sudo service coding-events-api restart``)
 
 KV access policy
 ================
@@ -120,14 +193,28 @@ KV access policy
 Diagnosis
 ---------
 
-#. make a request through: postman, browser, Invoke-RestMethod (bad gateway)
-#. ``journalctl -fu coding-events-api`` (401 forbidden)
+#. make an internal request with curl (HTTP status: 502 bad gateway)
+#. ``journalctl -fu coding-events-api`` (``Unhandled exception. Microsoft.Azure.KeyVault.Models.KeyVaultErrorException: Operation returned an invalid status code 'Forbidden'``)
+#. research error message
 #. check KV access policies for VM (it's missing)
 
 Solution
 --------
 
-#. create new KV secrets access policy for VM
+#. check the help of az keyvault (``az keyvault -h``)
+#. check the help of az keyvault set-policy (``az keyvault set-policy -h``, need objectId and Key Vault Name)
+#. store object id of VM in variable (``$VmId = az vm show --query 'identity.principalId'``)
+#. store Key Vault name in variable (``$KvName = az keyvault list --query '[0].name'``)
+#. create new KV secrets access policy for VM (az keyvault set-policy --name $KvName --object $VmId --secret-permissions list get)
+
+
+
+
+
+
+
+
+
 
 
 .. TAs will have their own login account to the VM that has full permissions
