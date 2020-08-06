@@ -143,7 +143,7 @@ Similarly, when working *inside* the Ubuntu VM with ``curl`` the validation can 
 
    # curl https://localhost -k
 
-When troubleshooting within a VM you can use ``curl`` to *isolate* networking related issues. If you are able to connect successfully from inside the machine, but cannot connect externally, it indicates that an internal firewall or external network security rule is the issue.
+When troubleshooting within a VM you can use ``curl`` to *isolate* networking related issues. If you are able to connect successfully from inside the machine, but receive a timeout when connecting externally, it indicates that an internal firewall or external network security rule is the issue.
 
 .. admonition:: Note
 
