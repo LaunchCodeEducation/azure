@@ -179,24 +179,34 @@ When troubleshooting within a VM you can use ``curl`` to *isolate* networking re
 Discussion: Components of a Functioning System
 ==============================================
 
-When troubleshooting your first step is to form a mental model of the system you are working on. Due to the introductory nature of this course you and your group will begin by discussing what you know about a fully functioning system. Consider all of the deployment components you have learned about throughout this course. Pay particular attention to the components that have given you trouble in your previous studios.
+When troubleshooting, your first step is to form a mental model of the system you are working on. Due to the introductory nature of this course you and your group will begin by discussing what you know about a fully functioning system. Consider all of the deployment components you have learned about throughout this course. Pay particular attention to the components that have given you trouble in your previous studios.
 
 For each component you should define what expectations need to be met for it to operate in a *healthy state* and which misconfigurations could lead to a *failed state*. By thinking about the system holistically you will be able to keep track of which expectations are not met and collectively decide on the actions needed to reach a resolution.
 
 These assumptions will be the starting points for troubleshooting once your group gains access to Azure. Any expectations that are not met in the broken deployment will offer a clue as to what needs to be fixed.
 
-Your TA will lead your group in this discussion. For each of the network, service, host and application levels consider the following:
+Your TA will lead your group in this discussion **you will have 20 minutes** to discuss the system. For each of the network, service, host and application levels consider the following:
 
 - What components are in this level?
 - How does each component need to be configured to function properly?
-- What common misconfigurations have you encountered with each component and what was the behavior that led to discovering an issue?
+- What common misconfigurations have you encountered with each component?
+- What was the behavior that led to discovering an issue with a component?
 
-You do not need to be exhaustive but every expectation you define will help guide you when you begin troubleshooting. For example, if you were to describe the components in the service level:
+.. TODO: the terminology and the organization for the mental model is just a crutch we are providing you to strengthen your understanding, however in the future you will see different terms for levels and components
+
+.. TODO: the terminology is experiential: each team, company, organization, and individuals may have their own ways of organizing and labelling different components and level
+
+.. TODO: box diagram, (tech stack) but simplified to show what we mean by levels
+
+Example
+-------
+
+You do not need to be exhaustive but every expectation you define will help guide you when you are troubleshooting. For example, if you were to describe the components in the service level:
 
 - AADB2C
 - Key vault
 
-You could then proceed to listing some of the expectations of an operational AADB2C component:
+You could then proceed to list some of the expectations of an operational AADB2C component:
 
 - A tenant directory linked to an active subscription
 - At least two registered applications -- the Coding Events API and Postman client

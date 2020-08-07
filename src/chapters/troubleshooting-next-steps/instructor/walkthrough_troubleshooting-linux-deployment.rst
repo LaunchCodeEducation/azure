@@ -2,6 +2,19 @@
 Walkthrough: Troubleshooting a Linux Deployment
 ===============================================
 
+Setting up the Broken Deployment
+================================
+
+Before discussing the issues and their solutions each TA must first set up the broken deployment.
+
+Each TA will need to:
+
+- clone the `powershell-az-cli-scripting-deployment <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>`_ repository
+- switch to the ``tps-reports`` branch
+- run the ``full-deployment.ps1`` script in PowerShell
+
+**You will not need to edit the script at all**, it will deploy the application and break a few things that this article will walk your group through fixing.
+
 General Hints
 =============
 
@@ -105,18 +118,6 @@ Application Level
 - appsettings.json (external configuration)
 - source code
   - could have issues but we will assume it is working as expected
-
-.. ::
-
-  SETUP clone `this repository <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>` switch to the ``tps-reports`` branch and run the full-deployment.ps1 script in powershell.
-  
-  The script will setup the entire deployment and you can begin troubleshooting with your group.
-
-  in ubuntu ``who`` command will show you all the active sessions (and their IP addresses) to see if the students have connected
-
-  in ubuntu ``uptime`` gives some information 
-
-
 
 VM is not Running
 =================
