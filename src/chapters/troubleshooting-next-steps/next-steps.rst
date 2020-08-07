@@ -1,3 +1,5 @@
+.. todo:: if adding next steps keep it off ToC and add a link to the final coding event they join
+
 ==========
 Next Steps
 ==========

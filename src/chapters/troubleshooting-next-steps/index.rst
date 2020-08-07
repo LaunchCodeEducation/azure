@@ -1,6 +1,10 @@
-============================================
-Introduction to Troubleshooting & Next Steps
-============================================
+===============================
+Introduction to Troubleshooting
+===============================
+
+.. ============================================
+.. Introduction to Troubleshooting & Next Steps
+.. ============================================
 
 .. toctree::
    :maxdepth: 3
