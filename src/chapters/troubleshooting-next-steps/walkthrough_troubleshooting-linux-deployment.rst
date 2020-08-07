@@ -1,8 +1,8 @@
-=====================================================
-Group Walkthrough: Troubleshooting a Linux Deployment
-=====================================================
+=================================================
+Studio: Troubleshooting a Broken Linux Deployment
+=================================================
 
-This walkthrough is different than any walkthroughs you have done so far. Troubleshooting skills can only be developed through experience. The methodologies and tools can be taught, but the experience is invaluable to your ability to solve real-world problems. You will be working as a group, like you would be on a professional team. Together your group will be troubleshooting a broken deployment. You will need to work together to engage in a troubleshooting discussion to reach a resolution to the issues presented in the deployment.
+This walkthrough is different than any walkthroughs you have done so far. Troubleshooting skills can only be developed through experience. The methodologies and tools can be taught, but the experience can only be gained from solving real-world problems. You will be working as a group, like you would be on a professional team. Together your group will be troubleshooting a broken deployment. You will need to work together to engage in a troubleshooting discussion to reach a resolution to the issues presented in the deployment.
 
 Each student will be given read-only access to the Azure resources used in the deployment. Your TA will be the only member of your group with administrative access. For each issue the group encounters your TA will facilitate discussion and take any actions the group agrees upon.
 
@@ -391,20 +391,90 @@ If you and your group are able to fix the deployment you will be able to load th
 - Create an account in the AADB2C tenant to get an access token
 - Join the coding event with an ID of ``1`` and read its description!
 
-.. ::
+.. Bonus
+.. =====
 
-   Bonus
-   =====
+.. Customer Reports Unexpected Bug
+.. -------------------------------
 
-   Customer Reports Unexpected Bug
-   -------------------------------
+.. validation on coding event
 
-   validation on coding event
+.. A customer opened an issue that they were seeing some unexpected behaviors. The QA team reports that this bug is happening in the model at this line, it is up to us to solve the issue and redeploy the application.
 
-   A customer opened an issue that they were seeing some unexpected behaviors. The QA team reports that this bug is happening in the model at this line, it is up to us to solve the issue and redeploy the application.
+.. It is up to you on how you approach this, but we recommend using a debugger, and looking into the Microsoft validation module.
 
-   It is up to you on how you approach this, but we recommend using a debugger, and looking into the Microsoft validation module.
+.. Consider taking the same approach you used before, by asking some questions on where this is happening, why, and how to resolve the issue.
 
-   Consider taking the same approach you used before, by asking some questions on where this is happening, why, and how to resolve the issue.
+.. If you and your group are able to fix the issue locally let your TA know how it can be fixed, and as a group observe as the TA deploys the fix.
 
-   If you and your group are able to fix the issue locally let your TA know how it can be fixed, and as a group observe as the TA deploys the fix.
+.. When an application is running successfully, but not behaving the way it should it may be a code issue. Maybe there is a coding bug that is causing the improper behavior. To solve this we will need to know what conditions cause the incorrect behavior.
+
+.. In this case our API is representing date data as null when a user with the proper level of authorization accesses X. Let's look at the code to determine where this error may be occurring.
+
+.. .. sourcecode:: csharp
+..   :caption: CodingEventsAPI/Models/CodingEvent.cs
+..   :lineno-start: 30
+..   :emphasize-lines: 16
+
+..   public class NewCodingEventDto {
+..       [NotNull]
+..       [Required]
+..       [StringLength(
+..         100,
+..         MinimumLength = 10,
+..         ErrorMessage = "Title must be between 10 and 100 characters"
+..       )]
+..       public string Title { get; set; }
+
+..       [NotNull]
+..       [Required]
+..       [StringLength(1000, ErrorMessage = "Description can't be more than 1000 characters")]
+..       public string Description { get; set; }
+
+..       [Required] [NotNull] public DateTime Date { get; set; }
+..   }
+
+.. - Error: line 45
+
+.. 3 options:
+
+.. - group walkthrough
+..   - TA steps
+..     1. start from first student in list and ask "what should we do next?" as a prompt
+..     2a. take the action suggested by the student then GOTO 1
+..     2b. go to next available step and read: what to say / do on left (what to point out in parenthesis)
+..   - setup
+..     - TA: run setup script
+..     - TA: invites students with Reader role
+..     - student: follow accepting role / az cli setup instructions
+..   - exercise
+..     - TA: facilitates group discussion on taking inventory
+..     - TA: facilitates group discussion working from top to bottom in solution steps
+..     - TA: runs any mutating actions based on group decisions
+..     - student: runs observational commands only
+..   - completion
+..     - student: joins final coding event with other students
+.. - individual studio
+..   - TA steps
+..     1. when student reaches out to you ask "what error are you seeing right now"?
+..       1a. scan entire list of steps and see if you can find a match
+..         1a1. found match GOTO 2a
+..         1a2. match not found
+..     2. based on student response:
+..       2a. go to next available step and read: what to say / do on left (what to point out in parenthesis)
+..       2b. see error that is not described in steps: tell student to rerun the setup script
+..         - outcome: student starts over from scratch, waits 10-15 mins for script to complete
+..           - student learns lesson not to do silly things
+..   - setup
+..     - student: each run setup script
+..   - exercise
+..     - TA: facilitates group discussion on taking inventory
+..     - TA: checks in with each student to assist using solution steps
+..       - requires the TA to consider what breadcrumb and how to express to student
+..       - will not be in linear order
+..       - will need to keep track of what has been solved so far and select the next step in the sequence
+..         - relies on students communicating every action they have taken
+..     - student: runs any mutating actions based on group decisions
+..       - keeps track of every action they take
+..   - completion
+..     - student: joins final coding event on their own
