@@ -2,7 +2,7 @@
 Exploration: an Automated Deployment Bash Script
 ================================================
 
-admonition:: Warning
+.. admonition:: Warning
 
    Do not run this script! You will be writing your own automated deployment script in a future chapter. So it is in your interest to understand what this script is doing, but we do not recommend running it because there are a few extra steps when using the Azure CLI when working with WSL that are not included in this article.
 
