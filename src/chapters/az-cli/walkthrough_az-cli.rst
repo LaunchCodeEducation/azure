@@ -37,14 +37,14 @@ Once you are logged in you can make use of the global ``configure`` command to s
 
 .. sourcecode:: powershell
 
-    # -d can also be used as a shorthand for --default 
-    > az configure --default location=eastus
+    # -d can also be used as a shorthand for --defaults 
+    > az configure --defaults location=eastus
 
 Now, any resource that has a required argument of ``--location`` or ``-l`` will automatically have ``eastus`` set as its value.
 
 .. admonition:: Note
 
-    We will use the ``configure`` command to set defaults for common arguments throughout this walkthrough. You can change your default values at any time by re-issuing the command with new ``name=value`` pairs. 
+    We will use the ``configure`` command to set defaults for common arguments throughout this walkthrough. You can change your default values at any time by re-issuing the command with new ``name=value`` pairs. If you set the value as ``name=''`` (an empty string) it will clear the entry. 
     
     You can also view your defaults using the ``--list-defaults`` argument:
 
@@ -401,8 +401,8 @@ Before issuing the command, let's store the Key Vault name in a variable so we c
 .. sourcecode:: powershell
     :caption: Windows/PowerShell
 
-    > $Key VaultName="lc-20-<name>-kv"
-    > az keyvault create -n "$Key VaultName"
+    > $KeyVaultName="lc-20-<name>-kv"
+    > az keyvault create -n "$KeyVaultName"
 
 .. sourcecode:: bash
     :caption: Linux/Bash
@@ -429,7 +429,7 @@ After the Key Vault has been provisioned, let's set the connection string secret
 .. sourcecode:: powershell
     :caption: Windows/PowerShell
 
-    > az keyvault secret set --vault-name "$Key VaultName" -n "ConnectionStrings--Default" --value "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
+    > az keyvault secret set --vault-name "$KeyVaultName" -n "ConnectionStrings--Default" --value "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
 
 .. sourcecode:: bash
     :caption: Linux/Bash
@@ -484,7 +484,7 @@ It's now time to issue our final command:
 .. sourcecode:: powershell
     :caption: Windows/PowerShell
 
-    > az keyvault set-policy -n "$Key VaultName" --object-id "$VmObjectId" --secret-permissions get list 
+    > az keyvault set-policy -n "$KeyVaultName" --object-id "$VmObjectId" --secret-permissions get list 
 
 .. sourcecode:: bash
     :caption: Linux/Bash

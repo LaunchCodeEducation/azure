@@ -36,6 +36,23 @@ macOS
 
 To install the CLI, follow the `directions outlined in the Microsoft documentation <https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos?view=azure-cli-latest>`_.
 
+.. admonition:: Tip
+
+  If you already have ``dotnet`` installed on your machine you can take a shortcut. Thanks to the common SDK (with underlying runtime) between .NET core apps and PowerShell it can be installed as a ``dotnet`` `Global tool <https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools>`_:
+
+  .. sourcecode:: bash
+    :caption: OSX/Linux with dotnet core SDK installed
+  
+    $ dotnet tool install --global PowerShell
+
+  You can open a PowerShell session in your Terminal of choice using:
+
+  .. sourcecode:: bash
+    :caption: OSX/Linux with dotnet core SDK installed
+  
+    $ pwsh
+  
+
 The Pattern
 ===========
 
@@ -206,20 +223,22 @@ For example, to see the arguments associated with creating (``create``) a VM (``
 
 Note that these arguments can be exhaustive, especially compared to what is available on the web portal. Don't be overwhelmed by them. They are organized so that it is easy to find which are relevant to your use case. 
 
-.. .. todo:: seems out of scope to cover this, maybe best to just throw in as an example in the walkthroughs?
+Query Filtering
+---------------
 
-.. Query Filtering
-.. ---------------
+As mentioned previously all commands issued from the ``az CLI`` are sent as requests to the Azure REST API with response bodies that are output as JSON strings. These response bodies can range from simple objects to lists with dozens of complex objects of data. Working with large complex response bodies can be a tedious and time consuming process.
 
-.. As mentioned previously all commands issued from the ``az CLI`` are sent as requests to the Azure REST API with response bodies displayed as JSON output. These response bodies can range from simple objects to lists with dozens of complex objects of data. Working with large complex response bodies can be a tedious and time consuming process.
+.. admonition:: Note
 
-.. Fortunately the ``az CLI`` includes a global argument called ``--query`` that can be applied to any command. It lets you transform the response body and hone in on just the data you need. The syntax used to define the transformation is a simple query language for JSON called JMESPath. We will not explore this syntax in great depth as it is beyond the scope of our learning goals. However, `the JMESPath documentation <https://jmespath.org/>`_ is well organized and has input boxes you can use to practice. 
+  In PowerShell the JSON outputs are automatically parsed into objects. Array outputs can have their elements accessed with ``[]`` (bracket notation). For individual elements or single object command outputs each JSON field is accessible as a property using ``.property`` (dot notation). 
 
-.. What we will cover are the fundamentals which we will routinely use in our interactions with the ``az CLI``. The first step to using the ``--query`` option is to determine the shape of the data you are working with, which will be dependent on the command you issue. Fortunately there are only two types to consider as all of the commands will either output a single JSON object or a list containing multiple objects. 
+On every OS supported by the ``az CLI`` a global option called ``--query`` can be applied to any command to filter its output. The syntax used to define the transformation is a simple query language for JSON called JMESPath. We will not explore this syntax in great depth as it is beyond the scope of our learning goals. However, `the JMESPath documentation <https://jmespath.org/>`_ is well organized and has input boxes you can use to practice. 
 
-.. .. tip::
+What we will cover are common queries introduced in interactions with the ``az CLI`` that benefit from filtered outputs. The first step to using the ``--query`` option is to determine the shape of the data you are working with, which will be dependent on the command you issue. Fortunately there are only two types to consider as all of the commands will either output a single JSON object or a list containing multiple objects. 
 
-..     While you can look through the documentation to determine the output shape to expect you can typically know based on the command itself. commands like ``list`` and those that interact with multiple resources or properties will output a list (even if there is only one element in that list). However, commands that interact with a single resource or property directly will naturally output a single object.
+.. tip::
+
+    While you can look through the documentation to determine the output shape to expect you can typically know based on the command itself. Commands like ``list`` and those that interact with multiple resources or properties will output a list (even if there is only one element in that list). However, commands that interact with a single resource or property directly will output a single JSON object.
 
 Next Step
 =========

@@ -6,7 +6,7 @@ A huge benefit of using the Azure CLI from a shell terminal is that we can bundl
 
 The deployment Bash scripts will be used to:
 
-#. Provision resources 
+#. Provision resources
 #. Configure resources
 #. Deliver source code
 #. Deploy source code
@@ -28,7 +28,7 @@ Provision Resources Script Steps
 
 This script does quite a few things. Most of them are related to our Azure resources:
 
-#. Ceclare variables
+#. Declare variables
 #. Configure the default location
 #. Provision resource group
 #. Configure the default resource group
