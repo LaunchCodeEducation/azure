@@ -240,12 +240,6 @@ Grant Admin Permissions for Using the Scope
 
 In this step we will configure the Postman application to use the ``user_impersonation`` scope exposed by the Coding Events API application. To do this we will need to grant admin permissions for this scope.
 
-.. admonition:: Note
-
-  Although OAuth expects the user (resource owner) to provide this consent, **AADB2C does not support this feature at this time**. Currently AADB2C requires administrators to grant the permission on behalf of *all users within the tenant directory*.
-
-  While this is `very unusual behavior <https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/issues/329#issuecomment-664061513>`_ from an OAuth provider, the end effect is the same. A client application is *granted permission* to use a scope, but by an administrator rather than an individual user. 
-
 In the sidebar select the **API permissions** settings. Then select the **Add a permission** button:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/7add-permission.png
