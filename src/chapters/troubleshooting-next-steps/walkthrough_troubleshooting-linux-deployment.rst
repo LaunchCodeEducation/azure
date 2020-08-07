@@ -289,8 +289,6 @@ You now have access to the resources created under the TA troubleshooting subscr
 Setup AZ CLI
 ^^^^^^^^^^^^
 
-We have worked with the AZ CLI throughout this class, however it is currently configured to work with your personal Azure subscription. We will need to reconfigure it to work with the new subscription. Luckily the AZ CLI gives us a pretty easy way to do this.
-
 First up we need to clear the AZ CLI cache:
 
 .. sourcecode:: PowerShell
@@ -303,13 +301,34 @@ Now we need to login again which will present us with the form to authenticate:
 
    > az login
 
+Because you selected *Stay signed in* in the previous step it will default to your account **within the TA tenant directory**. All you need to do is select your name from the list:
+
+.. image:: /_static/images/troubleshooting-next-steps/exercises/ta-dir-az-login.png
+   :alt: Log into the TA directory from az CLI
+
+Back in your PowerShell Terminal you will see your account information output:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > az login
+   # output example
+   [
+      {
+         ...trimmed...
+         "id": "095dea07-a8e5-4bd1-ba75-54d61d581524",
+         "name": "Troubleshooting - TA <Name>",
+         "user": {
+            "name": "patrick@launchcode.org",
+            "type": "user"
+         }
+         ...trimmed...
+      }
+   ]
+
 .. admonition:: Warning
 
-  Make sure to select the correct account (``Work or school account``) and use the correct password (``LaunchCode-@zure1``)!
-  
-  The section immediately before this contains pictures of what this will look like.
-
-Once the authentication is complete the AZ CLI will output some information about your subscription to STDOUT.
+   Before continuing confirm that the name of the subscription matches your TA name: ``Troubleshooting - TA <Name>``.
 
 After configuring the AZ CLI to use the new subscription let's setup our AZ CLI defaults for the correct resource group and virtual machine:
 
@@ -317,7 +336,7 @@ After configuring the AZ CLI to use the new subscription let's setup our AZ CLI 
 
    > az configure -d group=linux-ts-rg vm=broken-linux-vm
 
-You can verify everything worked by looking at the default VM. It should be identical to your groupmates and TA:
+You can verify everything worked by looking at the default VM. It should be identical to your group-mates and TA:
 
 .. sourcecode:: PowerShell
 
@@ -325,7 +344,7 @@ You can verify everything worked by looking at the default VM. It should be iden
 
 .. admonition:: Note
 
-   You only have read-access to this Azure subscription. Feel free to look around all you want, however any Azure commands will need to be run by your TA.
+   You only have **read-access** to the resources in your TA's Azure subscription. Feel free to look around all you want, however any Azure commands will need to be run by your TA.
 
 Configure Postman
 -----------------
@@ -375,7 +394,9 @@ From the **Authorization** tab select the **Variables** tab. Then (as seen in a 
 .. image:: /_static/images/intro-oauth-with-aadb2c/studio_2-aadb2c-explore/postman-update-baseurl.png
    :alt: Postman update the baseUrl variable with the public IP address of the API
 
-Although you will not be able to access the API due to the broken deployment you are ready to use Postman in the final step of this walkthrough.
+.. admonition:: Note
+
+   You will not *currently* be able to access the API due to the broken state of the deployment. However, once you and your group have resolved enough issues to begin making requests you will not need to configure anything else in Postman.
 
 Deployment Issues
 =================
@@ -408,6 +429,43 @@ If you and your group are able to fix the deployment you will be able to load th
 
 - Create an account in the AADB2C tenant to get an access token
 - Join the coding event with an ID of ``1`` and read its description!
+
+Resetting the AZ CLI
+====================
+
+.. admonition:: Note
+
+   You **do not need to reset your AZ CLI to complete this walkthrough**. However, if you would like to continue working with your resources for the remaining time in the course the following instructions can be used.
+
+First re-issue the account clear and login commands:
+
+.. sourcecode:: powershell
+   :caption: Windows/PowerShell
+
+   > az account clear
+   > az login
+
+This time rather than selecting the default account (the account registered in your TA's directory) you will select the **User another account** option:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_2-aadb2c-explore/reset-az-select-other-account.png
+   :alt: AZ CLI login select use another account option
+
+Enter your email address for Azure to look up all related accounts. 
+
+.. admonition:: Note
+
+   Although your email is the same this process allows you to differentiate between different accounts associated with the same email address login.
+
+From the select account view you will need to select the **Personal Account** option:
+
+.. image:: /_static/images/intro-oauth-with-aadb2c/studio_2-aadb2c-explore/reset-az-select-personal-account.png
+   :alt: AZ CLI login select your personal account
+
+Back in your PowerShell Terminal you will now see the subscriptions associated with your personal account.
+
+.. admonition:: Warning
+
+   If you can still view an account output that has your TA's subscription name (``Troubleshooting - TA <Name>``) you have selected the wrong account. Restart the process and make sure you select **Personal Account**.
 
 .. Bonus
 .. =====
