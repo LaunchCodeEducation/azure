@@ -66,7 +66,7 @@ The first time you connect to a machine over SSH you will be prompted to trust o
 
 .. admonition:: Warning
 
-  Using *knowledge-based* authentication (username and password) is much less secure than using something *owned* like a private (digital) key.  The topic of using `RSA keys with SSH <https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_ falls outside the scope of this course but you should know it is **the more secure and preferred mechanism.**
+  Using *knowledge-based* authentication (username and password) is much less secure than using something *owned* like a private (digital) key.  The topic of using `RSA keys with SSH <https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_ falls outside the scope of this course but you should know it is **more secure and the preferred mechanism.**
   
   We will authenticate using credentials to avoid detouring away from the learning goals of this troubleshooting exercise.
 
@@ -89,7 +89,7 @@ Using ``service``
 
 The `service <http://manpages.ubuntu.com/manpages/bionic/man8/service.8.html>`_ program is a wrapper that simplifies how several of the `init systems <http://www.troubleshooters.com/linux/init/features_and_benefits.htm>`_ on a Linux machine can be managed through a single tool. Init systems are used to *initialize* and manage background processes running on Linux systems. 
 
-On Ubuntu machines the `systemd init system <>`_ and its client program `systemctl <>`_ (system control manager) are used by default to manage *service units*. In the configuration script of our final deployments we created a *systemd unit file* to define how our Coding Events API would be operated a background service on the Ubuntu VM.  The script also used the ``service`` tool (rather than the underlying ``systemctl`` it wraps) to make our script portable across supporting Linux distributions.
+On Ubuntu machines the `systemd init system <https://www.linode.com/docs/quick-answers/linux-essentials/what-is-systemd/>`_ and its client program `systemctl <https://www.digitalocean.com/community/tutorials/systemd-essentials-working-with-services-units-and-the-journal>`_ (system control manager) are used by default to manage *service units*. In the configuration script of our final deployments we created a *systemd unit file* to define how our Coding Events API would be operated as a background service on the Ubuntu VM.  The script also used the ``service`` tool (rather than the underlying ``systemctl`` it wraps) to make our script portable across supporting Linux distributions.
 
 In addition to controlling services, the ``service`` tool can be used to view the status of any registered service units like our ``coding-events-api``, ``nginx`` and ``mysql``:
 
@@ -167,8 +167,9 @@ We can override the default validation procedure by using the ``-SkipCertificate
 Similarly, when working *inside* the Ubuntu VM with ``curl`` the validation can be skipped using the ``-k`` option:
 
 .. sourcecode:: powershell
+   :caption: Linux/Bash
 
-   # curl https://localhost -k
+   $ curl https://localhost -k
 
 When troubleshooting within a VM you can use ``curl`` to *isolate* networking related issues. If you are able to connect successfully from inside the machine, but receive a timeout when connecting externally, it indicates that an internal firewall or external network security rule is the issue.
 
@@ -185,7 +186,7 @@ For each component you should define what expectations need to be met for it to 
 
 These assumptions will be the starting points for troubleshooting once your group gains access to Azure. Any expectations that are not met in the broken deployment will offer a clue as to what needs to be fixed.
 
-Your TA will lead your group in this discussion **you will have 20 minutes** to discuss the system. For each of the network, service, host and application levels consider the following:
+Your TA will lead your group in this discussion **you will have 20 minutes** to discuss the system. Consider the network, service, host and application levels with regards to the Coding Events API:
 
 - What components are in this level?
 - How does each component need to be configured to function properly?
@@ -246,7 +247,7 @@ Create Account In the TA Tenant Directory
 
 The form will come pre-populated with your email address (since you navigated to the webpage from your email client) and you will need to enter a password.
 
-This account, and subscription, will be temporary so we are all going to use the same password to make things consistent. Copy the password below and paste it in to avoid spelling mistakes:
+This account, and subscription, will be temporary so we will use the same password to make things consistent. Copy the password below, then paste it in the form to avoid spelling mistakes:
 
 - **password**: ``LaunchCode-@zure``
 - **display name**: your name (should default)
@@ -254,12 +255,12 @@ This account, and subscription, will be temporary so we are all going to use the
 .. image:: /_static/images/troubleshooting-next-steps/exercises/create-ta-dir-account.png
    :alt: Put in password and display name to create account in TA directory
 
-Then copy the security code sent to your email and complete the account registration:
+An email will be sent to you containing a security code. Copy the code and paste it into the verification form:
 
 .. image:: /_static/images/troubleshooting-next-steps/exercises/verify-email-ta-dir-account.png
    :alt: Verify email security code to create account in TA directory
 
-You will then accept the invitation permissions:
+You will then be prompted to accept the invitation permissions (select ``Accept``):
 
 .. image:: /_static/images/troubleshooting-next-steps/exercises/accept-ta-dir-permissions.png
    :alt: Verify email security code to create account in TA directory
@@ -289,7 +290,7 @@ You now have access to the resources created under the TA troubleshooting subscr
 Setup AZ CLI
 ^^^^^^^^^^^^
 
-First up we need to clear the AZ CLI cache:
+First we need to clear the AZ CLI cache:
 
 .. sourcecode:: PowerShell
 
@@ -301,7 +302,7 @@ Now we need to login again which will present us with the form to authenticate:
 
    > az login
 
-Because you selected *Stay signed in* in the previous step it will default to your account **within the TA tenant directory**. All you need to do is select your name from the list:
+Because you selected *Stay signed in*, from the previous step, it will default to your account **within the TA tenant directory**. All you need to do is select your name from the list:
 
 .. image:: /_static/images/troubleshooting-next-steps/exercises/ta-dir-az-login.png
    :alt: Log into the TA directory from az CLI
@@ -330,7 +331,7 @@ Back in your PowerShell Terminal you will see your account information output:
 
    Before continuing confirm that the name of the subscription matches your TA name: ``Troubleshooting - TA <Name>``.
 
-After configuring the AZ CLI to use the new subscription let's setup our AZ CLI defaults for the correct resource group and virtual machine:
+After configuring the AZ CLI to use the new subscription let's set up our AZ CLI defaults for the correct resource group and virtual machine:
 
 .. sourcecode:: PowerShell
 
@@ -409,7 +410,7 @@ Deployment Issues
 
 .. admonition:: Warning
 
-   Recall that when troubleshooting any changes made to the state of a component needs to be accounted for. Defer to your TA for taking any mutating actions -- **do not make changes on your own**.
+   While troubleshooting all changes made to the state of a component needs to be accounted for. Defer to your TA for taking any mutating actions -- **do not make changes on your own**.
    
    As your TA makes changes consider the outcome and adjust your mental model accordingly. 
 
@@ -447,7 +448,7 @@ First re-issue the account clear and login commands:
 
 This time rather than selecting the default account (the account registered in your TA's directory) you will select the **User another account** option:
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/studio_2-aadb2c-explore/reset-az-select-other-account.png
+.. image:: /_static/images/troubleshooting-next-steps/exercises/reset-az-select-other-account.png
    :alt: AZ CLI login select use another account option
 
 Enter your email address for Azure to look up all related accounts. 
@@ -458,7 +459,7 @@ Enter your email address for Azure to look up all related accounts.
 
 From the select account view you will need to select the **Personal Account** option:
 
-.. image:: /_static/images/intro-oauth-with-aadb2c/studio_2-aadb2c-explore/reset-az-select-personal-account.png
+.. image:: /_static/images/troubleshooting-next-steps/exercises/reset-az-select-personal-account.png
    :alt: AZ CLI login select your personal account
 
 Back in your PowerShell Terminal you will now see the subscriptions associated with your personal account.
@@ -487,70 +488,72 @@ Back in your PowerShell Terminal you will now see the subscriptions associated w
 
 .. In this case our API is representing date data as null when a user with the proper level of authorization accesses X. Let's look at the code to determine where this error may be occurring.
 
-.. .. sourcecode:: csharp
-..   :caption: CodingEventsAPI/Models/CodingEvent.cs
-..   :lineno-start: 30
-..   :emphasize-lines: 16
+.. ::
 
-..   public class NewCodingEventDto {
-..       [NotNull]
-..       [Required]
-..       [StringLength(
-..         100,
-..         MinimumLength = 10,
-..         ErrorMessage = "Title must be between 10 and 100 characters"
-..       )]
-..       public string Title { get; set; }
+   .. .. sourcecode:: csharp
+   ..   :caption: CodingEventsAPI/Models/CodingEvent.cs
+   ..   :lineno-start: 30
+   ..   :emphasize-lines: 16
 
-..       [NotNull]
-..       [Required]
-..       [StringLength(1000, ErrorMessage = "Description can't be more than 1000 characters")]
-..       public string Description { get; set; }
+   ..   public class NewCodingEventDto {
+   ..       [NotNull]
+   ..       [Required]
+   ..       [StringLength(
+   ..         100,
+   ..         MinimumLength = 10,
+   ..         ErrorMessage = "Title must be between 10 and 100 characters"
+   ..       )]
+   ..       public string Title { get; set; }
 
-..       [Required] [NotNull] public DateTime Date { get; set; }
-..   }
+   ..       [NotNull]
+   ..       [Required]
+   ..       [StringLength(1000, ErrorMessage = "Description can't be more than 1000 characters")]
+   ..       public string Description { get; set; }
 
-.. - Error: line 45
+   ..       [Required] [NotNull] public DateTime Date { get; set; }
+   ..   }
 
-.. 3 options:
+   .. - Error: line 45
 
-.. - group walkthrough
-..   - TA steps
-..     1. start from first student in list and ask "what should we do next?" as a prompt
-..     2a. take the action suggested by the student then GOTO 1
-..     2b. go to next available step and read: what to say / do on left (what to point out in parenthesis)
-..   - setup
-..     - TA: run setup script
-..     - TA: invites students with Reader role
-..     - student: follow accepting role / az cli setup instructions
-..   - exercise
-..     - TA: facilitates group discussion on taking inventory
-..     - TA: facilitates group discussion working from top to bottom in solution steps
-..     - TA: runs any mutating actions based on group decisions
-..     - student: runs observational commands only
-..   - completion
-..     - student: joins final coding event with other students
-.. - individual studio
-..   - TA steps
-..     1. when student reaches out to you ask "what error are you seeing right now"?
-..       1a. scan entire list of steps and see if you can find a match
-..         1a1. found match GOTO 2a
-..         1a2. match not found
-..     2. based on student response:
-..       2a. go to next available step and read: what to say / do on left (what to point out in parenthesis)
-..       2b. see error that is not described in steps: tell student to rerun the setup script
-..         - outcome: student starts over from scratch, waits 10-15 mins for script to complete
-..           - student learns lesson not to do silly things
-..   - setup
-..     - student: each run setup script
-..   - exercise
-..     - TA: facilitates group discussion on taking inventory
-..     - TA: checks in with each student to assist using solution steps
-..       - requires the TA to consider what breadcrumb and how to express to student
-..       - will not be in linear order
-..       - will need to keep track of what has been solved so far and select the next step in the sequence
-..         - relies on students communicating every action they have taken
-..     - student: runs any mutating actions based on group decisions
-..       - keeps track of every action they take
-..   - completion
-..     - student: joins final coding event on their own
+   .. 3 options:
+
+   .. - group walkthrough
+   ..   - TA steps
+   ..     1. start from first student in list and ask "what should we do next?" as a prompt
+   ..     2a. take the action suggested by the student then GOTO 1
+   ..     2b. go to next available step and read: what to say / do on left (what to point out in parenthesis)
+   ..   - setup
+   ..     - TA: run setup script
+   ..     - TA: invites students with Reader role
+   ..     - student: follow accepting role / az cli setup instructions
+   ..   - exercise
+   ..     - TA: facilitates group discussion on taking inventory
+   ..     - TA: facilitates group discussion working from top to bottom in solution steps
+   ..     - TA: runs any mutating actions based on group decisions
+   ..     - student: runs observational commands only
+   ..   - completion
+   ..     - student: joins final coding event with other students
+   .. - individual studio
+   ..   - TA steps
+   ..     1. when student reaches out to you ask "what error are you seeing right now"?
+   ..       1a. scan entire list of steps and see if you can find a match
+   ..         1a1. found match GOTO 2a
+   ..         1a2. match not found
+   ..     2. based on student response:
+   ..       2a. go to next available step and read: what to say / do on left (what to point out in parenthesis)
+   ..       2b. see error that is not described in steps: tell student to rerun the setup script
+   ..         - outcome: student starts over from scratch, waits 10-15 mins for script to complete
+   ..           - student learns lesson not to do silly things
+   ..   - setup
+   ..     - student: each run setup script
+   ..   - exercise
+   ..     - TA: facilitates group discussion on taking inventory
+   ..     - TA: checks in with each student to assist using solution steps
+   ..       - requires the TA to consider what breadcrumb and how to express to student
+   ..       - will not be in linear order
+   ..       - will need to keep track of what has been solved so far and select the next step in the sequence
+   ..         - relies on students communicating every action they have taken
+   ..     - student: runs any mutating actions based on group decisions
+   ..       - keeps track of every action they take
+   ..   - completion
+   ..     - student: joins final coding event on their own
