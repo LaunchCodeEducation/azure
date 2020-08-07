@@ -1,6 +1,6 @@
-=================================================
-Studio: Troubleshooting a Broken Linux Deployment
-=================================================
+============================================================
+Group Walkthrough: Troubleshooting a Broken Linux Deployment
+============================================================
 
 This walkthrough is different than any walkthroughs you have done so far. Troubleshooting skills can only be developed through experience. The methodologies and tools can be taught, but the experience can only be gained from solving real-world problems. You will be working as a group, like you would be on a professional team. Together your group will be troubleshooting a broken deployment. You will need to work together to engage in a troubleshooting discussion to reach a resolution to the issues presented in the deployment.
 
@@ -226,47 +226,65 @@ Before the troubleshooting timer begins you will need to work with your TA to se
 Access Troubleshooting Subscription
 -----------------------------------
 
-For this exercise an Azure subscription will be setup for your group. Your TA will be the administrator of this group and each student will have read-only access. You will be able to view the deployment, but will need to work together with your team to diagnose the issue and tell your TA how to resolve it.
+For this exercise an Azure subscription will be setup for your group. Your TA will be the administrator of this group and each student will have read-only access. You will be able to view the deployment components, but will need to work together with your team to diagnose the issue and tell your TA how to resolve it.
 
-Even though you already have an account with Microsoft it is only associated with one subscription. You will be able to create a new subscription using your same email, but will have to provide a new password ('LaunchCode-@zure1').
+Even though you already have an account with Microsoft it is only associated with your subscription. In order to access your TA's subscription (and the resources of the broken deployment) you will need to register an account in *their directory* through the following steps:
 
-To use this new subscription you will need to:
-
-#. accept the email for the new subscription
-#. create a new account (for this new subscription) by using your same email address and a new password: ``LaunchCode-@zure1``
-#. setup your AZ CLI to use the new account
+#. accept the email for the directory invitation
+#. create a new account in your TA's directory
+#. setup your AZ CLI to use the TA's subscription
 
 Accept Email
 ^^^^^^^^^^^^
 
-The first step is accessing the email that was sent from Microsoft on your TAs behalf. The email will include a link that will allow you to associate your email address with a new account under the subscription the TA administers.
+The first step is accessing the email that was sent from Microsoft on your TAs behalf. The email will include a link that will allow you to associate your email address with a new account under the directory and subscription the TA administers.
 
-Upon clicking the link you will be taken to a Microsoft web-page that will prompt you to create an account for this new subscription.
+Upon clicking the link you will be taken to a Microsoft web-page that will prompt you to create an account in your TA's tenant directory.
 
-Create Account for New Subscription
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Create Account In the TA Tenant Directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The form will come pre-populated with your email address (since you navigated to the webpage from your email client) and you will need to enter a password.
 
-This account, and subscription, will be temporary so we are all going to use the same password to make things consistent.
+This account, and subscription, will be temporary so we are all going to use the same password to make things consistent. Copy the password below and paste it in to avoid spelling mistakes:
 
-Use the password: ``LaunchCode-@zure1``
+- **password**: ``LaunchCode-@zure``
+- **display name**: your name (should default)
 
-After entering your password submit the form.
+.. image:: /_static/images/troubleshooting-next-steps/exercises/create-ta-dir-account.png
+   :alt: Put in password and display name to create account in TA directory
 
-You may be automatically redirected to the new subscription home page, but if you currently have an Azure account in the browser's memory you may be prompted to login.
+Then copy the security code sent to your email and complete the account registration:
 
-If you login you will need to make sure you select the correct account, as there will be two accounts associated with your email address. You will need to select ``Use another account``:
+.. image:: /_static/images/troubleshooting-next-steps/exercises/verify-email-ta-dir-account.png
+   :alt: Verify email security code to create account in TA directory
 
-.. image:: /_static/images/troubleshooting-next-steps/exercises/pick-another-account.png
+You will then accept the invitation permissions:
 
-Microsoft will inform you that your email address is associated with multiple accounts. You will need to select the account listed under ``Work or school account``:
+.. image:: /_static/images/troubleshooting-next-steps/exercises/accept-ta-dir-permissions.png
+   :alt: Verify email security code to create account in TA directory
 
-.. image:: /_static/images/troubleshooting-next-steps/exercises/work-or-school-account.png
+.. admonition:: Note
 
-From here you will be presented with a form to provide the password you entered above (``LaunchCode-@zure1``).
+   It may take some time for the account to be created.
 
-You will be redirected to the subscription home screen in the Azure portal. Take a look around you should be able to read (but not mutate) any resources.
+At the next prompt you can select the **Skip for now** link as this is only temporary for this final exercise:
+
+.. image:: /_static/images/troubleshooting-next-steps/exercises/ta-dir-skip-for-now.png
+   :alt: Select skip for now for temporary access
+
+Then select **Yes** to stay signed in:
+
+.. image:: /_static/images/troubleshooting-next-steps/exercises/ta-dir-stay-signed-in.png
+   :alt: Select stay signed in
+
+Confirm Resources Access
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+You now have access to the resources created under the TA troubleshooting subscription. Select **All Resources** from the home dashboard to confirm that the broken deployment resources are available for you to view:
+
+.. image:: /_static/images/troubleshooting-next-steps/exercises/ta-dir-all-resources.png
+   :alt: View all resources
 
 Setup AZ CLI
 ^^^^^^^^^^^^
@@ -277,13 +295,13 @@ First up we need to clear the AZ CLI cache:
 
 .. sourcecode:: PowerShell
 
-   > az account clear
+  > az account clear
 
 Now we need to login again which will present us with the form to authenticate:
 
 .. sourcecode:: PowerShell
 
-   > az account login
+   > az login
 
 .. admonition:: Warning
 
@@ -303,7 +321,7 @@ You can verify everything worked by looking at the default VM. It should be iden
 
 .. sourcecode:: PowerShell
 
-   > az vm show
+  > az vm show
 
 .. admonition:: Note
 
