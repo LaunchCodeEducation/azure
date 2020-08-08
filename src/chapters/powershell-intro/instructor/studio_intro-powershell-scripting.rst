@@ -1,6 +1,6 @@
-===============
-Studio Solution
-===============
+===================================
+PowerShell Intro Scripting Solution
+===================================
 
 auto-committing-setup.ps1
 =========================
