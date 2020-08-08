@@ -2,27 +2,70 @@
 Introduction to Troubleshooting
 ===============================
 
-...troubleshooting is something best learned through experience...
-...some tips based on what you have learned so far...
-...not exhaustive but only from what you know right now (fundamentals - rest grows on it)...
+Troubleshooting is one of the most important skills to the Operations professional. You will come to find troubleshooting is in large part research. An issue may be first brought to your attention by a ticket, or report from QA or an end user, but they will usually only be able to tell you what odd behavior occurred and some of the conditions that led to the error. The next steps are left up to you.
 
-- troubleshooting depending on where in the SDLC
-  - ops responsibilities (our focus)
-  - dev responsibilities 
+As a part of your investigation into the issue you may need to answer lots of different questions like:
 
-What You Have Seen
-==================
+- what is the issue?
+- when does the issue occur?
+- where, within the tech stack, does the issue occur?
+- is it actually an issue, or simply end user error?
+- is the issue reproducible?
+- what are the exact conditions that cause the issue to occur?
+- is it an issue with the underlying source code of the application?
+- is it an issue with the infrastructure or system that supports the application?
+- what do common error messages mean?
+- how to determine what an obscure error message means?
+- has a similar issue occurred in the past?
+- who on your team can help you with the issue?
 
-Throughout this course you may have encountered any of the following while trying to deploy:
+This is just a small sample of some of the questions you may need to answer to diagnose and resolve an issue. At first glance, this may seem overwhelming, however you have lots of tools to assist your investigation, you can adopt a methodology for solving issues, as you gain experience you will gather additional knowledge to assist in your investigation, and you are not alone! You will find that teammates are exceptionally advantageous when troubleshooting. 
+
+They can provide you with new insight, knowledge of new tools, or can act as a sounding board to bounce ideas off of. In addition to your team the internet is filled with people that have may experienced similar, or identical issues to the one you are currently encountering.
+
+In this article we will discuss issues you may have already experienced through this class, talk about a methodology to assist you in researching issues, and talk about some of the basic tools you can use while troubleshooting.
+
+.. admonition:: note
+
+   This article is in way exhaustive, as you continue throughout your career you will learn about new techniques, tools, and solutions to issues.
+
+This article, and the following exercise, will primarily focus on Operations troubleshooting.
+
+.. :: 
+
+   ...troubleshooting is something best learned through experience...
+   ...some tips based on what you have learned so far...
+   ...not exhaustive but only from what you know right now (fundamentals - rest grows on it)...
+
+   - troubleshooting depending on where in the SDLC
+      - ops responsibilities (our focus)
+      - dev responsibilities 
+
+What You May Have Experienced Already
+=====================================
+
+To start let's talk about some of the issues you may have encountered while deploying the Coding Events API and some of the reasons the issue may have occurred.
+
+Connection Refused
+------------------
 
 user receives a connection refused when attempting to access the swagger documentation in browser
     - the VM is being blocked at the network level
         - missing NSG rule for the specific port
         - misconfigured NSG rule
 
+Connection Timeout
+------------------
+
 user receives a connection timeout when attempting to access the swagger documentation in browser
     - the web server is NOT running
         - service nginx status
+
+Bad Gateway
+-----------
+
+Web Server is not running
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 user receives a bad gateway when accessing the swagger documentation in browser
     - the web server is running
@@ -35,10 +78,16 @@ user receives a bad gateway when accessing the swagger documentation in browser
                 - KV
                 - internal error
 
+Database is not running
+^^^^^^^^^^^^^^^^^^^^^^^
+
 deployed API cannot access database
     - database is not currently running
     - database connection string is not correct
     - database does not have a user and database the DB connection string needs
+
+VM not authorized to access KV
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 deployed API cannot access KV secrets
     - KV does not exist
@@ -47,19 +96,17 @@ deployed API cannot access KV secrets
     - VM does not have the correct authorization for KV
     - application ``appsettings.json`` does not point to the correct KV
 
-user receives incorrect behavior when working with API
-    - inconsistent behavior is usually a dev issue, but we should be able to identify where it is being caused in the code
-        - example: user sends a DELETE request and it returns a success No Content response
-            - however, user can still access the resource that was supposedly deleted
-            - this means the controller logic for that method/endpoint is incorrect
-            - look at the code, is it going to the database and deleting?
-            - is it waiting for the response of the DB deletion before sending back a response? (maybe the DB sent back that it could not be deleted, but the API already sent back the response) 
+.. :: 
+
+   user receives incorrect behavior when working with API
+      - inconsistent behavior is usually a dev issue, but we should be able to identify where it is being caused in the code
+            - example: user sends a DELETE request and it returns a success No Content response
+               - however, user can still access the resource that was supposedly deleted
+               - this means the controller logic for that method/endpoint is incorrect
+               - look at the code, is it going to the database and deleting?
+               - is it waiting for the response of the DB deletion before sending back a response? (maybe the DB sent back that it could not be deleted, but the API already sent back the response) 
 
 Until this point we have been pretty defenseless when an issue comes up. Frustratingly we would have to scrap our entire deployment so far, and start over. A better solution would be to troubleshoot our issues as they come up. The deployment issues we are about to explore are common across web API deployments.
-
-
-
-
 
 API Broken
 ----------
@@ -128,6 +175,11 @@ journalctl -fu coding-events-api
 
 Was the VM granted access to the KeyVault secrets?
 
+Categorize Issues
+=================
+
+A highly beneficial tool when troubleshooting is having a mental model of the deployment. What are the individual components and how might they fail? How do these components fit together, and can we categorize them?
+
 Network Level
 -------------
 
@@ -137,11 +189,19 @@ Network Level
 Service Level
 -------------
 
+Key Vault (database connection string & has granted access to our VM)
+AADB2C
+
 - configuration
 - access / authorization
 
 Host Level
 ----------
+
+- API dependencies (dotnet, mysql, nginx, systemd, unit file)
+- delivery mechanism (git)
+- folder structure
+- file locations
 
 - our db is embedded but typically would be in service level
 
