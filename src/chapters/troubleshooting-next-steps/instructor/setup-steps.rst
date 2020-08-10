@@ -2,8 +2,8 @@
 0. Instructors & TAs: Setup Steps
 =================================
 
-0. INSTRUCTOR ONLY: Create Troubleshooting Lab
-==============================================
+INSTRUCTOR ONLY: Create Troubleshooting Lab
+============================================
 
 .. admonition:: Warning
 
@@ -22,8 +22,8 @@ In the Azure Education section create 2 new labs:
 
    The instructor should then accept their lab assignment (you can hit the **Setup** button that pops up to do this without checking your email). TAs will accept theirs in the next step.
 
-1. TA ONLY: Setting Up the Shared Subscription
-==============================================
+TA ONLY: Setting Up the Shared Subscription
+===========================================
 
 .. admonition:: Warning
 
@@ -109,8 +109,8 @@ Now you can switch to the **Role Assignments** tab and use the refresh button to
 
    If you use Azure outside the course you can remove the students after the exercise is completed from this same view. Just select all the student names and then **Remove** (at the top) to remove them.
 
-3. Instructor & TAs: Setting Up the Broken Deployment
-=====================================================
+Instructor & TAs: Setting Up the Broken Deployment
+===================================================
 
 Before discussing the issues and their solutions each of you must first set up the broken deployment. This will require you to refresh the ``az CLI`` cache to recognize and set your new lab subscription as the default:
 
