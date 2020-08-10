@@ -2,83 +2,6 @@
 Walkthrough: Troubleshooting a Linux Deployment
 ===============================================
 
-.. todo:: general checklist of what to do if they get specific issues
-
-.. todo:: add the highlevel issue checklist to the index as it's own resource
-
-Before discussing the issues and their solutions each TA must first set up the broken deployment:
-
-Set up ``az CLI``
------------------
-
-First up we need to clear the AZ CLI cache:
-
-.. sourcecode:: PowerShell
-
-   > az account clear
-
-Now we need to login again which will present us with the form to authenticate:
-
-.. sourcecode:: PowerShell
-
-   > az login
-
-Will print out list of all your subscriptions. Look for the one with the name ``Troubleshooting - TA <Your Name>``. Then copy the ``id`` field value:
-
-.. sourcecode:: json
-  :emphasize-lines: 4
-
-  {
-    "cloudName": "AzureCloud",
-    "homeTenantId": "d61de018-082f-46bb-80e0-bbde4455d074",
-    "id": "095dea07-a8e5-4bd1-ba75-54d61d581524",
-    "isDefault": true,
-    "managedByTenants": [],
-    "name": "Troubleshooting - TA <Your Name>",
-    "state": "Enabled",
-    "tenantId": "d61de018-082f-46bb-80e0-bbde4455d074",
-    "user": {
-      "name": "paul@launchcode.org",
-      "type": "user"
-    }
-  }
-
-Assign this as the az cli subscription:
-
-.. sourcecode:: powershell
-  :caption: Windows/PowerShell
-
-  > az account set -s "095dea07-a8e5-4bd1-ba75-54d61d581524"
-
-After configuring the AZ CLI to use the new subscription set the defaults for the correct resource group and virtual machine:
-
-.. sourcecode:: PowerShell
-
-  > az configure -d group=linux-ts-rg vm=broken-linux-vm
-  > git clone https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment
-  > cd powershell-az-cli-scripting-deployment
-  > git checkout tps-reports
-  > ./full-deployment.ps1
-  
-
-Set up the deployment
----------------------
-
-Each TA will need to:
-
-- clone the `powershell-az-cli-scripting-deployment <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>`_ repository
-- switch to the ``tps-reports`` branch
-- configure the az CLI to use the troubleshooting lab group subscription
-- run the ``full-deployment.ps1`` script in PowerShell
-
-**You will not need to edit the script at all**, it will deploy the application and break a few things that this article will walk your group through fixing.
-
-.. admonition:: Note
-
-  If after following all the solution steps the deployment is still not fixed it means a student must have edited something without your knowledge. You can re-run the script and it will automatically destroy the system and recreate it from scratch. 
-
-General Hints
-=======
 Overall Steps
 =============
 
@@ -92,6 +15,8 @@ Overall Steps
 #. promote discussion and coordination of a choice then take the action
 #. if student is stuck / nobody knows what to do go to the next available prompt
 
+.. todo:: general checklist of what to do if they get specific issues
+.. todo:: add the highlevel issue checklist to the index as it's own resource
 .. todo:: add step about creating final coding event for students to join
 .. todo:: explicit steps about round robin of students and breadcrumbs
 .. todo:: warning / note to provide the minimal amount of information. all observational commands should be issued by students unless they dont know how.
