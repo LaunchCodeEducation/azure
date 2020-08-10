@@ -4,7 +4,7 @@ Introduction to Troubleshooting
 
 Troubleshooting is one of the most important skills to the Operations professional. 
 
-..You will come to find **troubleshooting is in large part research**. There are many ways an issue can be brought to your attention, but they will usually only be able to tell you what odd behavior occurred and some of the conditions that led to the error. The next steps are left up to you.
+.. You will come to find **troubleshooting is in large part research**. There are many ways an issue can be brought to your attention, but they will usually only be able to tell you what odd behavior occurred and some of the conditions that led to the error. The next steps are left up to you.
 
 Troubleshooting is the process of:
 
@@ -450,6 +450,14 @@ As a reminder troubleshooting is the process of:
 #. checking that the fix resolves the issue
 #. communicating about the issue with others
 
+.. know your tools
+.. build a mental model of the system to come up with potential causes of issues
+.. build a troubleshooting script to assist in discovering potential causes of issues
+.. research error messages and strange behavior to learn about new potential causes of issues
+.. research solutions to potential causes of issues
+.. isolate the root cause of the issue by eliminating potential causes
+.. communicate issue with others
+
 When you are first starting it might be easiest for you to check each individual aspect of the deployment. With a simple deployment like our Coding Events API this wouldn't be difficult. You would need to simply understand all the components of the deployment and then just check their configurations one by one until you found the issue. This can be an effective way to troubleshoot a deployment, but it is very time consuming.
 
 A better approach is to have a mental model of the deployment and then ask questions that *lead you* to the **root cause** of the issue. 
@@ -514,12 +522,15 @@ What is the issue?
 
 - is it something I have seen before?
 - is there an error message I can use as a starting point?
+- how would I summarize this issue to others?
+- how would I phrase this issue using a search engine?
 
 What is the category of this issue?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- Which level is it affecting?
-- Operations or Development?
+- Which level is this issue affecting?
+- Could this issue span across multiple levels?
+- Is this an Operations or Development issue?
 
 .. admonition:: Note
 
@@ -547,6 +558,8 @@ Host Issues
 - Are my internal services running (web server, API, MySQL)?
 - Are my internal services configured properly?
 - Are there any errors in the logs of the API (``journalctl -u coding-events-api``)?
+- Does the application use any configuration files?
+- Are the configuration files configured properly?
 
 Troubleshooting Script Final Thoughts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
