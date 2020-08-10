@@ -20,9 +20,12 @@ This process can seem daunting because a lot of the process involves *researchin
 
 The best way to learn troubleshooting is to practice the skill. However, you don't have to go into your practice completely blind. This article will present you with ideas, tips, and tricks for assisting with the troubleshooting process.
 
-We will discuss:
+In this article we will discuss:
 
-- 
+- Researching strategies
+- Creating a deployment mental model
+- Categorizing issues into different levels
+- Creating a deployment troubleshooting checklist
 
 .. build a mental model of the system to come up with potential causes of issues
 .. build a troubleshooting checklist to assist in discovering potential causes of issues
@@ -105,11 +108,8 @@ Create a Visual Representation of the System
 --------------------------------------------
 
 
-Develop a Troubleshooting Checklist
-===================================
-
 Create a Mental Model of the System
------------------------------------
+===================================
 
 Troubleshooting follows a very specific pattern as mentioned at the start of this article and in the previous article. 
 
@@ -124,7 +124,7 @@ To assist you in the task of categorizing issues we have created various levels 
 Use these categories as a tool to help you determine potential causes and develop a troubleshooting checklist.
 
 Network Level
-^^^^^^^^^^^^^
+-------------
 
 The networking of our system. The Coding Events API doesn't contain much networking and only consists of the Network Security Group rules.
 
@@ -137,7 +137,7 @@ However for more complex deployment you may also consider:
 - Virtual Private Cloud
 
 Service Level
-^^^^^^^^^^^^^
+-------------
 
 Our Coding Events API only works with two services:
 
@@ -153,7 +153,7 @@ For a more complex deployment you may also consider:
 - external search engine service
 
 Host Level
-^^^^^^^^^^
+----------
 
 Our Coding Events API has a lot of things going on at the Host level inside the VM we must have:
 
@@ -170,18 +170,18 @@ Our Coding Events API has a lot of things going on at the Host level inside the 
    In this class we have been working with a VM embedded database. In many real-world deployments this database would be a service that is external to the VM. For our deployment we consider any database issues to be at the Host level.
 
 General Troubleshooting Questions
----------------------------------
+=================================
 
 Using the mental model of this deployment we can start coming up with questions to guide our research into the issue:
 
 Is this an issue?
-^^^^^^^^^^^^^^^^^
+-----------------
 
 - Was it user error?
 - Is this something I can reproduce?
 
 What is the issue?
-^^^^^^^^^^^^^^^^^^
+------------------
 
 - Is this issues something I have seen before?
 - Is there an error message I can use as a starting point for my research?
@@ -190,7 +190,7 @@ What is the issue?
 - How would I enter this issue to a search engine?
 
 What is the category of this issue?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------
 
 - Which level is this issue affecting (network, service, host)?
 - Could this issue span across multiple levels?
@@ -203,7 +203,9 @@ What is the category of this issue?
 You can then create a troubleshooting checklist of possible solutions based on the questions you answered above:
 
 Troubleshooting Checklist
--------------------------
+=========================
+
+Using our general troubleshooting question and our Coding Events API mental model we can create a troubleshooting checklist for this specific deployment:
 
 Networking issues
 ^^^^^^^^^^^^^^^^^
