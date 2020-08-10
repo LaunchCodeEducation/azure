@@ -40,8 +40,8 @@ We will look at some of the common operations and development issues.
 
    The issues throughout this article will be framed as issues in the Coding Events API. Many of the issues discussed may be similar, or identical, to issues seen across many different deployments.
 
-Operation Issues
-----------------
+Example Operation Issues
+========================
 
 Operation issues are issues that don't involve the source code of the deployed application. This could be issues relating to:
 
@@ -62,7 +62,10 @@ The first example will walk you through all of the troubleshooting steps to illu
    The following group walkthrough will require you to perform the troubleshooting steps together. If you pay attention to the potential root causes, you may figure out how to solve some of the issues will a relatively small amount of research.
 
 Connection Timeout
-^^^^^^^^^^^^^^^^^^
+------------------
+
+Realize Issue
+^^^^^^^^^^^^^
 
 The troubleshooting process is kicked off by an issue brought to our attention. In this case someone sends us a screenshot of their browser encountering a ``Connection Timeout`` when attempting to access our API in the browser:
 
@@ -77,6 +80,9 @@ The troubleshooting process is kicked off by an issue brought to our attention. 
    - the VM lacks a Network Security Group rule for the given port
 
    All three of these things can be easily checked by looking at the initial request and examining the Azure Portal. You can even view the VM Network Security Group rules from the AZ CLI.
+
+Identify Issue through Duplication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Our first step is to identify this issue by reproducing it on our system. This will rule out the possibility of end user error. 
 
@@ -94,21 +100,36 @@ Since this is a learning environment let's reproduce the issue again this time f
 
 We can definitively state that a ``Connection Timeout`` is happening when users attempt to access the Coding Events API on port 443 from the browser, Invoke-RestMethod and curl!
 
-The next step is to research the potential root causes of the issue. Typically you would rely on your experience and research skills to come up with a list of potential root causes, but to save time we have provided them for you:
+Research Potential Causes
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The next step is to research the potential causes of the issue. Typically you would rely on your experience and research skills to come up with a list of potential causes, but to save time we have provided them for you:
 
 - the URL may have been incorrect
 - the VM is currently down
 - the VM lacks a Network Security Group rule for the given port
 
-The next step is to isolate the issue by systematically eliminating potential root causes until we have found the root cause, or have exhausted our known options.
+Isolate Root Cause
+^^^^^^^^^^^^^^^^^^
+
+The next step is to isolate the `root cause <http://www.thwink.org/sustain/glossary/LawsOfRootCauseAnalysis.htm>`_ of the issue by systematically eliminating potential causes until we have found the root cause, or have exhausted our known options.
 
 In this case we would need to check that the initial request was going to the correct URL, that the VM is currently running, and that the VM has the appropriate NSG inbound security rule for port 443. At this point in time in the class you should know how to do these things through the Azure Web Portal or the AZ CLI.
 
 Just to continue the example let's say the root cause was that ``the VM lacks a NSG rule for port 443``, and we discovered this by looking at all three of the potential issues and the only one that was incorrect were the NSG rules.
 
+Research Root Cause Fixes
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Our next step would be to research a solution to the issue, in this case we simply need to create a new NSG inbound rule for port 443.
 
+Implement Root Cause Fix
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 After fixing the issue our final step is to reproduce the steps to ensure our issue has been resolved!
+
+Check that Fix Resolves Issue
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Browser:
 
@@ -138,14 +159,23 @@ The good news is we resolved our connection timeout issue by opening port 443 NS
 
 The final step is being able to communicate this issue with others:
 
+Communicate Issue with Others
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 The Coding Events API located at ``https://40.114.86.145/`` was not responding to HTTP requests in the browser, ``Invoke-RestMethod`` or ``curl``. Users were experiencing a ``Connection Timeout`` error. We researched potential causes for this issue and determined that the Virtual Machine did not have a NSG inbound rule for port 443. We opened this port to all traffic and the issue was fixed. ``Connection Timeout`` errors have not been experienced across ``Invoke-RestMethod``, ``curl`` or the browser after making the change.
 
 Connection Refused
-^^^^^^^^^^^^^^^^^^
+------------------
+
+Realize Issue
+^^^^^^^^^^^^^
 
 A user reports from the browser:
 
 .. image:: /_static/images/troubleshooting-next-steps/article/connection-refused-browser.png
+
+Identify Issue through Duplication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We replicate the issue from PowerShell:
 
@@ -155,27 +185,51 @@ We replicate the issue from Bash:
 
 .. image:: /_static/images/troubleshooting-next-steps/article/connection-refused-curl.png
 
+Research Potential Causes
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
 We research potential causes:
 
 - the VM internal firewall is blocking access to the given port
 - no applications are listening on the port the request was made to (port 443: NGINX)
 
+Isolate Root Cause
+^^^^^^^^^^^^^^^^^^
+
 We isolate the root cause of the issue by eliminating potential causes. It is determined that the VM does not have a running application that is listening on port 443.
+
+Research Root Cause Fixes
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We research fixes for the problem and determine a tool called ``service`` that allows you to check the status of services and allow you to start services. 
 
+Implement Root Cause Fix
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 We implement the fix for the issue by starting NGINX using the ``service`` tool.
+
+Check that Fix Resolves Issue
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We check that NGINX is successfully running this time using the ``service`` tool. Then we verify that our fix resolved the problem by accessing the application in the browser, from PowerShell and Bash.
 
-Finally we could communicate the problem to others if necessary.
+Communicate Issue with Others
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Users were reporting a connection refused when making HTTP requests to the Coding Events API. The issue was confirmed by using the browser, Invoke-RestMethod and curl. It was determined that the NGINX web server was not running. We started the NGINX web server and the issue was resolved. We verified the issue was resolved by using a web browser, Invoke-RestMethod and curl.
 
 Bad Gateway
-^^^^^^^^^^^
+-----------
+
+Realize Issue
+^^^^^^^^^^^^^
 
 From the browser:
 
 .. image:: /_static/images/troubleshooting-next-steps/article/bad-gateway-browser.png
+
+Identify Issue through Duplication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 From PowerShell:
 
@@ -184,6 +238,9 @@ From PowerShell:
 From Bash:
 
 .. image:: /_static/images/troubleshooting-next-steps/article/bad-gateway-curl.png
+
+Research Potential Causes
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Research the error code to determine potential causes:
 
@@ -196,37 +253,69 @@ Research potential causes:
 - an error in the Coding Events API source code has kept the application from starting
 - the Coding Events API may require access to another cloud resource (like Key Vault), but lacks the authorization, or name of the resource
 
+Isolate Root Cause
+^^^^^^^^^^^^^^^^^^
+
 Isolate the root cause by systematically checking the potential causes to determine the VM was restarted and the ``coding-events-api`` was not configured to restart itself after a VM reboot.
+
+Research Root Cause Fixes
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To fix the issue we will need to start the coding-events-api which we can do with the ``service`` tool we previously learned about, however to keep this issue from happening in the future we need to figure out how to make the coding-events-api restart itself if the VM reboots. Our research resulted in `systemctl enable <https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units>`_ which gives us the ability to start a service on reboot, and it will attempt to restart itself any time it goes down!
 
+Implement Root Cause Fix
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 We implement the fix by using ``systemctl enable`` and ``service`` to start the service.
+
+Check that Fix Resolves Issue
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We check that the coding-events-api is running by using ``service`` again and by making a request to the API in the browser, from PowerShell and from Bash!
 
-Development Issues
-------------------
+Communicate Issue with Others
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Development issues relate to the sourcecode of a deployed application. *Ideally* these issues are discovered before reaching the live production environment by automated tests and Quality Assurance testers. However, sometimes these issues are discovered by end users who usually report that the application is not behaving correctly. 
+Users were reporting a ``502 Bad Gateway``. Reports were confirmed in browser and by using ``Invoke-RestMethod`` and ``curl``. It was determined that the ``coding-events-api`` was not running after a recent VM reboot. The API was started with the ``service`` tool and the service was *enabled* so it will automatically start the next time the VM reboots.
+
+Example Development Issues
+==========================
+
+Development issues relate to the source code of a deployed application. *Ideally* these issues are discovered before reaching the live production environment by automated tests and Quality Assurance testers. However, sometimes these issues are discovered by end users who usually report that the application is not behaving correctly. 
 
 The deployment isn't necessarily broken, however the application is not behaving properly.
 
 500 Internal Server Error
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
+
+Realize Issue
+^^^^^^^^^^^^^
 
 A user sends a report that they received an HTTP response of ``500 Internal Server Error`` when sending a GET request for a specific coding event.
 
 A ``500 Internal Server Error`` is almost **always** the result of a runtime error within the source code of the application.
 
+Identify Issue through Duplication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 We first reproduce the issue by requesting the specific coding event, and then we continue attempting to reproduce the issue with other specific coding events. We are trying to determine if it is something special about this one coding event, or if it is a behavior seen across all coding events. In this case it's just this specific coding event that is experiencing this issue.
+
+Research Potential Causes
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In researching potential causes across the internet and talking to some of the developers on the team we come up with one potential reason:
 
 - this coding event may have a special character that is not serializing to or from the database correctly
 
+Isolate Root Cause
+^^^^^^^^^^^^^^^^^^
+
 It's a short list, but at least we can check something. 
 
 We fire up MySQL and make a request for the specific coding events record. We notice this coding event has some special characters in it ``â€``. We put in a breakpoint to pause the application before it pulls the data out of the database and step through. Alas as our API tries to serialize the special characters the ORM throws an error and our API returns a ``500 Internal Server Error``.
+
+Research Root Cause Fixes
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Next we research solving this error and find a couple of solutions:
 
@@ -240,28 +329,56 @@ It is never a good idea to change the underlying data that is owned by end users
 
    The decision between implementing a third party library and writing an in house solution is one that is typically made by management and senior level engineers. This is a situation in which effectively communicating the issue is extremely important!
 
-Being a junior dev we decide this issue needs to be elevated to our superior as we don't feel comfortable reviewing the security of a third party library. We explain the issue, the solutions we found, and pass the information to our senior who thanks us for finding the issue and they take it from us to make a decision and will be respon
+Implement Root Cause Fix
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Being a junior dev we decide *this issue needs to be elevated to our superior* as we don't feel comfortable reviewing the security of a third party library. 
+
+We explain the issue, the solutions we found, and pass the information to our senior who thanks us for not only finding the issue, but with researching potential fixes. The senior engineers will research the third party library and management will decide on the proper course of action!
+
+Communicate Issue with Others
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+An HTTP ``500 Internal Server Error`` was encountered when a database record contained various special characters. Upon debugging the application it was discovered that the current ORM serialization libraries were incapable of working with various special characters. The issue was elevated to senior developers who are determining on how to resolve the issue.
 
 .. admonition:: Note
 
    The Coding Events API does not behave this way! This was simply an example of how a 500 Internal Server Error could occur and how you may resolve, or in this case, identify, isolate, research, and pass it to a more senior developer.
 
 API Bug
-^^^^^^^
+-------
+
+Realize Issue
+^^^^^^^^^^^^^
 
 A user reports a bug in the API. It isn't throwing any errors, but the application is not behaving correctly. When the user deletes a coding event they are the owner of they can still view and edit the coding event.
 
 An API bug is almost **always** the result of a logic error within the source code of the application.
 
+Identify Issue through Duplication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 We first reproduce the issue with a copy of the exact event in which we also behave the incorrect DELETE error. We also notice that any coding event we create cannot be deleted despite a proper DELETE request coming through.
+
+Research & Isolate Root Cause
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We research the issue, luckily this is easy because we know how a RESTful API works and feel confident looking at the source code. Upon looking at the source code we can see the line that sends the resource deletion to the ORM is commented out and skips straight to sending back a ``204 No Content``! Our research indicates:
 
 - fixing the source code error may resolve the issue
 
+
+Implement Root Cause Fix
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 We build the project locally on our machine and make the change. It seems to work, however since this is not a project we are a developer for we will just communicate this issue and resolution to the dev team responsible for this project. After all the dev team may have their reasons for that specific line we edited.
 
 Luckily we are very capable of explaining the issue, our research, and our proposed solution to the problem. After communicating it to them the dev team will be responsible for making the change and running it through the automated tests to make sure the change doesn't result in any unexpected behaviors.
+
+Communicate Issue with Others
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Users reported that after deleting an event the event was still accessible. We reproduced the issue and found that the reported behavior was consistent across all events. Upon investigating the issue it was determined that the RESTful API event DELETE method was not implemented correctly. The dev team needs to re-examine this method to determine why the RESTful API is not deleting resources correctly.
 
 .. admonition:: Note
 
@@ -270,9 +387,11 @@ Luckily we are very capable of explaining the issue, our research, and our propo
 Categorize Issues
 =================
 
-A highly beneficial tool, especially when starting out, with troubleshooting is having a mental model of the deployment. What are the individual components and how might they fail? How do these components fit together, and can we categorize them?
+As you may have realized troubleshooting follows a very specific pattern. The pattern is pretty simple to follow once you have come up with a list of potential causes. You will learn many of the potential causes throughout your career, but when you are first starting it is difficult to know many potential causes.
 
-Being able to categorize an issue will allow us to isolate the issue and only need to look at a few specific things to find the root cause of the issue.
+A highly beneficial tool for determining potential causes is having a strong mental model of the deployment. If you can recognize the individual components and are aware of how the components can fail, or be misconfigured you are well on your way to performing a root cause analysis.
+
+To perform the root cause analysis you need potential causes which you can create by categorizing similar issues together. Once you have created a list of possible issues in each category you will have a place to start isolating potential issues to find the root cause. The levels are completely arbitrary, and differ between deployments. These categories are a tool used to help you determine potential causes until you've increased your experience.
 
 Let's briefly define the different levels we could encounter an issue in our Coding Events API:
 
@@ -320,7 +439,16 @@ Our Coding Events API has a lot of things going on at the Host level inside the 
 How to Troubleshoot
 ===================
 
-Troubleshooting is the combination of **asking questions** and **researching answers**. 
+As a reminder troubleshooting is the process of:
+
+#. realizing an issue exists
+#. identifying the issue through duplication (how and under what conditions it happens)
+#. researching the potential causes of the issue
+#. isolate the root cause of the issue by systematically eliminating the potential causes
+#. researching a fix for the root cause of the issue
+#. fixing the root cause of the issue
+#. checking that the fix resolves the issue
+#. communicating about the issue with others
 
 When you are first starting it might be easiest for you to check each individual aspect of the deployment. With a simple deployment like our Coding Events API this wouldn't be difficult. You would need to simply understand all the components of the deployment and then just check their configurations one by one until you found the issue. This can be an effective way to troubleshoot a deployment, but it is very time consuming.
 
@@ -333,7 +461,7 @@ A better approach is to have a mental model of the deployment and then ask quest
 Example
 -------
 
-In the ``Connection Timeout`` section above you were presented with three possible root causes of the ``Connection Timeout`` issue within the Coding Events API.
+In the ``Connection Timeout`` section above you were presented with three potential causes of the ``Connection Timeout`` issue within the Coding Events API.
 
 Let's review them again:
 
@@ -347,7 +475,7 @@ When we make a request from the browser to the Coding Events API (https://<codin
 - is the VM running?
 - does the VM have an inbound Network Security Group rule for port 443 that allows all traffic?
 
-If the answer to any of these questions is *no* we have found a potential cause to the issue. 
+If the answer to any of these questions is *no* we have found a potential solution to the issue. 
 
 To resolve this issue we will need to fix the question, or questions, that we responded *no* to. After ensuring that all three of these things are correct we make a new request to Coding Events API to see if the issue was resolved.
 
@@ -423,9 +551,11 @@ Host Issues
 Troubleshooting Script Final Thoughts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Using a troubleshooting question script in combination with the steps of troubleshooting and some persistence on your part can provide you with the information necessary to solve a problem.
+
 Remember that resolving one issue can bring a new issue to the service. Seeing a change in error message or behavior in the deployment is a great hint towards fixing the deployment!
 
-The most effective way to build your skills in troubleshooting is by practicing troubleshooting. Each time you solve a new issue you will learn a new solution and you will increase your ability to research issues. A very benefical thing to do is to build your own troubleshooting script. The questions above give a good introduction for a troubleshooting script, as you continue to learn more about Operations continue adding to the script with your new experiences.
+The most effective way to build your skills in troubleshooting is by practicing troubleshooting. Each time you solve a new issue you will learn a new solution and you will increase your ability to research issues. A very beneficial thing to do is to build your own troubleshooting script. The questions above give a good introduction for a troubleshooting script, as you continue to learn more about Operations continue adding to the script with your new experiences.
 
 Identify the Issue
 ==================
@@ -472,6 +602,10 @@ As you may have noticed may of the most common issues are `HTTP status codes <ht
 
 Communicate the Issue
 =====================
+
+Communicating the issue is a simple as defining each part of the troubleshooting process you have worked through so far:
+
+State how the problem was identified. State how the problem was proven through reproduction. State the potential causes that were discovered. State the solution to the problem. State how the solution was verified.
 
 Isolate & Resolve the Issue
 ===========================
