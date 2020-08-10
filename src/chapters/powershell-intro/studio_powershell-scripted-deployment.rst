@@ -4,22 +4,22 @@ Studio: Automated Deployment of the Coding Events API
 
 In this studio we will be using *PowerShell to script a complete deployment of the Coding Events API to a Linux VM*.
 
-This PowerShell script will provision and configure all of the Azure resources we will need for the deployment. The script will combine all the steps from the Azure CLI chapter into one easily runnable deploy-script.
+This PowerShell script will provision and configure all of the Azure resources we will need for the deployment. The script will combine all the steps from the Azure CLI chapter into one easily runnable deploy script.
 
 You will be writing the PowerShell script, however the provisioned VM will require three Bash configuration scripts. `The VM Bash configuration scripts <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>`_ will be provided for you, but it would be in your best interest to read over them to make sense of what they are doing.
 
-This will be one of the most challenging studios you have worked on. However, at the end of this studio you will gain invaluable practical experience writing real scripts and utilizing *the power* of PowerShell. To that end consider a methodical approach to completing it:
+This will be one of the most challenging studios you have worked on. However, at the end of this studio, you will gain invaluable practical experience writing real scripts and utilizing the *power* of PowerShell. To that end, consider a methodical approach to completing it:
 
-#. the manual steps you need to perform to provision Azure resources
-#. the Azure CLI groups, sub-groups, commands and arguments you will need to use to accomplish them
-#. the PowerShell syntax you will need to coordinate the steps
-#. **break the problem down into discrete tasks that you can test in isolation**
+#. The manual steps you need to perform to provision Azure resources
+#. The Azure CLI groups, sub-groups, commands, and arguments you will need to use to accomplish them
+#. The PowerShell syntax you will need to coordinate the steps
+#. *Break the problem down into discrete tasks that you can test in isolation*
 
-While the first two steps should now be familiar to you -- the final two points are the most critical. Before you get into using any of the commands make sure to write smaller scripts to test out how to:
+While the first two steps should now be familiar to you, the final two points are the most critical. Before you start using any of the commands, make sure to write smaller scripts to test out how to:
 
-- capture command outputs as variables
-- access properties of variable objects
-- variable and command substitution
+- Capture command outputs as variables
+- Access properties of variable objects
+- Use variable and command substitution
 
 These are all techniques you have worked with in previous walkthroughs and studios that you can review if necessary.
 
@@ -36,27 +36,27 @@ Complete the Provision Resources Script
 
 Update the ``provisionResources.ps1`` script so that it accomplishes the following:
 
-#. set variables
-#. provision RG
-#. provision VM
-#. capture the VM systemAssignedIdentity
-#. open vm port 443
-#. provision KV
-#. create KV secret (database connection string)
-#. set KV access-policy (using the vm ``systemAssignedIdentity``)
-#. send 3 bash scripts to the VM using az vm run-command invoke (``configure-vm.sh``, ``configure-ssl.sh``, ``deliver-deploy.sh``)
-#. print VM public IP address to STDOUT or save it as a file
+#. Set variables
+#. Provision RG
+#. Provision VM
+#. Capture the VM ``systemAssignedIdentity``
+#. Open vm port 443
+#. Provision a Key Vault
+#. Create the Key Vault secret (database connection string)
+#. Set the Key Vault's access-policy (using the vm ``systemAssignedIdentity``)
+#. Send 3 bash scripts to the VM using az vm run-command invoke (``configure-vm.sh``, ``configure-ssl.sh``, ``deliver-deploy.sh``)
+#. Print VM public IP address to STDOUT or save it as a file
 
-We will provide you with steps 6 and 9 which have a high likelihood being written incorrectly and causing an error. 
+We will provide you with steps 6 and 9, which have a high likelihood being written incorrectly and causing an error. 
 
 .. admonition:: Tip
 
-   The Bash script ``provision-resources.sh`` you saw earlier is very similar to this script due to the cross-platform nature of the Azure CLI. However, the Shell-specific syntax will be the bulk of your work in writing a PowerShell variant.
+   The Bash script ``provision-resources.sh`` you saw earlier is very similar to this script, due to the cross-platform nature of the Azure CLI. However, the shell-specific syntax will be the bulk of your work in writing a PowerShell variant.
 
 Update Source Code
 ------------------
 
-After completing the script you will need to update the ``KeyVaultName`` in your ``appsettings.json`` using the name that you set in your ``provisionResources.ps1`` script. In step 6 of the script it was automatically set to ``<name>-lc0820-ps-kv``.
+After completing the script, you will need to update the ``KeyVaultName`` in your ``appsettings.json`` using the name that you set in your ``provisionResources.ps1`` script. In step 6 of the script it was automatically set to ``<name>-lc0820-ps-kv``.
 
 Update the Deliver & Deploy Script
 ----------------------------------
@@ -69,7 +69,7 @@ The ``deliver-deploy.sh`` script will require you to set your GitHub username an
 Run the Script
 --------------
 
-Finally run the script and confirm the deployment by navigating to the public IP address that it prints out!
+Finally, run the script and confirm the deployment by navigating to the public IP address that it prints out!
 
 Submitting Your Work
 ====================
@@ -81,7 +81,7 @@ Share this link along with your ``powershell-az-cli-scripting-deployment`` repo 
 Limited Guidance
 ================
 
-Running Custom PowerShell scripts
+Running Custom PowerShell Scripts
 ---------------------------------
 
 Recall that Windows will not let you just run a PowerShell script, you must first set the ``ExecutionPolicy`` before you can run any custom PowerShell scripts.
@@ -89,11 +89,11 @@ Recall that Windows will not let you just run a PowerShell script, you must firs
 Azure CLI Response Examples
 ---------------------------
 
-In the cloned repository you will find a folder called ``exampleResources`` this folder contains three JSON files that contain the output of each Azure CLI command. 
+In the cloned repository you will find a folder called ``exampleResources``. This folder contains three JSON files with the output of each Azure CLI command. 
 
-You can use these example resources to practice working with these outputs as PowerShell objects. They can be loaded from the file and converted to ``PSCustomObjects`` (**exactly what the commands will output**) using ``Get-Content`` and ``ConvertFrom-Json``.
+You can use these example resources to practice working with these outputs as PowerShell objects. They can be loaded from the file and converted to ``PSCustomObjects`` (*exactly what the commands will output*) using ``Get-Content`` and ``ConvertFrom-Json``.
 
-For example you can examine the Resource Group name with:
+For example, you can examine the resource group name with:
 
 .. sourcecode:: powershell
 
@@ -105,7 +105,7 @@ Recall that your Key Vault will need the VM's ``systemAssignedIdentity`` to prop
 - ``resourceGroup.json``
 - ``keyVault.json``
 
-Here is a general example of how to load and access a property. Be mindful of the syntax needed to access nested properties or those that exist within an array field:
+Here is a general example of how to load and access a property. Be mindful of the syntax needed to access nested properties, or those that exist within an array field:
 
 .. sourcecode:: powershell
    :caption: load JSON file into a PS variable
@@ -132,7 +132,7 @@ As we saw in the Azure CLI walkthrough, you will want to explore and plan out yo
 
    > az vm create -h
 
-Capturing AZ CLI Output In a Variable
+Capturing AZ CLI Output in a Variable
 -------------------------------------
 
 Similar to how the example ``.json`` files were created, you can capture the output in a variable:
@@ -164,7 +164,7 @@ Similar to how the example ``.json`` files were created, you can capture the out
 Fresh Start
 -----------
 
-If you feel you've messed something up throughout this deployment, you can easily destroy the entire resource group using the AZ CLI:
+If you think you've messed something up throughout this deployment, you can easily destroy the entire resource group using the AZ CLI:
 
 .. sourcecode:: powershell
 

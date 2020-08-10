@@ -2,9 +2,9 @@
 Making API Requests Using Invoke-RestMethod
 ===========================================
 
-`Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ is a PowerShell cmdlet that gives the ability to send requests from the command-line to a REST API. 
+`Invoke-RestMethod <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7>`_ is a PowerShell cmdlet that provides the ability to send requests from the command line to a REST API. 
 
-``Invoke-RestMethod`` can be used to make web requests to any server, but is specifically tuned to work with REST APIs that use JSON as their data representations.
+``Invoke-RestMethod`` can be used to make web requests to any server, but is specifically intended to work with REST APIs that use JSON as their data representations.
 
 .. admonition:: Note
 
@@ -13,40 +13,40 @@ Making API Requests Using Invoke-RestMethod
 Command-Line REST
 =================
 
-Throughout this class we have used Postman as a way for making requests to a RESTful API. Postman offers a GUI that is a very pleasant interface to work with, however a GUI is not always the best interface for a given job. 
+Throughout this class, we have used Postman as a way for making requests to a RESTful API. Postman offers a GUI that is a very pleasant interface to work with. However, a GUI is not always the best interface for a given job. 
 
-A benefit of making requests from the CLI is that you can combine as many requests as necessary into a single script. This grants the ability to automate interactions with a RESTful API.
+A benefit of making requests from a CLI is that you can combine as many requests as necessary into a single script. This creates the ability to automate interactions with a RESTful API.
 
-Invoke-RestMethod
-=================
+``Invoke-RestMethod``
+=====================
 
-In a similar vein to Postman, ``Invoke-RestMethod`` allows you to fully configure each HTTP request including setting the: 
+Similarly to Postman, ``Invoke-RestMethod`` allows you to fully configure each HTTP request including setting the: 
 
 - URI
-- method
-- headers
-- body
+- Method
+- Headers
+- Body
 
 The JSON responses received by an ``Invoke-RestMethod`` call are automatically converted from a JSON-formatted string to a `PSCustomObject <https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-pscustomobject?view=powershell-7>`_. The fields of the JSON response are then accessible as properties of this object using dot notation.
 
 .. admonition:: Tip
 
-   These response objects can be used directly within a PowerShell session, in a script or can be saved to a JSON file.
+   These response objects can be used directly within a PowerShell session, in a script, or can be saved to a JSON file.
 
 Open-Notify Examples
 ====================
 
-   Open-Notify is a publicly available REST API that returns information about astronauts in space.
+Open-Notify is a publicly available REST API that returns information about astronauts in space.
    
-The `Open-Notify API <http://open-notify.org/>`_ contains live data that is continuously updated. Let's explore this API by making a simple ``GET`` request for its ``Astros`` Resource using ``Invoke-RestMethod``.
+The `Open-Notify API <http://open-notify.org/>`_ contains live data that is continuously updated. Let's explore this API by making a simple ``GET`` request for its ``Astros`` resource using ``Invoke-RestMethod``.
 
 Astronaut Resource Shapes
 -------------------------
 
-The ``Astros`` Resource has the following shape:
+The ``Astros`` resource has the following shape:
 
 .. sourcecode:: js
-   :caption: the Astros Resource shape
+   :caption: the Astros resource shape
 
    {
       message: integer,
@@ -54,7 +54,7 @@ The ``Astros`` Resource has the following shape:
       people: Person[]
    }
 
-The ``people`` field is an array of ``Person`` Resources with the following shape:
+The ``people`` field is an array of ``Person`` resources with the following shape:
 
 .. sourcecode:: js
    :caption: Person Resource shape
@@ -64,12 +64,12 @@ The ``people`` field is an array of ``Person`` Resources with the following shap
       craft: string
    }
 
-Making a request
+Making a Request
 ----------------
 
-Let's make a ``GET`` request for the ``Astros`` Resource. If you don't specify the request method it will default to ``GET``.
+Let's make a ``GET`` request for the ``Astros`` resource. If you don't specify the request method it will default to ``GET``.
 
-``Invoke-RestMethod`` will convert the JSON response to a ``PSCustomObject``. By default these Custom Objects are printed in the Terminal in a table presentation:
+``Invoke-RestMethod`` will convert the JSON response to a ``PSCustomObject``. By default, these custom objects are printed in the terminal in a table presentation:
 
 .. sourcecode:: none
 
@@ -79,10 +79,10 @@ Let's make a ``GET`` request for the ``Astros`` Resource. If you don't specify t
    ------- ------ ------
    success      5 {@{craft=ISS; name=Chris Cassidy}, @{craft=ISS; name=Anatoly Iv…
 
-Grouping to access fields of the JSON response
+Grouping to Access Fields of the JSON Response
 ----------------------------------------------
 
-Using the grouping operator we can access the ``people`` array property of the Custom Object in the following way:
+Using the grouping operator, we can access the ``people`` array property of the custom object in the following way:
 
 .. sourcecode:: none
 
@@ -98,12 +98,12 @@ Using the grouping operator we can access the ``people`` array property of the C
 
 .. admonition:: Note
 
-   The grouping operator will cause the ``Invoke-RestMethod`` to be executed *first*. The resulting Custom Object can then have its properties accessed using dot notation on the closing parenthesis: ``)``.
+   The grouping operator will cause the ``Invoke-RestMethod`` to be executed *first*. The resulting custom object can then have its properties accessed using dot notation on the closing parenthesis: ``)``.
 
-Piping to access nested fields
+Piping to Access Nested Fields
 ------------------------------
 
-Because we are working with objects we can filter the response down further by piping the ``people`` array object to the ``Select-Object`` cmdlet:
+Because we are working with objects, we can filter the response down further by piping the ``people`` array object to the ``Select-Object`` cmdlet:
 
 .. sourcecode:: none
 
@@ -118,10 +118,10 @@ Because we are working with objects we can filter the response down further by p
    Doug Hurley
    Bob Behnken
 
-Storing response objects in a reusable variable
+Storing Response Objects in a Reusable Variable
 -----------------------------------------------
 
-Storing the result in a variable becomes useful so we don't have to keep making the same request to access it's data:
+Storing the result in a variable becomes useful, so that we don't have to keep making the same request to access its data:
 
 .. sourcecode:: powershell
 
@@ -149,7 +149,7 @@ We can also access the nested ``name`` field of one of the astronauts by chainin
 
    Chris Cassidy
 
-Sorting response data
+Sorting Response Data
 ---------------------
 
 We can even use our variable to control how the ``people`` array is sorted by piping it to the ``Sort-Object`` cmdlet:
@@ -166,14 +166,14 @@ We can even use our variable to control how the ``people`` array is sorted by pi
    ISS   Doug Hurley
    ISS   Ivan Vagner
 
-Converting to other formats
+Converting to Other Formats
 ---------------------------
 
 We can combine these steps in a longer pipe that:
 
-#. accesses the ``people`` array field
-#. sorts each ``Person`` element by their nested ``name`` field
-#. converts the sorted array into a CSV format
+#. Accesses the ``people`` array field
+#. Sorts each ``Person`` element by their nested ``name`` field
+#. Converts the sorted array into a CSV format
 
 .. sourcecode:: powershell
 
@@ -186,10 +186,10 @@ We can combine these steps in a longer pipe that:
    "ISS","Doug Hurley"
    "ISS","Ivan Vagner"
 
-Saving and loading as CSV files
+Saving and Loading as CSV Files
 -------------------------------
 
-In many cases it is beneficial to save transformed responses to a file for later use. Rather than just printing the converted results we can use the ``Export-Csv`` cmdlet to write it to a file:
+In many cases it is beneficial to save transformed responses to a file for later use. Rather than just printing the converted results we can use the ``Export-Csv`` cmdlet to write to a file:
 
 .. sourcecode:: powershell
 
@@ -211,7 +211,7 @@ You can then use the ``Get-Content`` cmdlet to view the CSV contents *as strings
 Saving and loading as JSON files
 --------------------------------
 
-If we wanted to save in a JSON format we would need to add an additional step in our pipeline to convert the Custom Object back to a JSON string.
+If we wanted to save in a JSON format we would need to add an additional step in our pipeline to convert the custom object back to a JSON string.
 
 We use the ``ConvertTo-Json`` cmdlet to accomplish this *serialization* from an object back to a JSON string:
 
@@ -231,7 +231,7 @@ We use the ``ConvertTo-Json`` cmdlet to accomplish this *serialization* from an 
       > $SortedPeople = $webRequest.people | Sort-Object -Property name
       > $SortedPeople | ConvertTo-Json | Set-Content "people.json"
 
-This approach is invaluable for practicing with data transformations. Whereas a variable in our PowerShell Terminal will disappear after closing, a file can be reused indefinitely and shared with others.
+This approach is invaluable for practicing with data transformations. Whereas a variable in our PowerShell terminal will disappear after closing, a file can be reused indefinitely and shared with others.
 
 You can then load the JSON contents *as a string* using ``Get-Content``:
 
@@ -263,7 +263,7 @@ You can then load the JSON contents *as a string* using ``Get-Content``:
       }
    ]
 
-However, in order to work with the JSON contents as Custom Objects we need to convert it back (*deserialize*) using the ``ConvertFrom-Json`` cmdlet. This will enable dot notation access of fields like in the original ``Invoke-RestMethod`` output:
+However, in order to work with the JSON contents as custom objects we need to convert it back (*deserialize*) using the ``ConvertFrom-Json`` cmdlet. This will enable dot-notation access of fields like in the original ``Invoke-RestMethod`` output:
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -278,17 +278,17 @@ However, in order to work with the JSON contents as Custom Objects we need to co
    ISS   Doug Hurley
    ISS   Ivan Vagner
 
-The ``Invoke-RestMethod`` cmdlet is a powerful tool for working with APIs. When combined with our knowledge of PowerShell we have many options for interacting with a REST API and transforming the data we receive.
+The ``Invoke-RestMethod`` cmdlet is a powerful tool for working with APIs. When combined with our knowledge of PowerShell, we have many options for interacting with a REST API and transforming the data we receive.
 
-CodingEventsAPI Examples
-========================
+``CodingEventsAPI`` Examples
+============================
 
-Let's test this out with our Coding Events API. To keep things simple let's use the ``1-sqlite`` branch so we don't need to worry about setting up a database, a secrets manager, or AADB2C.
+Let's test this out with our Coding Events API. To keep things simple, let's use the ``1-sqlite`` branch so we don't need to worry about setting up a database, a secrets manager, or AADB2C.
 
 Run this branch to start the Coding Events API on your local machine.
 
-GET Example
------------
+``GET`` Example
+---------------
 
 To get a collection of coding events you could use:
 
@@ -303,8 +303,8 @@ To get an individual coding event entity you could use:
    > $CodingEventId = 1
    > Invoke-RestMethod -Uri "http://localhost:5000/api/events/$CodingEventId"
 
-DELETE Example
---------------
+``DELETE`` Example
+------------------
 
 To delete an existing coding event entity you could use:
 
@@ -314,8 +314,8 @@ To delete an existing coding event entity you could use:
    > $uri = "http://localhost:5000/api/events/$CodingEventId"
    > Invoke-RestMethod -Method "Delete" -Uri $uri
 
-POST Example
-------------
+``POST`` Example
+----------------
 
 To create a new coding event we need to use two additional options:
 
@@ -336,14 +336,14 @@ The ``HashTable`` object is simple to create:
 
 .. admonition:: Note
 
-   The ``HashTable`` object **does not have any commas** and uses the ``=`` assignment operator for defining each key-value entry.
+   The ``HashTable`` object *does not have any commas* and uses the ``=`` assignment operator for defining each key-value entry.
 
-However, before it can be used in the request it **must be converted to JSON** with an appropriate ``Content-Type`` header. 
+However, before it can be used in the request it *must be converted to JSON* with an appropriate ``Content-Type`` header. 
 
 We can use:
 
 - ``ConvertTo-Json``: in a grouped expression to serialize the ``HashTable`` as a JSON string
-- the ``-ContentType`` option: to automatically set the ``Content-Type`` header of ``application/json``
+- The ``-ContentType`` option: to automatically set the ``Content-Type`` header of ``application/json``
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -351,10 +351,10 @@ We can use:
    > $uri = "http://localhost:5000/api/events"
    > Invoke-RestMethod -Method "Post" -Uri $uri -Body ($body | ConvertTo-Json) -ContentType "application/json"
 
-Using a JSON file
+Using a JSON File
 ^^^^^^^^^^^^^^^^^
 
-You can also load the body from a json file. This allows you to use existing files or a GUI editor to create the JSON body in a more intuitive way.
+You can also load the body from a JSON file. This allows you to use existing files or a GUI editor to create the JSON body in a more intuitive way.
 
 Let's assume we have a file ``~\coding-event.json`` with the following contents:
 
