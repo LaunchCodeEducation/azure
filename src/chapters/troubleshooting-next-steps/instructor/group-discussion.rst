@@ -27,10 +27,11 @@ Let's consider the components in each layer of our system.
 Network Level
 -------------
 
-...Network related issues are always based around routing behavior and access rules. As an introductory course we have only explored access rules in the form of our network security groups. To that end consider the three components of an access rule
+NSG Rules
+^^^^^^^^^
 
-- NSG rules for controlling access at the network level
 - what rules do you expect?
+
   - SSH (22)
   - HTTP (80)
   - HTTPS (443)
@@ -38,43 +39,67 @@ Network Level
 Service Level
 -------------
 
-- KeyVault
-  - what configuration is expected?
-    - a secret: database connection string
-    - an access policy for our VM
-- AADB2C
-  - what configuration is expected?
-    - tenant dir
-    - protected API (user_impersonation scope)
-    - Postman client application
-    - SUSI flow
+KeyVault
+^^^^^^^^
+
+- a secret: database connection string
+- an access policy for our VM
+
+AADB2C
+^^^^^^
+
+- tenant directory
+- linked to a subscription
+- protected API (user_impersonation scope)
+- Postman client application
+- SUSI flow
 
 Hosting Environment Level
 -------------------------
 
-- VM external configuration
-  - what configuration is expected?
-    - size
-    - status
-    - image (defines available tools)
-    - system assigned identity for KV access
-- VM internal configuration
-  - what configuration is expected?
-    - runtime dependencies (dotnet, mysql, nginx)
-    - self-signed SSL cert
-  - what services are expected?
-    - embedded MySQL
-    - NGINX web server (reverse proxy)
-    - API service
-- MySQL db server
+VM External Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- size
+- status
+- image (defines available tools)
+- system assigned identity for KV access
+
+VM internal configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- runtime dependencies
+
+  - dotnet
+  - mysql
+  - nginx
+
+- self-signed SSL cert
+
+- what running services are needed?
+
+  - embedded MySQL database server
+  - NGINX web server (reverse proxy)
+  - Coding Events API service
+
+- MySQL service configuration
+
   - user and database for the API
-- NGINX
+
+- NGINX service configuration
+
   - RP configuration
   - using SSL cert
+
+- Coding Events API service configuration
+
+  - unit file
+  - published artifact in service directory
 
 Application Level
 -----------------
 
 - appsettings.json (external configuration)
 - source code
+
   - could have issues but we will assume it is working as expected
