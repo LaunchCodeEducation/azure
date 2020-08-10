@@ -41,32 +41,6 @@ This article, and the following exercise, will primarily focus on Operations tro
       - ops responsibilities (our focus)
       - dev responsibilities 
 
-.. list-table:: Common HTTP status codes in API design
-   :widths: 30 40 40
-   :header-rows: 1
-
-   * - Error Message
-     - Description
-     - 
-   * - Connection Refused
-     - The server received the request, but refuses to handle it
-     - 
-   * - Connection Timeout
-     - The server did not respond to the client request within a specific time period
-     - 
-   * - 502 Bad Gateway
-     - A server received an incorrect response from another server
-     - 
-   * - 401 Unauthorized
-     - The request did not include credentials indicating a user needs to **authenticate**
-     - 
-   * - 403 Forbidden
-     - The request included credentials, but the authenticated user does not have the proper level of **authorization**
-     - 
-   * - 500 Internal Server Error
-     - The request was received, however the server encountered an issue it doesn't know how to resolve
-     - 
-
 What You May Have Experienced Already
 =====================================
 
@@ -260,38 +234,60 @@ Our Coding Events API has a lot of things going on at the Host level inside the 
 How to Troubleshoot
 ===================
 
-.. build mental modal state of the system
+Troubleshooting is the combination of **asking questions** and **researching answers**. 
 
-Troubleshooting is the combination of asking questions and researching answers. Really the only way to troubleshoot is to have a mental model of the deployment and have an understanding of how the components are supposed to work. You can usually find the solution to any deployment issue by following a script and checking every aspect of the deployment.
+When you are first starting it might be easiest for you to check each individual aspect of the deployment. With a simple deployment like our Coding Events API this wouldn't be difficult. You would need to simply understand all the components of the deployment and then just check their configurations one by one until you found the issue. This can be an effective way to troubleshoot a deployment, but it is very time consuming.
 
-Troubleshooting is the combination of asking questions and researching answers. When you are first starting it might be easiset for you to check each individual aspect of the deployment. And with a simple deployment like our Coding Events API this wouldn't be difficult. You would need to simply understand all the components of the deployment and then just check their configurations one by one until you found the issue. This can be an effective way to troubleshoot a deployment, but it is very time consuming.
-
-A better approach is to have a mental model of the deployment and then asking questions that *lead you* to the **root cause** of the issue. 
+A better approach is to have a mental model of the deployment and then ask questions that *lead you* to the **root cause** of the issue. 
 
 .. admonition:: Note
 
-   It is this question and answer approach that makes experience extremely valuable when troubleshooting. If you have seen the exact problem before and found a solution it will be easier for you to resolve that issue again.
+   It is this question and answer approach that makes experience extremely valuable when troubleshooting. If you have seen the exact problem before and found a solution it will be easier for you to resolve that issue again because you are now aware of more potential questions and answers.
 
-For example if you see a ``Connection Timeout`` issue you have a good understanding of what caused this. The section above listed these things as the possible cause of a Connection Timeout:
+Example
+-------
+
+In the ``Connection Timeout`` section above you were presented with three possible root causes of the ``Connection Timeout`` issue within the Coding Events API.
+
+Let's review them again:
 
 - the URL may have been incorrect
 - the VM is currently down
 - the VM lacks a Network Security Group rule for the given port
 
-Understanding these are the potential causes comes from understanding the components of the deployment, research and experience. After you know these are the potential root causes you would pick one and check it out. For example if you know from experience that you usually forget to create NSG access rules it would be a good idea to check that out first.
+When we make a request from the browser to the Coding Events API (https://<coding-events-api-public-ip>) if a ``Connection Timeout`` issue is noticed we would need to answer three simple questions to find the root cause of our issue:
 
-If you check all three of these things and the issue persists you have the opportunity to learn something new! You need to continue working on your understanding of the mental model and research additional reasons a ``Connection Timeout`` may occur.
+- did we type the URL correctly?
+- is the VM running?
+- does the VM have an inbound Network Security Group rule for port 443 that allows all traffic?
+
+If the answer to any of these questions is *no* we have found a potential cause to the issue. 
+
+To resolve this issue we will need to fix the question, or questions, that we responded *no* to. After ensuring that all three of these things are correct we make a new request to Coding Events API to see if the issue was resolved.
 
 .. admonition:: Note
 
-   Research looks a little different for everyone as we all learn in slightly different ways. 
+   When you are starting out it is a good idea to try each question we responded *no* to by itself and re-try the request. This will help you isolate the issue, so upon solving the issue you know definitively what caused the issue.
+
+Understanding these potential causes comes from understanding the components of the deployment, research and experience. When you are starting with troubleshooting you don't have much experience so you will have to lean on your research skills to figure out the potential causes to a problem.
+
+.. admonition:: Note
+
+   Research looks a little different for everyone as we all learn in different ways:
    
-   Some of you may prefer searching the internet for Stack Overflow posts, forums, documentation, technical examples and more as the main part of your research. Some of you may prefer talking to coworkers to gain a better understanding of the mental model or to gain insight on what might be causing the issue. Usually it comes down to a combination of both to find the root cause of an issue.
+   - searching the internet
+   - talking with coworkers
+   - trial and error
+   - drawing components and integrations
+   
+   Usually it comes down to a combination of research forms to find the root cause of an issue.
 
 Troubleshooting Script
 ----------------------
 
-After building a mental model of the deployment it is beneficial to build a troubleshooting script of questions to ask when diagnosing issues. An example script is provided below:
+After building a mental model of the deployment you can build a troubleshooting script of questions to ask when diagnosing issues for a specific deployment. 
+
+An example troubleshooting script for the Coding Events API is provided below:
 
 Is this an issue?
 ^^^^^^^^^^^^^^^^^
@@ -338,37 +334,61 @@ Host Issues
 - Are my internal services configured properly?
 - Are there any errors in the logs of the API (``journalctl -u coding-events-api``)?
 
-Final Thoughts
-^^^^^^^^^^^^^^
+Troubleshooting Script Final Thoughts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Remember that resolving one issue can bring a new issue to the service. Seeing a change in error message or behavior in the deployment is a great hint towards fixing the deployment!
 
 The most effective way to build your skills in troubleshooting is by practicing troubleshooting. Each time you solve a new issue you will learn a new solution and you will increase your ability to research issues. A very benefical thing to do is to build your own troubleshooting script. The questions above give a good introduction for a troubleshooting script, as you continue to learn more about Operations continue adding to the script with your new experiences.
 
-Take Inventory
---------------
-
-- form a mental model of the state of the system
-- holistic inventory of components to understand what could go wrong
-- keep inventory of every individual change you make no matter how trivial
-  - each one changes the state of the system and could be a valuable clue
-
 Identify the Issue
-------------------
+==================
 
-- DO NOT CHANGE ANYTHING
-  - keep 
-- response behavior
-  - timeout
-  - connection refused
-  - 5XX
-  - 4XX
+Identifying an issue is sometimes the most difficult part of troubleshooting. As we've mentioned multiple times as you gain more experience it will become easier to identify issues. 
+
+For now knowing what some of the most **common issues** encountered are, and being able to **ask questions about your deployment** will be your two biggest tools for identifying an issue.
+
+.. admonition:: Warning
+
+   When you are still in the process of identifying an issue it is crucial to **not make any changes**! 
+   
+   Every change you make needs to be accounted for because you may need to undo the change to put the system back in its original state. Changes are necessary to resolve the issue, but while you are still identifying and researching you want the system to exist in its initial state.
+
+Let's take a look at some of the most common issues seen in deployments (this list is not exhaustive):
+
+.. list-table:: Common Issues
+   :widths: 30 40 40
+   :header-rows: 1
+
+   * - Error Message
+     - Description
+     - Common cause
+   * - Connection Refused
+     - The server received the request, but refuses to handle it
+     - no application listening on the given port
+   * - Connection Timeout
+     - The server did not respond to the client request within a specific time period
+     - missing NSG inbound rule
+   * - HTTP Status Code: 502 Bad Gateway
+     - A server received an incorrect response from another server
+     - web server is running, but the application is not
+   * - HTTP Status Code: 401 Unauthorized
+     - The request did not include credentials indicating a user needs to **authenticate**
+     - credentials were not included
+   * - HTTP Status Code: 403 Forbidden
+     - The request included credentials, but the authenticated user does not have the proper level of **authorization**
+     - credentials are not correct, or have not been configured properly
+   * - HTTP Status Code: 500 Internal Server Error
+     - The request was received, however the server encountered an issue it doesn't know how to resolve
+     - runtime error in the source code
+
+As you may have noticed may of the most common issues are `HTTP status codes <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>`_. These status codes are a standard across HTTP so learning the various categories and individual status codes will be *invaluable* when troubleshooting a web deployment.
 
 Communicate the Issue
----------------------
+=====================
 
 Isolate & Resolve the Issue
----------------------------
+===========================
 
 - even if you cant resolve just going through the previous steps can go a long way in helping towards the resolution
   - pass off to a more senior member who will praise you for your effort
