@@ -271,28 +271,5 @@ State how the problem was identified. State how the problem was proven through r
 Troubleshooting Tools
 =====================
 
-.. copied over from the walkthrough
-
 .. DEPENDENT ON THE ENVIRONMENT (local/prod and OS/services)
-
-Debugging Requests
-------------------
-
-  - browser dev Tools
-  - curl
-  - Invoke-RestMethod / Invoke-WebRequest
-  - postman
-
-Remote Management
------------------
-
-  - SSH
-  - RDP
-  - az CLI
-  - accessing logs
-    - journalctl
-
-Source Code Debugging
----------------------
-
-- debugger
+.. copied over from the walkthrough

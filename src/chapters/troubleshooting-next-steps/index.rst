@@ -9,5 +9,6 @@ Introduction to Troubleshooting
 .. toctree::
    :maxdepth: 3
 
-   troubleshooting
+   what-is-troubleshooting
+   how-to-troubleshoot
    walkthrough_troubleshooting-linux-deployment
