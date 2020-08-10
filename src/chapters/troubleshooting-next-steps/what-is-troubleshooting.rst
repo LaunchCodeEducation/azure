@@ -4,8 +4,6 @@ Introduction to Troubleshooting
 
 Troubleshooting is one of the most important skills to the Operations professional. 
 
-.. You will come to find **troubleshooting is in large part research**. There are many ways an issue can be brought to your attention, but they will usually only be able to tell you what odd behavior occurred and some of the conditions that led to the error. The next steps are left up to you.
-
 Troubleshooting is the process of:
 
 #. realizing an issue exists
@@ -371,7 +369,6 @@ We research the issue, luckily this is easy because we know how a RESTful API wo
 
 - fixing the source code error may resolve the issue
 
-
 Implement Root Cause Fix
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -387,3 +384,15 @@ Users reported that after deleting an event the event was still accessible. We r
 .. admonition:: Note
 
    The Coding Events API does not behave this way! This was an example to illustrate a logic error in a deployed application.
+
+In summation, we understand the steps of the troubleshooting process and have seen examples of how it can be used to effectively:
+
+- realize issues
+- identify issues
+- research potential causes
+- isolate root causes
+- resolve issues
+- verify the resolution of issues
+- communicate about issues and their solutions
+
+The next article will provide information on *how* to troubleshoot issues using this process.

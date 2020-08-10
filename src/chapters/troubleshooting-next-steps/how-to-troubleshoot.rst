@@ -16,13 +16,21 @@ As a reminder troubleshooting is the process of:
 #. checking that the fix resolves the issue
 #. communicating about the issue with others
 
-.. know your tools
+This process can seem daunting because a lot of the process involves *researching information you don't already know*. To effectively research things you don't understand you must be able to **ask the correct questions**.
+
+The best way to learn troubleshooting is to practice the skill. However, you don't have to go into your practice completely blind. This article will present you with ideas, tips, and tricks for assisting with the troubleshooting process.
+
+We will discuss:
+
+- 
+
 .. build a mental model of the system to come up with potential causes of issues
-.. build a troubleshooting script to assist in discovering potential causes of issues
-.. research error messages and strange behavior to learn about new potential causes of issues
+.. build a troubleshooting checklist to assist in discovering potential causes of issues
+.. research error messages and strange behavior to further learn about potential causes of issues
 .. research solutions to potential causes of issues
 .. isolate the root cause of the issue by eliminating potential causes
 .. communicate issue with others
+.. know your tools lot's of different tools can be used for troubleshooting in the next walkthrough we will show you how to use:
 
 When you are first starting it might be easiest for you to check each individual aspect of the deployment. With a simple deployment like our Coding Events API this wouldn't be difficult. You would need to simply understand all the components of the deployment and then just check their configurations one by one until you found the issue. This can be an effective way to troubleshoot a deployment, but it is very time consuming.
 
@@ -97,19 +105,23 @@ Create a Visual Representation of the System
 --------------------------------------------
 
 
-Develop a Troubleshooting Script
-================================
+Develop a Troubleshooting Checklist
+===================================
 
 Create a Mental Model of the System
 -----------------------------------
 
-As you may have realized troubleshooting follows a very specific pattern. The pattern is pretty simple to follow once you have come up with a list of potential causes. You will learn many of the potential causes throughout your career, but when you are first starting it is difficult to know many potential causes.
+Troubleshooting follows a very specific pattern as mentioned at the start of this article and in the previous article. 
+
+The pattern is relatively easy to follow once you have come up with a **list of potential causes**. You will learn many of the potential causes throughout your career, but when you are first starting it is difficult to know many potential causes.
 
 A highly beneficial tool for determining potential causes is having a strong mental model of the deployment. If you can recognize the individual components and are aware of how the components can fail, or be misconfigured you are well on your way to performing a root cause analysis.
 
-To perform the root cause analysis you need potential causes which you can create by categorizing similar issues together. Once you have created a list of possible issues in each category you will have a place to start isolating potential issues to find the root cause. The levels are completely arbitrary, and differ between deployments. These categories are a tool used to help you determine potential causes until you've increased your experience.
+To help determine a list of potential causes consider the related components and categorize issues based on the related components. This will help you come up with a troubleshooting checklist of potential issues to check with a broken
 
-Let's briefly define the different levels we could encounter an issue in our Coding Events API:
+To assist you in the task of categorizing issues we have created various levels The levels are completely arbitrary, and differ between deployments. 
+
+Use these categories as a tool to help you determine potential causes and develop a troubleshooting checklist.
 
 Network Level
 ^^^^^^^^^^^^^
@@ -123,7 +135,6 @@ However for more complex deployment you may also consider:
 - Internet gateways
 - Public vs private access
 - Virtual Private Cloud
-- Virtual Networks
 
 Service Level
 ^^^^^^^^^^^^^
@@ -134,6 +145,12 @@ Our Coding Events API only works with two services:
 - AADB2C
 
 Not only must these services exist, and be accessible to the deployed application they must be configured properly as well. In the case of our API our Key Vault must have a secret, and most grant the VM ``get`` access to the secret. Our AADB2C must be configured to issue identity tokens and access tokens. Our AADB2C tenant must have exposed the registered Coding Events API and appropriate scopes must be granted for the registered front end application, Postman.
+
+For a more complex deployment you may also consider:
+
+- external database server
+- external API our application depends on
+- external search engine service
 
 Host Level
 ^^^^^^^^^^
@@ -152,39 +169,41 @@ Our Coding Events API has a lot of things going on at the Host level inside the 
 
    In this class we have been working with a VM embedded database. In many real-world deployments this database would be a service that is external to the VM. For our deployment we consider any database issues to be at the Host level.
 
-Troubleshooting Script
-----------------------
+General Troubleshooting Questions
+---------------------------------
 
-Using the mental model of this deployment we can build a troubleshooting script of questions to ask when diagnosing issues for a specific deployment. 
-
-An example troubleshooting script for the Coding Events API is provided below:
+Using the mental model of this deployment we can start coming up with questions to guide our research into the issue:
 
 Is this an issue?
 ^^^^^^^^^^^^^^^^^
 
-- is this something I can reproduce?
-- was it user error?
+- Was it user error?
+- Is this something I can reproduce?
 
 What is the issue?
 ^^^^^^^^^^^^^^^^^^
 
-- is it something I have seen before?
-- is there an error message I can use as a starting point?
-- how would I summarize this issue to others?
-- how would I phrase this issue using a search engine?
+- Is this issues something I have seen before?
+- Is there an error message I can use as a starting point for my research?
+- How would I summarize this issue to others?
+- Can I state this issue in plain English?
+- How would I enter this issue to a search engine?
 
 What is the category of this issue?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- Which level is this issue affecting?
+- Which level is this issue affecting (network, service, host)?
 - Could this issue span across multiple levels?
 - Is this an Operations or Development issue?
 
 .. admonition:: Note
 
-   If you don't know the category research it by talking with teammates, or searching the internet for individual's that have had similar experiences.
+   If you don't know the category research the issue by talking with teammates, or searching the internet for other people's experiences that have had similar problem.
 
-You can then create a script of possible solutions based on the questions you answered above:
+You can then create a troubleshooting checklist of possible solutions based on the questions you answered above:
+
+Troubleshooting Checklist
+-------------------------
 
 Networking issues
 ^^^^^^^^^^^^^^^^^
@@ -195,33 +214,35 @@ Networking issues
 Service Issues
 ^^^^^^^^^^^^^^
 
-- Are my services up and running?
-- Have my services been configured correctly?
-- Do my services have the proper level of authorization to access each other?
+- Are my external services up and running (AADB2C and Key Vault)?
+- Have my services been configured correctly (Key Vault has the correct secret)?
+- Do my services have the proper level of authorization to access each other (Key Vault access policy)?
 
 Host Issues
 ^^^^^^^^^^^
 
-- Are the proper dependencies fully installed? are they at the proper version (updated)?
+- Are the proper dependencies fully installed?
 - Are my internal services running (web server, API, MySQL)?
 - Are my internal services configured properly?
 - Are there any errors in the logs of the API (``journalctl -u coding-events-api``)?
-- Does the application use any configuration files?
+- Does the application use any configuration files (``appsettings.json``)?
 - Are the configuration files configured properly?
 
-Troubleshooting Script Final Thoughts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Troubleshooting Checklist Final Thoughts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Using a troubleshooting question script in combination with the steps of troubleshooting and some persistence on your part can provide you with the information necessary to solve a problem.
+Using a troubleshooting checklist in combination with the steps of troubleshooting can provide you with the information necessary to solve a problem.
 
-Remember that resolving one issue can bring a new issue to the service. Seeing a change in error message or behavior in the deployment is a great hint towards fixing the deployment!
+Remember that resolving one issue can bring a new issue to the surface. Seeing a change in error message or behavior in the deployment is a great hint towards fixing the broken deployment!
 
-The most effective way to build your skills in troubleshooting is by practicing troubleshooting. Each time you solve a new issue you will learn a new solution and you will increase your ability to research issues. A very beneficial thing to do is to build your own troubleshooting script. The questions above give a good introduction for a troubleshooting script, as you continue to learn more about Operations continue adding to the script with your new experiences.
+The most effective way to build your skills in troubleshooting is by practicing troubleshooting. Each time you solve a new issue you will learn a new solution and you will increase your ability to research issues. 
+
+A very beneficial thing to do is to build your own troubleshooting checklist. The questions above give a good introduction for a starter checklist, as you continue to learn more about Operations continue adding to the checklist with your new experiences.
 
 Identify Common Issues
 ======================
 
-Identifying an issue is sometimes the most difficult part of troubleshooting. As we've mentioned multiple times as you gain more experience it will become easier to identify issues. 
+Identifying an issue can be the most difficult part of troubleshooting. As we've mentioned multiple times as you gain more experience it will become easier to identify issues as your knowledge of potential causes grows.
 
 For now knowing what some of the most **common issues** encountered are, and being able to **ask questions about your deployment** will be your two biggest tools for identifying an issue.
 
@@ -231,7 +252,7 @@ For now knowing what some of the most **common issues** encountered are, and bei
    
    Every change you make needs to be accounted for because you may need to undo the change to put the system back in its original state. Changes are necessary to resolve the issue, but while you are still identifying and researching you want the system to exist in its initial state.
 
-Let's take a look at some of the most common issues seen in deployments (this list is not exhaustive):
+Let's take a look at some of the most common issues seen in web deployments (this list is not exhaustive):
 
 .. list-table:: Common Issues
    :widths: 30 40 40
@@ -266,10 +287,30 @@ Communicate the Issue
 
 Communicating the issue is a simple as defining each part of the troubleshooting process you have worked through so far:
 
-State how the problem was identified. State how the problem was proven through reproduction. State the potential causes that were discovered. State the solution to the problem. State how the solution was verified.
+- State how the problem was identified
+- State how the problem was proven through reproduction
+- State the potential causes that were discovered
+- State the solution to the problem
+- State how the solution was verified or any steps taken to pass the issue to someone else
+
+You will find communicating is not only a powerful tool for reporting to superiors, but is a beneficial tool when building a mental model of the system, and when researching potential causes by talking to coworkers.
 
 Troubleshooting Tools
 =====================
 
-.. DEPENDENT ON THE ENVIRONMENT (local/prod and OS/services)
-.. copied over from the walkthrough
+The tools you will use for troubleshooting vary. Sometimes you are locked in to a set of troubleshooting tools based on the tech stack of your deployment. For example if you are using Windows Server and have a personal Windows operating system the troubleshooting tools will be slightly different than if you were deploying to an Ubuntu server and have a personal MacOS.
+
+Tool preference will also vary across teams and individuals. You may be more experienced with different tools than your fellow coworkers, and you may adopt using a specific tool because the greater team has a preference for that tool.
+
+In the upcoming walkthrough we will be using and explaining these tools:
+
+- ``ssh``: to connect to a remote Linux virtual machine
+- ``cat`` or ``less``: to inspect configuration files
+- ``service``: to view the status of the services
+- ``journalctl``: to view log outputs
+- ``curl``: to make network requests from inside the Ubuntu machine
+- ``az CLI``: for information about each resource component (or the Azure web portal)
+- ``browser dev tools``: to inspect response behavior in the browser
+- ``Invoke-RestMethod``: to make network requests from your Windows development machine
+
+You may have experience with other tools or you may discover new tools as you research to troubleshoot issues in the upcoming walkthrough. Part of being a successful troubleshooter is the ability to learn and effectively use troubleshooting tools.

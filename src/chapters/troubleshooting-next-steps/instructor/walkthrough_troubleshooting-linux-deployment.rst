@@ -2,6 +2,10 @@
 Walkthrough: Troubleshooting a Linux Deployment
 ===============================================
 
+.. todo:: general checklist of what to do if they get specific issues
+
+.. todo:: add the highlevel issue checklist to the index as it's own resource
+
 .. todo:: import screenshots and complete instructions with TAs
 
 1. accept lab assignment (Troubleshooting - TA)
