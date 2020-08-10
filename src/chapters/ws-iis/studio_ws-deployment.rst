@@ -4,9 +4,7 @@ Studio: Deploy CodingEventsAPI to Windows Server & IIS
 
 In today's studio you will practice deploying the Coding Events API to a Windows Server VM. You will be using the ``az CLI`` and the new Windows Server tools that you learned about.
 
-Like the other recent studios this one will also be more hands-off. This is an opportunity to step out of your comfort zone and take ownership of your abilities. Applied learning "off the tracks" is the best way to solidify your understanding and build confidence. 
-
-While it will be challenging, do your best to complete the tasks on your own by referring to your notes and previous lessons. If you are completely stuck then reach out to a TA or your instructor for help.
+While this studio will be challenging, do your best to complete the tasks on your own by referring to your notes and previous lessons. If you are completely stuck then reach out to a TA or your instructor for help.
 
 We will provide some high-level planning and guidance for new steps you haven't seen before. Otherwise, you are on your own to complete the mission. Good luck!
 
@@ -31,7 +29,7 @@ The following is a checklist of tasks you will need to complete. This list is ne
 
    You can provision and configure your resources by any approach you prefer. However, this is a great opportunity to write new scripts for the aspects you are familiar with automating.
 
-   While we have shown some of the VM configuration steps using the GUI applications on Windows Server it is *technically possible* to automate all of it with PowerShell scripts. Focus on *completing the studio first* then challenge yourself to fully automate the deployment!
+   While we have shown some of the VM configuration steps using the GUI applications on Windows Server it is *technically possible* to automate all of it with PowerShell scripts. Focus on manually *completing the studio first* then challenge yourself to fully automate the deployment!
 
 Planning
 ========
@@ -58,7 +56,7 @@ The following sections will guide you on specifics and steps you may not have se
 Packages
 --------
 
-Many of these requirements can be satisfied by using a package manager. On Windows Server we use the chocolatey, or ``choco``, package manager. Refer to previous lessons if you need a refresher on how to install chocolatey.
+Many of these requirements can be satisfied by using a package manager. On Windows Server we use the chocolatey package manager (``choco``). Refer to previous lessons if you need a refresher on how to install chocolatey.
 
 The packages you need to install with ``choco`` have the following names:
 
@@ -110,7 +108,7 @@ Now confirm everything was set up correctly by connecting to the database with t
 
    > mysql -u coding_events -D coding_events -p
 
-If it connects properly you are all set and can use ``exit`` in the MySQL shell that was opened to return to PowerShell.
+If this command connects to the MySQL coding_events database you will know the previous commands executed successfully. From the MySQL shell enter ``exit`` and hit enter to return to PowerShell.
 
 Configuring HTTPS with IIS
 --------------------------
@@ -126,7 +124,11 @@ In this deployment we will have to perform one additional step -- provisioning a
 Provision a self-signed certificate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In the IIS manager select the VM from the Connections panel on the left then switch to the Features View (at the bottom of the window). From the Features View select Server Certificates:
+From the IIS manager:
+
+#. select the VM from the Connections panel on the left
+#. switch to the Features View (at the bottom of the window)
+#. From the Features View select Server Certificates
 
 .. image:: /_static/images/ws/iis-manager-server-certs.png
    :alt: IIS Manager VM Features View server certificates selection
@@ -146,7 +148,7 @@ This will create the self-signed certificate and store it for use in web hosting
 Configure the Site to be served securely
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When you configure the port binding of the Site there is an option to set the server certificate to be used. Note that this option is only available for a binding to ``https`` (port 443). Just as before you can right click the Site and select the edit bindings option then add an additional binding for ``https``.
+When you configure the port binding of the Site there is an option to set the server certificate to be used. This option is *only available* for a binding to ``https`` (port 443). Just as before you can right click the Site and select the edit bindings option then add an additional binding for ``https``.
 
 In the binding dialog select ``https`` and the certificate you provisioned in the previous steps:
 
@@ -189,7 +191,7 @@ After accepting the certificate your Site will be served over ``https``!
 Gotchas
 =======
 
-Along the way there are a few "gotchas" that you should keep in mind to save yourself some headache.
+Along the way there are a few "gotchas" that you should keep in mind to save yourself some headaches.
 
 Installing ``choco``
 --------------------
@@ -208,7 +210,7 @@ Installing the ``dotnetcore-windowshosting`` bundle
 
    As noted in the walkthrough this bundle must be installed **after installing IIS**.
 
-Below are the relevant instructions from the walkthrough to save some time.
+Below are the relevant instructions from the walkthrough.
 
 Installing the .NET hosting bundle:
 
