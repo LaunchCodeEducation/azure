@@ -22,17 +22,10 @@ To accomplish this task we will need to:
 
 In the following Studio you will then update your Coding Events API source code to integrate with AADB2C and deploy it. Then you will use Postman and an access token to make authorized requests to the final version of the API.
 
-Set Up Postman
-==============
-
-This walkthrough will require working in both the Azure Portal on AADB2C as well as Postman to configure its requests for access tokens. We will begin by setting up Postman before switching to the Azure Portal.
-
-After the initial setup each of the subsequent steps will require you to switch between your browser and Postman to copy values from the Azure Portal into Postman.
-
 The Final Coding Events API Version
------------------------------------
+===================================
 
-The final branch of the Coding Events API includes many additions to the code base. Beyond the AADB2C integration, the update supports **Role Based Access Control (RBAC)** and **Attribute Based Access Control (ABAC)**. These industry terms describe patterns that are used for organizing logical rules that enforce **authorization**. 
+The final branch of the Coding Events API includes many additions to the code base. Beyond the AADB2C integration, the update supports **Role Based Access Control (RBAC)** and **Attribute Based Access Control (ABAC)**. These industry terms describe patterns that are used for organizing logical rules which enforce **authorization**. 
 
 .. admonition:: Tip
 
@@ -40,12 +33,28 @@ The final branch of the Coding Events API includes many additions to the code ba
 
 This version of the Coding Events API includes logic that restricts access to resources based on the following:
 
-- **Roles**: ``Public User``, ``Authenticated User``, ``Member``, ``Owner``
-- **Attributes**: ``Coding Event Membership``, ``Coding Event Ownership``
+- **Roles**: ``Public User`` (*anonymous*), ``Authenticated User``
+- **Attributes**: ``Coding Event Membership``, ``Coding Event Ownership`` 
 
 In addition to this authorization logic and the ``CodingEvent`` resource you saw before, the API now includes the ``Member`` and ``Tag`` resources. Because there are many more endpoints available in this version of the API you will find a Postman collection file in the repo that you can import. 
 
-Switch to the ``3-aadb2c`` branch in your forked ``coding-events-api`` repo. In the ``coding-events-api/CodingEventsAPI`` project directory is a Postman collection file called ``Postman_AADB2C-CodingEventsAPI-Collection.json``. Let's import this file into Postman.
+In the final branch of the API (``3-aadb2c``) the ``coding-events-api/CodingEventsAPI`` project directory contains the Postman collection file called ``Postman_AADB2C-CodingEventsAPI-Collection.json``. In the next step we will import this file into Postman.
+
+Set Up Postman
+==============
+
+This walkthrough will require working in both the Azure Portal on AADB2C as well as Postman to configure its requests for access tokens. We will begin by setting up Postman before switching to the Azure Portal.
+
+.. admonition:: Note
+
+  After this initial setup each of the subsequent steps will require you to switch between your browser and Postman to copy values from the Azure Portal into Postman.
+
+Import the Coding Events API Collection
+---------------------------------------
+
+.. admonition:: Warning
+
+  Make sure you switch to the ``3-aadb2c`` branch in your forked ``coding-events-api`` repo before continuing.
 
 Open Postman and select the **Import** button (next to **New**):
 
@@ -74,30 +83,32 @@ From the edit collection modal select the **Authorization** tab:
 
 In addition to the endpoints and organizing directories, this imported collection comes with many of the Authorization settings pre-configured for you. From this tab you can see it has already been configured to use OAuth for getting an access token. After getting the access token it will be automatically sent in the ``Authorization`` request header for every request made within the collection.
 
-The ``Bearer`` prefix will be used to indicate that Postman is the *bearer of a token that authorizes its requests* for interacting with the API *on behalf of its* **sub**\ject, the AADB2C user it was created for. The updated API then extracts and validates this token before processing the request using its RBAC and ABAC rules.
+The ``Bearer`` prefix will be used to indicate that Postman is the *bearer of a token that authorizes its requests* for interacting with the API *on behalf of its* **sub**\ject, the AADB2C user who authorized it. The updated API then extracts and validates this token before processing the request using its RBAC and ABAC rules.
+
+Configure the Access Token Request Form
+---------------------------------------
 
 Selecting the **Get New Access Token** button will open a modal with a form for configuring the access token request:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/6fill-out-form.png
    :alt: Postman Authorization get new access token button
 
-This form allows you to define all of the information needed to request an access token. At this point it is populated with example entries for the AADB2C access token request.
+This form allows you to define all of the information needed to request an access token. At this point it is empty but you can configure the first field:
 
-.. admonition:: Warning
+- **Token Name**: ``access token``
 
-  The **Grant Type** field should be set to ``Implicit``. This should be the default but if it is not then you will need to update it.
+Throughout this walkthrough we will configure this form so Postman can request access tokens from our AADB2C service. By the end of the walkthrough you will have updated the following fields:
 
-In the following AADB2C configuration sections **you will replace these entries** with the values for your own tenant. You will need to update the following fields:
+- **Grant Type**: ``Implicit`` (since we will be using the implicit grant flow)
+- **Callback URL**: the *redirect URI* where the token will be sent after authorization
+- **Auth URL**: the URL of the authorization endpoint for the SUSI User Flow policy we created before
+- **Client ID**: the ID of the new Postman client application we will be registering (the *authorized party*, or bearer, of the access token)
+- **Scope**: the ``user_impersonation`` scope exposed by the registered Coding Events API application
+- **State**: an unguessable value used as an additional security measure (discussed later)
 
-- **Auth URL**: the **authorization URL** for the SUSI User Flow policy we created before
-- **Client ID**: the ID of the new Postman client application we will be registering with AADB2C in this walkthrough (the *authorized party*, or bearer, of the access token)
-- **Scope**: the ``user_impersonation`` scope exposed by the registered Coding Events API
+.. admonition:: Note
 
-.. admonition:: Warning
-
-   **Do not modify any other settings besides those listed in the instructions**. 
-
-Leave this form open in Postman and switch over to the Azure Portal.
+  Leave this form open in Postman and switch over to the Azure Portal in your browser.
 
 Protect the Coding Events API
 =============================
@@ -106,20 +117,10 @@ In this step we will configure AADB2C to protect our API. We will be setting up 
 
 First navigate to your AADB2C tenant directory. Then select the Coding Events API under **App Registrations**.
 
-.. Copy the API Client ID
-.. ----------------------
+Expose a ``user_impersonation`` Scope for the API
+-------------------------------------------------
 
-.. From the Coding Events API application dashboard copy the **client ID**:
-
-.. .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/1set-api-scopes.png
-..    :alt: AADB2C expose an API
-
-.. Switch back to Postman and **replace the client ID field** with the copied value.
-
-Expose a user_impersonation Scope for the API
----------------------------------------------
-
-Next select the **Expose an API** settings from the left panel. From this view we can expose controlled access to our API using scopes.
+From the Coding Events API application dashboard select the **Expose an API** settings from the left panel. From this view we can create and *expose* scopes used for restricting access to our API.
 
 Select the **Add a scope** button:
 
@@ -196,9 +197,25 @@ Configure Authentication
 
 We will now configure the Postman application to use the **OAuth implicit flow** and set the redirect URI. On the left sidebar select the **Authentication** settings.
 
+Configure the Redirect URI
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 In the **Web - Redirect URIs** add a new entry under the existing one. Select **add URI** and paste in the following value which Postman uses for handling OAuth redirects:
 
 - ``https://www.postman.com/oauth2/callback``
+
+As a reminder, this is where a user will be redirected after authenticating with AADB2C. When using the implicit flow the token(s) will be present as query string parameters attached to this URI. 
+
+Switch back to Postman and **replace the Callback URL field** with this value.
+
+.. admonition:: Warning
+
+   Before continuing make sure you have updated the Postman form:
+
+   - **Callback URL** field: ``https://www.postman.com/oauth2/callback``
+
+Configure Implicit Flow
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Then scroll down to the **Implicit grant** section and, just as before, select the checkboxes **for both**:
 
@@ -209,6 +226,14 @@ Check that your configuration matches the picture below then select **Save**:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/5-2postman-authentication-configuration-complete.png
    :alt: Postman Authentication configuration completed view
+
+Switch back to Postman and **update the Grant Type field** to reflect this configuration.
+
+.. admonition:: Warning
+
+   Before continuing make sure you have updated the Postman form:
+
+   - **Grant Type** field: select ``Implicit`` (the grant type used by the registered Postman application)
 
 Grant Admin Permissions for Using the Scope
 -------------------------------------------
@@ -243,8 +268,6 @@ After confirming your decision your configuration should match the image below.
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/11admin-grant-success.png
    :alt: granted admin permission success
-
-.. If it does not match, you may need to select the **Refresh** button in the top corner after confirmation or refresh the page entirely.
 
 Test the User Flow for Access Tokens
 ====================================
@@ -367,6 +390,8 @@ Typically this parameter is used to store the state of a user on a site (like a 
 
 Before issuing the request check that you have updated all of the following fields:
 
+- **Token Name**: ``access token``
+- **Grant Type**: ``Implicit``
 - **Callback URL**: ``https://www.postman.com/oauth2/callback``
 - **Auth URL**: the ``authorization_endpoint`` from the JSON metadata document
 - **Client ID**: your client application identifier from the registered Postman application dashboard
@@ -375,9 +400,14 @@ Before issuing the request check that you have updated all of the following fiel
 
 .. admonition:: Warning
 
-   Make sure you have left the defaults for the remaining fields and that you **do not select** the option to **authorize using browser**.
+   Leave the defaults for the remaining fields. Make sure that:
+   
+   - you **do not select** the checkbox option to authorize using the browser (under Callback URL)
+   - the **Client Authentication** remains as ``Send as Basic Auth header``
 
-If everything has been updated properly you are ready to request your first access token! Select the **Request Token** button. This will open a popup to authenticate with your AADB2C tenant. As a reminder your password should be:
+If everything has been updated properly you are ready to request your first access token! Select the **Request Token** button. 
+
+This will open a popup to authenticate with your AADB2C tenant. As a reminder your password should be:
 
 - ``LaunchCode-@zure1``
 
@@ -401,12 +431,12 @@ Replacing an Expired Access Token
 
 As a reminder **you will need to request a new access token after one hour due to its expiration**. If a request fails during the studio it will likely be due to an expired token. 
 
-Postman can detect when a token is expired and will cross it out in the tokens list when it can no longer be used. These tokens can be discarded using the **trash icon** next to them:
+Postman can detect when a token is expired and will cross it out in the tokens list when it can no longer be used. These tokens can be discarded using the **Delete** menu or the **trash icon** when hovering over them:
 
 .. image:: /_static/images/intro-oauth-with-aadb2c/walkthrough_aadb2c-access/postman/11postman-expired-token.png
    :alt: Postman expired token
 
-However, now that you have everything configured it will be a quick process to request a new access token:
+Fortunately now that you have everything configured it will be a quick process to request a new access token:
 
 #. open the collection settings (three dots next to the collection name)
 #. switch to the **Authorization tab** and select **Get New Access Token**
