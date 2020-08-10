@@ -29,7 +29,7 @@ Your Tasks
 Fork & Clone
 ------------
 
-Fork and clone the VM Bash configuration scripts and practice resources `repository <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>`_.
+Fork and clone the `powershell-az-cli-scripting-deployment <https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment>`_ repository.
 
 Complete the Provision Resources Script
 ---------------------------------------

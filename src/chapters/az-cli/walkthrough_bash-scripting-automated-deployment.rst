@@ -1,12 +1,16 @@
-==========================================================
-Walkthrough: Exploring an Automated Deployment Bash Script
-==========================================================
+================================================
+Exploration: an Automated Deployment Bash Script
+================================================
+
+.. admonition:: Warning
+
+   Do not run this script! You will be writing your own automated deployment script in a future chapter. So it is in your interest to understand what this script is doing, but we do not recommend running it because there are a few extra steps when using the Azure CLI when working with WSL that are not included in this article.
 
 A huge benefit of using the Azure CLI from a shell terminal is that we can bundle many commands together in a script. In this walkthrough, we will explore a Bash script that does a complete deployment using the Azure CLI.
 
 The deployment Bash scripts will be used to:
 
-#. Provision resources 
+#. Provision resources
 #. Configure resources
 #. Deliver source code
 #. Deploy source code
@@ -18,7 +22,7 @@ To orient ourselves, let's take a look at the entry point script, ``provision-re
 
 .. admonition:: Note
 
-   Recall that the Azure CLI is cross-platform, so its CLI commands should work the same regardless of the underlying operating system. Although this script is a Bash script, our PowerShell script will look very similar.
+   Recall that the Azure CLI is cross-platform, so its CLI commands should work the same regardless of the underlying operating system. Although this script is a Bash script, a PowerShell script will look very similar.
 
 Provision Resources Script
 ==========================
@@ -28,7 +32,7 @@ Provision Resources Script Steps
 
 This script does quite a few things. Most of them are related to our Azure resources:
 
-#. Ceclare variables
+#. Declare variables
 #. Configure the default location
 #. Provision resource group
 #. Configure the default resource group
@@ -45,16 +49,16 @@ This script does quite a few things. Most of them are related to our Azure resou
 Script Goal
 -----------
 
-This script is responsible for setting up and configuring the resources with the Azure CLI. 
+This script is responsible for setting up and configuring the resources using the Azure CLI. 
 
-Take note of the second-to-last step in the list: "Send three separate Bash scripts to the vm using ``az vm run-command invoke``". It is passing three additional Bash scripts to be run by the VM. 
+Take note of the second-to-last step in the list: "Send three separate Bash scripts to the vm using ``az vm run-command invoke``". It is passing three additional Bash scripts to be run by the VM using the RunCommand tool we worked with in the Azure Portal.
 
-We need to do this because we have additional VM configuration steps that we cannot accomplish with just the Azure CLI. However, we can access ``RunCommand`` from the Azure CLI which allows us to run any additional scripts on the VM that we need to.
+We need to do this because we have additional VM configuration steps that we cannot accomplish with just the Azure CLI. However, we can access ``RunCommand`` from the Azure CLI which allows us to run any additional scripts on the VM that are needed.
 
 Provision Resources Script
 --------------------------
 
-Let's take a look at the script, and then talk about what it's doing:
+Let's take a look at the script and then talk about what it's doing:
 
 .. sourcecode:: bash
 
@@ -185,12 +189,12 @@ All of the name variables use the underlying ``student_name`` variable to create
 
 .. admonition:: tip
 
-   You will need to know your Azure Key Vault name, as you will need to include it in the ``appsettings.json`` of your source code.
+   For this script to work the deployed Azure Key Vault name is needed to adequately fill out the ``appsettings.json`` file.
 
 Provision Resource Group
 ------------------------
 
-After our variables, we start provisioning our Azure resources using the Azure CLI. 
+After our variables we start provisioning our Azure resources using the Azure CLI. 
 
 .. sourcecode:: bash
    :caption: ``provision-resources.sh``: Provision resource group
@@ -204,9 +208,9 @@ Provision Virtual Machine
 
 After the resource group we have some flexibility. 
 
-We could spin up the Key Vault or virtual machine first, however consider the dependencies of these resources. We will eventually need to set an access policy on our Key Vault that includes information about our virtual machine. 
+We could spin up the Key Vault or Virtual Machine first, however consider the dependencies of these resources. We will eventually need to set an access policy on our Key Vault that includes information about our Virtual Machine. 
 
-For this reason, it makes more sense to provision the virtual machine first, since our Key Vault will need some information about our virtual machine.
+For this reason, it makes more sense to provision the Virtual Machine first.
 
 .. sourcecode:: bash
    :caption: ``provision-resources.sh``: Provision VM and store response in vm_data
@@ -221,7 +225,7 @@ For this reason, it makes more sense to provision the virtual machine first, sin
 Capture Virtual Machine's System Assigned Identity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Upon creating our virtual machine, we store the output from the command in a Bash variable. We do this because we are going to do some Bash scripting to extract the information we need:
+Upon creating our virtual machine, we store the output from the command in a Bash variable. We do this because we are going to do some Bash scripting to extract some information:
 
 - The virtual machine system-managed identity
 - The virtual machine public IP address
@@ -255,12 +259,12 @@ Our application hasn't been deployed yet, but let's go ahead and open the HTTPS 
 
 .. admonition:: tip
 
-   Creating the NSG for our VM that contains the proper port is an easy thing to forget to do, so we are opening it while we are working with our VM.
+   Creating the NSG for our VM that contains the proper port is an easy thing to forget to do, so we are opening it while we are working with our VM. If an appropriate NSG inbound rule is not created users will receive a **connection timeout** when attempting to access our API.
 
 Provision Key Vault
 -------------------
 
-We now have a VM and all other information we need to create an access policy for a Key Vault. So let's should provision one now.
+We now have a VM and all the information we need to create an access policy for a Key Vault. So let's provision a Key Vault:
 
 .. sourcecode:: bash
    :caption: ``provision-resources.sh``: Provision Key Vault
@@ -291,7 +295,7 @@ The database connection string secret needs:
 Set Key Vault Access Policy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Finally, we use the variable we created earlier that contains the VM system-assigned identity to create an access policy that grants the VM permission to *get* secrets stored in the Key Vault.
+Finally, we use the variable we created earlier that contains the VM system-assigned identity to create an access policy that grants the VM permission to *list* and *get* secrets stored in the Key Vault.
 
 .. sourcecode:: bash
    :caption: ``provision-resources.sh``: Create Key Vault access policy for VM
@@ -312,27 +316,31 @@ The VM still needs:
 - Source code
 - Deployed application
 
-We will accomplish these final steps by using the provided scripts and the ``az vm run-command invoke`` command.
+To accomplish these final steps additional Bash scripts will be sent to the VM using the ``az vm run-command invoke`` command.
 
 .. sourcecode:: bash
    :caption: ``provision-resources.sh``: Send (and invoke) configure scripts to VM
 
    az vm run-command invoke --command-id RunShellScript --scripts @configure-vm.sh, @configure-ssl.sh, @deliver-deploy.sh
 
-These bash scripts are provided for you, however you should look over them and read the comments that describe what they are doing. Many of the tasks they accomplish go beyond the scope of this course, but are a necessary part of this deployment.
+When you are writing your own automated deployment script, in a future chapter, these bash scripts will be provided for you.
+ 
+However you should look over them and read the comments that describe what they are doing. Many of the tasks they accomplish go beyond the scope of this course, but are a necessary part of this deployment.
 
 .. admonition:: Warning
 
-   The ``deliver-deploy.sh`` script clones your project repository and then switches to a specific branch. 
+   The ``deliver-deploy.sh`` script clones a project repository and then switches to a specific branch. 
    
-   *You are responsible for creating this branch and pushing the appropriate code*. 
+   When you are writing this automation script in a future lesson:
+
+   *You will be responsible for creating this branch and pushing the appropriate code*. 
    
    You will need to update the ``appsettings.json`` file in this branch to include your Key Vault name and AADB2C information. You will need to push to this branch before running the ``deliver-deploy.sh`` script!
 
 Print Public IP Address to STDOUT
 ---------------------------------
 
-As a final step, we print the public IP address to the console. This shows us exactly where to access our deployed application.
+As a final step, the script prints the public IP address to the console. This shows exactly where to access the deployed application.
 
 .. sourcecode:: bash
    :caption: ``provision-resources.sh``: Print out VM public IP address
@@ -434,7 +442,7 @@ The ``deliver-deploy.sh`` script has a couple of variables that need to be set b
 
 This final script needs to know the GitHub user account name and repository that contains the source code to be deployed.
 
-The middle section does some VM operations work, namely creating directories, granting privileges to those directories, and creating a Systemd unit file we will use to deploy our application.
+The middle section does some VM operations work, namely creating directories, granting privileges to those directories, and creating a Systemd unit file that will be used to deploy the application.
 
 .. admonition:: note
 
