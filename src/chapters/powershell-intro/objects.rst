@@ -2,22 +2,29 @@
 Working With Objects
 ====================
 
-The outputs of the FS cmdlets looked just like the strings we saw in Bash. However, recall that *everything is an object* in Windows and PowerShell. Although the Shell may format the way they are displayed, all of the outputs from PowerShell commands are in fact objects! 
+The outputs of the file system cmdlets appeared to be just like the strings we saw in Bash. However, recall that *everything is an object* in Windows and PowerShell. Although the shell may format the way they are displayed, all of the outputs from PowerShell commands are in fact objects! 
 
-For example, when working with many of the FS commands, most of the outputs will be `Directory <https://docs.microsoft.com/en-us/dotnet/api/system.io.directory?view=netcore-3.1>`_, `File <https://docs.microsoft.com/en-us/dotnet/api/system.io.file?view=netcore-3.1>`_ or `String (File contents) <https://docs.microsoft.com/en-us/dotnet/api/system.string?view=netcore-3.1>`_ object types.
+For example, when working with many of the commands, most of the outputs will be `Directory <https://docs.microsoft.com/en-us/dotnet/api/system.io.directory?view=netcore-3.1>`_, `File <https://docs.microsoft.com/en-us/dotnet/api/system.io.file?view=netcore-3.1>`_ or `String (File contents) <https://docs.microsoft.com/en-us/dotnet/api/system.string?view=netcore-3.1>`_ object types.
  
-Objects are more *tangible* than a flat string of characters and bring a new level of depth and efficiency when working from the command-line with PowerShell. They hold properties for quick-access to metadata and expose methods for common tasks that would require a pipeline of commands to perform in Bash. 
+Objects are more *tangible* than a flat string of characters and bring a new level of depth and efficiency when working from the command-line with PowerShell. They hold properties for quick access to metadata, and they expose methods for common tasks that would require a pipeline of commands to perform in Bash. 
 
 Properties & Methods
 --------------------
 
-PowerShell is part of the .NET family of `CLS-compliant languages <https://docs.microsoft.com/en-us/dotnet/standard/common-type-system>`_. As a member of the Common Language System PowerShell is able to access the full suite of .NET `class libraries <https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview>`_. 
+.. index:: ! CLS
 
-The .NET standard library is separated into different **namespaces** which are like modules of related classes.  The root namespace called the `System namespace <https://docs.microsoft.com/en-us/dotnet/api/system?view=netcore-3.1>`_ contains the base class definitions for fundamental object types like ``Strings`` or ``Arrays``.
+PowerShell is part of the .NET family of `CLS-compliant languages <https://docs.microsoft.com/en-us/dotnet/standard/common-type-system>`_. As a member of the Common Language System, PowerShell is able to access the full suite of .NET `class libraries <https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview>`_. 
 
-Because PowerShell and C# are both CLS-compliant languages you will find a lot of cross-over between how they are used. Despite some syntactical differences, in both languages properties and methods can be accessed in the same way you are familiar with -- using dot notation.
+.. index:: ! namespace
 
-Accessing a property
+.. index:: 
+   :single: namespace; System
+
+The .NET standard library is separated into different **namespaces** which are like modules of related classes.  The root namespace, called the `System namespace <https://docs.microsoft.com/en-us/dotnet/api/system?view=netcore-3.1>`_, contains the base class definitions for fundamental object types like ``Strings`` or ``Arrays``.
+
+Because PowerShell and C# are both CLS-compliant languages you will find a lot of similarities between how they are used. Despite some syntactical differences, in both languages properties and methods can be accessed in the same way you are familiar with, using dot notation.
+
+Accessing a Property
 --------------------
 
 Let's consider one of the simplest object types, those belonging to the ``String`` `class <https://docs.microsoft.com/en-us/dotnet/api/system.string?view=netcore-3.1>`_. Strings have a ``Length`` property that can be accessed like this:
@@ -35,12 +42,12 @@ The equivalent in Bash requires piping through multiple commands:
 
    $ echo "dot notation works!" | wc -l
 
-Calling a method
+Calling a Method
 ----------------
 
 We can invoke an object's method in PowerShell the same way as we would in C#. 
 
-In the following example we will access the ``getType()`` method attached to a ``String`` object. The ``getType()`` method shows details about the object it is called on.
+In the following example, we will access the ``getType()`` method attached to a ``String`` object. The ``getType()`` method shows details about the object it is called on.
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -53,14 +60,14 @@ In the following example we will access the ``getType()`` method attached to a `
 
 .. admonition:: Note
 
-   You can call ``getType()`` on any object in PowerShell. Like in C# every object extends the .NET ``System.Object`` class that provides the base implementation of ``getType()``. 
+   You can call ``getType()`` on any object in PowerShell. As in C#, every object extends the .NET ``System.Object`` class which provides the base implementation of ``getType()``. 
 
-While ``getType()`` can give you the type of an object how can we discover the other type-specific methods and properties that an object has? There is another useful tool built into PowerShell for just this use case.
+While ``getType()`` can give you the type of an object, how might we discover the other type-specific methods and properties that an object has? There is another useful tool built into PowerShell for just this use case.
 
-Discovering methods and properties
+Discovering Methods and Properties
 ----------------------------------
 
-In the following example we use the ``Get-Member`` cmdlet to access the properties and methods of any given object in PowerShell.
+In the following example, we use the ``Get-Member`` cmdlet to access the properties and methods of any given object in PowerShell.
 
 .. sourcecode:: powershell
    :caption: Windows/PowerShell
@@ -86,7 +93,7 @@ Let's use this pattern to view the available properties and methods of a common 
    Length               Property              int Length {get;}
 
 
-Looking at the output we can see many things including a property name ``Length`` and the handy ``String`` methods ``Split()``, ``Substring()``, ``IndexOf()`` among the others.
+Looking at the output, we can see many things including a property name ``Length`` and the handy ``String`` methods ``Split()``, ``Substring()``, ``IndexOf()`` among the others.
 
 .. todo:: too deep for now, keep for later if needed
 
@@ -118,7 +125,7 @@ Looking at the output we can see many things including a property name ``Length`
 
    Between the object ``getType()`` method and the ``Get-Member`` cmdlet you can discover all of the details about the objects you are working with. Knowing the type and capabilities of an object that cmdlets accept as inputs and produce as outputs will help you when writing more advanced commands and scripts.
    
-   For someone new to PowerShell these are invaluable tools that you should use regularly to familiarize 
+   For someone new to PowerShell, these are invaluable tools that you should use regularly to familiarize yourself with objects you are working with.
 
 .. Chaining Methods & Properties
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

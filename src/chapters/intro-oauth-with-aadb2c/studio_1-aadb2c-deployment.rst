@@ -301,7 +301,7 @@ Gotchas
 =======
 
 Expired or Missing Access Token
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------
 
 If your request fails due to a missing access token you will, expectedly, receive a ``401`` (failed authentication) response:
 
@@ -316,7 +316,7 @@ Similarly if your access token has expired you will receive a ``401`` response i
 Refer to your notes or the previous walkthrough for a solution to this issue.
 
 Incorrect Configuration in ``appsettings.json``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------------------
 
 The JWT authentication middleware is fickle. As it should be -- there is no margin for error in the security space of a project. In addition to the JWT settings the API will crash if the Key vault and origin values are not configured correctly. 
 
@@ -328,7 +328,7 @@ Make sure that all of the following fields are updated before deploying the API:
 - ``JWTOptions:MetadataAddress``: available in the AADB2C tenant, updated in the local steps
 
 Opening the Correct Port
-^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------
 
 For this deployment the API will be served over ``https``. For security reasons AADB2C does not support authentication over insecure connections. You will need to open the correct port for your deployed API to function properly.
 
