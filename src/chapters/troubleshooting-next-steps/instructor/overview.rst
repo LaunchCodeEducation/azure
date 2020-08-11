@@ -1,6 +1,6 @@
-===========================
-Instructors & TAs: Overview
-===========================
+====================================
+Instructors & TAs: Overview of Steps
+====================================
 
 There are internal and student steps. The list below is all the steps combined and the order they should take place in.
 
@@ -12,16 +12,6 @@ There are internal and student steps. The list below is all the steps combined a
    - 15 minutes for student setup and confirmation
    - 1.5-2 hours for the group troubleshooting
    - 20-30 minutes for instructor solution walkthrough
-
-Overview of Issues
-==================
-
-#. **connection timeout**: VM is not running
-#. **connection timeout**: NSG inbound rule for port 443 is missing
-#. **connection refused**: NGINX service is down
-#. **502 bad gateway**: MySQL service is down
-#. **502 bad gateway**: ``appsettings.json`` doesn't contain the correct KV name
-#. **502 bad gateway**: VM not granted access to KV
 
 Before Walkthrough: Instructor & TAs
 ====================================
