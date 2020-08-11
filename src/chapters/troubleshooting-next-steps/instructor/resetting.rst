@@ -1,6 +1,6 @@
-==========================
-Instructor & TAs Resetting
-==========================
+===========================
+Instructor & TAs: Resetting
+===========================
 
 Reset the Broken Deployment
 ===========================
