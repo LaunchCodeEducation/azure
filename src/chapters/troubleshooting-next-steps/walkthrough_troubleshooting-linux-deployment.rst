@@ -429,7 +429,7 @@ Final Mission
 If you and your group are able to fix the deployment you will be able to load the Swagger documentation at the public IP of the host machine. At this point the API will be fully functional and you can complete your final mission using Postman:
 
 - Create an account in the AADB2C tenant to get an access token
-- Join the coding event with an ID of ``1`` and read its description!
+- Create a coding event and read its description
 
 Resetting the AZ CLI
 ====================
