@@ -16,6 +16,7 @@ Chapters
    chapters/az-cli/index
    chapters/powershell-intro/index
    chapters/ws-iis/index
+   chapters/troubleshooting-next-steps/index
 
 .. toctree::
 
