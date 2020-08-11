@@ -188,7 +188,7 @@ Trial and error is a valid research strategy when the above methods don't provid
 
 .. admonition:: Warning
 
-   You should never resort to trial and error when working with a live environment or data set.
+   You should only resort to trial and error when working with a live environment or data set as a last resort.
 
 Create a Mental Model of the System
 ===================================
@@ -290,20 +290,20 @@ Troubleshooting Checklist
 Using our general troubleshooting questions and our Coding Events API mental model we have started a troubleshooting checklist for this specific deployment (take note it is not complete and you will be expanding on this in the upcoming walkthrough and throughout the rest of your career):
 
 Networking issues
-^^^^^^^^^^^^^^^^^
+-----------------
 
 - Do I have the proper NSG rules?
 - Are all of my services on the same network?
 
 Service Issues
-^^^^^^^^^^^^^^
+--------------
 
 - Are my external services up and running?
 - Have my services been configured correctly?
 - Do my services have the proper level of authorization to access each other?
 
 Host Issues
-^^^^^^^^^^^
+-----------
 
 - Are the proper dependencies fully installed?
 - Are my internal services running?
@@ -313,7 +313,7 @@ Host Issues
 - Are the configuration files configured properly?
 
 Troubleshooting Checklist Final Thoughts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------------
 
 Using a troubleshooting checklist in combination with the steps of troubleshooting can provide you with the information necessary to solve a problem.
 
