@@ -23,13 +23,13 @@ This process can seem daunting because it involves *researching information you 
 
 In this article we will discuss:
 
-- Common issues across web deployments and common HTTP status codes to be look out for
+- Common issues across web deployments and common HTTP status codes to look out for
 - Researching strategies
 - Creating a Coding Events API deployment mental model
 - Creating questions from the mental model
 - Creating a Coding Events API deployment troubleshooting checklist from our questions and mental model
 - How to effectively communicate an issue and the troubleshooting process
-- Troubleshooting tools we may use to troubleshoot the Coding Events API
+- Troubleshooting tools we may use to troubleshoot the Coding Events API in our walkthrough
 
 .. build a mental model of the system to come up with potential causes of issues
 .. build a troubleshooting checklist to assist in discovering potential causes of issues
@@ -180,9 +180,15 @@ To further your insight into potential causes of issues take some time to sketch
 Trial and Error
 ---------------
 
-Finally, as a last ditch effort, you can use trial and error. If you are completely lost you can try to make an educated guess into what the issue is, make a small change that should affect the issue and see if the results change. 
+As a final suggestion for researching you can use trial and error. Trial and error is the processing of making an educated guess of the root cause of an issue and making a small change related to that guess.
 
-This should be used as a last case resort because every change made to the initial state of the system can move you further away from identifying a potential cause. The change may also introduce a new issue that you may waste time on resolving when it is in no way related to the underlying root cause.
+Trial and error can be tricky because every change made to the state must be recorded, if you aren't certain your guess is correct you should record the change that you made. If your guess is incorrect you may need to revert the change to reset the deployment to its initial state.
+
+Trial and error is a valid research strategy when the above methods don't provide you with the information you need to resolve the issue. However, trial and error should be approached with care unless you are in a controlled environment like an education environment (this class), or a personal environment.
+
+.. admonition:: Warning
+
+   You should never resort to trial and error when working with a live environment or data set.
 
 Create a Mental Model of the System
 ===================================
@@ -281,7 +287,7 @@ You can then create a troubleshooting checklist of possible solutions based on t
 Troubleshooting Checklist
 =========================
 
-Using our general troubleshooting question and our Coding Events API mental model we can create a troubleshooting checklist for this specific deployment:
+Using our general troubleshooting questions and our Coding Events API mental model we have started a troubleshooting checklist for this specific deployment (take note it is not complete and you will be expanding on this in the upcoming walkthrough and throughout the rest of your career):
 
 Networking issues
 ^^^^^^^^^^^^^^^^^
@@ -292,18 +298,18 @@ Networking issues
 Service Issues
 ^^^^^^^^^^^^^^
 
-- Are my external services up and running (AADB2C and Key Vault)?
-- Have my services been configured correctly (Key Vault has the correct secret)?
-- Do my services have the proper level of authorization to access each other (Key Vault access policy)?
+- Are my external services up and running?
+- Have my services been configured correctly?
+- Do my services have the proper level of authorization to access each other?
 
 Host Issues
 ^^^^^^^^^^^
 
 - Are the proper dependencies fully installed?
-- Are my internal services running (web server, API, MySQL)?
+- Are my internal services running?
 - Are my internal services configured properly?
-- Are there any errors in the logs of the API (``journalctl -u coding-events-api``)?
-- Does the application use any configuration files (``appsettings.json``)?
+- Are there any errors in the logs of the API?
+- Does the application use any configuration files?
 - Are the configuration files configured properly?
 
 Troubleshooting Checklist Final Thoughts
@@ -315,7 +321,7 @@ Remember that resolving one issue can bring a new issue to the surface. Seeing a
 
 The most effective way to build your skills in troubleshooting is by practicing troubleshooting. Each time you solve a new issue you will learn a new solution and you will increase your ability to research issues. 
 
-A very beneficial thing to do is to build your own troubleshooting checklist. The questions above give a good introduction for a starter checklist, as you continue to learn more about Operations continue adding to the checklist with your new experiences.
+A very beneficial thing to do is to build **your own troubleshooting checklist**. The questions above give a good introduction for a starter checklist, as you continue to learn more about Operations continue adding to the checklist with your new experiences.
 
 Communicate the Issue
 =====================
@@ -330,22 +336,17 @@ Communicating the issue is a simple as defining each part of the troubleshooting
 
 You will find communicating is not only a powerful tool for reporting to superiors, but is a beneficial tool when building a mental model of the system, and when researching potential causes by talking to coworkers.
 
-Troubleshooting Tools for the Coding Events API
-===============================================
+Troubleshooting Tools
+=====================
 
-The tools you will use for troubleshooting vary. Sometimes you are locked in to a set of troubleshooting tools based on the tech stack of your deployment. For example if you are using Windows Server and have a personal Windows operating system the troubleshooting tools will be slightly different than if you were deploying to an Ubuntu server and have a personal MacOS.
+The tools you will use for troubleshooting vary. Sometimes you are locked in to a set of troubleshooting tools based on the tech stack of your deployment. For example if you are using Windows Server and have a personal Windows operating system the troubleshooting tools will be slightly different than if you were deploying to an Ubuntu server and have a personal MacOS. 
 
-Tool preference will also vary across teams and individuals. You may be more experienced with different tools than your fellow coworkers, and you may adopt using a specific tool because the greater team has a preference for that tool.
+.. admonition:: Note
 
-In the upcoming walkthrough we will be using and explaining these tools:
+   In some instances you will use multiple sets of troubleshooting tools. 
+   
+   Consider the Coding Events API deployed to an Ubuntu Virtual Machine. If you need to access a tool internal to the VM you are locked in to the tools that are usable with Ubuntu. Whereas your personal computer may have access to a completely different set of tools.
 
-- ``ssh``: to connect to a remote Linux virtual machine
-- ``cat`` or ``less``: to inspect configuration files
-- ``service``: to view the status of the services
-- ``journalctl``: to view log outputs
-- ``curl``: to make network requests from inside the Ubuntu machine
-- ``az CLI``: for information about each resource component (or the Azure web portal)
-- ``browser dev tools``: to inspect response behavior in the browser
-- ``Invoke-RestMethod``: to make network requests from your Windows development machine
+Tool preference will also vary across teams and individuals. You may have a personal preference for one tool, but choose to work with a different tool to match the preference of your team. You will experience new tools as you advance throughout your career. Learning the preferred tools is one of the first tasks you should accomplish when joining a new team.
 
-You may have experience with other tools or you may discover new tools as you research to troubleshoot issues in the upcoming walkthrough. Part of being a successful troubleshooter is the ability to learn and effectively use troubleshooting tools.
+In the upcoming walkthrough we will introduce a variety of tools that can be used throughout the troubleshooting process of the Coding Events API. Part of being a successful troubleshooter is the ability to learn and effectively use new troubleshooting tools. Feel free to share any other tools that would be helpful with your fellow group mates.
