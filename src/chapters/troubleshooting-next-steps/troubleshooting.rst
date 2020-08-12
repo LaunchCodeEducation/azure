@@ -624,8 +624,8 @@ Isolate & Resolve the Issue
 ===========================
 
 - even if you cant resolve just going through the previous steps can go a long way in helping towards the resolution
-  - pass off to a more senior member who will praise you for your effort
-    - you are saving their expert time from doing preliminary steps
+   - pass off to a more senior member who will praise you for your effort
+      - you are saving their expert time from doing preliminary steps
 
 Troubleshooting Tools
 =====================
