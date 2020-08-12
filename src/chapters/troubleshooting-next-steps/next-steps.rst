@@ -29,9 +29,12 @@ Managed Databases
 -----------------
 
 - review of learned / related
-  - so far used an embedded db
-    - why not a good idea
-    - when its appropriate?
+
+   - so far used an embedded db
+   - why not a good idea
+
+      - when its appropriate?
+
 - key points
 - links
 
@@ -42,8 +45,11 @@ CI/CD
 -----
 
 - review of learned / related
-  - worked on automated deployment scripts
-    - actually semi-automatic
+
+   - worked on automated deployment scripts
+
+      - actually semi-automatic
+
 - key points
 - links
 

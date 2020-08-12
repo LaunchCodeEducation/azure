@@ -27,12 +27,11 @@ Chapters
 
    index-full
    chapters/bash-intro/piping
-   chapters/authorization-and-next-steps/index
-   chapters/authorization-and-next-steps/studio
-   chapters/authorization-and-next-steps/walkthrough
    chapters/hosting/studio
    chapters/intro-oauth-with-aadb2c/labs-setup
    chapters/powershell-intro/instructor/index
-   chapters/powershell-intro/instructor/studio_rest-powershell-scripting
    chapters/secrets-and-backing/least-privileged-access
    chapters/intro-oauth-with-aadb2c/instructor/index
+   chapters/troubleshooting-next-steps/instructor/index
+   chapters/troubleshooting-next-steps/next-steps
+   chapters/troubleshooting-next-steps/troubleshooting
