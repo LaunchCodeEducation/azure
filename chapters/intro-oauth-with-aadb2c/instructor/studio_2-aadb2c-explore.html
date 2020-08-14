@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Instructor Solution Studio Part 2: Explore Authorization With the Deployed API &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Troubleshooting Instructor Solution" href="../../troubleshooting-next-steps/instructor/index.html" />
+    <link rel="prev" title="Instructor Solution Studio Part 1: App Deployment with AADB2C" href="studio_1-aadb2c-deployment.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../../index.html">Contents</a></li>
+    <li><a href="index.html">Instructor Solutions</a></li>
+    <li class="active">Instructor Solution Studio Part 2: Explore Authorization With the Deployed API</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="instructor-solution-studio-part-2-explore-authorization-with-the-deployed-api">
+<h1>Instructor Solution Studio Part 2: Explore Authorization With the Deployed API<a class="headerlink" href="#instructor-solution-studio-part-2-explore-authorization-with-the-deployed-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="join-event">
+<h2>Join Event<a class="headerlink" href="#join-event" title="Permalink to this headline">¶</a></h2>
+<p>prompt: try to join an existing coding event</p>
+<div class="section" id="planning">
+<h3>Planning<a class="headerlink" href="#planning" title="Permalink to this headline">¶</a></h3>
+<p>What is the current state?</p>
+<ul class="simple">
+<li>2 authenticated users (Owner &amp; Member)</li>
+<li>no coding events</li>
+</ul>
+<p>What should the initial state be for this task?</p>
+<ol class="arabic simple">
+<li>1 coding event with an Owner</li>
+<li>1 authenticated user (Member) that is not currently a member of the coding event</li>
+</ol>
+<p>What requests were fired, in what order, and who issued them to achieve the initial state?</p>
+<ol class="arabic simple">
+<li>owner: <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/events/</span></code></li>
+</ol>
+</div>
+<div class="section" id="state">
+<h3>State<a class="headerlink" href="#state" title="Permalink to this headline">¶</a></h3>
+<p>Prompt: try to join an existing coding event</p>
+<ul class="simple">
+<li>what request is used to completed the task?</li>
+</ul>
+<ol class="arabic simple">
+<li>authenticated user (Member): <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/events/{CodingEventsId}/members</span></code></li>
+<li>Owner: <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/events/{CodingEventsId}/members</span></code></li>
+</ol>
+<ul class="simple">
+<li>what is the final state after completing the task?</li>
+</ul>
+<ol class="arabic simple">
+<li>1 coding event with 2 members (Owner &amp; Member)</li>
+</ol>
+</div>
+<div class="section" id="authorization">
+<h3>Authorization<a class="headerlink" href="#authorization" title="Permalink to this headline">¶</a></h3>
+<p>what happened when the authenticated user (Member) tried to join the coding event?</p>
+<ul class="simple">
+<li>status code: 204 No Content</li>
+<li>body: empty</li>
+</ul>
+<p>what happened when the Owner tried to join the coding event?</p>
+<ul class="simple">
+<li>status code: 400</li>
+<li>body: JSON object describing the error</li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">body of Owner request</span><a class="headerlink" href="#id16" title="Permalink to this code">¶</a></div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;https://tools.ietf.org/html/rfc7231#section-6.5.1&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Bad Request&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+   <span class="nt">&quot;traceId&quot;</span><span class="p">:</span> <span class="s2">&quot;|239addd7-409244e32d9104cb.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="add-a-tag-to-a-coding-event">
+<h2>Add a Tag to a Coding Event<a class="headerlink" href="#add-a-tag-to-a-coding-event" title="Permalink to this headline">¶</a></h2>
+<p>prompt: try to add a tag to an existing coding event</p>
+<div class="section" id="id1">
+<h3>Planning<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>What is the current state?</p>
+<ul class="simple">
+<li>1 Coding Event with 2 members (Owner, Member)</li>
+<li>No tags</li>
+</ul>
+<p>What should the initial state be for this task?</p>
+<ol class="arabic simple">
+<li>1 coding event with 2 members</li>
+<li>1 unattached tag</li>
+</ol>
+<p>Steps to achieve initial state:</p>
+<ol class="arabic simple">
+<li>owner: <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/tags</span></code></li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h3>State<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Prompt: try to add a tag to an existing coding event</p>
+<p>What requests were fired, and by who, after achieving the initial state?</p>
+<ol class="arabic simple">
+<li>Member: <code class="docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/api/events/{CodingEventsId}/tags/{tagId}</span></code></li>
+<li>Owner: <code class="docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/api/events/{CodingEventsId}/tags/{tagId}</span></code></li>
+</ol>
+<p>What is the final state after firing these new requests?</p>
+<ol class="arabic simple">
+<li>1 coding event with 2 members and 1 attached tag</li>
+</ol>
+</div>
+<div class="section" id="id3">
+<h3>Authorization<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>What happened when the Member tried to add a tag?</p>
+<ul class="simple">
+<li>status code: 403 Forbidden</li>
+<li>body: Not an owner of the Coding Event</li>
+</ul>
+<p>What happened when the Owner tried to add a tag?</p>
+<ul class="simple">
+<li>status code: 204</li>
+<li>body: No content success</li>
+</ul>
+</div>
+</div>
+<div class="section" id="remove-a-tag-from-a-coding-event">
+<h2>Remove a Tag from a Coding Event<a class="headerlink" href="#remove-a-tag-from-a-coding-event" title="Permalink to this headline">¶</a></h2>
+<p>prompt: remove a tag from an existing coding event</p>
+<div class="section" id="id4">
+<h3>Planning<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>What is the current state?</p>
+<ul class="simple">
+<li>1 Coding Event with 2 members (Owner, Member) and 1 attached tag</li>
+</ul>
+<p>What should the initial state be for this task?</p>
+<ol class="arabic simple">
+<li>1 coding event with 2 members and 1 attached tag</li>
+</ol>
+<p>Steps to achieve initial state:</p>
+<ol class="arabic simple">
+<li>None</li>
+</ol>
+</div>
+<div class="section" id="id5">
+<h3>State<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>Prompt: remove a tag from an existing coding event</p>
+<p>What requests were fired, and by who, after achieving the initial state?</p>
+<ol class="arabic simple">
+<li>Member: <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/events/{CodingEventsId}/tags/{tagId}</span></code></li>
+<li>Owner: <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/events/{CodingEventsId}/tags/{tagId}</span></code></li>
+</ol>
+<p>What is the final state after firing these new requests?</p>
+<ol class="arabic simple">
+<li>1 coding event with 2 members and 0 attached tags</li>
+</ol>
+</div>
+<div class="section" id="id6">
+<h3>Authorization<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>What happened when the Member tried to remove a tag?</p>
+<ul class="simple">
+<li>status code: 403 Forbidden</li>
+<li>body: Not an owner of the Coding Event</li>
+</ul>
+<p>What happened when the Owner tried to remove a tag?</p>
+<ul class="simple">
+<li>status code: 204</li>
+<li>body: No content success</li>
+</ul>
+</div>
+</div>
+<div class="section" id="remove-a-member-from-a-coding-event">
+<h2>Remove a Member from a Coding Event<a class="headerlink" href="#remove-a-member-from-a-coding-event" title="Permalink to this headline">¶</a></h2>
+<p>prompt: try to remove a member from an existing coding event</p>
+<div class="section" id="id7">
+<h3>Planning<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>What is the current state?</p>
+<ul class="simple">
+<li>1 Coding Event with 2 members (Owner, Member)</li>
+</ul>
+<p>What should the initial state be for this task?</p>
+<ol class="arabic simple">
+<li>1 coding event with 2 members (Owner, Member)</li>
+</ol>
+<p>Steps to achieve initial state:</p>
+<ol class="arabic simple">
+<li>None</li>
+</ol>
+</div>
+<div class="section" id="id8">
+<h3>State<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>Prompt: try to remove a member from an existing coding event</p>
+<p>What requests were fired, and by who, after achieving the initial state?</p>
+<ol class="arabic simple">
+<li>Member: <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/events/{CodingEventsId}/members/{memberId}</span></code></li>
+<li>Owner: <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/events/{CodingEventsId}/members/{memberId}</span></code></li>
+</ol>
+<p>What is the final state after firing these new requests?</p>
+<ol class="arabic simple">
+<li>1 coding event with 1 member (Owner)</li>
+</ol>
+</div>
+<div class="section" id="id9">
+<h3>Authorization<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<p>What happened when the Member tried to remove a member?</p>
+<ul class="simple">
+<li>status code: 403 Forbidden</li>
+<li>body: Not an owner of the Coding Event</li>
+</ul>
+<p>What happened when the Owner tried to remove a member?</p>
+<ul class="simple">
+<li>status code: 204 No content</li>
+<li>body: empty</li>
+</ul>
+</div>
+</div>
+<div class="section" id="leave-a-coding-event">
+<h2>Leave a Coding Event<a class="headerlink" href="#leave-a-coding-event" title="Permalink to this headline">¶</a></h2>
+<p>prompt: try to leave an existing coding event</p>
+<div class="section" id="id10">
+<h3>Planning<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>What is the current state?</p>
+<ul class="simple">
+<li>1 Coding Event with 1 member (Owner)</li>
+</ul>
+<p>What should the initial state be for this task?</p>
+<ol class="arabic simple">
+<li>1 coding event with 2 members (Owner &amp; Member)</li>
+</ol>
+<p>Steps to achieve initial state:</p>
+<ol class="arabic simple">
+<li>Member: <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/events/{CodingEventsId}/members</span></code></li>
+</ol>
+</div>
+<div class="section" id="id11">
+<h3>State<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<p>Prompt: try to leave an existing coding event</p>
+<p>What requests were fired, and by who, after achieving the initial state?</p>
+<ol class="arabic simple">
+<li>Member: <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/events/{CodingEventsId}/members</span></code></li>
+<li>Owner: <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/events/{CodingEventsId}/members</span></code></li>
+</ol>
+<p>What is the final state after firing these new requests?</p>
+<ol class="arabic simple">
+<li>1 coding event with 1 member (Owner)</li>
+</ol>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">What happens if the Owner issues the request before the Member?</p>
+</div>
+</div>
+<div class="section" id="id12">
+<h3>Authorization<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<p>What happened when the Member tried to leave the event?</p>
+<ul class="simple">
+<li>status code: 204 No Contnet</li>
+<li>body: empty</li>
+</ul>
+<p>What happened when the Owner tried to leave the event?</p>
+<ul class="simple">
+<li>status code: 400</li>
+<li>body: JSON object describing the error</li>
+</ul>
+</div>
+</div>
+<div class="section" id="cancel-a-coding-event">
+<h2>Cancel a Coding Event<a class="headerlink" href="#cancel-a-coding-event" title="Permalink to this headline">¶</a></h2>
+<p>prompt: try to cancel an existing coding event</p>
+<div class="section" id="id13">
+<h3>Planning<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<p>What is the current state?</p>
+<ul class="simple">
+<li>1 Coding Event with 1 member (Owner)</li>
+</ul>
+<p>What should the initial state be for this task?</p>
+<ol class="arabic simple">
+<li>1 coding event with 2 members (Owner &amp; Member)</li>
+</ol>
+<p>Steps to achieve initial state:</p>
+<ol class="arabic simple">
+<li>Member: <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/events/{CodingEventsId}/members</span></code></li>
+</ol>
+</div>
+<div class="section" id="id14">
+<h3>State<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<p>Prompt: try to cancel an existing coding event</p>
+<p>What requests were fired, and by who, after achieving the initial state?</p>
+<ol class="arabic simple">
+<li>Member: <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/events/{CodingEventsId}</span></code></li>
+<li>Owner: <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/events/{CodingEventsId}</span></code></li>
+</ol>
+<p>What is the final state after firing these new requests?</p>
+<ol class="arabic simple">
+<li>0 coding events</li>
+</ol>
+</div>
+<div class="section" id="id15">
+<h3>Authorization<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<p>What happened when the Member tried to cancel the event?</p>
+<ul class="simple">
+<li>status code: 403 Forbidden</li>
+<li>body: JSON object describing the error</li>
+</ul>
+<p>What happened when the Owner tried to cancel the event?</p>
+<ul class="simple">
+<li>status code: 204 No content</li>
+<li>body: empty</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="studio_1-aadb2c-deployment.html"><span aria-hidden="true">&larr;</span> Instructor Solution Studio Part 1: App Deployment with AADB2C</a></li>
+        
+        
+        <li class="next"><a href="../../troubleshooting-next-steps/instructor/index.html">Troubleshooting Instructor Solution <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../../_sources/chapters/intro-oauth-with-aadb2c/instructor/studio_2-aadb2c-explore.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

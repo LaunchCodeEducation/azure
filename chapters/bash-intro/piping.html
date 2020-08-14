@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Piping in Bash &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="(In Person) Studio: Running on a Remote Machine" href="../hosting/studio.html" />
+    <link rel="prev" title="Chapters" href="../../index-full.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li class="active">Piping in Bash</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="piping-in-bash">
+<h1>Piping in Bash<a class="headerlink" href="#piping-in-bash" title="Permalink to this headline">¶</a></h1>
+<p>Recall that piping is the mechanism for taking the output of one command and using it as the input of the second command. It involves two or more commands separated by the pipe operator symbol (<code class="docutils literal notranslate"><span class="pre">|</span></code>, under the <code class="docutils literal notranslate"><span class="pre">backspace</span></code> key). In a general sense this is how piping works:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>a-command -&gt; a-command output <span class="p">|</span> -&gt; b-command &lt;a-command output as argument&gt; -&gt; b-command output ...
+</pre></div>
+</div>
+<div class="section" id="grep">
+<h2>Grep<a class="headerlink" href="#grep" title="Permalink to this headline">¶</a></h2>
+<p>Because all of the inputs and outputs of Bash commands are strings it follows that a tools for working with these strings would be developed. Grep is part of a suite of tools that are pre-installed on most Linux Distributions. The suite includes <code class="docutils literal notranslate"><span class="pre">grep</span></code>, <code class="docutils literal notranslate"><span class="pre">awk</span></code> and <code class="docutils literal notranslate"><span class="pre">sed</span></code>. The former of which is designed for <em>searching</em> while the latter two are used for <em>processing</em>, or transforming, text strings. They work on the text contents of files but really shine when used in piping.</p>
+<p>While <code class="docutils literal notranslate"><span class="pre">sed</span></code> and <code class="docutils literal notranslate"><span class="pre">awk</span></code> are powerful and worth learning they fall well outside of the scope of this course. However, searching with <code class="docutils literal notranslate"><span class="pre">grep</span></code> is a valuable tool whose basic behaviors are simple to understand.</p>
+<p>In its simplest form <code class="docutils literal notranslate"><span class="pre">grep</span></code> uses two arguments – a search term and a text input source. The text input can be an absolute or relative path to a file you want to search the contents of. Grep will search line-by-line and output any lines that have a match for the search term. If there are no matches the output of <code class="docutils literal notranslate"><span class="pre">grep</span></code> will be an empty line:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ grep <span class="s1">&#39;&lt;search term&gt;&#39;</span> path/to/file
+</pre></div>
+</div>
+</div>
+<p>For example what if we wanted to see all of the conditional statements in the <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> file we looked at earlier? We could have <code class="docutils literal notranslate"><span class="pre">grep</span></code> search that file for <code class="docutils literal notranslate"><span class="pre">if</span></code> and output the search results to us.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ grep <span class="s1">&#39;if&#39;</span> ~/.bashrc
+<span class="c1"># all of the lines that include &#39;if&#39; in them</span>
+
+<span class="c1"># recall ~ is a shorthand for /home/&lt;username of logged in user&gt;</span>
+<span class="c1"># the following command is identical in behavior</span>
+$ grep <span class="s1">&#39;if&#39;</span> /home/student/.bashrc
+</pre></div>
+</div>
+</div>
+<p>We will cover <code class="docutils literal notranslate"><span class="pre">grep</span></code> behavior when used in piping next. For more detailed information you can always check the help or manual outputs:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># concise help output (usually available)</span>
+$ grep --help
+
+<span class="c1"># manual for a command (not always available)</span>
+$ man grep
+
+<span class="c1"># opens in the &quot;less&quot; program</span>
+<span class="c1"># use the J and K keys to scroll and Q to quit</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="filtering-with-grep">
+<h2>Filtering with grep<a class="headerlink" href="#filtering-with-grep" title="Permalink to this headline">¶</a></h2>
+<p>Consider a scenario where you want to <em>search for</em> one file out of many within a directory. You could <code class="docutils literal notranslate"><span class="pre">ls</span></code> the contents and search through it by hand. Or even use a GUI File Explorer to visualize the files. But what if there were dozens, hundreds or thousands of files? Clearly it is impractical to do this work by hand.</p>
+<p>What if instead of letting the contents output of <code class="docutils literal notranslate"><span class="pre">ls</span></code> be sent to the Terminal we used it as an input to a tool designed for performing searches? This is what piping and <code class="docutils literal notranslate"><span class="pre">grep</span></code> are made for!</p>
+<p>When only a search term argument is given to <code class="docutils literal notranslate"><span class="pre">grep</span></code> (when used in piping) it will use the output of the previous command as the text to search. Essentially it treats the output the same as the contents of a file when given a file path argument. You can picture it like this:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ &lt;command&gt; <span class="p">|</span> grep <span class="s1">&#39;&lt;search term&gt;&#39;</span> &lt;output from command&gt;
+</pre></div>
+</div>
+</div>
+<p>We can <em>pipe</em> the output of <code class="docutils literal notranslate"><span class="pre">ls</span></code> (directory contents as a string) as the string input used by <code class="docutils literal notranslate"><span class="pre">grep</span></code> to filter just the results we need. Our pipeline would look like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ls --&gt; dir contents string <span class="p">|</span> --&gt; grep <span class="s1">&#39;search term&#39;</span> &lt;dir contents string&gt; --&gt; search results string
+</pre></div>
+</div>
+<p>What if we wanted to check for details about the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> program by using the long form <code class="docutils literal notranslate"><span class="pre">ls</span></code> output:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ls -l /usr/bin <span class="p">|</span> grep <span class="s1">&#39;dotnet&#39;</span>
+lrwxrwxrwx <span class="m">1</span> root   root           <span class="m">22</span> May <span class="m">20</span> <span class="m">15</span>:37 dotnet -&gt; ../share/dotnet/dotnet
+</pre></div>
+</div>
+</div>
+<p>You can pipe to and from many CLI programs thanks to the standard use of strings as outputs and inputs. As a final example let’s search through the help output of <code class="docutils literal notranslate"><span class="pre">dotnet</span></code>. If you were to view the help output directly you would end up scrolling through many lines.</p>
+<p>What if you just want to know how to publish a project (something we will soon cover)? We can use piping to automate the process of searching through the lines manually:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ dotnet --help <span class="p">|</span> grep <span class="s1">&#39;publish&#39;</span>
+publish           Publish a .NET project <span class="k">for</span> deployment.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="../../index-full.html"><span aria-hidden="true">&larr;</span> Chapters</a></li>
+        
+        
+        <li class="next"><a href="../hosting/studio.html">(In Person) Studio: Running on a Remote Machine <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/bash-intro/piping.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

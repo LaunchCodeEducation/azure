@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>0. Instructors &amp; TAs: Setup Steps &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="1. TAs ONLY: Discussion: Components of a Functioning System" href="1-group-discussion.html" />
+    <link rel="prev" title="Instructors &amp; TAs: Overview of Steps" href="overview.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../../index.html">Contents</a></li>
+    <li><a href="index.html">Troubleshooting Instructor Solution</a></li>
+    <li class="active">0. Instructors &amp; TAs: Setup Steps</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="instructors-tas-setup-steps">
+<h1>0. Instructors &amp; TAs: Setup Steps<a class="headerlink" href="#instructors-tas-setup-steps" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="instructor-only-create-troubleshooting-lab">
+<h2>INSTRUCTOR ONLY: Create Troubleshooting Lab<a class="headerlink" href="#instructor-only-create-troubleshooting-lab" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">If these labs already exist then skip this step.</p>
+</div>
+<p>In the Azure Education section create 2 new labs:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">Troubleshooting</span> <span class="pre">-</span> <span class="pre">Instructor</span></code></dt>
+<dd><ul class="first last">
+<li>add the instructor to this lab</li>
+<li>creates a subscription called <code class="docutils literal notranslate"><span class="pre">Troubleshooting</span> <span class="pre">-</span> <span class="pre">Instructor</span> <span class="pre">&lt;Name&gt;</span></code></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">Troubleshooting</span> <span class="pre">-</span> <span class="pre">TA</span></code></dt>
+<dd><ul class="first last">
+<li>add the TAs to this lab</li>
+<li>creates a subscription for each TA called <code class="docutils literal notranslate"><span class="pre">Troubleshooting</span> <span class="pre">-</span> <span class="pre">TA</span> <span class="pre">&lt;Name&gt;</span></code></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The instructor should then accept their lab assignment (you can hit the <strong>Setup</strong> button that pops up to do this without checking your email). TAs will accept theirs in the next step.</p>
+</div>
+</div>
+<div class="section" id="ta-only-setting-up-the-shared-subscription">
+<h2>TA ONLY: Setting Up the Shared Subscription<a class="headerlink" href="#ta-only-setting-up-the-shared-subscription" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>You can do this step before the day of the walkthrough to work out any kinks inviting students. However, make sure <strong>they only confirm receiving the invitation email</strong>.</p>
+<p><strong>Until the walkthrough begins: do not allow your students to</strong>:</p>
+<ul class="last simple">
+<li>click the link and create their account</li>
+<li>do any of the walkthrough student setup instruction steps</li>
+</ul>
+</div>
+<p>For the students to get read-only access to the Azure resources you have to share your Troubleshooting Lab subscription with them. This can be done by adding them to your Default Directory with the <code class="docutils literal notranslate"><span class="pre">Reader</span></code> role. After inviting them you can move to the next section for configuring the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code> and running the broken deployment setup scripts.</p>
+<div class="section" id="accept-the-lab-assignment">
+<h3>Accept the Lab Assignment<a class="headerlink" href="#accept-the-lab-assignment" title="Permalink to this headline">¶</a></h3>
+<p>Check your email for the invitation to the lab:</p>
+<ul class="simple">
+<li>the lab should be titled: <code class="docutils literal notranslate"><span class="pre">Troubleshooting</span> <span class="pre">-</span> <span class="pre">TA</span></code></li>
+<li>your individual subscription handout for the lab should be titled: <code class="docutils literal notranslate"><span class="pre">Troubleshooting</span> <span class="pre">-</span> <span class="pre">TA</span> <span class="pre">&lt;Name&gt;</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="invite-students-with-reader-role">
+<h3>Invite Students With <code class="docutils literal notranslate"><span class="pre">Reader</span></code> Role<a class="headerlink" href="#invite-students-with-reader-role" title="Permalink to this headline">¶</a></h3>
+<p>Go to the Azure dashboard by clicking <strong>Microsoft Azure</strong> in the top left corner of the nav bar:</p>
+<img alt="Azure dashboard button in nav bar" src="../../../_images/azure-dashboard-button.png" />
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>Make sure you are in your Default Directory (visible in top right):</p>
+<img alt="Azure dashboard button in nav bar" class="last" src="../../../_images/confirm-default-dir.png" />
+</div>
+<p>Now go to the Subscriptions resource and select the <code class="docutils literal notranslate"><span class="pre">Troubleshooting</span> <span class="pre">-</span> <span class="pre">TA</span> <span class="pre">&lt;Name&gt;</span></code> subscription from the list:</p>
+<img alt="Select troubleshooting subscription resource" src="../../../_images/select-access-control-settings.png" />
+<p>Select the <strong>Access Control (IAM)</strong> settings on the left sidebar:</p>
+<img alt="Select access control (IAM) subscription settings" src="../../../_images/select-access-control-settings.png" />
+<p>Then select the <strong>Add role assignment</strong> at the top left:</p>
+<img alt="Subscription access control select add role assignment" src="../../../_images/select-add-role-assignment.png" />
+<p>Choose the <code class="docutils literal notranslate"><span class="pre">Reader</span></code> role from the list:</p>
+<img alt="Subscription role assignment select Reader role" src="../../../_images/select-reader-role.png" />
+<p>Then in the <strong>Select</strong> section add in the email addresses of each student in your group (<strong>they have to be done one at a time unfortunately</strong>):</p>
+<img alt="Subscription role assignment add student emails" src="../../../_images/add-student-emails.png" />
+<p>Confirm that the <strong>Selected Members</strong> section has all the student emails for your group then hit <strong>Save</strong>:</p>
+<img alt="Subscription role assignment confirm student emails and save" src="../../../_images/confirm-student-emails.png" />
+<p>In the top right you should get popups for each student who is invited. Instruct them to click the link and follow the Setup instructions (in the walkthrough itself). If they cant find the email you can click the notification and copy the invite link directly for them:</p>
+<img alt="Student invite notification with manual join link" src="../../../_images/student-invite-notification.png" />
+<p>Now you can switch to the <strong>Role Assignments</strong> tab and use the refresh button to confirm all your students joined successfully:</p>
+<img alt="View role assignments to monitor students joining" src="../../../_images/monitor-role-assignments.png" />
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Inviting students to your Default Directory is the simplest mechanism for you to share access to resources in the lab subscription.</p>
+<p>However, this means any resources you create outside the course will also be visible (read only) to them. <strong>If you only use Azure for the course you don’t need to worry.</strong></p>
+<p class="last">If you use Azure outside the course you can remove the students after the exercise is completed from this same view. Just select all the student names and then <strong>Remove</strong> (at the top) to remove them.</p>
+</div>
+</div>
+</div>
+<div class="section" id="instructor-tas-setting-up-the-broken-deployment">
+<h2>Instructor &amp; TAs: Setting Up the Broken Deployment<a class="headerlink" href="#instructor-tas-setting-up-the-broken-deployment" title="Permalink to this headline">¶</a></h2>
+<p>Before discussing the issues and their solutions each of you must first set up the broken deployment. This will require you to refresh the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code> cache to recognize and set your new lab subscription as the default:</p>
+<div class="section" id="set-up-az-cli">
+<h3>Set up <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code><a class="headerlink" href="#set-up-az-cli" title="Permalink to this headline">¶</a></h3>
+<p>First up we need to clear the AZ CLI cache:</p>
+<div class="highlight-PowerShell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">account</span> <span class="nb">clear</span>
+</pre></div>
+</div>
+<p>Now we need to login again which will present us with the form to authenticate:</p>
+<div class="highlight-PowerShell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">login</span>
+</pre></div>
+</div>
+<p>Will print out list of all your subscriptions. Look for the one with the name <code class="docutils literal notranslate"><span class="pre">Troubleshooting</span> <span class="pre">-</span> <span class="pre">TA</span> <span class="pre">&lt;Your</span> <span class="pre">Name&gt;</span></code>. Then copy the <code class="docutils literal notranslate"><span class="pre">id</span></code> field value:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;cloudName&quot;</span><span class="p">:</span> <span class="s2">&quot;AzureCloud&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;homeTenantId&quot;</span><span class="p">:</span> <span class="s2">&quot;d61de018-082f-46bb-80e0-bbde4455d074&quot;</span><span class="p">,</span>
+<span class="hll">  <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;095dea07-a8e5-4bd1-ba75-54d61d581524&quot;</span><span class="p">,</span>
+</span>  <span class="nt">&quot;isDefault&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;managedByTenants&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Troubleshooting - TA &lt;Your Name&gt;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;Enabled&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;tenantId&quot;</span><span class="p">:</span> <span class="s2">&quot;d61de018-082f-46bb-80e0-bbde4455d074&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;user&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;paul@launchcode.org&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Assign this as the az cli subscription:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">account</span> <span class="nb">set </span><span class="n">-s</span> <span class="s2">&quot;095dea07-a8e5-4bd1-ba75-54d61d581524&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>After configuring the AZ CLI to use the new subscription set the defaults for the correct resource group and virtual machine:</p>
+<div class="highlight-PowerShell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">configure</span> <span class="n">-d</span> <span class="n">group</span><span class="p">=</span><span class="n">linux-ts-rg</span> <span class="n">vm</span><span class="p">=</span><span class="n">broken-linux-vm</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-up-the-deployment">
+<h3>Set up the deployment<a class="headerlink" href="#set-up-the-deployment" title="Permalink to this headline">¶</a></h3>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last"><strong>You will not need to edit the scripts at all</strong>. They will deploy the application and break a few things that this article will walk your group through fixing.</p>
+</div>
+<p>Clone the setup scripts repo and switch to the <code class="docutils literal notranslate"><span class="pre">tps-reports</span></code> branch:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; git clone https://github.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment
+&gt; cd powershell-az-cli-scripting-deployment
+&gt; git checkout tps-reports
+</pre></div>
+</div>
+</div>
+<p>Then run the script:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="p">./</span><span class="n">full-deployment</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="overview.html"><span aria-hidden="true">&larr;</span> Instructors &amp; TAs: Overview of Steps</a></li>
+        
+        
+        <li class="next"><a href="1-group-discussion.html">1. TAs ONLY: Discussion: Components of a Functioning System <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../../_sources/chapters/troubleshooting-next-steps/instructor/0-setup-steps.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

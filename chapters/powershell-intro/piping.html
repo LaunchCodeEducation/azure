@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>9.7. Piping in PowerShell &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9.8. Making API Requests Using Invoke-RestMethod" href="cmdlet-invoke-restmethod.html" />
+    <link rel="prev" title="9.6. Studio: Introduction to PowerShell Scripting" href="studio_intro-powershell-scripting.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">9. Introduction to PowerShell</a></li>
+    <li class="active">9.7. Piping in PowerShell</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="piping-in-powershell">
+<h1>9.7. Piping in PowerShell<a class="headerlink" href="#piping-in-powershell" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Recall that piping is a mechanism for performing multiple steps in a single expression. A pipe consists of 2 or more command steps separated by the pipe operator, <code class="docutils literal notranslate"><span class="pre">|</span></code>. The output object from the previous command is <em>piped</em> to be used as an input in the next command.</p>
+<p>A pipeline can be read from left to right as at least 3 steps:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">command</span> <span class="p">|</span> <span class="n">command</span> <span class="p">...</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple">
+<li><strong>First step</strong>: command produces an output object</li>
+<li><code class="docutils literal notranslate"><span class="pre">|</span></code>: carries the output object to the next step</li>
+<li><strong>Next step</strong>: uses the output object as an input to the command</li>
+</ol>
+<p>This process can be extended to any number of steps (using the <code class="docutils literal notranslate"><span class="pre">|</span></code> operator between them) needed to accomplish the goal of the pipeline.</p>
+<p>We will start with some examples to get comfortable with the general <em>flow</em> of piping in PowerShell. Then we will dig into some of the details that enable this powerful feature.</p>
+<div class="section" id="piping-in-action">
+<h2>9.7.1. Piping in Action<a class="headerlink" href="#piping-in-action" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="piping-to-sort-directory-contents">
+<h3>9.7.1.1. Piping to Sort Directory Contents<a class="headerlink" href="#piping-to-sort-directory-contents" title="Permalink to this headline">¶</a></h3>
+<p>Before entering the following pipeline into your PowerShell terminal, take a moment to read it out loud:</p>
+<blockquote>
+<div>Get the ChildItem list from (the current directory) <strong>then</strong> take that list and sort it by each item’s Name Property</div></blockquote>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-ChildItem</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">-Property</span> <span class="n">Name</span>
+<span class="c"># sorted directory contents</span>
+</pre></div>
+</div>
+</div>
+<p>This expression has three steps:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Get-ChildItem</span></code>: outputs an <code class="docutils literal notranslate"><span class="pre">Array</span></code> of <code class="docutils literal notranslate"><span class="pre">DirectoryInfo</span></code> and <code class="docutils literal notranslate"><span class="pre">FileInfo</span></code> objects</li>
+<li><code class="docutils literal notranslate"><span class="pre">|</span></code>: transfers the <code class="docutils literal notranslate"><span class="pre">Array</span></code> to the next command</li>
+<li><code class="docutils literal notranslate"><span class="pre">Sort-Object</span> <span class="pre">-Property</span> <span class="pre">Name</span></code>: Sorts the input <code class="docutils literal notranslate"><span class="pre">Array</span></code> alphabetically by <em>each element’s</em> <code class="docutils literal notranslate"><span class="pre">Name</span></code> property</li>
+</ul>
+<p>When the <code class="docutils literal notranslate"><span class="pre">Get-ChildItem</span></code> cmdlet is executed, it evaluates to an <code class="docutils literal notranslate"><span class="pre">Array</span></code> object. However, as you noticed, the sorting step (<code class="docutils literal notranslate"><span class="pre">Sort-Object</span></code>) operated on <em>each element</em> that is <em>inside</em>, not the <code class="docutils literal notranslate"><span class="pre">Array</span></code> itself. This is a key aspect of how piping works when working with collections of objects, like an <code class="docutils literal notranslate"><span class="pre">Array</span></code>.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p>When a collection of objects is piped from a command the <em>next</em> command receives and processes <em>each</em> object in the collection <em>one at a time</em>.</p>
+<p class="last">You can see more detailed examples of this behavior in this <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_pipelines?view=powershell-7#one-at-a-time-processing" target="_blank">Microsoft pipelining article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+</div>
+<div class="section" id="adding-contents-to-a-file">
+<h3>9.7.1.2. Adding Contents to a File<a class="headerlink" href="#adding-contents-to-a-file" title="Permalink to this headline">¶</a></h3>
+<p>In this example, we will add the contents of a string to a file using the <code class="docutils literal notranslate"><span class="pre">Add-Content</span></code> cmdlet. The <code class="docutils literal notranslate"><span class="pre">Add-Content</span></code> cmdlet will either add the content to the end of an existing file, or create a new one and put the contents in it.</p>
+<p>First, let’s look at a traditional execution of the single command. Here we <em>explicitly</em> assign, or bind, the values for the <code class="docutils literal notranslate"><span class="pre">-Value</span></code> and <code class="docutils literal notranslate"><span class="pre">-Path</span></code> options:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Add-Content</span> <span class="n">-Value</span> <span class="s2">&quot;You found me!&quot;</span> <span class="n">-Path</span> <span class="s2">&quot;find-me.txt&quot;</span>
+
+<span class="c"># confirm addition</span>
+<span class="p">&gt;</span> <span class="nb">Get-Content</span> <span class="p">.\</span><span class="nb">find-me</span><span class="p">.</span><span class="n">txt</span>
+<span class="n">You</span> <span class="n">found</span> <span class="n">me</span><span class="p">!</span>
+
+<span class="c"># remove the file</span>
+<span class="p">&gt;</span> <span class="nb">Remove-Item</span> <span class="p">.\</span><span class="nb">find-me</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</div>
+<p>Now let’s see how this can be accomplished with a simple pipeline:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="s2">&quot;You found me!&quot;</span> <span class="p">|</span> <span class="nb">Add-Content</span> <span class="n">-Path</span> <span class="s2">&quot;find-me.txt&quot;</span>
+<span class="p">&gt;</span> <span class="nb">Get-Content</span> <span class="p">.\</span><span class="nb">find-me</span><span class="p">.</span><span class="n">txt</span>
+<span class="n">You</span> <span class="n">found</span> <span class="n">me</span><span class="p">!</span>
+</pre></div>
+</div>
+</div>
+<p>In this pipeline, the string <code class="docutils literal notranslate"><span class="pre">&quot;You</span> <span class="pre">found</span> <span class="pre">me!&quot;</span></code> was <em>piped</em>, or carried over to, the <code class="docutils literal notranslate"><span class="pre">Add-Content</span></code> cmdlet. Notice, unlike the traditional execution, that the <code class="docutils literal notranslate"><span class="pre">-Value</span></code> parameter is <em>implicitly</em> bound to the string object, <code class="docutils literal notranslate"><span class="pre">&quot;You</span> <span class="pre">found</span> <span class="pre">me!&quot;</span></code>.</p>
+</div>
+</div>
+<div class="section" id="pipeline-parameter-binding">
+<h2>9.7.2. Pipeline Parameter Binding<a class="headerlink" href="#pipeline-parameter-binding" title="Permalink to this headline">¶</a></h2>
+<p>In Bash, because everything is a string, piping can be performed between any two commands. However, the <em>format</em> of those strings is often manipulated through additional steps in the pipeline.</p>
+<p>Because PowerShell is object-oriented, the command compatibility is shifted from string formats to the types of objects used as inputs and outputs. In PowerShell, piping between commands is a mechanism that requires, <em>at minimum</em>, for the next command to have parameters that <em>accept pipeline input</em>.</p>
+<p>Before we discuss the mechanism in detail, let’s explore the example we saw earlier:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="s2">&quot;You found me!&quot;</span> <span class="p">|</span> <span class="nb">Add-Content</span> <span class="n">-Path</span> <span class="s2">&quot;find-me.txt&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>In this pipeline, the string <code class="docutils literal notranslate"><span class="pre">&quot;You</span> <span class="pre">found</span> <span class="pre">me!&quot;</span></code> was <em>piped</em>, or carried over to, the <code class="docutils literal notranslate"><span class="pre">Add-Content</span></code> cmdlet. As mentioned earlier, the <code class="docutils literal notranslate"><span class="pre">-Value</span></code> option was assigned <em>implicitly</em> as a piped input.</p>
+<p id="index-1">When a command receives piped input it goes through the process of <strong>parameter binding</strong>.</p>
+<p id="index-2">Parameter binding is PowerShell’s mechanism of aligning the output object (by its type) or its properties (by their names) with the parameters of the cmdlet receiving it. This process is performed automatically but <em>how it binds</em> is controlled by the <strong>binding type</strong> of each parameter.</p>
+<p>There are two binding types available in piping, <code class="docutils literal notranslate"><span class="pre">ByValue</span></code> and <code class="docutils literal notranslate"><span class="pre">ByPropertyName</span></code>. In the previous example, the piped string object was successfully bound to the <code class="docutils literal notranslate"><span class="pre">-Value</span></code> option because it <em>accepts piped input</em> through the <code class="docutils literal notranslate"><span class="pre">ByValue</span></code> mechanism.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">ByValue</span></code> does not mean the option name must be <code class="docutils literal notranslate"><span class="pre">-Value</span></code>, in fact it means just the opposite! This is just a coincidence of our simplistic example.</p>
+</div>
+<div class="section" id="binding-byvalue">
+<h3>9.7.2.1. Binding <code class="docutils literal notranslate"><span class="pre">ByValue</span></code><a class="headerlink" href="#binding-byvalue" title="Permalink to this headline">¶</a></h3>
+<p>When a cmdlet’s parameter accepts input <code class="docutils literal notranslate"><span class="pre">ByValue</span></code> it will bind <em>based on the type</em> of the piped object.</p>
+<p>PowerShell will only attempt parameter binding for parameters that haven’t been assigned yet. Unassigned means the positional or named parameters that haven’t been explicitly set in the command or from previous binding process.</p>
+<p>The following steps are a simplified description of the <code class="docutils literal notranslate"><span class="pre">ByValue</span></code> binding process:</p>
+<ol class="arabic simple">
+<li>Check the <em>type of the piped object</em></li>
+<li>Check the next <em>unassigned</em> cmdlet <em>parameter</em> that <em>accepts piped input ByValue</em></li>
+<li>Check if this parameter <em>accepts the same type of object</em> (or can be easily converted to it, like a number to a string)</li>
+<li><em>Bind the piped object</em> to the matched parameter</li>
+</ol>
+</div>
+<div class="section" id="binding-bypropertyname">
+<h3>9.7.2.2. Binding <code class="docutils literal notranslate"><span class="pre">ByPropertyName</span></code><a class="headerlink" href="#binding-bypropertyname" title="Permalink to this headline">¶</a></h3>
+<p>Before we discuss <code class="docutils literal notranslate"><span class="pre">ByPropertyName</span></code>, let’s consider an example that shows its difference from <code class="docutils literal notranslate"><span class="pre">ByValue</span></code> binding. Here we attempt to assign the <code class="docutils literal notranslate"><span class="pre">-Value</span></code> option explicitly and pass the <code class="docutils literal notranslate"><span class="pre">-Path</span></code> as a piped input instead:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; &quot;.\find-me.txt&quot; | Add-Content -Value &quot;You found me!&quot;
+Add-Content: The input object cannot be bound to any parameters for the command either
+because the command does not take pipeline input or the input and its properties
+do not match any of the parameters that take pipeline input.
+</pre></div>
+</div>
+</div>
+<p>In this case, the command error message gives us clues as to what went wrong: <code class="docutils literal notranslate"><span class="pre">...the</span> <span class="pre">input</span> <span class="pre">and</span> <span class="pre">its</span> <span class="pre">properties</span> <span class="pre">do</span> <span class="pre">not</span> <span class="pre">match</span> <span class="pre">any</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">parameters...</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-Path</span></code> option <em>does</em> accept input binding, but it does so <code class="docutils literal notranslate"><span class="pre">ByPropertyName</span></code> not <code class="docutils literal notranslate"><span class="pre">ByValue</span></code>. Given this information and clues from the error message, can you think of how <code class="docutils literal notranslate"><span class="pre">ByPropertyName</span></code> binding works? It must have something to do with the <em>properties</em> of the piped object.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ByPropertyName</span></code> binding <em>binds the property of the piped object</em> to the parameter with the same name.</p>
+<p>PowerShell will first try to bind <code class="docutils literal notranslate"><span class="pre">ByValue</span></code> before going through the following simplified steps:</p>
+<ol class="arabic simple">
+<li>Check the next <em>unassigned</em> cmdlet <em>parameter</em> that <em>accepts piped input ByPropertyName</em></li>
+<li>Check the names for each property of the piped object</li>
+<li><em>Bind the piped object’s property</em> with the same name as the parameter</li>
+</ol>
+<p>The error message from before indicated that the piped object could not satisfy a binding to the <em>required</em> parameter (like <code class="docutils literal notranslate"><span class="pre">-Path</span></code>) of the next command. Our piped string does not have a property called <code class="docutils literal notranslate"><span class="pre">Path</span></code> that aligns with the named parameter <code class="docutils literal notranslate"><span class="pre">-Path</span></code>, so the binding fails.</p>
+</div>
+<div class="section" id="parameter-discovery">
+<h3>9.7.2.3. Parameter Discovery<a class="headerlink" href="#parameter-discovery" title="Permalink to this headline">¶</a></h3>
+<p>Before you can pipe between commands you need to check for compatibility between the piped object and next command’s input parameters. The <code class="docutils literal notranslate"><span class="pre">Get-Member</span></code> cmdlet and the <code class="docutils literal notranslate"><span class="pre">getType()</span></code> method are two tools you have learned about for discovery of a command’s output object. For understanding the requirements of the next command’s inputs, we can use the <code class="docutils literal notranslate"><span class="pre">Get-Help</span></code> cmdlet with an additional filtering option.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Get-Help</span></code> cmdlet includes an option called <code class="docutils literal notranslate"><span class="pre">-Parameter</span></code> which will list the details about the parameter of the target cmdlet.</p>
+<p>Let’s look at the <code class="docutils literal notranslate"><span class="pre">-Value</span></code> and <code class="docutils literal notranslate"><span class="pre">-Path</span></code> parameters in particular. In the parameter output you want to check first line, for its input type, and the <code class="docutils literal notranslate"><span class="pre">Accept</span> <span class="pre">pipeline</span> <span class="pre">input?</span></code> line, for its binding type(s):</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Help</span> <span class="nb">Add-Content</span> <span class="n">-Parameter</span> <span class="n">Value</span><span class="p">,</span> <span class="n">Path</span>
+
+<span class="hll"><span class="n">-Value</span> <span class="p">&lt;</span><span class="n">Object</span><span class="p">[]&gt;</span>
+</span>
+   <span class="n">Required</span><span class="p">?</span>                    <span class="n">true</span>
+   <span class="k">Position</span><span class="p">?</span>                    <span class="n">1</span>
+<span class="hll">   <span class="n">Accept</span> <span class="n">pipeline</span> <span class="n">input</span><span class="p">?</span>       <span class="n">true</span> <span class="p">(</span><span class="n">ByValue</span><span class="p">,</span> <span class="n">ByPropertyName</span><span class="p">)</span>
+</span>   <span class="k">Parameter</span> <span class="nb">set </span><span class="n">name</span>           <span class="p">(</span><span class="n">All</span><span class="p">)</span>
+   <span class="n">Aliases</span>                      <span class="n">None</span>
+   <span class="n">Dynamic</span><span class="p">?</span>                     <span class="n">false</span>
+
+<span class="hll"><span class="n">-Path</span> <span class="p">&lt;</span><span class="n">string</span><span class="p">[]&gt;</span>
+</span>
+   <span class="n">Required</span><span class="p">?</span>                    <span class="n">true</span>
+   <span class="k">Position</span><span class="p">?</span>                    <span class="n">0</span>
+<span class="hll">   <span class="n">Accept</span> <span class="n">pipeline</span> <span class="n">input</span><span class="p">?</span>       <span class="n">true</span> <span class="p">(</span><span class="n">ByPropertyName</span><span class="p">)</span>
+</span>   <span class="k">Parameter</span> <span class="nb">set </span><span class="n">name</span>           <span class="n">Path</span>
+   <span class="n">Aliases</span>                      <span class="n">None</span>
+   <span class="n">Dynamic</span><span class="p">?</span>                     <span class="n">false</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">Get-Help</span></code> option <code class="docutils literal notranslate"><span class="pre">-Parameter</span></code> is given a wildcard character (<code class="docutils literal notranslate"><span class="pre">*</span></code>) it will list the details for all the parameters of the cmdlet.</p>
+<div class="literal-block-wrapper last docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Help</span> <span class="nb">Add-Content</span> <span class="n">-Parameter</span> <span class="p">*</span>
+<span class="c"># details of all parameters</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="using-pipelines-to-learn-about-pipelines">
+<h2>9.7.3. Using Pipelines to Learn About Pipelines<a class="headerlink" href="#using-pipelines-to-learn-about-pipelines" title="Permalink to this headline">¶</a></h2>
+<p>Searching file contents for a matching search term is a common operational task. For example, you may need to search through server logs or other files for terms of interest. In this example, we will introduce another utility cmdlet, <code class="docutils literal notranslate"><span class="pre">Where-Object</span></code>. As its name implies, it is used to filter a collection <em>where [each] object</em> satisfies some criteria.</p>
+<p>When discovering the parameters of a cmdlet, it is a tedious process to <em>manually</em> search through the results of all the parameters. To plan your pipeline, you are most concerned with the parameters that accept pipeline input. We can use the <code class="docutils literal notranslate"><span class="pre">Where-Object</span></code> cmdlet to filter the list of parameters down to only those that can be piped to.</p>
+<p>Let’s use <code class="docutils literal notranslate"><span class="pre">Where-Object</span></code> and piping to learn about the <code class="docutils literal notranslate"><span class="pre">Where-Object</span></code> cmdlet!</p>
+<p>First, we need to see what properties are of the parameter help objects that the <code class="docutils literal notranslate"><span class="pre">Get-Help</span></code> command outputs. For this task, we can pipe them into <code class="docutils literal notranslate"><span class="pre">Get-Member</span></code> and view the available properties and methods on the object:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; Get-Help Where-Object -Parameter * | Get-Member
+
+TypeName: MamlCommandHelpInfo#parameter
+
+Name           MemberType   Definition
+----           ----------   ----------
+# ...trimmed output
+name           NoteProperty System.String name=CContains
+pipelineInput  NoteProperty string pipelineInput=False
+required       NoteProperty string required=true
+</pre></div>
+</div>
+</div>
+<p>These are the property names that correspond to the table output you saw in the previous section. Our goal is to filter out all of the parameters that have a <code class="docutils literal notranslate"><span class="pre">pipelineInput</span></code> property with a value of <code class="docutils literal notranslate"><span class="pre">true</span> <span class="pre">(Binding</span> <span class="pre">Type,...)</span></code>. Recall that the the <code class="docutils literal notranslate"><span class="pre">(Binding</span> <span class="pre">Type,...)</span></code> can be one or both of <code class="docutils literal notranslate"><span class="pre">ByValue</span></code> and <code class="docutils literal notranslate"><span class="pre">ByPropertyName</span></code>.</p>
+<p>We can generalize our search term to the string <code class="docutils literal notranslate"><span class="pre">true</span></code> followed by any other text to account for the 3 scenarios that could come after it. This is another use case for a wildcard. The expression <code class="docutils literal notranslate"><span class="pre">true*</span></code> matches the loose pattern of our search criteria.</p>
+<p>When we are searching for something that is <em>like</em> a string we can use the <code class="docutils literal notranslate"><span class="pre">-Like</span></code> option of <code class="docutils literal notranslate"><span class="pre">Where-Object</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Help</span> <span class="nb">Where-Object</span> <span class="n">-Parameters</span> <span class="p">*</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="n">-Property</span> <span class="n">pipelineInput</span> <span class="o">-Like</span> <span class="s2">&quot;true*&quot;</span>
+
+<span class="n">-InputObject</span> <span class="p">&lt;</span><span class="n">PSObject</span><span class="p">&gt;</span>
+   <span class="n">Specifies</span> <span class="n">the</span> <span class="n">objects</span> <span class="n">to</span> <span class="n">be</span> <span class="n">filtered</span><span class="p">.</span> <span class="n">You</span> <span class="n">can</span> <span class="n">also</span> <span class="n">pipe</span> <span class="n">the</span> <span class="n">objects</span> <span class="n">to</span> <span class="p">`</span><span class="nb">Where-Object</span><span class="p">`.</span>
+
+   <span class="n">When</span> <span class="n">you</span> <span class="n">use</span> <span class="n">the</span> <span class="n">InputObject</span> <span class="k">parameter</span> <span class="n">with</span> <span class="p">`</span><span class="nb">Where-Object</span><span class="p">`,</span> <span class="n">instead</span> <span class="n">of</span> <span class="n">piping</span> <span class="n">command</span> <span class="n">results</span> <span class="n">to</span> <span class="p">`</span><span class="nb">Where-Object</span><span class="p">`,</span> <span class="n">the</span> <span class="n">InputObject</span> <span class="n">value</span> <span class="n">is</span> <span class="n">treated</span> <span class="n">as</span> <span class="n">a</span> <span class="n">single</span> <span class="n">object</span><span class="p">.</span>
+   <span class="n">This</span> <span class="n">is</span> <span class="n">true</span> <span class="n">even</span> <span class="k">if</span> <span class="n">the</span> <span class="n">value</span> <span class="n">is</span> <span class="n">a</span> <span class="n">collection</span> <span class="n">that</span> <span class="n">is</span> <span class="n">the</span> <span class="n">result</span> <span class="n">of</span> <span class="n">a</span> <span class="n">command</span><span class="p">,</span> <span class="n">such</span> <span class="n">as</span> <span class="p">`-</span><span class="n">InputObject</span> <span class="p">(</span><span class="nb">Get-Process</span><span class="p">)`.</span> <span class="n">Because</span> <span class="n">InputObject</span> <span class="n">cannot</span> <span class="k">return</span> <span class="n">individual</span>
+   <span class="n">properties</span> <span class="n">from</span> <span class="n">an</span> <span class="n">array</span> <span class="n">or</span> <span class="n">collection</span> <span class="n">of</span> <span class="n">objects</span><span class="p">,</span> <span class="n">we</span> <span class="n">recommend</span> <span class="n">that</span><span class="p">,</span> <span class="k">if</span> <span class="n">you</span> <span class="n">use</span> <span class="p">`</span><span class="nb">Where-Object</span><span class="p">`</span> <span class="n">to</span> <span class="k">filter</span> <span class="n">a</span> <span class="n">collection</span> <span class="n">of</span> <span class="n">objects</span> <span class="k">for</span> <span class="n">those</span> <span class="n">objects</span> <span class="n">that</span> <span class="n">have</span> <span class="n">specific</span>
+   <span class="n">values</span> <span class="k">in</span> <span class="n">defined</span> <span class="n">properties</span><span class="p">,</span> <span class="n">you</span> <span class="n">use</span> <span class="p">`</span><span class="nb">Where-Object</span><span class="p">`</span> <span class="k">in</span> <span class="n">the</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">as</span> <span class="n">shown</span> <span class="k">in</span> <span class="n">the</span> <span class="n">examples</span> <span class="k">in</span> <span class="n">this</span> <span class="n">topic</span><span class="p">.</span>
+
+   <span class="n">Required</span><span class="p">?</span>                    <span class="n">false</span>
+   <span class="k">Position</span><span class="p">?</span>                    <span class="n">named</span>
+   <span class="k">Default</span> <span class="n">value</span>                <span class="n">None</span>
+   <span class="n">Accept</span> <span class="n">pipeline</span> <span class="n">input</span><span class="p">?</span>       <span class="n">True</span> <span class="p">(</span><span class="n">ByValue</span><span class="p">)</span>
+   <span class="n">Accept</span> <span class="n">wildcard</span> <span class="n">characters</span><span class="p">?</span>  <span class="n">false</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-tip admonition" id="index-3">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">You can read more about <code class="docutils literal notranslate"><span class="pre">Where-Object</span></code> and providing search criteria through <strong>script blocks</strong> <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Core/Where-Object?view=powershell-7#description" target="_blank">in its Microsoft documentation<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+</div>
+<div class="section" id="pipeline-planning">
+<h2>9.7.4. Pipeline Planning<a class="headerlink" href="#pipeline-planning" title="Permalink to this headline">¶</a></h2>
+<p>When designing a pipeline, it can help to organize the commands and the path the objects will take. Over time, you will grow comfortable using common cmdlets. But in the beginning you can use this checklist to help plan your approach:</p>
+<ol class="arabic simple">
+<li>Which command is first and what is its output type?</li>
+<li>What is the final output type and where should it go (terminal, file, program input)?</li>
+<li>Which logical steps (Verbs and Nouns) do you need to get from the first output to the last?</li>
+<li>How do the command steps need to be ordered for the parameters to bind properly?</li>
+</ol>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p>The cmdlets <code class="docutils literal notranslate"><span class="pre">Where-Object</span></code> and <code class="docutils literal notranslate"><span class="pre">Sort-Object</span></code> that you saw in the examples are utility cmdlets. They can be used as transitions, or interjections, between steps, to coordinate the behavior of a pipeline.</p>
+<p class="last">They make up a small part of the <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/?view=powershell-7" target="_blank">PowerShell Utilities module<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. This module is a gold mine for piping with other utilities to help with steps like formatting, converting, and mutating objects.</p>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="studio_intro-powershell-scripting.html"><span aria-hidden="true">&larr;</span> 9.6. Studio: Introduction to PowerShell Scripting</a></li>
+        
+        
+        <li class="next"><a href="cmdlet-invoke-restmethod.html">9.8. Making API Requests Using Invoke-RestMethod <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/powershell-intro/piping.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

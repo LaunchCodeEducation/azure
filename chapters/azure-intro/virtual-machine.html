@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.3. Introduction to virtual machines &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.4. Walkthrough: Linux Starter App Deployment" href="walkthrough.html" />
+    <link rel="prev" title="5.2. Introduction to Azure" href="azure-services.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">5. Introduction to Azure and Virtual Machines</a></li>
+    <li class="active">5.3. Introduction to virtual machines</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="introduction-to-virtual-machines">
+<h1>5.3. Introduction to virtual machines<a class="headerlink" href="#introduction-to-virtual-machines" title="Permalink to this headline">¶</a></h1>
+<p>The first Azure service we will be working with in this class is Azure virtual machines.</p>
+<div class="section" id="virtual-machine">
+<h2>5.3.1. virtual machine<a class="headerlink" href="#virtual-machine" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">A virtual machine is a highly customizable virtual computer with an accessible operating system.</p>
+<p>From Microsoft: A <strong>virtual machine</strong> is a computer file, referred to as an image, that behaves like an actual computer. It is virtual in that it is an operating system on an <em>already-existing</em> operating system that is configured to behave like a standalone computer.</p>
+<p>You can create and access a virtual machine in a couple of different ways from the Azure Web Dashboard, or using the Azure CLI. We will use both tools to start virtual machines, but today we will focus solely on the Web Dashboard.</p>
+<p>You can provision a virtual machine from the Azure Dashboard by accessing the virtual machines blade.</p>
+<img alt="../../_images/virtual-machine-blade.png" src="../../_images/virtual-machine-blade.png" />
+<p>This blade will show you all of the currently provisioned virtual machines, and give you various options for creating new virtual machines, or editing/deleting currently existing VMs.</p>
+<img alt="../../_images/virtual-machine-blade-overview.png" src="../../_images/virtual-machine-blade-overview.png" />
+<p>You can create a new virtual machine by clicking the <code class="docutils literal notranslate"><span class="pre">Add</span></code> button which takes you to the <em>Create VM</em> screen:</p>
+<img alt="../../_images/virtual-machine-create-basics.png" src="../../_images/virtual-machine-create-basics.png" />
+<p>This screen contains several tabs of options that allow you to configure the hardware and image of this virtual machine. You also set which subscription and resource group this VM will be associated with.</p>
+<p>After you finish the form to create your VM, Azure takes a couple of minutes to do its work. It will provide you with a public IP address for the machine and you will be able to connect to it to configure it to run your application.</p>
+<p>In your activities today, we will take you through the steps to create your first VM and deploy an application to the VM.</p>
+</div>
+<div class="section" id="virtual-machine-benefits">
+<h2>5.3.2. Virtual Machine Benefits<a class="headerlink" href="#virtual-machine-benefits" title="Permalink to this headline">¶</a></h2>
+<p>We have already mentioned some of the main benefits of using a virtual machine—high availability, accessible via the internet, can be discovered easily with domain names—but they have even more advantages than we mentioned earlier.</p>
+<p>VM benefits:</p>
+<ul class="simple">
+<li>On-demand</li>
+<li>Parity</li>
+<li>Highly configurable hardware</li>
+<li>Highly configurable software</li>
+<li>Scalable</li>
+</ul>
+<div class="section" id="on-demand">
+<h3>5.3.2.1. On Demand<a class="headerlink" href="#on-demand" title="Permalink to this headline">¶</a></h3>
+<p>Using the Azure Dashboard or the Azure CLI, you can create a VM anytime, anywhere, and you can configure it to meet your demands.</p>
+</div>
+<div class="section" id="configurable">
+<h3>5.3.2.2. Configurable<a class="headerlink" href="#configurable" title="Permalink to this headline">¶</a></h3>
+<p>Azure gives us lots of different options for our VMs. We can fine tune the hardware that is available by dictating exactly how much RAM to use, how powerful the CPU is, and how much disk storage the VM has access to.</p>
+<p>Outside of hardware configuration we can choose the image, or operating system, of our VM. We can choose various Linux, Windows, or macOS operating systems. Most of these options can be further configured by choosing the major and minor versions of the images.</p>
+<p>After choosing our hardware and image, we can then install any additional software to our VM, such as mysql-cli, git, dotnet, nginx, etc.</p>
+<p>We can configure all aspects of our VM: hardware, image, and software.</p>
+</div>
+<div class="section" id="parity">
+<h3>5.3.2.3. Parity<a class="headerlink" href="#parity" title="Permalink to this headline">¶</a></h3>
+<p>Since the virtual machine can be configured to use many different images, and you can install whatever technical stack you want to achieve a higher level of parity.</p>
+<p id="index-1"><strong>Parity</strong> is equivalence between the development environment and production environment. In some instances, you may develop using a slightly different tech stack than the server. Since we can control our server, we control the tech stack. Therefore, we can use the same tech stack for development and production.</p>
+</div>
+<div class="section" id="scalable">
+<h3>5.3.2.4. Scalable<a class="headerlink" href="#scalable" title="Permalink to this headline">¶</a></h3>
+<p>Due to the configurable nature of VMs we can vertically scale individual VMs. If our project grows in scope, we can re-configure our VM to allocate more RAM.</p>
+<p>Changing the size of an individual VM is considered vertical scaling.</p>
+<p id="index-2">Outside of vertical scaling we can horizontally scale with Azure. Horizontal scaling is the process of creating multiple VMs than can share application traffic. If an application has lots of simultaneous users, multiple copies of the VM can be set up. A load balancer can direct traffic to the various VMs.</p>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="azure-services.html"><span aria-hidden="true">&larr;</span> 5.2. Introduction to Azure</a></li>
+        
+        
+        <li class="next"><a href="walkthrough.html">5.4. Walkthrough: Linux Starter App Deployment <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/azure-intro/virtual-machine.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

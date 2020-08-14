@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.2. Walkthrough: Explore OAuth &amp; OIDC &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7.3. Azure AD B2C Practical Fundamentals" href="aadb2c-fundamentals.html" />
+    <link rel="prev" title="7.1. Introduction and Key Concepts" href="intro.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">7. Introduction to Authentication &amp; Authorization with Azure AD B2C</a></li>
+    <li class="active">7.2. Walkthrough: Explore OAuth &amp; OIDC</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="walkthrough-explore-oauth-oidc">
+<h1>7.2. Walkthrough: Explore OAuth &amp; OIDC<a class="headerlink" href="#walkthrough-explore-oauth-oidc" title="Permalink to this headline">¶</a></h1>
+<p>In this walkthrough we will begin by exploring OAuth using a visual learning tool. Afterwards we will introduce the OIDC specification (spec) which is built as a layer over the OAuth spec.</p>
+<p>Both of these specs are designed for a <strong>user to securely coordinate</strong> the exchange of their information between two unrelated services:</p>
+<ul class="simple">
+<li><strong>client service</strong>: <em>requests</em> a user to <em>authorize access</em> to their identity or data from a provider service</li>
+<li><strong>provider service</strong>: <em>provides</em> the identity or access to data of a user who <strong>authorizes</strong> a client service</li>
+</ul>
+<p>Because OIDC is built over OAuth their distinction from each other is subtle but important to understand. Throughout this walkthrough keep in mind the <strong>purpose</strong> of each of these coordination mechanisms:</p>
+<ul class="simple">
+<li><strong>OAuth</strong>: used for <strong>authorizing</strong> access of a user’s data on a provider service to a client service</li>
+<li><strong>OIDC</strong>: used for a (identity) provider service to <strong>provide the identity</strong> of a user to <strong>authenticate</strong> with a client service</li>
+</ul>
+<div class="section" id="how-oauth-works">
+<h2>7.2.1. How OAuth Works<a class="headerlink" href="#how-oauth-works" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><strong>OAuth</strong> is a mechanism for a user to <em>securely</em> share access to their data that exists on one service with another service.</div></blockquote>
+<p>For example, when you are registering for a Spotify account you can choose to create it using your Facebook account. First you <strong>authenticate</strong> with Facebook. Then you <em>grant access</em> Spotify for it to access your Facebook profile data (like your name or photo). Spotify can then use this profile data to customize your experience in their service without requiring you to provide it all manually.</p>
+<p>OAuth can also be used to grant <em>management access</em> of your data between services. If you allow Spotify to <em>manage</em> your Facebook data it can automatically post the music you are listening to <em>on your behalf</em>.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The key aspect of OAuth is that the user <strong>never shares their credentials with the client service</strong>. Instead the provider (Facebook) <em>provides</em> a token that <em>authorizes</em> Spotify to <em>access</em> the requested data.</p>
+</div>
+<div class="section" id="explore-oauth">
+<h3>7.2.1.1. Explore OAuth<a class="headerlink" href="#explore-oauth" title="Permalink to this headline">¶</a></h3>
+<p>The first step of this walkthrough will be to use a tool called Visual OAuth. This tool will introduce you to the key terminology and concepts involved in OAuth. After learning the fundamentals it will guide you step-by-step through the OAuth mechanism. In this application:</p>
+<ul class="simple">
+<li><strong>provider service</strong>: GitHub will act as the OAuth provider</li>
+<li><strong>client service</strong>: Visual OAuth behaves as the client service</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Visual OAuth is a client service made up of a distinct front-end (written in <a class="reference external" href="https://reactjs.org/" target="_blank">React<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>) and back-end API. This is a standard approach in modern web development. Keep in mind that when referring to the client it can mean either the front-end client or the back-end API.</p>
+</div>
+<p>You will run this project locally on your machine. The <a class="reference external" href="https://github.com/LaunchCodeEducation/visual-oauth" target="_blank">Visual OAuth repo<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> has all of the instructions for setting up and using the tool in its <code class="docutils literal notranslate"><span class="pre">README</span></code> file.</p>
+<p>Follow the repo link and the instructions <strong>then return to this article</strong> when you have finished.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last"><strong>Make sure to use the Windows instructions</strong> in the <code class="docutils literal notranslate"><span class="pre">README.md</span></code> if you are running Windows.</p>
+</div>
+</div>
+</div>
+<div class="section" id="oauth-grant-types">
+<h2>7.2.2. OAuth Grant Types<a class="headerlink" href="#oauth-grant-types" title="Permalink to this headline">¶</a></h2>
+<p>From the Visual OAuth article we learned about the OAuth authorization code grant flow. This grant flow results in an access token which authorized the Client API to access the user’s protected GitHub API data.</p>
+<blockquote>
+<div>An OAuth <strong>grant type</strong>, or <strong>grant flow</strong>, is the general term for the process of a client obtaining an access token via OAuth</div></blockquote>
+<p>In this section we will be learning about a new OAuth grant flow called the <strong>Implicit Grant Flow</strong>.</p>
+<div class="section" id="authorization-code-grant-flow">
+<h3>7.2.2.1. Authorization Code Grant Flow<a class="headerlink" href="#authorization-code-grant-flow" title="Permalink to this headline">¶</a></h3>
+<p>Let’s consider the steps of the OAuth authorization code grant flow presented in the Visual OAuth walkthrough:</p>
+<ol class="arabic simple">
+<li>User Authenticates with the Provider and consents (Authorizes) the Client to access data on their behalf</li>
+<li>Provider Redirects to Client with Auth Code</li>
+<li>Client Front-end Sends Auth Code to Back-end</li>
+<li>Client Back-end Exchanges (by using it’s client secret) Auth Code For access token</li>
+</ol>
+<p>This grant flow is the preferred OAuth grant flow for Client applications that have a dedicated back-end that can securely manage the client secret used in the final exchange. However, for desktop applications (like Postman) or those with only a front-end we can use the simpler implicit grant flow.</p>
+</div>
+<div class="section" id="implicit-grant-flow">
+<h3>7.2.2.2. Implicit Grant Flow<a class="headerlink" href="#implicit-grant-flow" title="Permalink to this headline">¶</a></h3>
+<p>The implicit grant flow is suitable for Client applications that can not securely store the <strong>client secret</strong>. Recall that this secret is needed in the 4th step of the authorization code grant flow. Typically this scenario is encountered in Client applications that <em>only consist</em> of a front-end.</p>
+<p>In the implicit grant flow there are only two steps:</p>
+<ol class="arabic simple">
+<li>User Authenticates with the Provider and consents (Authorizes) the Client to access data on their behalf</li>
+<li>Provider Redirects to Client with access token</li>
+</ol>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>You can learn more about the OAuth Implicit Grant Flow by exploring:</p>
+<ul class="last simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc6749#section-4.2" target="_blank">OAuth 2.0 Implicit Grant Flow spec<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li><a class="reference external" href="https://docs.microsoft.com/en-us/azure/active-directory-b2c/implicit-flow-single-page-application" target="_blank">Microsoft article about Implicit Flow in AADB2C<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+</ul>
+</div>
+<p>In this course we will use the implicit flow in AADB2C to get access tokens and <strong>identity tokens</strong> which are used for authentication. In AADB2C both of these tokens are provided in a standard format called a <strong>JSON Web Token (JWT)</strong>.</p>
+</div>
+<div class="section" id="json-web-tokens-jwt">
+<h3>7.2.2.3. JSON Web Tokens (JWT)<a class="headerlink" href="#json-web-tokens-jwt" title="Permalink to this headline">¶</a></h3>
+<p>In OAuth there are two types of tokens:</p>
+<ul class="simple">
+<li><strong>access tokens</strong>: used as <strong>proof of authorization</strong> for a Client accessing resources on a user’s behalf</li>
+<li><strong>identity tokens</strong>: used to share identity information between applications to <strong>authenticate</strong> on a user’s behalf</li>
+</ul>
+<p>A <strong>JSON Web Token</strong> (JWT) is a way of securely transferring a <em>payload of data</em> that <strong>can be validated for authenticity</strong>. A JWT is made up of 3 components:</p>
+<ol class="arabic simple">
+<li><strong>header</strong>: token metadata</li>
+<li><strong>payload</strong>: the JSON data</li>
+<li><strong>signature</strong>: a digital <em>signature of authenticity</em></li>
+</ol>
+<p>The JSON data is <a class="reference external" href="https://auth0.com/docs/tokens/guides/validate-jwts#check-the-signature" target="_blank">signed for authenticity<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> by the trusted authority (the provider) and Base64 encoded to make even large payloads easy to transport over HTTP.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">To learn more about JWTs start with the <a class="reference external" href="https://jwt.io/introduction/" target="_blank">jwt.io introduction<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+<div class="section" id="aadb2c-tokens">
+<h4>7.2.2.3.1. AADB2C Tokens<a class="headerlink" href="#aadb2c-tokens" title="Permalink to this headline">¶</a></h4>
+<p>In the upcoming walkthroughs we will use a Microsoft JWT <em>decoder tool</em> to inspect both the identity and access tokens we receive from our own AADB2C service. To get an idea of what a JWT looks like the image below shows a decoded identity token:</p>
+<img alt="decoded identity token" src="../../_images/34final-token.png" />
+<p>Each of the components of the JWT are color-coded:</p>
+<ul class="simple">
+<li><strong>header</strong>: highlighted in red</li>
+<li><strong>payload</strong>: highlighted in purple</li>
+<li><strong>signature</strong>: highlighted in green</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Notice how the identity token is provided in the URL as a query string called <code class="docutils literal notranslate"><span class="pre">id_token</span></code>. Recall that the implicit grant flow returns tokens in the URL rather than a response body.</p>
+</div>
+</div>
+<div class="section" id="claims">
+<h4>7.2.2.3.2. Claims<a class="headerlink" href="#claims" title="Permalink to this headline">¶</a></h4>
+<p>Claims are entries in the payload that describe information about the delegated authorization or identity of a user. At minimum, they include information that can be used to <strong>verify the token’s authenticity</strong>. In addition to the authenticity claims a token can contain:</p>
+<ul class="simple">
+<li><strong>identity claims</strong>: information about the user</li>
+<li><strong>authorization claims</strong>: information about what the Client is authorized to access</li>
+</ul>
+<p>Because the JWT is signed by a trusted authority the claims within it can be inherently trusted. This means that client services and resource servers do not need to make additional requests to the authority to confirm their validity.</p>
+<p>We will explore both types of tokens and the different claims associated with each of them in the upcoming walkthroughs.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">This <a class="reference external" href="https://docs.microsoft.com/en-us/windows-server/identity/ad-fs/technical-reference/the-role-of-claims" target="_blank">Microsoft article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> has a more detailed breakdown of how claims are used in Azure.</p>
+</div>
+<p>In OAuth each flow results in an access token. However, this token contains claims used for <em>authorization</em> not <em>authentication</em>. If our application wants to gain identity information to <strong>authenticate a user</strong> they will need to use another protocol.</p>
+<p>The <strong>OIDC</strong> protocol is a variant of OAuth that can be used to gain an identity token instead.</p>
+</div>
+</div>
+</div>
+<div class="section" id="openid-connect-oidc">
+<h2>7.2.3. OpenID Connect (OIDC)<a class="headerlink" href="#openid-connect-oidc" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>OIDC is an <strong>authentication protocol</strong> used for securely signing in (authenticating) users across multiple web applications using a single identity.</div></blockquote>
+<p>OIDC is a more recent protocol built as a thin layer over OAuth. Whereas OAuth is about <em>delegating access</em> using access tokens (authorization), OIDC provides a mechanism for the secure exchange of a user’s identity using an identity token (authentication).</p>
+<p>OIDC allows a user to use a single identity to sign in to any application or service on the web that supports the protocol.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">For a deeper look into how Azure AD B2C uses OIDC take a look at <a class="reference external" href="https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect" target="_blank">this article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></p>
+</div>
+<p>OIDC standardizes the process of <em>using OAuth</em> for authenticating users. In practical terms, OAuth flows are still used but with an additional scope (<code class="docutils literal notranslate"><span class="pre">openid</span></code>) that results in an identity token. If the <code class="docutils literal notranslate"><span class="pre">openid</span></code> scope is requested in addition to <em>authorization scopes</em> both an identity and access token are returned.</p>
+<p>As part of its effort to standardize the authentication process through OAuth, OIDC establishes a consistent pattern of endpoints that simplify how it is used. When integrating a web application using OIDC this standardized approach makes setting up these secure authentication and authorization mechanisms more consistent.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>Before OIDC, developers used <a class="reference external" href="https://en.wikipedia.org/wiki/OpenID#OpenID_vs._pseudo-authentication_using_OAuth" target="_blank">pseudo-authentication with OAuth<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. Given that OAuth is an <em>authorization protocol</em>, this was considered a “hacky” approach.</p>
+<p class="last">Rather than each provider defining their own arbitrary “user profile” endpoint and response body, OIDC establishes a standard identity endpoint and secure mechanism for a Client to access this information.</p>
+</div>
+</div>
+<div class="section" id="azure-ad-b2c">
+<h2>7.2.4. Azure AD B2C<a class="headerlink" href="#azure-ad-b2c" title="Permalink to this headline">¶</a></h2>
+<p>Now that you have learned these two fundamental web protocols we will turn our attention to implementing them using AADB2C. In the following article we will explore the core aspects of an AADB2C service and how both OIDC and OAuth are used to securely manage interactions between Postman, the Coding Events API and our own user accounts.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">Recall how we used GitHub as the provider service in the Visual OAuth. The purpose of this chapter is to set up <strong>our own provider service</strong> using AADB2C.</p>
+</div>
+<p>AADB2C is a complex service due to how it supports both authentication and authorization. This can be confusing without understanding that <strong>its role changes based on how it is used</strong>.</p>
+<p>Depending on the context of how AADB2C is used it may behave as an:</p>
+<ul class="simple">
+<li><strong>identity provider</strong>: when managing user identities and <em>providing</em> identity tokens for <strong>authentication</strong></li>
+<li><strong>OAuth provider</strong> (authorization server): when <em>protecting an API</em> using access tokens to ensure only <em>authorized Clients</em> can make requests to it</li>
+</ul>
+<p>Although we will learn how to set up AADB2C as an identity provider we will only use the identity token for inspecting its claims. Our main goal will be to protect our Coding Events API using access tokens. In order for a Client (like Postman) to make requests to the API they will need to <em>register themselves</em> with our AADB2C service.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="intro.html"><span aria-hidden="true">&larr;</span> 7.1. Introduction and Key Concepts</a></li>
+        
+        
+        <li class="next"><a href="aadb2c-fundamentals.html">7.3. Azure AD B2C Practical Fundamentals <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/intro-oauth-with-aadb2c/walkthrough_oauth-oidc.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

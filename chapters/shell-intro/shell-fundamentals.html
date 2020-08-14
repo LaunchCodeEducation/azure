@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>1.2. Shell Fundamentals &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.3. Walkthrough: Set Up Linux &amp; Bash With WSL" href="walkthrough_setup-wsl.html" />
+    <link rel="prev" title="1.1. Introduction to CLI Shells" href="intro.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">1. Introduction to CLI Shells</a></li>
+    <li class="active">1.2. Shell Fundamentals</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="shell-fundamentals">
+<h1>1.2. Shell Fundamentals<a class="headerlink" href="#shell-fundamentals" title="Permalink to this headline">¶</a></h1>
+<p>Working with Shells like PowerShell and Bash revolves around interactive REPL usage and scripting. We will begin by learning about using the REPL for issuing individual commands in the Terminal. Then we will discuss how multiple commands can be composed into automated scripts. This lesson is an overview of Shell usage as a whole. In the following lessons we will explore the Shell-specific syntax used by Bash and PowerShell.</p>
+<div class="section" id="the-file-system">
+<h2>1.2.1. The File System<a class="headerlink" href="#the-file-system" title="Permalink to this headline">¶</a></h2>
+<p>The most fundamental aspect of working with a Shell is the <strong>file system</strong>. Up until now you likely know the files of your machine through a File Explorer program. These programs expose the file system in a GUI with folders and files. Navigating through the file system of a machine is a process of clicking around to reach and interact with a file or folder.</p>
+<p>In the Shell the file system is accessible in a much more direct manner. The way a file system is organized is based on the OS design but all of them share the concept of a tree-like hierarchy made up of <strong>directories</strong> (folders) and <strong>files</strong>. In the Shell we can describe the directions to the location of files and directories through text rather than graphics.</p>
+<div class="section" id="paths">
+<h3>1.2.1.1. Paths<a class="headerlink" href="#paths" title="Permalink to this headline">¶</a></h3>
+<p>Imagine a stranger at the street corner you are walking on asks for directions. How would you begin to provide them? You need a <strong>reference point</strong> to start from. It would make the most sense to give the directions <em>relative to</em> the corner you are both on. Without a reference, or starting point, it is not possible to provide useful directions.</p>
+<p>A <strong>path</strong> is how we describe the directions to a location in the file system using the Shell. There are two types of paths:</p>
+<ul class="simple">
+<li><strong>relative path</strong>: the directions <em>relative to the current directory</em> as a starting point</li>
+<li><strong>absolute path</strong>: the directions from a fixed, or <em>absolute</em>, starting point</li>
+</ul>
+<div class="section" id="relative-paths">
+<h4>1.2.1.1.1. Relative Paths<a class="headerlink" href="#relative-paths" title="Permalink to this headline">¶</a></h4>
+<p>When you open your File Explorer program it defaults to a <em>starting point</em> of your user <strong>home directory</strong>. The same is true when you open your Shell in the Terminal. The home directory can be described by the following paths:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span># Windows file system separates directories with a &#39;\&#39;
+C:\Users\YourUsername
+
+# Linux file system separates directories with a &#39;/&#39;
+/home/YourUsername
+</pre></div>
+</div>
+<p>We call the directory you are currently in the <strong>current working directory (CWD)</strong>. The CWD changes depending on which directory you navigate to, whether you do that by clicking around in the File Explorer or by <em>changing directories</em> in the Shell.</p>
+<p>Imagine you wanted to provide directions to a file called <code class="docutils literal notranslate"><span class="pre">notes.txt</span></code> that you downloaded to your user’s <code class="docutils literal notranslate"><span class="pre">Downloads</span></code> directory. If you have just opened your Terminal then your CWD is the home directory. From <em>this particular</em> CWD you could describe the relative path to the file as:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Windows</span>
+<span class="n">Downloads</span><span class="p">\</span><span class="n">notes</span><span class="p">.</span><span class="n">txt</span>
+
+<span class="c"># Linux</span>
+<span class="n">Downloads</span><span class="p">/</span><span class="n">notes</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>While this is a convenient shorthand it does have an issue. These relative paths are <strong>only valid relative to the CWD they were referenced from</strong>. What would happen if your CWD was your <code class="docutils literal notranslate"><span class="pre">Pictures</span></code> directory instead of your home directory. Your directions would no longer make any sense because there is no <code class="docutils literal notranslate"><span class="pre">Downloads</span></code> directory inside of <code class="docutils literal notranslate"><span class="pre">Pictures</span></code>.</p>
+<p>The relative path would be like providing directions to the stranger relative to a corner on the other side of town. Not of much use! We need a more <em>absolute</em> way of describing paths that can provide directions independent of the CWD.</p>
+</div>
+<div class="section" id="absolute-paths">
+<h4>1.2.1.1.2. Absolute Paths<a class="headerlink" href="#absolute-paths" title="Permalink to this headline">¶</a></h4>
+<p>Absolute paths are based on a fixed starting point, called the <strong>root directory</strong>, instead of the CWD. They allow you to describe paths that remain valid no matter what CWD you are in.</p>
+<p>On Linux machines the root directory is simply <code class="docutils literal notranslate"><span class="pre">/</span></code>. Whereas on Windows machines the root directory (in most cases) is the C drive, <code class="docutils literal notranslate"><span class="pre">C:</span></code>. Within each of these root directories exists the rest of the file system made up of sub-directories, sub-sub-directories and so on.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">An absolute path is just a relative path from a <strong>constant starting point</strong> instead of a variable CWD.</p>
+</div>
+<p>Let’s consider how we could describe the <code class="docutils literal notranslate"><span class="pre">notes.txt</span></code> location using an absolute path this time. We begin with the fixed starting point of the root directory. From the root as a reference we provide the relative directions through all the directories that lead to the <code class="docutils literal notranslate"><span class="pre">notes.txt</span></code> file location:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span># Windows
+C:\Users\YourUsername\Downloads\notes.txt
+
+# Linux
+/home/YourUsername/Downloads/notes.txt
+</pre></div>
+</div>
+<p>Absolute paths are verbose but precise. They may take longer to write out but they offer a <em>guaranteed</em> path that will work no matter the CWD you start from. Most of the time you will use relative paths when using the Shell as a human. But when you get into automating tasks with scripts the consistent nature of absolute paths becomes invaluable.</p>
+</div>
+</div>
+<div class="section" id="basic-navigation">
+<h3>1.2.1.2. Basic Navigation<a class="headerlink" href="#basic-navigation" title="Permalink to this headline">¶</a></h3>
+<p>In the File Explorer program you used sidebars and your mouse to navigate through directories. In the Shell we use a concept called <strong>changing directories</strong> to change our CWD from one location to another. There are three fundamental commands needed to navigate the file system from a Shell. We will show their basic usage here before digging into Shell commands in greater detail:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">pwd</span></code>: print the CWD to see where you are currently</li>
+<li><code class="docutils literal notranslate"><span class="pre">ls</span></code>: list the contents of a directory</li>
+<li><code class="docutils literal notranslate"><span class="pre">cd</span></code>: change directories</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>These commands originated in Bash but were included in PowerShell as aliases (like a nick-name) for their native PowerShell cmdlet names. We will explore what cmdlets are later, but you should be able to understand them based on how declarative their names are:</p>
+<ul class="last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pwd</span></code>: alias for <code class="docutils literal notranslate"><span class="pre">Get-Location</span></code> cmdlet</li>
+<li><code class="docutils literal notranslate"><span class="pre">ls</span></code>: alias for <code class="docutils literal notranslate"><span class="pre">Get-ChildItem</span></code> cmdlet</li>
+<li><code class="docutils literal notranslate"><span class="pre">cd</span></code>: alias for <code class="docutils literal notranslate"><span class="pre">Set-Location</span></code> cmdlet</li>
+</ul>
+</div>
+<p>When you enter the <code class="docutils literal notranslate"><span class="pre">pwd</span></code> command into your Terminal it will print the absolute path of your CWD. Just like the File Explorer the Shell will open to your home directory by default:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; pwd
+C:\Users\YourUsername
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/YourUsername
+</pre></div>
+</div>
+</div>
+<p>If you want to view the contents of the CWD you are in you can use the <code class="docutils literal notranslate"><span class="pre">ls</span></code> command:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">ls</span>
+<span class="c"># contents of home directory</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ls
+<span class="c1"># contents of home directory</span>
+</pre></div>
+</div>
+</div>
+<p>Finally you can use <code class="docutils literal notranslate"><span class="pre">cd</span></code> to change directories to a new working directory which becomes the CWD. Say you wanted to go from your home directory to the <code class="docutils literal notranslate"><span class="pre">Downloads</span></code> directory like our previous example. You can provide the relative path to the <code class="docutils literal notranslate"><span class="pre">cd</span></code> command to get there:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; cd Downloads
+
+&gt; pwd
+C:\Users\YourUsername\Downloads
+
+&gt; ls
+notes.txt
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> Downloads
+
+$ <span class="nb">pwd</span>
+/home/YourUsername/Downloads
+
+$ ls
+notes.txt
+</pre></div>
+</div>
+</div>
+<p>You can also provide the absolute path to reach the directory from any CWD:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; cd C:\Users\YourUsername\Downloads
+
+&gt; pwd
+C:\Users\YourUsername\Downloads
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /home/YourUsername/Downloads
+
+$ <span class="nb">pwd</span>
+/home/YourUsername/Downloads
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="file-system-operations">
+<h3>1.2.1.3. File System Operations<a class="headerlink" href="#file-system-operations" title="Permalink to this headline">¶</a></h3>
+<p>All of the operations you have grown accustomed to using in a File Explorer are available from the command-line. We will cover creating, reading, moving, copying and deleting files and directories in the Bash and PowerShell syntax lessons.</p>
+</div>
+</div>
+<div class="section" id="commands">
+<h2>1.2.2. Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
+<p>We saw a preview of how to use some fundamental file system commands. Let’s break down how commands work in more detail. When using the Shell REPL in a Terminal the first step is to type a <strong>command</strong> into the prompt. After hitting the <code class="docutils literal notranslate"><span class="pre">enter</span></code> key the REPL process of Reading, Evaluating, and Printing begins. Commands are Evaluated by executing a CLI program that either comes included with the Shell or is installed later.</p>
+<div class="section" id="calling-commands">
+<h3>1.2.2.1. Calling Commands<a class="headerlink" href="#calling-commands" title="Permalink to this headline">¶</a></h3>
+<p>Shell commands are similar to functions. They have a name, input arguments and behavior they perform. But unlike functions their behavior can range from a simple text output to direct control over the OS, file system or even other programs.</p>
+<p>Calling, or executing, a command begins with the name of a CLI <strong>program</strong> followed by <strong>positional arguments</strong> and <strong>options</strong> (modifiers) used by the program.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>In general terms executing a command looks like this:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ program &lt;argument<span class="o">(</span>s<span class="o">)</span>&gt; <span class="o">[</span>--option<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<p class="last">In command documentation required parameters are listed inside of <code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code> symbols while optional parameters are shown inside of <code class="docutils literal notranslate"><span class="pre">[]</span></code> symbols. The term parameter here is used to describe arguments and options in a broader sense.</p>
+</div>
+<p>For example let’s consider the <code class="docutils literal notranslate"><span class="pre">pwd</span></code> or <code class="docutils literal notranslate"><span class="pre">ls</span></code> commands we saw. Both of these only needed the program name to be called:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+$ ls
+
+<span class="c1"># in general terms</span>
+$ program
+</pre></div>
+</div>
+<div class="section" id="arguments">
+<h4>1.2.2.1.1. Arguments<a class="headerlink" href="#arguments" title="Permalink to this headline">¶</a></h4>
+<p>Arguments are positional values used to define the main behavior of a command. Like JavaScript or C# the arguments have a specific order they must be provided in. While some commands like <code class="docutils literal notranslate"><span class="pre">pwd</span></code> or <code class="docutils literal notranslate"><span class="pre">ls</span></code> have <em>default arguments</em>, most will require some additional input from you. The command documentation will describe what arguments, their order and any default values that apply to them.</p>
+<p>Let’s consider the <code class="docutils literal notranslate"><span class="pre">cd</span></code> command we saw that was used to change directories. This time we did provide a positional argument, the relative or absolute path to the directory we wanted to switch to:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> Downloads
+
+<span class="c1"># in general terms</span>
+$ program &lt;argument&gt;
+</pre></div>
+</div>
+<p>We saw that the <code class="docutils literal notranslate"><span class="pre">ls</span></code> command, when called without arguments, will default to listing the contents of the CWD. But if we provide it with a path as an argument we can list the contents of a different directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># a relative path</span>
+$ ls Downloads
+notes.txt
+
+<span class="c1"># an absolute path</span>
+$ ls /home/YourUsername/Downloads
+notes.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="options">
+<h4>1.2.2.1.2. Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h4>
+<p>Options allow you to fine-tune the behavior of a command. While it is not enforced in third party CLI programs, the convention for using options is:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">--option</span></code>: a double <code class="docutils literal notranslate"><span class="pre">--</span></code> dash with the full name of the option</li>
+<li><code class="docutils literal notranslate"><span class="pre">-o</span></code>: a single <code class="docutils literal notranslate"><span class="pre">-</span></code> dash with the first option letter <code class="docutils literal notranslate"><span class="pre">o</span></code> as a shorthand</li>
+</ul>
+<p>The most common option you can expect across CLI programs is access to the help documentation. Traditionally this is available using either the long <code class="docutils literal notranslate"><span class="pre">--help</span></code> or shorthand <code class="docutils literal notranslate"><span class="pre">-h</span></code> option after the command name. If available, the output lists details about the command and how to use its arguments and options.</p>
+<p>Some options can have their own arguments. For example you will soon begin using the <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">CLI</span></code> tool to manage your .NET projects from the Terminal. Without having seen the following command before you may be able to understand what it is doing based on its arguments and options:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ dotnet new webapp --name MyApp
+</pre></div>
+</div>
+<p>If you are stumped don’t worry. While this may look complex it can be broken down methodically:</p>
+<ul class="simple">
+<li><strong>program</strong>: <code class="docutils literal notranslate"><span class="pre">dotnet</span></code></li>
+<li><strong>first argument</strong>: <code class="docutils literal notranslate"><span class="pre">new</span></code> (the argument for creating new projects)</li>
+<li><strong>second argument</strong>: <code class="docutils literal notranslate"><span class="pre">webapp</span></code> (a sub-argument of <code class="docutils literal notranslate"><span class="pre">new</span></code> for defining what type of project to create)</li>
+<li><strong>option</strong>: <code class="docutils literal notranslate"><span class="pre">--name</span></code> (option to define the name of the new project)</li>
+<li><strong>option argument</strong>: <code class="docutils literal notranslate"><span class="pre">MyApp</span></code> (the value for the <code class="docutils literal notranslate"><span class="pre">name</span></code> option)</li>
+</ul>
+<p>Here is another view to see how everything aligns:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># program [argument] [argument sub-argument] --[option] [option argument]</span>
+$ dotnet     new            webapp             --name         MyApp
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="cli-tools">
+<h2>1.2.3. CLI Tools<a class="headerlink" href="#cli-tools" title="Permalink to this headline">¶</a></h2>
+<p>The built-in commands of Bash and PowerShell are like the GUI applications that come installed on your OS. They are a set of tools for the essentials of interacting with your machine. For handling more specific tasks you can install 3rd party tools – or even write your own! While the market for GUI applications is primarily designed for consumers, the world of CLI tools is tailored for users that need greater control over their machine.</p>
+<p>Shell programs can be installed in a variety of ways. Some developers prefer to <em>build from source</em> which involves manually assembling the dependencies and source code of a tool. While this process provides you with the greatest control and security over the programs on your machine it can be a lengthy process.</p>
+<p>The next alternative involves installing the pre-built <strong>binaries</strong> (executable files that don’t need to be interpreted). This is similar to installing a desktop application from a website using a downloaded installer program. The downside of this approach is that it requires you to move the program files to the correct location for your Shell to recognize them.</p>
+<p>Most developers turn to special tools specifically designed for downloading and managing the installation process automatically.</p>
+<div class="section" id="package-managers">
+<h3>1.2.3.1. Package Managers<a class="headerlink" href="#package-managers" title="Permalink to this headline">¶</a></h3>
+<p><strong>Package managers</strong> are the CLI equivalent of an App Store. They allow you to search for and install custom CLI programs that extend the behavior of the Shell. On Linux machines the package managers are even capable of extending the GUI Shell. While we will use Shell package managers in this class the same term applies to language-based package managers like <code class="docutils literal notranslate"><span class="pre">npm</span></code> (for JavaScript) and <code class="docutils literal notranslate"><span class="pre">pip</span></code> (for Python).</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">CLI <strong>packages</strong> (installed commands) can range from simple tools to more complex programs like compilers, interpreters and even full-fledged Web Servers.</p>
+</div>
+<p>Windows packages are handled by the <a class="reference external" href="https://chocolatey.org/" target="_blank">Chocolatey package manager<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> or <code class="docutils literal notranslate"><span class="pre">choco</span></code> as it is called when used in PowerShell. On OSX the <a class="reference external" href="https://brew.sh/" target="_blank">HomeBrew<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> (<code class="docutils literal notranslate"><span class="pre">brew</span></code>) package manager has cornered the market. In the Linux space there are many package managers that the different Linux Distributions (OS variants over the core Linux Kernel) are built around. In this class we will use the <a class="reference external" href="https://linuxhint.com/apt_package_manager_ubuntu/" target="_blank">Advanced Package Tool<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> (<code class="docutils literal notranslate"><span class="pre">apt</span></code>) that is the default package manager on Debian-based Distributions like Ubuntu.</p>
+<p>Package managers automate the entire process of downloading, installing, configuring and updating the Shell programs you use. These tools are stored in <strong>package repositories</strong> that host the packages on the web for searching and downloading. Package managers come with some default repository packages from trusted package maintainers that contain metadata for sourcing the hosted packages. But unlike the App Stores on your phone or PC the repositories list can be updated to add additional public or private sources.</p>
+<p>We will learn how to install and use these tools in the Bash and PowerShell syntax lessons. As a developer you can use them for configuring your development machines. Later we will learn how to write scripts that use package managers to set up our own Servers in the cloud!</p>
+</div>
+<div class="section" id="tools-used-in-this-class">
+<h3>1.2.3.2. Tools used in this class<a class="headerlink" href="#tools-used-in-this-class" title="Permalink to this headline">¶</a></h3>
+<p>In this class we will spend the majority of our time working in the Terminal. In addition to getting comfortable using the Shell built-ins we will learn how to use many other tools including:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">dotnet</span></code>: used to create, manage and run .NET projects</li>
+<li><code class="docutils literal notranslate"><span class="pre">az</span></code>: the Azure CLI for provisioning and managing resources in the cloud</li>
+<li><code class="docutils literal notranslate"><span class="pre">git</span></code>: the version control CLI tool</li>
+</ul>
+</div>
+</div>
+<div class="section" id="the-path">
+<h2>1.2.4. The PATH<a class="headerlink" href="#the-path" title="Permalink to this headline">¶</a></h2>
+<p>The big difference between the functions you are familiar with and commands in a Shell is how they are referenced. Think about how you reference functions in your projects. They can either be referenced by their name (if in the same file) or they must be imported from another file in your code.</p>
+<p>A command can be installed anywhere in your file system rather than just your codebase. The Shell needs to know where to find it before it can execute it. In other words the Shell needs to know the absolute path to the executable file in order to use it.</p>
+<p>How does the Shell know where to find the executable program files when we call a command by just its program name rather than its absolute path?</p>
+<div class="section" id="shell-environment-variables">
+<h3>1.2.4.1. Shell Environment Variables<a class="headerlink" href="#shell-environment-variables" title="Permalink to this headline">¶</a></h3>
+<p>All Shells share the concept of a <strong>Shell environment</strong>. The environment holds <strong>environment variables</strong> that configure aspects of the Shell’s behavior. They apply to every new Shell process that is started. Many variables are set by default but others can be customized by the user.</p>
+<p>Bash and PowerShell each handle environment variables differently. Managing the environment is outside of the scope of this class but is important to understand. Interactions with Shell environments are conceptually very similar. But because Linux and Bash are inherently simpler to understand, compared to the more modern and complex Windows and PowerShell, we will provide examples from the Bash perspective.</p>
+<div class="section" id="the-home-variable">
+<h4>1.2.4.1.1. The HOME Variable<a class="headerlink" href="#the-home-variable" title="Permalink to this headline">¶</a></h4>
+<p>For example, consider the default behavior we discussed earlier that causes a Shell to set the CWD to the home directory when first starting up. How does the Shell know what the home directory path is? An environment variable called <code class="docutils literal notranslate"><span class="pre">$HOME</span></code> (Linux/Bash) or <code class="docutils literal notranslate"><span class="pre">$Env:HOMEPATH</span></code> (Windows/PowerShell) holds the value that the Shell uses.</p>
+<p>By default this value will be the path to the user directory for the logged in user. You can view them using the <code class="docutils literal notranslate"><span class="pre">echo</span></code> (print output) command:</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; echo &quot;$Env:HOMEPATH&quot;
+C:\Users\YourUsername
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">&quot;</span>
+/home/YourUsername
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="the-path-variable">
+<h4>1.2.4.1.2. The PATH Variable<a class="headerlink" href="#the-path-variable" title="Permalink to this headline">¶</a></h4>
+<p>So how do environment variables relate to calling programs by their name rather than their absolute path? There is a special variable called <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> (Linux/Bash) or <code class="docutils literal notranslate"><span class="pre">$Env:Path</span></code> (Windows/PowerShell) which holds the answer. We will refer to these using the general term PATH variable.</p>
+<p>The PATH variable holds a collection of base paths that the Shell should look in when evaluating a command. When a command is called the Shell will look in each of the base paths until it finds an executable file with the same name. Then it combines the matching base path with the command name to form the absolute path of the file to execute.</p>
+<p>For example, in Bash the base directory that the built-in commands are stored in is <code class="docutils literal notranslate"><span class="pre">/usr/bin</span></code>. Bash includes this base directory in its PATH variable by default. When we call the <code class="docutils literal notranslate"><span class="pre">ls</span></code> command it is actually referencing the executable program file at the <code class="docutils literal notranslate"><span class="pre">/usr/bin/ls</span></code> path.</p>
+<p>Let’s assume a PATH variable with 4 base directories in its list (separated by <code class="docutils literal notranslate"><span class="pre">:</span></code> characters):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+</pre></div>
+</div>
+<p>The process looks something like:</p>
+<ol class="arabic simple">
+<li>read the program name (<code class="docutils literal notranslate"><span class="pre">ls</span></code>)</li>
+<li>recognize that it is a program name and not a path to an executable</li>
+<li>check each directory in the PATH list for a file with the name of the command (<code class="docutils literal notranslate"><span class="pre">ls</span></code>)</li>
+</ol>
+<p>It first checks <code class="docutils literal notranslate"><span class="pre">/usr/local/sbin</span></code> but is unable to find the <code class="docutils literal notranslate"><span class="pre">ls</span></code> program file. It then checks <code class="docutils literal notranslate"><span class="pre">/usr/local/bin</span></code> and <code class="docutils literal notranslate"><span class="pre">/usr/sbin</span></code> but still fails to find it. Finally it finds the <code class="docutils literal notranslate"><span class="pre">ls</span></code> file in <code class="docutils literal notranslate"><span class="pre">/usr/bin</span></code> directory.</p>
+<p>The command is then executed by combining the matching base path (<code class="docutils literal notranslate"><span class="pre">/usr/bin</span></code>) with the command name (<code class="docutils literal notranslate"><span class="pre">ls</span></code>) into the absolute path <code class="docutils literal notranslate"><span class="pre">/usr/bin/ls</span></code>. If it reaches the end of the PATH list then it will output a <em>command not found</em> error.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>One of the most common issues beginners face when working with a Shell is encountering a <em>command not found</em> error. Assuming the command is not misspelled, this indicates that the command’s file is in a directory that is not registered in the PATH list.</p>
+<p class="last">If you are able to call the command by providing its absolute path then all you need to do is add the base path of the file to the PATH variable.</p>
+</div>
+<p>You will likely not need to update the PATH yourself unless you install CLI programs <em>manually</em> in locations that are not already on the PATH. Fortunately, package managers use a consistent installation directory and add that directory to the PATH automatically!</p>
+</div>
+</div>
+</div>
+<div class="section" id="piping">
+<h2>1.2.5. Piping<a class="headerlink" href="#piping" title="Permalink to this headline">¶</a></h2>
+<p><strong>Piping</strong>, or <strong>pipelining</strong>, is the process of chaining together multiple commands by using the output of one as the input to the next. The term comes from the idea of a <strong>data pipeline</strong> which is used to transform or operate on data in a concise way. You can think of it as a <em>stream of data</em> flowing through a <em>pipe of commands</em> from the first to the last.</p>
+<p>The idea behind piping is simple but its capability is powerful. The first command in the pipeline is executed and produces an output. But rather than printing the command’s output to the Terminal it is instead used as an input to the next command in the pipeline. This process repeats until reaching the end of the pipeline and outputting the final result.</p>
+<p>We will get into the syntax of piping in the Bash and PowerShell specific lessons. In general terms piping involves 2 or more commands each separated by the <code class="docutils literal notranslate"><span class="pre">|</span></code> pipe character (just above the <code class="docutils literal notranslate"><span class="pre">enter</span></code> key on your keyboard).</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>In a general sense this is what piping between two commands looks like. The output of the first command is used as the input (argument) to the second command in the pipeline.</p>
+<div class="literal-block-wrapper last docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ first-command <span class="p">|</span> next-command &lt;first-command output&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="scripting">
+<h2>1.2.6. Scripting<a class="headerlink" href="#scripting" title="Permalink to this headline">¶</a></h2>
+<p>Scripting is the end goal of working with Shells. In simple terms it is the process of composing multiple commands together in a single file to complete a larger task. Instead of entering the commands individually the script file can be executed to automate the behavior.</p>
+<p>Script files can be written in many scripting languages like Python and JavaScript. However, these scripting languages require an interpreter program and runtime that must be installed on the machine executing the script.</p>
+<p>The benefit of writing scripts in a native Shell like Bash or PowerShell is that they come pre-installed as the default Shells for many Linux Distributions and Windows. Learning how to create and use scripts is an integral part of working in operations. We will cover how to read, write and execute Bash and PowerShell scripts in later lessons.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="intro.html"><span aria-hidden="true">&larr;</span> 1.1. Introduction to CLI Shells</a></li>
+        
+        
+        <li class="next"><a href="walkthrough_setup-wsl.html">1.3. Walkthrough: Set Up Linux &amp; Bash With WSL <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/shell-intro/shell-fundamentals.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

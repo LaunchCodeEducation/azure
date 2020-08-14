@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>4.5. (Remote) Studio: Deploying &amp; Connecting to a Machine on the Same LAN &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5. Introduction to Azure and Virtual Machines" href="../azure-intro/index.html" />
+    <link rel="prev" title="4.4. Walkthrough: Running Code Anywhere" href="walkthrough.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">4. Introduction to Web Hosting</a></li>
+    <li class="active">4.5. (Remote) Studio: Deploying &amp; Connecting to a Machine on the Same LAN</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="remote-studio-deploying-connecting-to-a-machine-on-the-same-lan">
+<h1>4.5. (Remote) Studio: Deploying &amp; Connecting to a Machine on the Same LAN<a class="headerlink" href="#remote-studio-deploying-connecting-to-a-machine-on-the-same-lan" title="Permalink to this headline">¶</a></h1>
+<p>As an additional example, you will deploy your web app to your local machine that is connected to a LAN and then access the swagger front end using your phone, or another device you have connected to your LAN.</p>
+<p>To complete this studio you will need your development machine along with a separate device that has access to a web browser. Both your local machine and the separate device must be connected to the same LAN.</p>
+<p>This studio will be very similar to the previous studio, but instead of relying on an instructor you will be playing both parts yourself. You will need to go through the development and remote server instructions again, and then finally you will need to connect to the deployed application by using another device on your network.</p>
+<div class="section" id="the-development-machine">
+<h2>4.5.1. The Development Machine<a class="headerlink" href="#the-development-machine" title="Permalink to this headline">¶</a></h2>
+<p>As the development machine you are simulating where the source code is developed (your local machine).</p>
+<p>Open the <code class="docutils literal notranslate"><span class="pre">CodingEventsAPI/Startup.cs</span></code> file. Edit the code in some way so when you connect from the other device you will see the changes.</p>
+<p>You will see a configuration for Swagger on <code class="docutils literal notranslate"><span class="pre">line</span> <span class="pre">25</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">CodingEventsAPI/CodingEventsAPI.csproj</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-csharp notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddSwaggerGen</span><span class="p">(</span>
+   <span class="n">options</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="n">options</span><span class="p">.</span><span class="n">SwaggerDoc</span><span class="p">(</span>
+         <span class="s">&quot;v1&quot;</span><span class="p">,</span>
+         <span class="k">new</span> <span class="n">OpenApiInfo</span> <span class="p">{</span>
+            <span class="n">Version</span> <span class="p">=</span> <span class="s">&quot;v1&quot;</span><span class="p">,</span>
+<span class="hll">            <span class="n">Title</span> <span class="p">=</span> <span class="s">&quot;Coding Events API&quot;</span><span class="p">,</span>
+</span><span class="hll">            <span class="n">Description</span> <span class="p">=</span> <span class="s">&quot;REST API for managing Coding Events&quot;</span>
+</span>         <span class="p">}</span>
+      <span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">);</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">If you do not see the code on this line you are likely on the wrong branch. Make sure you are working on the <code class="docutils literal notranslate"><span class="pre">1-sqlite</span></code> branch before continuing.</p>
+</div>
+<p>Change the <code class="docutils literal notranslate"><span class="pre">Title</span></code> of the UI to include your name. You can also customize the <code class="docutils literal notranslate"><span class="pre">Description</span></code> if you like. Then commit and push your changes:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">run from the root (solution) directory</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git add .
+$ git commit -m <span class="s2">&quot;made it my own!&quot;</span>
+$ git push
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="the-remote-server-machine">
+<h2>4.5.2. The Remote Server Machine<a class="headerlink" href="#the-remote-server-machine" title="Permalink to this headline">¶</a></h2>
+<p>Your development machine will also act as the remote server. After completing the steps in the previous section, go ahead and deploy the application.</p>
+<p>As the final step, open the Swagger documentation page <a class="reference external" href="https://localhost:5001" target="_blank">https://localhost:5001<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> in your browser from the local development machine. You should see the Swagger documentation you saw earlier.</p>
+<p>Now to connect to the API from another device. To do this you will need to know the private IP address of your development machine. There are multiple ways of doing this. The easiest is to run <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> from a Powershell (Windows) or bash (OSX/Linux) terminal, or to run <code class="docutils literal notranslate"><span class="pre">ipconfig</span></code> from the command prompt (Windows).</p>
+<p>Depending on how your computer is connected to your LAN, the information you need will be under different sections. Look for your <code class="docutils literal notranslate"><span class="pre">inet</span> <span class="pre">address</span></code>. The following screenshots show what you are looking for using <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> from bash and Powershell.</p>
+<img alt="../../_images/powershell-ifconfig.png" src="../../_images/powershell-ifconfig.png" />
+<img alt="../../_images/bash-ifconfig.png" src="../../_images/bash-ifconfig.png" />
+<p>In the images above, the <code class="docutils literal notranslate"><span class="pre">inet</span> <span class="pre">address</span></code> we are looking for is <code class="docutils literal notranslate"><span class="pre">192.168.1.9</span></code>. This is found under the <code class="docutils literal notranslate"><span class="pre">wlp0s20f3</span></code> section, which is the identifier for the wireless access card on the specific computer used for this example. If the section starts with a <code class="docutils literal notranslate"><span class="pre">w</span></code> it indicates a wireless connection. If the section starts with a <code class="docutils literal notranslate"><span class="pre">e</span></code> it indicates a wired connected over ethernet.</p>
+<p>You will need to find the private IP address of your development/deployment machine.</p>
+<p>After you have it, pull up your other device with a web browser (your phone will work fine). Navigate to your private IP address on port 5001 and you should see the Swagger documentation.</p>
+</div>
+<div class="section" id="reflect">
+<h2>4.5.3. Reflect<a class="headerlink" href="#reflect" title="Permalink to this headline">¶</a></h2>
+<p>This example is just another illustration of what’s going on with the Internet. The Internet, after all, is just a collection of inter-connected networks, and in concept the Internet behaves similarly to your LAN. One device makes a request to another device with a specific port, and the deployment machine responds to the request with a payload of information.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="walkthrough.html"><span aria-hidden="true">&larr;</span> 4.4. Walkthrough: Running Code Anywhere</a></li>
+        
+        
+        <li class="next"><a href="../azure-intro/index.html">5. Introduction to Azure and Virtual Machines <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/hosting/studio-2.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

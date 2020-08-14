@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2.3. Walkthrough: Working With Directories &amp; Files in Bash &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.4. Bash Scripting Fundamentals" href="scripting.html" />
+    <link rel="prev" title="2.2. Walkthrough: Navigating the File System With Bash" href="walkthrough_fs-navigation.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">2. Introduction to Bash</a></li>
+    <li class="active">2.3. Walkthrough: Working With Directories &amp; Files in Bash</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="walkthrough-working-with-directories-files-in-bash">
+<h1>2.3. Walkthrough: Working With Directories &amp; Files in Bash<a class="headerlink" href="#walkthrough-working-with-directories-files-in-bash" title="Permalink to this headline">¶</a></h1>
+<p>Now that we have learned some essential FS commands we can learn more about working with directories and files. For simplicity we will refer to <strong>regular files</strong> as just files from this point forward. Distinguishing them from the other Linux file types is not necessary for the scope of our learning.</p>
+<div class="section" id="directory-operations">
+<h2>2.3.1. Directory Operations<a class="headerlink" href="#directory-operations" title="Permalink to this headline">¶</a></h2>
+<p>Let’s practice some common directory operations. We will learn these through simple examples but the concepts and commands will apply to all of the directory work you do in the future.</p>
+<div class="section" id="create-a-directory">
+<h3>2.3.1.1. Create a directory<a class="headerlink" href="#create-a-directory" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">mkdir</span></code> (make directory) command creates directories using a relative or absolute path argument. If just the name of a directory is given then it is created <em>relative to</em> the CWD. If the absolute path is provided the directory is created at that <em>exact</em> location.</p>
+<p>By convention Linux directories do not use spaces in them. Space characters can conflict with the spaces between command arguments so they are avoided. In order to create a multi-word directory name the convention uses dashes (<code class="docutils literal notranslate"><span class="pre">-</span></code>) to separate the words.</p>
+<p>Let’s create a <code class="docutils literal notranslate"><span class="pre">parent-dir</span></code> and <code class="docutils literal notranslate"><span class="pre">child-dir</span></code> using <code class="docutils literal notranslate"><span class="pre">mkdir</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+<span class="c1"># relative to the CWD</span>
+$ mkdir parent-dir
+
+<span class="c1"># an absolute path in the /tmp (temporary) directory</span>
+$ mkdir /tmp/child-dir
+
+<span class="c1"># mkdir can create multiple (space-separated) dirs at once</span>
+$ mkdir parent-dir /tmp/child-dir
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="view-directory-contents">
+<h3>2.3.1.2. View directory contents<a class="headerlink" href="#view-directory-contents" title="Permalink to this headline">¶</a></h3>
+<p>Now if we list the contents of the CWD (home dir) and the <code class="docutils literal notranslate"><span class="pre">/tmp</span></code> dir we should see our new directories:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+$ ls
+parent-dir
+
+$ ls /tmp
+<span class="c1"># trimmed output</span>
+child-dir
+</pre></div>
+</div>
+</div>
+<p>We can also see that both the new directories are empty:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+<span class="c1"># relative path</span>
+$ ls parent-dir
+<span class="c1"># empty contents</span>
+
+<span class="c1"># absolute path</span>
+$ ls /tmp/child-dir
+<span class="c1"># empty contents</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="move-a-directory">
+<h3>2.3.1.3. Move a directory<a class="headerlink" href="#move-a-directory" title="Permalink to this headline">¶</a></h3>
+<p>We can move a directory to a new location using the <code class="docutils literal notranslate"><span class="pre">mv</span></code> command. Once again, its arguments accept relative or absolute paths. The <code class="docutils literal notranslate"><span class="pre">mv</span></code> command takes a target and destination path as its first and second arguments:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ mv &lt;path to target&gt; &lt;path to destination&gt;
+</pre></div>
+</div>
+</div>
+<p>Let’s move the <code class="docutils literal notranslate"><span class="pre">child-dir</span></code> from its current parent directory (<code class="docutils literal notranslate"><span class="pre">/tmp</span></code>) into the new one we made:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+<span class="c1"># from absolute path (target) to relative path (destination)</span>
+$ mv /tmp/child-dir parent-dir/child-dir
+
+$ ls /tmp
+<span class="c1"># the child-dir no longer exists at this location</span>
+
+$ ls parent-dir
+child-dir
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="copy-a-directory">
+<h3>2.3.1.4. Copy a directory<a class="headerlink" href="#copy-a-directory" title="Permalink to this headline">¶</a></h3>
+<p>Copying files uses the <code class="docutils literal notranslate"><span class="pre">cp</span></code> command. The <code class="docutils literal notranslate"><span class="pre">cp</span></code> command behaves nearly identically to the <code class="docutils literal notranslate"><span class="pre">mv</span></code> command except it <em>copies</em> instead of <em>moving</em> the file(s). Just like the move command you can copy <em>any file</em> whether it is a regular or directory file.</p>
+<p>However, to copy a directory is not as simple as copying a single file. A directory inherently can contain contents including other directories and regular files. For this reason the <code class="docutils literal notranslate"><span class="pre">-r</span></code> (recursive) option is used.</p>
+<p>The recursive option instructs the <code class="docutils literal notranslate"><span class="pre">cp</span></code> command to copy the directory <em>recursively</em>. It does this by recursing into each nested directory and copying its contents as well.</p>
+<p>Let’s move our <code class="docutils literal notranslate"><span class="pre">parent-dir</span></code> to the <code class="docutils literal notranslate"><span class="pre">/tmp</span></code> dir:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+$ ls
+parent-dir
+
+$ ls parent-dir
+child-dir
+
+$ cp -r parent-dir /tmp/parent-dir
+</pre></div>
+</div>
+</div>
+<p>Now let’s confirm the move by checking the <code class="docutils literal notranslate"><span class="pre">/tmp</span></code> dir:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ls /tmp
+parent-dir
+
+$ ls /tmp/parent-dir
+child-dir
+</pre></div>
+</div>
+</div>
+<p>Notice how it copied the <code class="docutils literal notranslate"><span class="pre">parent-dir</span></code> and <em>recursed</em> into it to copy all of the sub-directories as well.</p>
+</div>
+<div class="section" id="delete-a-directory">
+<h3>2.3.1.5. Delete a directory<a class="headerlink" href="#delete-a-directory" title="Permalink to this headline">¶</a></h3>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>The command to delete files is <strong>not to be taken lightly</strong>. When you delete a file or directory through the GUI it will conveniently store the deleted contents in a recycling bin where they can be recovered.</p>
+<p>In the Shell a <strong>deletion is permanent</strong> and nearly <strong>instantaneous</strong>. For this reason it is imperative that any delete commands you enter <strong>always use an absolute path</strong> to be explicit and prevent mistakes.</p>
+<p>While we stressed being cautious before it is imperative to be <strong>extra cautious</strong> when deleting files using Bash:</p>
+<p class="last"><strong>DO NOT STRAY FROM THE FOLLOWING COMMAND DIRECTIONS</strong></p>
+</div>
+<p>The command for deleting, or <em>removing</em>, files is <code class="docutils literal notranslate"><span class="pre">rm</span></code>. When deleting a directory, just like <code class="docutils literal notranslate"><span class="pre">cp</span></code>, the <code class="docutils literal notranslate"><span class="pre">-r</span></code> option will instruct it to do so <em>recursively</em>.</p>
+<p>Let’s clean up the directories we created using the remove command.</p>
+<p>We will also include the <code class="docutils literal notranslate"><span class="pre">-i</span></code> (interactive) option as a safety measure. This will require us to explicitly confirm the removal of each file before it is deleted. For each prompt you can confirm the deletion by entering the <code class="docutils literal notranslate"><span class="pre">y</span></code> character:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ls /tmp/parent-dir
+child-dir
+
+$ rm -i -r /tmp/parent-dir
+<span class="c1"># for each prompt type y and hit enter (for yes)</span>
+
+$ ls /tmp/parent-dir
+ls: cannot access <span class="s1">&#39;/tmp/parent-dir&#39;</span>: No such file or directory
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="file-operations">
+<h2>2.3.2. File Operations<a class="headerlink" href="#file-operations" title="Permalink to this headline">¶</a></h2>
+<p>As we move from directory to file operations consider one of the core tenets of Linux – <strong>everything is a file</strong>.</p>
+<p>Why is this valuable to consider? Because most of the commands used for directory operations are identical for regular files! When dealing with regular files the <code class="docutils literal notranslate"><span class="pre">-r</span></code> (recursive) option is no longer needed since it is an <em>individual file</em> rather than a container like a directory:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ mv path/to/target/file path/to/destination/file
+
+$ cp path/to/target/file path/to/destination/file
+
+$ rm -i path/to/target/file
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-file">
+<h3>2.3.2.1. Create a file<a class="headerlink" href="#create-a-file" title="Permalink to this headline">¶</a></h3>
+<p>In Bash you can create a file in several different ways. Bash and Linux users are accustomed to using <strong>CLI text editors</strong> for creating and modifying files. Whereas on Windows the preference is for using a GUI based editor like <code class="docutils literal notranslate"><span class="pre">notepad</span></code>.</p>
+<p>Bash also includes <a class="reference external" href="https://www.guru99.com/linux-redirection.html" target="_blank">redirection operators<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> which can be used to <em>redirect</em> the output of a command into a new location – like a new file or new lines on an existing file.</p>
+<p>Due to the scope of this class, we will not be covering CLI editors or the redirect operators but you can use the links above to learn more about them. Instead, we will introduce a much simpler command.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">touch</span></code> command can be used to create an empty file. It takes a relative or absolute path ending in the file’s name as an argument:</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ touch path/to/file-name
+</pre></div>
+</div>
+</div>
+<div class="admonition-fun-fact admonition">
+<p class="first admonition-title"><i class="fas fa-rocket" aria-hidden="true"></i>Fun Fact</p>
+<p class="last">Technically the <code class="docutils literal notranslate"><span class="pre">touch</span></code> command is used for updating the last time the file was <em>touched</em> (the last-accessed or modified timestamp). But most of the time it is used for its <em>side-effect</em> of creating the file if it doesn’t already exist to be touched!</p>
+</div>
+<p>Let’s create a file called <code class="docutils literal notranslate"><span class="pre">my-file</span></code> in a directory called <code class="docutils literal notranslate"><span class="pre">my-files</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+$ mkdir my-files
+$ touch my-files/my-file
+
+$ ls my-files
+my-file
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="view-file-contents">
+<h3>2.3.2.2. View file contents<a class="headerlink" href="#view-file-contents" title="Permalink to this headline">¶</a></h3>
+<p>Although <em>everything is a file</em> not every file can be <em>interpreted the same way</em>. Directories, as container files, naturally need a mechanism for listing their contents – the <code class="docutils literal notranslate"><span class="pre">ls</span></code> command. But regular files are just collections of characters. Listing those out would be a mess!</p>
+<p>When viewing the contents of a file we can use the <code class="docutils literal notranslate"><span class="pre">cat</span></code> command. The <code class="docutils literal notranslate"><span class="pre">cat</span></code> command stands for <em>concatenate</em> and serves to combine strings of characters. Just like <code class="docutils literal notranslate"><span class="pre">touch</span></code> it is often used for the side effect of printing out the contents of a file.</p>
+<p>In other words it is concatenating the contents of the file with <em>nothing</em> resulting in just the contents being printed to the Terminal.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">cat</span></code> command to print the contents of a file by providing the absolute or relative path to that file. Let’s try viewing the contents of the hidden file <code class="docutils literal notranslate"><span class="pre">.bash_history</span></code> which shows a history of all the commands you have entered recently:</p>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+$ cat .bash_history
+<span class="c1"># your command history!</span>
+</pre></div>
+</div>
+</div>
+<p>Sometimes printing the <em>entire contents</em> to the Terminal is too verbose. This would be like viewing a 50 page book all at once. Instead we can use the <code class="docutils literal notranslate"><span class="pre">less</span></code> command to show <em>less</em> at one time – similar to scrolling through the pages instead.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">less</span></code> command works the same way as <code class="docutils literal notranslate"><span class="pre">cat</span></code>, by providing it an absolute or relative path.</p>
+<p>Once the program opens you can navigate using the following keyboard keys. Some terminals also allow scrolling with the mouse wheel:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">J</span></code>: scroll down one line</li>
+<li><code class="docutils literal notranslate"><span class="pre">K</span></code>: scroll up one line</li>
+<li><code class="docutils literal notranslate"><span class="pre">Q</span></code>: quit the <code class="docutils literal notranslate"><span class="pre">less</span></code> program and return to the Shell</li>
+</ul>
+<p>Let’s try viewing the <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> file this time. If the contents of this file look terrifying don’t worry! You won’t need to write or edit any of it. But it serves as a lengthy file to practice scrolling with <code class="docutils literal notranslate"><span class="pre">less</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id13" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+$ less .bashrc
+<span class="c1"># less program opens the file, use J and K to scroll and Q to quit</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="walkthrough_fs-navigation.html"><span aria-hidden="true">&larr;</span> 2.2. Walkthrough: Navigating the File System With Bash</a></li>
+        
+        
+        <li class="next"><a href="scripting.html">2.4. Bash Scripting Fundamentals <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/bash-intro/walkthrough_dirs-and-files.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

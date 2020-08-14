@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2. Instructor &amp; TAs: Troubleshooting Solution Steps &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Instructor &amp; TAs: Resetting" href="resetting.html" />
+    <link rel="prev" title="1. TAs ONLY: Discussion: Components of a Functioning System" href="1-group-discussion.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../../index.html">Contents</a></li>
+    <li><a href="index.html">Troubleshooting Instructor Solution</a></li>
+    <li class="active">2. Instructor &amp; TAs: Troubleshooting Solution Steps</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="instructor-tas-troubleshooting-solution-steps">
+<h1>2. Instructor &amp; TAs: Troubleshooting Solution Steps<a class="headerlink" href="#instructor-tas-troubleshooting-solution-steps" title="Permalink to this headline">¶</a></h1>
+<p>There are many different approaches and orders that can be taken to troubleshoot and fix the deployment. Below are the logical steps for diagnosing and solving each issue starting from the outermost level inwards.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Let the students know that they should <strong>only issue observational commands</strong>. The resources are restricted to read-only access but within the VM the students can technically do anything the TA can do. Let them know that it is critical to be aware of all changes to system state when troubleshooting.</p>
+<p>To that end it is important they understand that:</p>
+<ul class="last simple">
+<li>the group is relying on trusting everyone not to issue any mutating commands except the TA</li>
+<li>if they mutate anything on their own they could cause a 10-15 minute delay for resetting the broken deployment (see the instructor solution setup article for instructions)</li>
+</ul>
+</div>
+<div class="section" id="tas-only-notes-for-facilitating">
+<h2>TAs ONLY: Notes for Facilitating<a class="headerlink" href="#tas-only-notes-for-facilitating" title="Permalink to this headline">¶</a></h2>
+<p>Your primary goal is to provide <strong>the bare minimum guidance to the group</strong>. You should only guide them with hints if they are completely at a loss or way off track. There is ample time for them to troubleshoot and if they do not complete it in time everyone will see the solution during the instructor walkthrough.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The temptation as a teacher is to help people who are struggling. But troubleshooting can only be learned through experience. In this context the best help you can provide is the minimal amount necessary to keep them on track.</p>
+</div>
+<p>You should keep in mind the following additional goals as the facilitator:</p>
+<ul class="simple">
+<li>encourage everyone to accept that this is unknown territory <strong>and it is okay to say “I don’t know”.</strong></li>
+<li>encourage everyone to perform observational actions on their own and share their findings</li>
+<li>don’t allow a few students to dominate the conversation – make sure every student is engaged (steps below)</li>
+</ul>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last"><strong>Only take a mutating action</strong> after the group has come to a consensus on what next action to take. Do not start typing it in or reveal it to them before they have considered it.</p>
+</div>
+</div>
+<div class="section" id="tas-only-steps-to-facilitate">
+<h2>TAs ONLY: Steps to Facilitate<a class="headerlink" href="#tas-only-steps-to-facilitate" title="Permalink to this headline">¶</a></h2>
+<p>At a high level this approach can be used to facilitate discussion by engaging each student in the group and providing hints if they are stuck. There are two lists you will use to stay on track:</p>
+<ol class="arabic simple">
+<li><strong>list of students</strong>: keep track of who has contributed so every student is involved</li>
+<li><strong>list of issues</strong>: (below) to keep track of what next diagnosis or solution step can be used as a hint</li>
+</ol>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">As the group begins troubleshooting listen to what they are discovering and cross out the diagnosis step for the related issue. By crossing out steps a student or the group have completed you always know what the next hint should be if necessary.</p>
+</div>
+<p>Starting at the top of the student list select one at a time going down the list and ask “What should we do next?”. Let them answer and entertain the group discussing what they are saying.</p>
+<div class="section" id="using-the-prompts">
+<h3>Using the Prompts<a class="headerlink" href="#using-the-prompts" title="Permalink to this headline">¶</a></h3>
+<p>To keep the discussion moving forward you can ask the following questions:</p>
+<ul class="simple">
+<li>What clues have been discovered so far?</li>
+<li>What level do you think the issue related to?</li>
+<li>What components do you think are involved?</li>
+<li>What tools will you need to use to identify the issue?</li>
+<li>What action do you suggest should be taken and why?</li>
+<li>What clues are presented after your TA attempted to fix the issue?</li>
+</ul>
+</div>
+<div class="section" id="i-have-no-idea">
+<h3>“I have no idea”<a class="headerlink" href="#i-have-no-idea" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>ask them to take inventory of where they are in the troubleshooting process (the last known clue or steps taken)</li>
+<li>what issue they are currently facing</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>If they are still not progressing then let them struggle for 3-5 minutes. Students should feel the tension of not knowing which will promote them to get creative.</p>
+<p class="last"><strong>If there is still no progress then proceed to the next approach</strong>:</p>
+</div>
+</div>
+<div class="section" id="not-progressing">
+<h3>Not Progressing<a class="headerlink" href="#not-progressing" title="Permalink to this headline">¶</a></h3>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Give the students time to discuss and troubleshoot. <strong>Only use this approach if they are not making progress</strong> because they are:</p>
+<ul class="last simple">
+<li>not suggesting a next action to take</li>
+<li>are way off track</li>
+</ul>
+</div>
+<p>Starting from the top of the <strong>list of issues</strong> select the next available diagnosis or solution step and use it as a hint. As each diagnosis or solution step is taken by the student / group make sure to cross it out.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Each step has an action on the left and (the outcome to discuss in parenthesis)</p>
+</div>
+</div>
+</div>
+<div class="section" id="vm-is-not-running">
+<h2>VM is not Running<a class="headerlink" href="#vm-is-not-running" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="diagnosis">
+<h3>Diagnosis<a class="headerlink" href="#diagnosis" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>make an <strong>external</strong> request through: postman, browser, Invoke-RestMethod (network error: connection timeout)</li>
+<li>try to SSH into the box (timeout)</li>
+<li>is the VM running (Azure Portal <cite>broken-linux-vm</cite> status: Stopped)</li>
+</ol>
+</div>
+<div class="section" id="solution">
+<h3>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>start the vm with <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">vm</span> <span class="pre">start</span></code></li>
+<li>SSH into the box</li>
+</ol>
+</div>
+</div>
+<div class="section" id="nsg">
+<h2>NSG<a class="headerlink" href="#nsg" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Diagnosis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>make an <strong>external</strong> request through: postman, browser, Invoke-RestMethod (network error: connection timeout)</li>
+<li>check your NSGs (NSG does not contain an inbound rule for port 443)</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h3>Solution<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>create a new NSG inbound rule for port 443</li>
+</ol>
+</div>
+</div>
+<div class="section" id="nginx">
+<h2>NGINX<a class="headerlink" href="#nginx" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>Diagnosis<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>make an internal request with curl (network error: connection refused)</li>
+<li>check the web server from box <code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">ngin</span> <span class="pre">x</span> <span class="pre">status</span></code> (inactive (dead))</li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h3>Solution<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">service</span> <span class="pre">nginx</span> <span class="pre">start</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">nginx</span> <span class="pre">status</span></code> (active (running))</li>
+</ol>
+</div>
+</div>
+<div class="section" id="mysql">
+<h2>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h3>Diagnosis<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>make an internal request with curl (HTTP status: 502 bad gateway)</li>
+<li>check the mysql service from box <code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">mysql</span> <span class="pre">status</span></code> (inactive (dead))</li>
+</ol>
+</div>
+<div class="section" id="id6">
+<h3>Solution<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">mysql</span> <span class="pre">start</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">mysql</span> <span class="pre">status</span></code> (active (running))</li>
+</ol>
+</div>
+</div>
+<div class="section" id="wrong-kv-name">
+<h2>Wrong KV name<a class="headerlink" href="#wrong-kv-name" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h3>Diagnosis<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>make an internal request with curl (HTTP status: 502 bad gateway)</li>
+<li><code class="docutils literal notranslate"><span class="pre">journalctl</span> <span class="pre">-fu</span> <span class="pre">coding-events-api</span></code> (<code class="docutils literal notranslate"><span class="pre">Unhandled</span> <span class="pre">exception.</span> <span class="pre">System.UriFormatException:</span> <span class="pre">Invalid</span> <span class="pre">URI:</span> <span class="pre">The</span> <span class="pre">hostname</span> <span class="pre">could</span> <span class="pre">not</span> <span class="pre">be</span> <span class="pre">parsed.</span></code>)</li>
+<li>research error message</li>
+<li><code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/opt/coding-events-api/appsettings.json</span></code> (notice the value for <code class="docutils literal notranslate"><span class="pre">KeyVaultName</span></code> is blank)</li>
+</ol>
+</div>
+<div class="section" id="id8">
+<h3>Solution<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>get the name for the Key Vault (<code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">keyvault</span> <span class="pre">list</span> <span class="pre">--query</span> <span class="pre">'[0].name'</span></code> or use the Azure Portal)</li>
+<li>edit the file (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">nano</span> <span class="pre">/opt/coding-events-api/appsettings.json</span></code>)</li>
+<li>enter the value for <code class="docutils literal notranslate"><span class="pre">KeyVaultName</span></code> you found in step one</li>
+<li>save the file in <code class="docutils literal notranslate"><span class="pre">nano</span></code> editor with <code class="docutils literal notranslate"><span class="pre">ctrl+o</span></code> and then hit enter to confirm</li>
+<li>exit <code class="docutils literal notranslate"><span class="pre">nano</span></code> editor with <code class="docutils literal notranslate"><span class="pre">ctrl+x</span></code></li>
+<li>restart the service to reload the <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> file (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">service</span> <span class="pre">coding-events-api</span> <span class="pre">restart</span></code>)</li>
+</ol>
+</div>
+</div>
+<div class="section" id="kv-access-policy">
+<h2>KV access policy<a class="headerlink" href="#kv-access-policy" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h3>Diagnosis<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>make an internal request with curl (HTTP status: 502 bad gateway)</li>
+<li><code class="docutils literal notranslate"><span class="pre">journalctl</span> <span class="pre">-fu</span> <span class="pre">coding-events-api</span></code> (<code class="docutils literal notranslate"><span class="pre">Unhandled</span> <span class="pre">exception.</span> <span class="pre">Microsoft.Azure.KeyVault.Models.KeyVaultErrorException:</span> <span class="pre">Operation</span> <span class="pre">returned</span> <span class="pre">an</span> <span class="pre">invalid</span> <span class="pre">status</span> <span class="pre">code</span> <span class="pre">'Forbidden'</span></code>)</li>
+<li>research error message</li>
+<li>check KV access policies for VM (it’s missing)</li>
+</ol>
+</div>
+<div class="section" id="id10">
+<h3>Solution<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>check the help of az keyvault (<code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">keyvault</span> <span class="pre">-h</span></code>)</li>
+<li>check the help of az keyvault set-policy (<code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">keyvault</span> <span class="pre">set-policy</span> <span class="pre">-h</span></code>, need objectId and Key Vault Name)</li>
+<li>store object id of VM in variable (<code class="docutils literal notranslate"><span class="pre">$VmId</span> <span class="pre">=</span> <span class="pre">az</span> <span class="pre">vm</span> <span class="pre">show</span> <span class="pre">--query</span> <span class="pre">'identity.principalId'</span></code>)</li>
+<li>store Key Vault name in variable (<code class="docutils literal notranslate"><span class="pre">$KvName</span> <span class="pre">=</span> <span class="pre">az</span> <span class="pre">keyvault</span> <span class="pre">list</span> <span class="pre">--query</span> <span class="pre">'[0].name'</span></code>)</li>
+<li>create new KV secrets access policy for VM (az keyvault set-policy –name $KvName –object $VmId –secret-permissions list get)</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="1-group-discussion.html"><span aria-hidden="true">&larr;</span> 1. TAs ONLY: Discussion: Components of a Functioning System</a></li>
+        
+        
+        <li class="next"><a href="resetting.html">Instructor &amp; TAs: Resetting <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../../_sources/chapters/troubleshooting-next-steps/instructor/2-solution-steps.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>10.4. Walkthrough: Windows Server &amp; IIS Starter App Deployment &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="10.5. Studio: Deploy CodingEventsAPI to Windows Server &amp; IIS" href="studio_ws-deployment.html" />
+    <link rel="prev" title="10.3. Remote Management With Windows Server" href="remote-management.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">10. Windows Server &amp; IIS</a></li>
+    <li class="active">10.4. Walkthrough: Windows Server &amp; IIS Starter App Deployment</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="walkthrough-windows-server-iis-starter-app-deployment">
+<span id="walkthrough-ws-iis"></span><h1>10.4. Walkthrough: Windows Server &amp; IIS Starter App Deployment<a class="headerlink" href="#walkthrough-windows-server-iis-starter-app-deployment" title="Permalink to this headline">¶</a></h1>
+<p>Now that we have learned about remote access mechanisms and the IIS Manager, it’s time to get our hands dirty! In this walkthrough we will:</p>
+<ul class="simple">
+<li>Provision a Windows Server VM</li>
+<li>RDP into the machine to configure the Web Server Role</li>
+<li>Explore the IIS Manager and connect to the default site</li>
+<li>Configure IIS to serve a .NET web app</li>
+<li>Deploy and connect to a .NET starter web app served by IIS</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Some of the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code> steps are shown in both Windows/PowerShell and Linux/Bash to illustrate the cross-platform nature of the tool with minor syntactical changes. However, to complete this walkthrough will <em>require a local Windows machine in order to use RDP</em>.</p>
+</div>
+<div class="section" id="provision-the-vm">
+<h2>10.4.1. Provision the VM<a class="headerlink" href="#provision-the-vm" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-a-resource-group">
+<h3>10.4.1.1. Create a Resource Group<a class="headerlink" href="#create-a-resource-group" title="Permalink to this headline">¶</a></h3>
+<p>As always, we will begin by creating a resource group. This time we will combine creating and configuring it as the default group into one step.</p>
+<p>Notice how we use the <code class="docutils literal notranslate"><span class="pre">--query</span></code> argument to have the output of the <code class="docutils literal notranslate"><span class="pre">create</span></code> command be just the name of the new resource group. We perform all of this within an in-line execution so the output (the resource group name) can be assigned as the default group value:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">configure</span> <span class="n">-d</span> <span class="n">group</span><span class="p">=$(</span><span class="n">az</span> <span class="nb">group </span><span class="n">create</span> <span class="n">-n</span> <span class="p">&lt;</span><span class="n">name</span><span class="p">&gt;</span><span class="n">-ws-wt</span> <span class="p">-</span><span class="n">-query</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># remember in Bash we have to output in tsv format to remove the default JSON quote characters</span>
+$ az configure -d <span class="nv">group</span><span class="o">=</span><span class="k">$(</span>az group create -n &lt;name&gt;-ws-wt -o tsv --query <span class="s2">&quot;name&quot;</span><span class="k">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="create-a-windows-server-vm">
+<h3>10.4.1.2. Create a Windows Server VM<a class="headerlink" href="#create-a-windows-server-vm" title="Permalink to this headline">¶</a></h3>
+<p>Next let’s create our Windows Server VM within the new resource group. Windows Server has been around for many years and there are many versions. For our purposes, we will use the latest, 2019, edition. Just as we did with the Ubuntu VM, let’s search the available VM images for the <code class="docutils literal notranslate"><span class="pre">urn</span></code> of the 2019 Windows Server image. In this case, we need to provide a <em>compound filter</em> that will look for a <code class="docutils literal notranslate"><span class="pre">urn</span></code> that <code class="docutils literal notranslate"><span class="pre">contains</span></code> both <code class="docutils literal notranslate"><span class="pre">Windows</span></code> <em>and</em> <code class="docutils literal notranslate"><span class="pre">2019</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">vm</span> <span class="n">image</span> <span class="n">list</span> <span class="p">-</span><span class="n">-query</span> <span class="s2">&quot;[? contains(urn, &#39;Windows&#39;) &amp;&amp; contains(urn, &#39;2019&#39;)] | [0].urn&quot;</span>
+<span class="c"># &quot;MicrosoftWindowsServer:WindowsServer:2019-Datacenter:latest&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s assign this value to a variable:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$WsImageUrn</span><span class="p">=$(</span><span class="n">az</span> <span class="n">vm</span> <span class="n">image</span> <span class="n">list</span> <span class="p">-</span><span class="n">-query</span> <span class="s2">&quot;[? contains(urn, &#39;Windows&#39;) &amp;&amp; contains(urn, &#39;2019&#39;)] | [0].urn&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># don&#39;t forget to output in tsv format</span>
+$ <span class="nv">ws_image_urn</span><span class="o">=</span><span class="k">$(</span>az vm image list -o tsv --query <span class="s2">&quot;[? contains(urn, &#39;Windows&#39;) &amp;&amp; contains(urn, &#39;2019&#39;)] | [0].urn&quot;</span><span class="k">)</span>
+</pre></div>
+</div>
+</div>
+<p>To create our VM we will use most of the same Arguments as we did when creating the Linux machine. Whereas Linux VMs will enable SSH access by default, new Windows Server VMs will have RDP enabled instead. However, recall that RDP uses a basic username and password credential set instead of the RSA keys used in SSH. We will need to provide one additional flag <code class="docutils literal notranslate"><span class="pre">--admin-password</span></code> when creating the WS VM:</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">It is important that you do not change the admin username (<code class="docutils literal notranslate"><span class="pre">student</span></code>) or password (<code class="docutils literal notranslate"><span class="pre">LaunchCode-&#64;zure1</span></code>). Although it is a poor practice to use the same password for multiple users, we do so for consistency in order to make it easy to help you debug if somethings goes wrong.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">vm</span> <span class="n">create</span> <span class="n">-n</span> <span class="n">ws-vm</span> <span class="p">-</span><span class="n">-size</span> <span class="s2">&quot;Standard_B2s&quot;</span> <span class="p">-</span><span class="n">-image</span> <span class="s2">&quot;$WsImageUrn&quot;</span> <span class="p">-</span><span class="n">-admin-username</span> <span class="s2">&quot;student&quot;</span> <span class="p">-</span><span class="n">-admin-password</span> <span class="s2">&quot;LaunchCode-@zure1&quot;</span> <span class="p">-</span><span class="n">-assign-identity</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ az vm create -n ws-vm --size <span class="s2">&quot;Standard_B2s&quot;</span> --image <span class="s2">&quot;</span><span class="nv">$ws_image_urn</span><span class="s2">&quot;</span> --admin-username <span class="s2">&quot;student&quot;</span> --admin-password <span class="s2">&quot;LaunchCode-@zure1&quot;</span> --assign-identity
+</pre></div>
+</div>
+</div>
+<p>Once the VM is created, let’s set is as the default VM:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">either shell</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">configure</span> <span class="n">-d</span> <span class="n">vm</span><span class="p">=</span><span class="n">ws-vm</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="set-up-explore-iis">
+<h2>10.4.2. Set Up &amp; Explore IIS<a class="headerlink" href="#set-up-explore-iis" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have our Windows Server VM, we can get our first taste of using RDP. We will use RDP to enter the desktop of the VM and configure it to deploy our sample application.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last"><em>You must use a local Windows machine</em> in order to RDP into the VM using the pre-installed <code class="docutils literal notranslate"><span class="pre">mstsc</span></code> utility.</p>
+</div>
+<div class="section" id="rdp-into-the-vm">
+<h3>10.4.2.1. RDP Into the VM<a class="headerlink" href="#rdp-into-the-vm" title="Permalink to this headline">¶</a></h3>
+<p>In order to RDP into a machine you need (at minimum):</p>
+<ul class="simple">
+<li>The IP address</li>
+<li>Username: <code class="docutils literal notranslate"><span class="pre">student</span></code></li>
+<li>Password: <code class="docutils literal notranslate"><span class="pre">LaunchCode-&#64;zure1</span></code></li>
+</ul>
+<p>Since we have set the VM as our default we can use the <code class="docutils literal notranslate"><span class="pre">list-ip-addresses</span></code> command and a query filter to get its value. We will capture the public IP address in a variable so we can use it to RDP into the machine:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$VmPublicIp</span><span class="p">=$(</span><span class="n">az</span> <span class="n">vm</span> <span class="n">list-ip-addresses</span> <span class="p">-</span><span class="n">-query</span> <span class="s2">&quot;[0].virtualMachine.network.publicIpAddresses[0].ipAddress&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># output in tsv format</span>
+$ <span class="nv">vm_public_ip</span><span class="o">=</span><span class="k">$(</span>az vm list-ip-addresses -o tsv --query <span class="s2">&quot;[0].virtualMachine.network.publicIpAddresses[0].ipAddress&quot;</span><span class="k">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now we can use the built-in <code class="docutils literal notranslate"><span class="pre">mstsc</span></code> command-line utility to open an RDP session with the machine:</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; mstsc /v:&quot;$VmPublicIp&quot;
+</pre></div>
+</div>
+</div>
+<p>This will begin the RDP authentication process and prompt you to enter your credentials:</p>
+<img alt="RDP credentials prompt" src="../../_images/rdp-credentials.png" />
+<p>The first time you connect to a remote machine (using default RDP settings) you will need to confirm that you trust it. This is due to the default usage of a self-signed server certificate in the VM. The discussion of Public Key Infrastructure (PKI) and certificates is outside of the scope of this course, but in this context the warning is nothing to be concerned about.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">In a production setting, you would likely <a class="reference external" href="https://www.derekseaman.com/2018/12/trusted-remote-desktop-services-ssl-certs-for-win10-2019.html" target="_blank">configure a Group Policy Object<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> (GPO) for enforcing trusted connections. If you are curious feel free to look over the linked article, but do not be concerned if it goes over your head!</p>
+</div>
+<p>For now you can select <em>Don’t ask me again</em> and confirm to continue:</p>
+<img alt="RDP trust remote server prompt" src="../../_images/rdp-trust-remote-server.png" />
+<p>If everything goes well, a new window will appear that gives you access to the full desktop of the remote machine.</p>
+<div class="section" id="explore-the-server-manager">
+<h4>10.4.2.1.1. Explore the Server Manager<a class="headerlink" href="#explore-the-server-manager" title="Permalink to this headline">¶</a></h4>
+<p>The Server Manager application will then open to the dashboard overview:</p>
+<img alt="Windows Server Manager dashboard view" src="../../_images/server-manager-dashboard.png" />
+<p>The SM can be used to monitor and manage fleets of servers, but for our purposes we will focus on a single server. You can select the <code class="docutils literal notranslate"><span class="pre">Local</span> <span class="pre">Server</span></code> tab on the left to switch to a view specific to the current VM:</p>
+<img alt="Windows Server Manager local server view" src="../../_images/server-manager-local.png" />
+<p>Take a moment to explore this section of the SM. You can find details about how the server is configured as well as live performance statistics like CPU and memory usage.</p>
+<img alt="Windows Server Manager local server usage statistics" src="../../_images/server-manager-local-usage-stats.png" />
+</div>
+</div>
+<div class="section" id="configure-web-server-role">
+<h3>10.4.2.2. Configure Web Server Role<a class="headerlink" href="#configure-web-server-role" title="Permalink to this headline">¶</a></h3>
+<p>Before we can host our application, we need to configure our VM to operate as a Web Server Role. In the top right corner of the SM you will see a <em>Manage</em> dropdown containing an option to <em>Add Roles and Features</em>. This will open the <em>Roles and Features wizard</em>:</p>
+<img alt="Windows Server Manager add Roles &amp; Features" src="../../_images/server-manager-add-roles-features.png" />
+<p>Because we are configuring this single server we can select the first option:</p>
+<img alt="Roles &amp; Features wizard Role based installation" src="../../_images/rf-wizard-role-based.png" />
+<p>We want to select our server by its name. We should only have a single server in our pool:</p>
+<img alt="Roles &amp; Features wizard select server by name" src="../../_images/rf-wizard-select-server.png" />
+<p>We want to configure our server to assume the Web Server Role to use the IIS Web Server. You can find this role at the end of the <em>Server Roles</em> list:</p>
+<img alt="Roles &amp; Features wizard add Web Server (IIS) Role" src="../../_images/rf-wizard-select-role.png" />
+<p>Because IIS requires the IIS Management Console to configure it, we are prompted to install the required feature. Although it can be installed and used remotely we will install it locally on this server. Select <em>Add Features</em> to install it:</p>
+<img alt="Roles &amp; Features wizard install IIS Management Console Feature" src="../../_images/rf-wizard-iis-features.png" />
+<p>For our purposes we will not require any other role services beyond the defaults. Feel free to read over what each role service does by selecting it and reading its description on the right side panel. <strong>Be careful not to check any boxes beyond those that are already selected by default</strong>:</p>
+<img alt="Roles &amp; Features wizard select IIS Role Service defaults" src="../../_images/rf-wizard-iis-select-role-services.png" />
+<p>Finally you can continue to the <em>Confirmation</em> tab. Double check that your selections match the list below. The installation process may take a minute or two but will not require a restart:</p>
+<img alt="Roles &amp; Features wizard confirm Web Server (IIS) Role" src="../../_images/rf-wizard-iis-confirm.png" />
+</div>
+<div class="section" id="explore-the-iis-manager">
+<h3>10.4.2.3. Explore the IIS Manager<a class="headerlink" href="#explore-the-iis-manager" title="Permalink to this headline">¶</a></h3>
+<p>Once the installation is complete, you can open the IIS Manager. In your taskbar search for IIS:</p>
+<img alt="Search for IIS Manager" src="../../_images/search-iis-manager.png" />
+<p>The IIS Manager dashboard shows all of the servers that are linked to it. In our case, we will see just our single VM listed. Within each Server are sections for configuring the application pools and sites that will be served by IIS from that machine.</p>
+<p>IIS includes a pre-configured default site and application pool to get you started. Let’s take a look at the Default site:</p>
+<img alt="IIS Manager Sites view" src="../../_images/iis-sites.png" />
+<p>From the <em>Sites</em> tab you can see all of the sites that are being served by IIS. Notice how each site has a name, a binding (what port it listens on) and a path to its content directory.</p>
+<p>Selecting the Default Site will display the <em>Site</em> dashboard. From here you can configure all of the content-related aspects of the site.</p>
+<img alt="IIS Manager Default Site dashboard" src="../../_images/iis-default-site.png" />
+<p>At the bottom of the view is a tab to switch from <em>Features</em> to <em>Content</em>. Selecting the <em>Content</em> tab shows the contents of the site’s directory. For the default site there are just two files, an HTML file and an image:</p>
+<img alt="IIS Manager Default Site content view" src="../../_images/iis-default-site-content-view.png" />
+<p>Within the <em>Content</em> view mode you can select the <em>Explore</em> option on the right-side panel.</p>
+<img alt="IIS default Site Explore action" src="../../_images/iis-default-site-explore-files.png" />
+<p>This will open the file explorer to the content directory path to see and manage the files directly. Notice how this directory path matches the default site path we saw in the <em>Sites</em> overview earlier:</p>
+<img alt="IIS default Site contents in file explorer" src="../../_images/iis-default-site-files.png" />
+</div>
+<div class="section" id="connect-to-the-default-site-within-the-vm">
+<h3>10.4.2.4. Connect to the Default Site Within the VM<a class="headerlink" href="#connect-to-the-default-site-within-the-vm" title="Permalink to this headline">¶</a></h3>
+<p>Once IIS has been installed, through the Web Server Role, it immediately begins serving the default site on port 80. You can open the IE browser within the server to <code class="docutils literal notranslate"><span class="pre">http://localhost</span></code> to view it. Notice how we do not need to include the port because the browser sets <code class="docutils literal notranslate"><span class="pre">80</span></code> implicitly as the standard HTTP port.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">As part of the Windows Server security default settings, IE is locked down to restrict its usage. Unless you have good reason to stray from these defaults, you should accept them and proceed to viewing the default site.</p>
+</div>
+<img alt="IIS default Site in the Server browser" src="../../_images/iis-default-site-browser.png" />
+</div>
+<div class="section" id="connect-to-the-default-site-from-your-local-machine">
+<h3>10.4.2.5. Connect to the Default Site From Your Local Machine<a class="headerlink" href="#connect-to-the-default-site-from-your-local-machine" title="Permalink to this headline">¶</a></h3>
+<p>So far, we have been able to connect to the default site within the server itself. But what about connecting to it publicly over the Internet? By now you should understand that navigating to <code class="docutils literal notranslate"><span class="pre">http://localhost</span></code> on your local machine will not request the default site.</p>
+<p>Instead, we will need to use the public IP address of our VM in place of <code class="docutils literal notranslate"><span class="pre">localhost</span></code>. This should make sense because it is not <em>locally</em> hosted anymore, it is publicly hosted! Or is it?</p>
+<p>On your local machine, open your browser and navigate to <code class="docutils literal notranslate"><span class="pre">http://&lt;your</span> <span class="pre">VM</span> <span class="pre">public</span> <span class="pre">IP&gt;</span></code>:</p>
+<img alt="IIS default site local browser timeout" src="../../_images/iis-default-site-local-browser-timeout.png" />
+<p>Before continuing, take a moment to consider <em>why the connection timed out</em>. Use what you have learned to apply critical thinking to this common issue when hosting on the web.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">Connection timeouts are an indication of a <em>network related issue</em>. If you receive a status code <code class="docutils literal notranslate"><span class="pre">5XX</span></code> it means a connection was formed but something went wrong with the web or application server. Receiving no response at all means that some sort of machine or network-level firewall has blocked the connection from ever being formed.</p>
+</div>
+<p>When we provisioned our VM, we assumed default network security group (NSG) rules. The default NSG configuration for a new VM does not allow traffic to reach the machine through any port, including the common HTTP ports (80 for <code class="docutils literal notranslate"><span class="pre">http</span></code> and 443 for <code class="docutils literal notranslate"><span class="pre">https</span></code>).</p>
+<p>However, when you create a Windows Server VM, a new rule that exposes port 3389 is opened automatically to allow for RDP traffic. This behavior is described in the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">vm</span> <span class="pre">create</span> <span class="pre">-h</span></code> listing.</p>
+</div>
+<div class="section" id="adding-a-new-nsg-rule">
+<h3>10.4.2.6. Adding a New NSG Rule<a class="headerlink" href="#adding-a-new-nsg-rule" title="Permalink to this headline">¶</a></h3>
+<p>In order to connect to our VM, and therefore the site, we need to add an additional NSG rule that will allow traffic on port 80. Fortunately this is a quick fix using our trusty <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code> and the VM <code class="docutils literal notranslate"><span class="pre">open-port</span></code> Command.</p>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">assumes a default RG, location and VM have been configured</span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">vm</span> <span class="nb">open-port</span> <span class="p">-</span><span class="n">-port</span> <span class="n">80</span>
+</pre></div>
+</div>
+</div>
+<p>You will receive a lengthy output showing the current state of the NSG associated with the VM. Most of the output is related to the first property, <code class="docutils literal notranslate"><span class="pre">defaultSecurityRules</span></code>. Towards the bottom you will see the <code class="docutils literal notranslate"><span class="pre">securityRules</span></code> list which includes both the RDP and the new port 80 rules.</p>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">trimmed securityRules list showing rules allowing RDP and HTTP public traffic</span><a class="headerlink" href="#id13" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="s2">&quot;securityRules&quot;</span><span class="o">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;access&quot;</span><span class="o">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;destinationPortRange&quot;</span><span class="o">:</span> <span class="s2">&quot;3389&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;direction&quot;</span><span class="o">:</span> <span class="s2">&quot;Inbound&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;rdp&quot;</span><span class="p">,</span>
+    <span class="p">...</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;access&quot;</span><span class="o">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;destinationPortRange&quot;</span><span class="o">:</span> <span class="s2">&quot;80&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;direction&quot;</span><span class="o">:</span> <span class="s2">&quot;Inbound&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;open-port-80&quot;</span><span class="p">,</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+<span class="p">],</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">This command opens a port for <em>all public traffic</em>. In other words, requests from <em>any IP address</em> and <em>any protocol</em> will be allowed access to our VM on port 80. This is a quick solution for our purposes. But in a production setting, you will likely use more rigorous NSG rules with source IP and protocol restrictions for greater security.</p>
+</div>
+</div>
+</div>
+<div class="section" id="configure-the-host-vm">
+<h2>10.4.3. Configure the Host VM<a class="headerlink" href="#configure-the-host-vm" title="Permalink to this headline">¶</a></h2>
+<p>The final steps of our walkthrough will create, publish, and deploy a .NET starter API to IIS.</p>
+<div class="section" id="install-dependencies">
+<h3>10.4.3.1. Install Dependencies<a class="headerlink" href="#install-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>In order to create and host the starter project we will need to install the following dependencies:</p>
+<ul class="simple">
+<li><strong>chocolatey</strong>: the package manager for Windows to install other dependencies</li>
+<li><strong>dotnet</strong>: the .NET SDK and CLI tool for creating and publishing the starter MVC web app</li>
+<li><strong>dotnet hosting bundle</strong>: IIS dependencies needed to serve a .NET web app</li>
+</ul>
+<p>In your VM open up the PowerShell console by searching for it like you did for the IIS Manager.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">You can right-click PowerShell and pin it to the task bar for easy access.</p>
+</div>
+<p>Now open PowerShell and enter the following command to install <code class="docutils literal notranslate"><span class="pre">choco</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id14" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="no">[System.Net.ServicePointManager]</span><span class="p">::</span><span class="n">SecurityProtocol</span> <span class="p">=</span> <span class="no">[System.Net.ServicePointManager]</span><span class="p">::</span><span class="n">SecurityProtocol</span> <span class="o">-bor</span> <span class="n">3072</span><span class="p">;</span> <span class="nb">iex </span><span class="p">((</span><span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">WebClient</span><span class="p">).</span><span class="n">DownloadString</span><span class="p">(</span><span class="s1">&#39;https://chocolatey.org/install.ps1&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>Next we will use the <code class="docutils literal notranslate"><span class="pre">choco</span></code> package manager to install the .NET hosting bundle:</p>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id15" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># the -y option skips prompting for confirmation</span>
+<span class="p">&gt;</span> <span class="n">choco</span> <span class="n">install</span> <span class="n">dotnetcore-windowshosting</span> <span class="n">-y</span>
+</pre></div>
+</div>
+</div>
+<p>In order for the hosting bundle to be recognized by IIS we need to restart the underlying processes used by IIS. The <a class="reference external" href="https://docs.microsoft.com/en-us/iis/manage/provisioning-and-managing-iis/features-of-the-windows-process-activation-service-was" target="_blank">Windows Process Activation Service (WAS)<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> and its dependent World Wide Publishing Service (W3SVC) can be restarted by entering the following commands:</p>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id16" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># /y is like -y and is used to skip a confirmation prompt</span>
+
+<span class="c"># when WAS is stopped it automatically stops all dependent processes including W3SVC</span>
+<span class="p">&gt;</span> <span class="n">net</span> <span class="n">stop</span> <span class="n">WAS</span> <span class="p">/</span><span class="n">y</span>
+
+<span class="c"># when W3SVC is started it starts its WAS process dependency automatically</span>
+<span class="p">&gt;</span> <span class="n">net</span> <span class="nb">start </span><span class="n">W3SVC</span>
+</pre></div>
+</div>
+</div>
+<p>Finally, let’s install the dotnet SDK and CLI tool using <code class="docutils literal notranslate"><span class="pre">choco</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id17" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">choco</span> <span class="n">install</span> <span class="n">dotnetcore-sdk</span> <span class="n">-y</span>
+</pre></div>
+</div>
+</div>
+<p>After installing you <em>need to close PowerShell and reopen it</em> before the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> CLI can be used. Then enter the following command to confirm it is installed and usable:</p>
+<div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id18" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># expect a single line with the version number as output</span>
+<span class="p">&gt;</span> <span class="n">dotnet</span> <span class="p">-</span><span class="n">-version</span>
+</pre></div>
+</div>
+</div>
+<p>If you get an error, it means you did not close and reopen PowerShell. Sometimes this can happen if multiple PowerShell windows are open. Make sure you close <em>all</em> of them before reopening.</p>
+</div>
+</div>
+<div class="section" id="deploy-a-net-web-app">
+<h2>10.4.4. Deploy a .NET Web App<a class="headerlink" href="#deploy-a-net-web-app" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-the-starter-web-app">
+<h3>10.4.4.1. Create the Starter Web App<a class="headerlink" href="#create-the-starter-web-app" title="Permalink to this headline">¶</a></h3>
+<p>Let’s start by creating and switching to a new directory to keep our home directory clean:</p>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id19" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># issue this in the home directory, C:\Users\student</span>
+<span class="p">&gt;</span> <span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">directory</span> <span class="n">-Path</span> <span class="n">WebApps</span>
+<span class="p">&gt;</span> <span class="nb">Set-Location</span> <span class="n">WebApps</span>
+
+<span class="c"># or using the simpler mkdir and cd aliases</span>
+<span class="p">&gt;</span> <span class="n">mkdir</span> <span class="n">WebApps</span>
+<span class="p">&gt;</span> <span class="nb">cd </span><span class="n">WebApps</span>
+</pre></div>
+</div>
+</div>
+<p>Inside this directory we can create the starter MVC project:</p>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id20" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">dotnet</span> <span class="n">new</span> <span class="n">webapp</span> <span class="n">-n</span> <span class="n">StarterApp</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="publish-the-web-app">
+<h3>10.4.4.2. Publish the Web App<a class="headerlink" href="#publish-the-web-app" title="Permalink to this headline">¶</a></h3>
+<p>Before we publish the web app we need to create a content directory for IIS to serve. The <code class="docutils literal notranslate"><span class="pre">C:\inetpub</span></code> directory is traditionally used by IIS for site content. We will create a <code class="docutils literal notranslate"><span class="pre">StarterApp</span></code> directory in here to hold our published content:</p>
+<div class="literal-block-wrapper docutils container" id="id21">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id21" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; New-Item -ItemType directory -Path C:\inetpub\StarterApp
+
+# or using the simpler mkdir alias
+&gt; mkdir C:\inetpub\StarterApp
+</pre></div>
+</div>
+</div>
+<p>Now we can publish our web app into this directory so IIS can serve it. If you are not already in the <code class="docutils literal notranslate"><span class="pre">StarterApp</span></code> directory then switch to it first. We will publish for the <a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/core/rid-catalog#windows-rids" target="_blank">Windows x64 architecture<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> and output to the new <code class="docutils literal notranslate"><span class="pre">C:\inetpub\StarterApp</span></code> directory we just made:</p>
+<div class="literal-block-wrapper docutils container" id="id22">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id22" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; cd C:\Users\student\WebApps\StarterApp
+&gt; dotnet publish -c Release -r win-x64 -o C:\inetpub\StarterApp
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configure-iis-to-serve-the-web-app-site">
+<h3>10.4.4.3. Configure IIS to Serve the Web App Site<a class="headerlink" href="#configure-iis-to-serve-the-web-app-site" title="Permalink to this headline">¶</a></h3>
+<p>We now have a published web app and its contents in a directory. The final step is to configure a new site for IIS to serve it. Let’s begin this process by removing the default site. This will free up port 80 for our .NET web app site.</p>
+<p>In the IIS Manager right click on the default site and select Remove:</p>
+<img alt="IIS Manager remove default site" src="../../_images/iis-default-site-remove.png" />
+<p>Next, right-click the <em>Sites</em> icon and select <em>Add Website</em>:</p>
+<img alt="IIS Manager add new site" src="../../_images/iis-manager-new-site.png" />
+<p>This will present the <em>New Site</em> dialog. We need to fill in the following details:</p>
+<ul class="simple">
+<li><strong>Site name</strong>: <code class="docutils literal notranslate"><span class="pre">StarterApp</span></code></li>
+<li><strong>Application pool</strong>: <code class="docutils literal notranslate"><span class="pre">StarterApp</span></code>, by default it will create a new pool with the same name as the site</li>
+<li><strong>Physical path</strong>: <code class="docutils literal notranslate"><span class="pre">C:\inetpub\StarterApp</span></code>, this is the path to the directory we published the web app to</li>
+<li><strong>Binding</strong>: 80, we want to serve on the standard <code class="docutils literal notranslate"><span class="pre">http</span></code> port</li>
+<li><strong>Host name</strong>: leave blank, we do not have a domain name to add a host name to</li>
+</ul>
+<p>After hitting <em>OK</em>, IIS will create the application pool and immediately begin serving the site.</p>
+</div>
+<div class="section" id="test-your-work">
+<h3>10.4.4.4. Test Your Work<a class="headerlink" href="#test-your-work" title="Permalink to this headline">¶</a></h3>
+<p>Try connecting locally on the server to confirm everything worked. You can open IE to <code class="docutils literal notranslate"><span class="pre">http://localhost</span></code> and should see the starter web app content:</p>
+<img alt="IIS StarterApp in Server browser" src="../../_images/iis-manager-starter-app-browser.png" />
+<p>Finally, confirm that you are able to connect over the Internet from your local machine:</p>
+<img alt="IIS StarterApp in local browser" src="../../_images/iis-manager-starter-app-local-browser.png" />
+</div>
+</div>
+<div class="section" id="next-step">
+<h2>10.4.5. Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">¶</a></h2>
+<p>Congratulations on completing your first Windows Server &amp; IIS deployment! How did this process feel relative to using the Azure browser console and a Linux VM? Did you like using RDP and having a full desktop to work with?</p>
+<p>Before continuing to your studio, consider the following aspects needed for the CodingEvents API deployment:</p>
+<ul class="simple">
+<li>What other dependencies will we need (tools, backing services)?</li>
+<li>How will we get our API source code onto the server to publish?</li>
+<li>How can we serve the API site on port 443 (<code class="docutils literal notranslate"><span class="pre">https</span></code>) to support the secure connection requirement of Azure ADB2C?</li>
+</ul>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="remote-management.html"><span aria-hidden="true">&larr;</span> 10.3. Remote Management With Windows Server</a></li>
+        
+        
+        <li class="next"><a href="studio_ws-deployment.html">10.5. Studio: Deploy CodingEventsAPI to Windows Server &amp; IIS <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/ws-iis/walkthrough_ws-iis.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

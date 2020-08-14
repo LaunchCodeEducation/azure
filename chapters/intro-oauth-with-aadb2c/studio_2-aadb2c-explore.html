@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.7. Studio Part 2: Explore Authorization With the Deployed API &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="8. The Azure CLI" href="../az-cli/index.html" />
+    <link rel="prev" title="7.6. Studio Part 1: Deploy Coding Events API with AADB2C" href="studio_1-aadb2c-deployment.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">7. Introduction to Authentication &amp; Authorization with Azure AD B2C</a></li>
+    <li class="active">7.7. Studio Part 2: Explore Authorization With the Deployed API</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="studio-part-2-explore-authorization-with-the-deployed-api">
+<h1>7.7. Studio Part 2: Explore Authorization With the Deployed API<a class="headerlink" href="#studio-part-2-explore-authorization-with-the-deployed-api" title="Permalink to this headline">¶</a></h1>
+<p>In this studio you will work with a partner to explore the effect of authorization in requests sent to the API. After an initial setup you will explore tasks that will require you both to plan, execute and reflect on the results.</p>
+<p>These tasks will require you and a partner to interact using two different user accounts <strong>that are both registered</strong> within a single AADB2C tenant. One of these accounts will be used as the <strong>Owner</strong> of a coding event, and the other will be a <strong>Member</strong> of that coding event.</p>
+<p>Using the two accounts together you can reflect on the authorization process by comparing the similarities and differences between the API responses.</p>
+<p>Your learning goals for this studio are:</p>
+<ol class="arabic simple">
+<li>Explore the effect of external (AADB2C) and internal (ABAC) authorization when making requests to the API</li>
+<li>Apply your knowledge of RESTful interactions to transition and reflect on the state of API resources</li>
+</ol>
+<div class="section" id="task-roles">
+<h2>7.7.1. Task Roles<a class="headerlink" href="#task-roles" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Owner</strong> will be responsible for providing the <strong>Member</strong> with:</p>
+<ul class="simple">
+<li>the public IP of the <strong>Owner’s</strong> hosted API</li>
+<li>the <strong>Owner’s</strong> Postman access token settings</li>
+</ul>
+<p>In each task the <strong>Owner</strong> and the <strong>Member</strong> will work together to set up an initial state with the API. Then both of you will make requests to complete the task and reflect on the responses and resource state transitions encountered along the way.</p>
+</div>
+<div class="section" id="limited-guidance-completing-a-task">
+<h2>7.7.2. Limited Guidance: Completing a Task<a class="headerlink" href="#limited-guidance-completing-a-task" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="general-steps">
+<h3>7.7.2.1. General Steps<a class="headerlink" href="#general-steps" title="Permalink to this headline">¶</a></h3>
+<p>In general, each task will require you and your partner to:</p>
+<ol class="arabic simple">
+<li>plan the requests that will be needed to set up and complete the task</li>
+<li>make setup requests to establish the initial state of API resources needed to complete the task</li>
+<li>make the request needed to complete the task</li>
+<li>reflect on differences in the response status codes and bodies</li>
+<li>reflect on how the state of the API resources transitioned after the requests</li>
+</ol>
+</div>
+<div class="section" id="planning-tips">
+<h3>7.7.2.2. Planning Tips<a class="headerlink" href="#planning-tips" title="Permalink to this headline">¶</a></h3>
+<p>In order to coordinate and plan these steps you and your partner will need to consider:</p>
+<ul class="simple">
+<li>what is the <em>current state</em> of the resources in the API (from previous requests)?</li>
+<li>what <em>initial state</em> is needed to accomplish the task?</li>
+<li>what setup requests will be needed to set up the <em>initial state</em>?</li>
+<li>what task requests are needed to accomplish the task</li>
+<li>who (<strong>Owner</strong> or <strong>Member</strong>) will need to issue each request?</li>
+<li>what order do the requests need to be issued in?</li>
+</ul>
+</div>
+</div>
+<div class="section" id="setup">
+<h2>7.7.3. Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>There are multiple ways to set up Postman so both you and your partner can request access tokens from the <strong>Owner’s</strong> AADB2C service. The simpler mechanism is to share <em>all of the</em> <strong>Owner’s</strong> <em>Postman access token settings</em> with the <strong>Member</strong>. This will include the Client ID of the Owner’s registered Postman application.</p>
+<p>However, if you are looking for a challenge the bonus section below will have the <strong>Owner</strong> register a new client application with its own client ID for the <strong>Member</strong> to use. Either of these approaches <strong>will require you to update</strong> the Coding Events API collection in Postman.</p>
+<div class="section" id="update-postman">
+<h3>7.7.3.1. Update Postman<a class="headerlink" href="#update-postman" title="Permalink to this headline">¶</a></h3>
+<p>Before you can make requests to the Coding Events API both you and your partner will need to change the <code class="docutils literal notranslate"><span class="pre">baseUrl</span></code> environment variable in the Postman collection. The <code class="docutils literal notranslate"><span class="pre">baseUrl</span></code> will need its value updated to point at the public IP address of the <strong>Owner’s</strong> deployed API.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The <strong>Owner</strong> must send the Postman access token form settings to the <strong>Member</strong>.</p>
+</div>
+<p>In Postman, edit the collection (using the three dots to the right of its name) and select the <strong>Variables</strong> tab. In the <strong>Current Value</strong> entry on the right side replace the current value, <code class="docutils literal notranslate"><span class="pre">https://localhost:5001</span></code>, with the public IP address:</p>
+<img alt="Postman update the baseUrl variable with the public IP address of the API" src="../../_images/postman-update-baseurl.png" />
+<p>In addition to sharing the public IP, the <strong>Owner</strong> will need to provide:</p>
+<ul class="simple">
+<li><strong>Auth URL</strong>: the URL of the authorization endpoint for the SUSI User Flow policy we created before</li>
+<li><strong>Client ID</strong>: the ID of the new Postman client application we will be registering (the <em>authorized party</em>, or bearer, of the access token)</li>
+<li><strong>Scope</strong>: the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope exposed by the registered Coding Events API application</li>
+</ul>
+<p>The <strong>Member</strong> will then need to select the <strong>Authorization</strong> tab and update their access token settings to use the <strong>Owner’s</strong> Postman access token settings and request a token.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>note</p>
+<p class="last">Initially each of your settings will reference your respective tenants. However, the Member must update their settings to match the Owner’s settings so the member can create an account with the Owner’s tenant.</p>
+</div>
+</div>
+<div class="section" id="get-access-tokens">
+<h3>7.7.3.2. Get Access Tokens<a class="headerlink" href="#get-access-tokens" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>Owner</strong> should already have an account registered in <em>their</em> AADB2C tenant. However, the <strong>Member</strong> will need to register <em>their own</em> account in the <strong>Owner’s</strong> tenant. As a reminder, the <strong>Member</strong> can use the <strong>sign up now</strong> link at the bottom of the login form.</p>
+</div>
+<div class="section" id="bonus-multiple-front-end-client-applications">
+<h3>7.7.3.3. Bonus: Multiple Front-end Client Applications<a class="headerlink" href="#bonus-multiple-front-end-client-applications" title="Permalink to this headline">¶</a></h3>
+<p>You can simulate a system that has several different client applications that interact with a single protected API. In this system each client application must register with the AADB2C tenant in order to uniquely identify itself. By doing so requests from each client application can be individually monitored and controlled.</p>
+<p>For this bonus mission, instead of the <strong>Owner</strong> sharing the client ID of <em>their</em> Postman application, they will register a new one in their AADB2C tenant. This will allow you and your partner to simulate a multi-client system using AADB2C.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>note</p>
+<p><strong>The Member will still need to update their access token settings to reference the Owner’s tenant information.</strong></p>
+<p class="last">After updating the access token settings, this bonus will require the Member to update the client ID field to reference the newly created client ID of the <code class="docutils literal notranslate"><span class="pre">&lt;Member</span> <span class="pre">Name&gt;</span> <span class="pre">Postman</span></code> application.</p>
+</div>
+<p>The <strong>Owner</strong> will register another application in their AADB2C tenant that corresponds to the <strong>Member’s</strong> Postman application. The <code class="docutils literal notranslate"><span class="pre">&lt;Member</span> <span class="pre">Name&gt;</span> <span class="pre">Postman</span></code> application will need to be registered and granted access to use the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope of the API.</p>
+<p>After completing the registration and configuration the <strong>Owner</strong> will share the new <code class="docutils literal notranslate"><span class="pre">&lt;Member</span> <span class="pre">Name&gt;</span> <span class="pre">Postman</span></code> client ID with the <strong>Member</strong> so they can update the client ID field of the access token form in Postman.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>You can refer to the access token walkthrough as a refresher of this process.</p>
+<p class="last">After completing this bonus mission the <strong>Owner’s</strong> AADB2C tenant should have 2 registered front-end client applications (<strong>Owner’s</strong> Postman and the new <code class="docutils literal notranslate"><span class="pre">&lt;Member</span> <span class="pre">Name&gt;</span> <span class="pre">Postman</span></code>). Each of these should have admin consent for using the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope to access the protected API.</p>
+</div>
+</div>
+</div>
+<div class="section" id="completing-a-task">
+<h2>7.7.4. Completing a Task<a class="headerlink" href="#completing-a-task" title="Permalink to this headline">¶</a></h2>
+<p>Each task will begin with a plain-English action to be performed on the state of one or more resources. Following this prompt will be a series of questions related to the actions and results:</p>
+<ul class="simple">
+<li><strong>Action</strong>: analyzing current state, setting up initial state and required task requests</li>
+<li><strong>Reflection</strong>: reflect on the differences in responses between the <strong>Owner</strong> and the <strong>Member</strong> along with the final state of the resources</li>
+</ul>
+<p>Both the <strong>Owner</strong> and <strong>Member</strong> will attempt to complete each task. However, due to the different authorization attributes (ABAC) that each of you have, not all requests will be successful. It is equally important to consider the response behavior for both successful and unsuccessful requests.</p>
+<p>Before you begin working on these tasks let’s explore a solution to the first one – Joining a Coding Event.</p>
+<div class="section" id="example-solution-join-a-coding-event">
+<h3>7.7.4.1. Example Solution: Join a Coding Event<a class="headerlink" href="#example-solution-join-a-coding-event" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Try to join an existing coding event</div></blockquote>
+<div class="section" id="action">
+<h4>7.7.4.1.1. Action<a class="headerlink" href="#action" title="Permalink to this headline">¶</a></h4>
+<p><strong>What is the current state of the resources?</strong></p>
+<ul class="simple">
+<li>no coding events</li>
+<li>no members (only 2 authenticated users, the Owner and Member)</li>
+</ul>
+<p><strong>What should be the initial state of the resources to complete this task?</strong></p>
+<ul class="simple">
+<li>1 coding event</li>
+<li>1 member of the coding event (Owner)</li>
+<li>1 authenticated user (Member) that is not <em>currently</em> a member of the coding event</li>
+</ul>
+<p><strong>What requests will need to be made, in what order, and who must issue them to achieve this initial state?</strong></p>
+<ol class="arabic simple">
+<li>Owner: <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/events/</span></code></li>
+</ol>
+<p><strong>What endpoint will you need to use to complete this task?</strong></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/events/{CodingEventsId}/members</span></code></li>
+</ul>
+</div>
+<div class="section" id="reflection">
+<h4>7.7.4.1.2. Reflection<a class="headerlink" href="#reflection" title="Permalink to this headline">¶</a></h4>
+<p><strong>What was the response when the authenticated user (Member) tried to join the Owner’s coding event?</strong></p>
+<ul class="simple">
+<li>status code: 204 No Content</li>
+<li>body: empty</li>
+</ul>
+<p><strong>What was the response when the Owner tried to join their own coding event?</strong></p>
+<ul class="simple">
+<li>status code: 400</li>
+<li>body: Bad Request</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>The actual response body is formatted in a JSON object:</p>
+<div class="literal-block-wrapper last docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">response body of failed Owner request</span><a class="headerlink" href="#id15" title="Permalink to this code">¶</a></div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;https://tools.ietf.org/html/rfc7231#section-6.5.1&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Bad Request&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+   <span class="nt">&quot;traceId&quot;</span><span class="p">:</span> <span class="s2">&quot;|239addd7-409244e32d9104cb.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>What is the final state of the API resources after completing the task?</strong></p>
+<ul class="simple">
+<li>1 coding event</li>
+<li>2 members (Owner and Member)</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="tasks">
+<h2>7.7.5. Tasks<a class="headerlink" href="#tasks" title="Permalink to this headline">¶</a></h2>
+<p>Use the example above as a solution template as you work with your partner to complete each task. Before making each request discuss what you expect to happen with your partner based on your respective authorizations.</p>
+<p>If the results do not align with your expectations consider:</p>
+<ul class="simple">
+<li>was your initial state correct?</li>
+<li>did the order of the requests have an effect?</li>
+</ul>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Before continuing with the studio make sure that both you and your partner are able to successfully request an access token.</p>
+<p>If either of you receive the following message when requesting an access token it indicates that the client ID was not updated correctly:</p>
+<img alt="Postman failed access token request due to invalid client ID" class="last" src="../../_images/postman-invalid-client-id.png" />
+</div>
+<div class="section" id="join-a-coding-event">
+<h3>7.7.5.1. Join a Coding Event<a class="headerlink" href="#join-a-coding-event" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Try to join an existing coding event</div></blockquote>
+<div class="section" id="id1">
+<h4>7.7.5.1.1. Action<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What is the current state of the resources?</li>
+<li>What should be the initial state of the resources to complete this task?</li>
+<li>What requests will need to be made, in what order, and who must issue them to achieve this initial state?</li>
+<li>What endpoint will you need to use to complete this task?</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h4>7.7.5.1.2. Reflection<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What was the response when the authenticated user (Member) tried to join the Owner’s coding event?</li>
+<li>What was the response when the Owner tried to join their own coding event?</li>
+<li>What is the final state of the API resources after completing the task?</li>
+</ol>
+</div>
+</div>
+<div class="section" id="view-coding-event-members">
+<h3>7.7.5.2. View Coding Event Members<a class="headerlink" href="#view-coding-event-members" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Try to access the email addresses of coding event members</div></blockquote>
+<div class="section" id="id3">
+<h4>7.7.5.2.1. Action<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What is the current state of the resources?</li>
+<li>What should be the initial state of the resources to complete this task?</li>
+<li>What requests will need to be made, in what order, and who must issue them to achieve this initial state?</li>
+<li>What endpoint will you need to use to complete this task?</li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h4>7.7.5.2.2. Reflection<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>Was the <code class="docutils literal notranslate"><span class="pre">email</span></code> field available in the response to the Member?</li>
+<li>Was the <code class="docutils literal notranslate"><span class="pre">email</span></code> field available in the response to the Owner?</li>
+<li>What other differences were present in the <em>shape</em> of the responses?</li>
+<li>Was there a transition of state for any resources while completing this task?</li>
+</ol>
+</div>
+</div>
+<div class="section" id="add-a-tag-to-a-coding-event">
+<h3>7.7.5.3. Add a Tag to a Coding Event<a class="headerlink" href="#add-a-tag-to-a-coding-event" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Try to add a new tag to the coding event</div></blockquote>
+<div class="section" id="id5">
+<h4>7.7.5.3.1. Action<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What is the current state of the resources?</li>
+<li>What should be the initial state of the resources to complete this task?</li>
+<li>What requests will need to be made, in what order, and who must issue them to achieve this initial state?</li>
+<li>What endpoint will you need to use to complete this task?</li>
+</ol>
+</div>
+<div class="section" id="id6">
+<h4>7.7.5.3.2. Reflection<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What was the response when the Member tried to add the tag to the coding event?</li>
+<li>What was the response when the Owner tried to add the tag to the coding event?</li>
+<li>What is the final state of the API resources after completing the task?</li>
+</ol>
+</div>
+</div>
+<div class="section" id="remove-a-tag-from-a-coding-event">
+<h3>7.7.5.4. Remove a Tag From a Coding Event<a class="headerlink" href="#remove-a-tag-from-a-coding-event" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Try to remove the tag from the coding event</div></blockquote>
+<div class="section" id="id7">
+<h4>7.7.5.4.1. Action<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What is the current state of the resources?</li>
+<li>What should be the initial state of the resources to complete this task?</li>
+<li>What requests will need to be made, in what order, and who must issue them to achieve this initial state?</li>
+<li>What endpoint will you need to use to complete this task?</li>
+</ol>
+</div>
+<div class="section" id="id8">
+<h4>7.7.5.4.2. Reflection<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What was the response when the Member tried to remove the tag from the coding event?</li>
+<li>What was the response when the Owner tried to remove the tag from the coding event?</li>
+<li>What is the final state of the API resources after completing the task?</li>
+</ol>
+</div>
+</div>
+<div class="section" id="remove-a-member-from-a-coding-event">
+<h3>7.7.5.5. Remove a Member From a Coding Event<a class="headerlink" href="#remove-a-member-from-a-coding-event" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Try to remove a Member from the coding event</div></blockquote>
+<div class="section" id="id9">
+<h4>7.7.5.5.1. Action<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What is the current state of the resources?</li>
+<li>What should be the initial state of the resources to complete this task?</li>
+<li>What requests will need to be made, in what order, and who must issue them to achieve this initial state?</li>
+<li>What endpoint will you need to use to complete this task?</li>
+</ol>
+</div>
+<div class="section" id="id10">
+<h4>7.7.5.5.2. Reflection<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What was the response when the Member tried to remove thine self from the coding event?</li>
+<li>What was the response when the Owner tried to remove the Member from the coding event?</li>
+<li>What is the final state of the API resources after completing the task?</li>
+</ol>
+</div>
+</div>
+<div class="section" id="leave-a-coding-event">
+<h3>7.7.5.6. Leave a Coding Event<a class="headerlink" href="#leave-a-coding-event" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Try to leave the coding event</div></blockquote>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">In the previous task the Member was removed from the coding event. In order for both you and your partner to complete this task the Member will need to re-join the coding event.</p>
+</div>
+<div class="section" id="id11">
+<h4>7.7.5.6.1. Action<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What is the current state of the resources?</li>
+<li>What should be the initial state of the resources to complete this task?</li>
+<li>What requests will need to be made, in what order, and who must issue them to achieve this initial state?</li>
+<li>What endpoint will you need to use to complete this task?</li>
+</ol>
+</div>
+<div class="section" id="id12">
+<h4>7.7.5.6.2. Reflection<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What was the response when the Member tried to leave the coding event?</li>
+<li>What was the response when the Owner tried to leave their own coding event?</li>
+<li>What is the final state of the API resources after completing the task?</li>
+</ol>
+</div>
+</div>
+<div class="section" id="cancel-a-coding-event">
+<h3>7.7.5.7. Cancel a Coding Event<a class="headerlink" href="#cancel-a-coding-event" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Try to cancel the coding event</div></blockquote>
+<div class="section" id="id13">
+<h4>7.7.5.7.1. Action<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What is the current state of the resources?</li>
+<li>What should be the initial state of the resources to complete this task?</li>
+<li>What requests will need to be made, in what order, and who must issue them to achieve this initial state?</li>
+<li>What endpoint will you need to use to complete this task?</li>
+</ol>
+</div>
+<div class="section" id="id14">
+<h4>7.7.5.7.2. Reflection<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>What was the response when the Member tried to cancel the coding event?</li>
+<li>What was the response when the Owner tried to cancel their coding event?</li>
+<li>What is the final state of the API resources after completing the task?</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="studio_1-aadb2c-deployment.html"><span aria-hidden="true">&larr;</span> 7.6. Studio Part 1: Deploy Coding Events API with AADB2C</a></li>
+        
+        
+        <li class="next"><a href="../az-cli/index.html">8. The Azure CLI <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/intro-oauth-with-aadb2c/studio_2-aadb2c-explore.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

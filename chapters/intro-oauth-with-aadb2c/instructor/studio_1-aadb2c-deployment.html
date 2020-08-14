@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Instructor Solution Studio Part 1: App Deployment with AADB2C &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Instructor Solution Studio Part 2: Explore Authorization With the Deployed API" href="studio_2-aadb2c-explore.html" />
+    <link rel="prev" title="Instructor Solutions" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../../index.html">Contents</a></li>
+    <li><a href="index.html">Instructor Solutions</a></li>
+    <li class="active">Instructor Solution Studio Part 1: App Deployment with AADB2C</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="instructor-solution-studio-part-1-app-deployment-with-aadb2c">
+<h1>Instructor Solution Studio Part 1: App Deployment with AADB2C<a class="headerlink" href="#instructor-solution-studio-part-1-app-deployment-with-aadb2c" title="Permalink to this headline">¶</a></h1>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">appsettings.json</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;Logging&quot;</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;LogLevel&quot;</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;Default&quot;</span><span class="o">:</span> <span class="s2">&quot;Information&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;Microsoft&quot;</span><span class="o">:</span> <span class="s2">&quot;Warning&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;Microsoft.Hosting.Lifetime&quot;</span><span class="o">:</span> <span class="s2">&quot;Information&quot;</span>
+   <span class="p">}</span>
+<span class="p">},</span>
+<span class="s2">&quot;AllowedHosts&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="s2">&quot;KeyVaultName&quot;</span><span class="o">:</span> <span class="s2">&quot;{KV name}&quot;</span><span class="p">,</span>
+<span class="s2">&quot;JWT&quot;</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;ADB2C&quot;</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;RequireHttpsMetadata&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+   <span class="s2">&quot;MetadataAddress&quot;</span><span class="o">:</span> <span class="s2">&quot;https://{instance}/{domain}/v2.0/.well-known/openid-configuration?p={flow policy}&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;TokenValidationParameters&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;ValidAudience&quot;</span><span class="o">:</span> <span class="s2">&quot;{app ID}&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;ValidateIssuer&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="s2">&quot;ValidateAudience&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="s2">&quot;ValidateLifetime&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="s2">&quot;ValidateIssuerSigningKey&quot;</span><span class="o">:</span> <span class="kc">true</span>
+   <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">},</span>
+<span class="s2">&quot;SwaggerAuth&quot;</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;ClientId&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+   <span class="c1">// TODO: check if &quot;authorizationUrl&quot; includes app id path</span>
+   <span class="s2">&quot;AuthorizationUrl&quot;</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;Scopes&quot;</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;UserImpersonation&quot;</span><span class="o">:</span> <span class="s2">&quot;https://{domain}/{app name}/{published scope name}&quot;</span>
+   <span class="p">}</span>
+<span class="p">},</span>
+<span class="s2">&quot;Server&quot;</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;Origin&quot;</span><span class="o">:</span> <span class="s2">&quot;{VM pubic IP}&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// ex: &quot;{app ID}</span>
+<span class="c1">// ex: &quot;06eb34fd-455b-4084-92c3-07d5389e6c15&quot;</span>
+
+<span class="c1">// ex: https://{instance}/{domain}/v2.0/.well-known/openid-configuration?p={flow policy}</span>
+<span class="c1">// ex: &quot;https://mycodingevents.b2clogin.com/mycodingevents.onmicrosoft.com/v2.0/.well-known/openid-configuration?</span>
+
+<span class="c1">// ex: JWT.ADB2C.RequireHttpsMetadata value is assignd to options.RequireHttpsMetadata</span>
+<span class="c1">// ex: JWT.ADB2C.TokenValidationParameters has its object entries automatically bound to</span>
+
+<span class="c1">// ex: https://{instance}/{domain}/oauth2/v2.0/authorize?p={flow policy}</span>
+<span class="c1">// ex: https://mycodingevents.b2clogin.com/mycodingevents.onmicrosoft.com/oauth2/v2.0/authorize?</span>
+
+<span class="c1">// ex: https://{domain}/{app name}/{published scope name}</span>
+<span class="c1">// ex: https://mycodingevents.onmicrosoft.com/code-events/user_impersonation</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="index.html"><span aria-hidden="true">&larr;</span> Instructor Solutions</a></li>
+        
+        
+        <li class="next"><a href="studio_2-aadb2c-explore.html">Instructor Solution Studio Part 2: Explore Authorization With the Deployed API <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../../_sources/chapters/intro-oauth-with-aadb2c/instructor/studio_1-aadb2c-deployment.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

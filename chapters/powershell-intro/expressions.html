@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>9.5. Expression Evaluation &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9.6. Studio: Introduction to PowerShell Scripting" href="studio_intro-powershell-scripting.html" />
+    <link rel="prev" title="9.4. Working With Objects" href="objects.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">9. Introduction to PowerShell</a></li>
+    <li class="active">9.5. Expression Evaluation</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="expression-evaluation">
+<h1>9.5. Expression Evaluation<a class="headerlink" href="#expression-evaluation" title="Permalink to this headline">¶</a></h1>
+<p id="index-0"><strong>Expressions</strong> are syntactical instructions that must be <em>evaluated</em> to a <em>value</em>. Expressions can be anything from a simple variable assignment to a more complex command, such as executing a cmdlet.</p>
+<p>Programming languages are made up of rules for how different types of expressions are evaluated. In general, expressions are evaluated from left to right. But depending on the <em>operations used in an expression</em> there may be more specific rules that cause it to be evaluated differently.</p>
+<p id="index-1">In the following sections, we will explore two <strong>operators</strong> (symbols with special meaning) that are integral to working with PowerShell.</p>
+<div class="section" id="grouping-expression-operator">
+<h2>9.5.1. Grouping Expression Operator<a class="headerlink" href="#grouping-expression-operator" title="Permalink to this headline">¶</a></h2>
+<p>Understanding how grouping expressions works is best discovered through an example. Let’s consider the following <em>arithmetic (math) expression</em>.</p>
+<p>Arithmetic expressions are evaluated from left to right, unless some math operators (like <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">*</span></code>) are used. Arithmetic expressions are evaluated following the mathematical rules defined in the <a class="reference external" href="https://www.purplemath.com/modules/orderops.htm" target="_blank">PEMDAS order of operations<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">5</span> <span class="p">+</span> <span class="n">5</span>
+<span class="n">10</span>
+</pre></div>
+</div>
+</div>
+<p>On its own, this is an expression (a set of instructions), not a value. It must first be evaluated (interpreted and computed) to its value of <code class="docutils literal notranslate"><span class="pre">10</span></code>.</p>
+<p>In the following example, we want to add <code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">+</span> <span class="pre">5</span></code> and multiply <em>the resulting value</em> by <code class="docutils literal notranslate"><span class="pre">2</span></code> to make <code class="docutils literal notranslate"><span class="pre">20</span></code>. The overall expression contains two expressions that need to be evaluated—addition and multiplication.</p>
+<p>Would this expression evaluate to our goal of <code class="docutils literal notranslate"><span class="pre">20</span></code>?:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">5</span> <span class="p">+</span> <span class="n">5</span> <span class="p">*</span> <span class="n">2</span>
+<span class="n">15</span>
+</pre></div>
+</div>
+</div>
+<p>Expressions are evaluated with rules that depend on their context. For arithmetic expressions, the PEMDAS rules cause <code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">*</span> <span class="pre">2</span></code> to be evaluated first with the resulting value of <code class="docutils literal notranslate"><span class="pre">10</span></code> then being added to <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p>
+<p>However, we can control the <em>order of evaluation</em> by <em>grouping expressions</em> that we want to be evaluated first. In PowerShell the <strong>grouping expression operator</strong> is a pair of parenthesis that wrap around any PowerShell expression. Just like in math, grouped expressions are evaluated from the <em>innermost</em> group to the <em>outermost</em> (overall) expression.</p>
+<p>If we were to group the addition expression, it would be evaluated first <em>then</em> its resulting value would be multiplied by <code class="docutils literal notranslate"><span class="pre">2</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="p">(</span><span class="n">5</span> <span class="p">+</span> <span class="n">5</span><span class="p">)</span> <span class="p">*</span> <span class="n">2</span>
+<span class="n">20</span>
+</pre></div>
+</div>
+</div>
+<p>We can see that <code class="docutils literal notranslate"><span class="pre">(5</span> <span class="pre">+</span> <span class="pre">5)</span></code> was evaluated first, <em>then the group was replaced with the resulting value</em> of <code class="docutils literal notranslate"><span class="pre">10</span></code> before continuing evaluating the overall expression.</p>
+<p>Consider a more complex example with <em>nested</em> groups (a grouped expression inside another):</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="p">((</span><span class="n">10</span> <span class="p">+</span> <span class="n">10</span><span class="p">)</span> <span class="p">*</span> <span class="n">2</span><span class="p">)</span> <span class="p">+</span> <span class="n">5</span>
+</pre></div>
+</div>
+</div>
+<p>The outermost (overall) expression would be evaluated in the following steps. From the inside out:</p>
+<ol class="arabic simple">
+<li>Innermost grouping: <code class="docutils literal notranslate"><span class="pre">(10</span> <span class="pre">+</span> <span class="pre">10)</span></code>, a resulting value of <code class="docutils literal notranslate"><span class="pre">20</span></code></li>
+<li>Moving outwards to the next grouping: the resulting value <code class="docutils literal notranslate"><span class="pre">(20)</span></code> is substituted and evaluated to <code class="docutils literal notranslate"><span class="pre">((20)</span> <span class="pre">*</span> <span class="pre">2))</span> <span class="pre">=</span> <span class="pre">40</span></code></li>
+<li>Outermost level: once again the grouping’s value <code class="docutils literal notranslate"><span class="pre">(40)</span></code> is substituted for the final evaluation <code class="docutils literal notranslate"><span class="pre">(40)</span> <span class="pre">+</span> <span class="pre">5</span> <span class="pre">=</span> <span class="pre">45</span></code></li>
+</ol>
+<p>The same principle applies to any PowerShell expression within the grouping operators. But PowerShell expressions go well beyond basic arithmetic! Instead of evaluating to just <em>numeric values</em>, what is substituted for each grouped expression can be a <em>result object</em> of any type.</p>
+<p>Consider a simple scenario with string objects rather than numbers. Our goal is to combine (concatenate) two strings together and determine the length of the new string that is formed. <em>Without</em> grouping this would be our result:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="s2">&quot;hello&quot;</span> <span class="p">+</span> <span class="s2">&quot;world&quot;</span><span class="p">.</span><span class="n">length</span>
+<span class="n">hello5</span>
+</pre></div>
+</div>
+</div>
+<p>The string <code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span></code> is concatenated with the result of <code class="docutils literal notranslate"><span class="pre">&quot;world&quot;.length</span></code> into the unexpected string <code class="docutils literal notranslate"><span class="pre">&quot;hello5&quot;</span></code>. PowerShell tries to evaluate from left to right but can’t combine a string (<code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span></code>) with an <em>expression</em> (<code class="docutils literal notranslate"><span class="pre">&quot;world&quot;.length</span></code>). It first evaluates the length to a value of <code class="docutils literal notranslate"><span class="pre">5</span></code> <em>and then</em> evaluates <code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span> <span class="pre">+</span> <span class="pre">5&quot;</span></code>.</p>
+<p>We can use grouping to enforce <code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span> <span class="pre">+</span> <span class="pre">&quot;world&quot;</span></code> being evaluated first <em>and then</em> checking the <code class="docutils literal notranslate"><span class="pre">length</span></code> property of the resulting <code class="docutils literal notranslate"><span class="pre">string</span></code> object:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="p">(</span><span class="s2">&quot;hello&quot;</span> <span class="p">+</span> <span class="s2">&quot;world&quot;</span><span class="p">).</span><span class="n">length</span>
+<span class="n">10</span>
+</pre></div>
+</div>
+</div>
+<p>In other words, the evaluation and substitution looked like this:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="p">(</span><span class="n">string</span> <span class="n">object</span><span class="p">).</span><span class="n">length</span>
+</pre></div>
+</div>
+</div>
+<p>Grouping expressions allows you to evaluate the group and then treat the group, on its closing <code class="docutils literal notranslate"><span class="pre">)</span></code>, as an object. The object can then be used to access properties and methods directly from the group using dot notation. The group is first evaluated to its resulting object <em>then</em> dot notation access is evaluated.</p>
+</div>
+<div class="section" id="subexpression-operator">
+<h2>9.5.2. Subexpression Operator<a class="headerlink" href="#subexpression-operator" title="Permalink to this headline">¶</a></h2>
+<p id="index-2">Recall that in Bash we used the command substitution syntax <code class="docutils literal notranslate"><span class="pre">$(command)</span></code> to execute in-line commands. In PowerShell the same syntax is used but is referred to as a <strong>subexpression operator</strong>. At first glance the subexpression operator looks similar to the grouping operator that we just learned about.</p>
+<p>Let’s compare the purposes of each of these operators:</p>
+<ul class="simple">
+<li><strong>Grouping operator</strong>: lets you control the <em>order of evaluation</em> in an expression</li>
+<li><strong>Subexpression operator</strong>: lets you control the <em>execution of an expression within another</em></li>
+</ul>
+<p>Let’s see the difference in action by trying to print the length of the combined strings <em>inside another string expression</em>.</p>
+<p>First, using a grouping operator:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span># the Bash &#39;echo&#39; command can be used as an alias for Write-Output
+&gt; Write-Output &quot;The length of the concatenated strings is: ((&quot;hello&quot; + &quot;world&quot;).length)&quot;
+
+The length of the concatenated strings is: ((
+hello + world).length)
+</pre></div>
+</div>
+</div>
+<p>Notice that PowerShell printed the literal text inside the grouped expression rather than executing it. The quotes were in turn interpreted as literal quote characters leading to some unexpected line breaks. In other words, <em>the grouped expression did not get evaluated</em>.</p>
+<p>Why wasn’t it evaluated? Because <em>evaluation only takes place during execution</em>. From PowerShell’s perspective, there was a single expression to be executed, the string expression.</p>
+<p>In order for us to execute the length-calculating expression <em>within</em> the string expression, we can use a subexpression:</p>
+<p>Let’s try using a subexpression instead:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; Write-Output &quot;The length of the concatenated strings is: $((&quot;hello&quot; + &quot;world&quot;).length)&quot;
+The length of the concatenated strings is: 10
+</pre></div>
+</div>
+</div>
+<p>This time the subexpression <code class="docutils literal notranslate"><span class="pre">(&quot;hello&quot;</span> <span class="pre">+</span> <span class="pre">&quot;world&quot;).length</span></code> is <em>executed</em>, evaluated to <code class="docutils literal notranslate"><span class="pre">10</span></code>, and its resulting value is substituted into the string expression. The string expression is then itself evaluated to become the final string printed by <code class="docutils literal notranslate"><span class="pre">Write-Output</span></code>.</p>
+<p>We will see more examples of subexpressions and grouped expressions later in this course. They are valuable tools to understand for writing one-line commands in the shell. However, they are even more useful when employed in pipelines and scripts.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p>Use grouping expressions when you want to control the <em>order</em> of evaluation (from the inside out).</p>
+<p>Use subexpressions when you need to <em>execute an expression</em> inside of another. In addition, only subexpressions allow you to:</p>
+<ul class="simple">
+<li>Execute <em>multiple commands</em> as a single unit</li>
+<li>Use <em>keywords</em> like <code class="docutils literal notranslate"><span class="pre">for</span></code> (for loops) and <code class="docutils literal notranslate"><span class="pre">if</span></code> (for conditional logic)</li>
+</ul>
+<p class="last">For more information about the available operators, you can visit the <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators?view=powershell-7#subexpression-operator--" target="_blank">PowerShell operators documentation<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="objects.html"><span aria-hidden="true">&larr;</span> 9.4. Working With Objects</a></li>
+        
+        
+        <li class="next"><a href="studio_intro-powershell-scripting.html">9.6. Studio: Introduction to PowerShell Scripting <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/powershell-intro/expressions.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

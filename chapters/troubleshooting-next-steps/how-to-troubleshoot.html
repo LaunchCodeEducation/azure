@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>11.4. How to Troubleshoot &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="11.5. Group Walkthrough: Troubleshooting a Broken Linux Deployment" href="walkthrough_troubleshooting-linux-deployment.html" />
+    <link rel="prev" title="11.3. Development Troubleshooting Case Studies" href="development-troubleshooting-case-study.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">11. Introduction to Troubleshooting</a></li>
+    <li class="active">11.4. How to Troubleshoot</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="how-to-troubleshoot">
+<h1>11.4. How to Troubleshoot<a class="headerlink" href="#how-to-troubleshoot" title="Permalink to this headline">¶</a></h1>
+<p>As a reminder, troubleshooting is the process of:</p>
+<ol class="arabic simple">
+<li>Realizing an issue exists</li>
+<li>Identifying the issue through duplication (how and under what conditions it happens)</li>
+<li>Researching the potential causes of the issue</li>
+<li>Isolate the root cause of the issue by systematically eliminating the potential causes</li>
+<li>Researching a fix for the root cause of the issue</li>
+<li>Fixing the root cause of the issue</li>
+<li>Checking that the fix resolves the issue</li>
+<li>Communicating about the issue with others</li>
+</ol>
+<p>This process can seem daunting because it involves <em>researching information you don’t already know</em>. To effectively research things you don’t understand you must be able to <em>ask the correct questions</em>.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>The best way to learn troubleshooting is to practice the skill. However, you don’t have to go into your practice completely blind.</p>
+<p class="last">This section will present you with ideas, tips, and tricks for assisting with the troubleshooting process.</p>
+</div>
+<p>In this section we will discuss:</p>
+<ul class="simple">
+<li>Common issues across web deployments and common HTTP status codes to look out for</li>
+<li>Researching strategies</li>
+<li>Creating a Coding Events API deployment mental model</li>
+<li>Creating questions from the mental model</li>
+<li>Creating a Coding Events API deployment troubleshooting checklist from our questions and mental model</li>
+<li>How to effectively communicate an issue and the troubleshooting process</li>
+<li>Troubleshooting tools we may use to troubleshoot the Coding Events API in our walkthrough</li>
+</ul>
+<div class="section" id="identify-common-issues">
+<h2>11.4.1. Identify Common Issues<a class="headerlink" href="#identify-common-issues" title="Permalink to this headline">¶</a></h2>
+<p>Identifying an issue can be the most difficult part of troubleshooting. As your knowledge of potential causes grows, it will become easier to identify issues. Until that point in time, you will have to utilize your research skills to determine potential causes.</p>
+<p>For now, knowing what some of the most <em>common</em> issues encountered are, and being able to <em>ask and answer questions about your deployment</em> will be your two biggest tools for identifying an issue and its potential causes.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>When you are still in the process of identifying an issue it is crucial to <em>not make any changes</em>!</p>
+<p class="last">Every change you make needs to be accounted for, because you may need to undo the change to put the system back in its original state. Changes are necessary to resolve the issue, but while you are still identifying and researching you want the system to exist in its initial state.</p>
+</div>
+<p>Let’s take a look at some of the most common issues seen in web deployments (this list is not exhaustive):</p>
+<table border="1" class="colwidths-given docutils" id="id1">
+<caption><span class="caption-text">Common Issues</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="27%" />
+<col width="36%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Error Message</th>
+<th class="head">Description</th>
+<th class="head">Common cause</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Connection Refused</td>
+<td>The server received the request, but refuses to handle it</td>
+<td>no application listening on the given port</td>
+</tr>
+<tr class="row-odd"><td>Connection Timeout</td>
+<td>The server did not respond to the client request within a specific time period</td>
+<td>missing NSG inbound rule</td>
+</tr>
+<tr class="row-even"><td>HTTP Status Code: 502 Bad Gateway</td>
+<td>A server received an incorrect response from another server</td>
+<td>web server is running, but the application is not</td>
+</tr>
+<tr class="row-odd"><td>HTTP Status Code: 401 Unauthorized</td>
+<td>The request did not include credentials indicating a user needs to <em>authenticate</em></td>
+<td>credentials were not included</td>
+</tr>
+<tr class="row-even"><td>HTTP Status Code: 403 Forbidden</td>
+<td>The request included credentials, but the authenticated user does not have the proper level of <em>authorization</em></td>
+<td>credentials are not correct, or have not been configured properly</td>
+</tr>
+<tr class="row-odd"><td>HTTP Status Code: 500 Internal Server Error</td>
+<td>The request was received, however the server encountered an issue it doesn’t know how to resolve</td>
+<td>runtime error in the source code</td>
+</tr>
+</tbody>
+</table>
+<p>As you may have noticed, may of the most common issues are <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank">HTTP status codes<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. These status codes are a standard across HTTP, so learning the various categories and individual status codes will be <em>invaluable</em> when troubleshooting a web deployment.</p>
+</div>
+<div class="section" id="researching">
+<h2>11.4.2. Researching<a class="headerlink" href="#researching" title="Permalink to this headline">¶</a></h2>
+<p>Researching is a vital part of the troubleshooting process, especially when you are not aware of many potential causes of issues.</p>
+<p>Being able to clearly state the issue is a powerful tool when researching potential causes. Not only will it be beneficial to communicate with your fellow teammates and superiors as a part of your research, but knowing how to phrase your question to a search engine to optimize the results can save a lot of time.</p>
+<p>For theses reasons, it is beneficial to be able to state the issue in plain english. This helps in both communicating with people, and optimizing search engine results.</p>
+<div class="section" id="tools-for-identifying-and-reproducing-issues">
+<h3>11.4.2.1. Tools for Identifying and Reproducing Issues<a class="headerlink" href="#tools-for-identifying-and-reproducing-issues" title="Permalink to this headline">¶</a></h3>
+<p>Before you can even begin researching an issue it must first be brought to your attention.</p>
+<p>You may discover an issue on your own through your day-to-day activities, but it is more likely an issue will be submitted by QA or an end user through some form of ticketing software. The ticketing software will usually provide you with a brief description of what the issue was, and the conditions in which the issue was exposed. In some instances, you may need to reach out to the QA team or end user to gather more information about the issue.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Ticketing software goes outside the scope of this class. However, you should learn how the ticketing system your team uses works, as it is the most reliable method for initially discovering an issue.</p>
+</div>
+<p>After realizing an issue exists, the next step is for you to reproduce the issue in your own environment. To gain a better understanding than what the end user or QA provided you with, you will want to keep an eye out for HTTP status codes and logs.</p>
+<p>The HTTP status codes aren’t always recognizable in the browser, but provide you with tremendous insight on potential causes. You will want to check the logs of the application, which will have a record of any runtime errors that the web server encountered.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">We will access the logs of the Coding Event API by using the Bash tool: <code class="docutils literal notranslate"><span class="pre">journalctl</span></code>. However, in most real-world deployments the logs will usually be externalized. In the example in this chapter we will be looking at internal logs.</p>
+</div>
+</div>
+<div class="section" id="search-engine-skills">
+<h3>11.4.2.2. Search Engine Skills<a class="headerlink" href="#search-engine-skills" title="Permalink to this headline">¶</a></h3>
+<p>One of the easiest and first-line steps of researching should be to search for an error message using a search engine like Bing or Google. You will be presented with the experiences of thousands of developers before you that have witnessed the same, or a similar issue. Often you can find the exact potential cause of the issue with very little effort by reading the experiences people have had on StackOverFlow or other tech forums.</p>
+<p>With a more unique issue you may not find any results referencing your exact issue. However, you should be able to find documentation, or source code that caused the issue. By reading through the documentation or source code you can usually find potential causes of the more rare issue.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Learning basic search engine operators and syntax can greatly optimize your ability to find relevant information. Advanced usage of search engines is outside the scope of this class, but you can learn some basics about refining Google search requests from <a class="reference external" href="https://support.google.com/websearch/answer/2466433?hl=en" target="_blank">this article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+</div>
+<div class="section" id="talking-with-teammates">
+<h3>11.4.2.3. Talking with Teammates<a class="headerlink" href="#talking-with-teammates" title="Permalink to this headline">¶</a></h3>
+<p>Outside of search engines, talking with your teammates can be a fantastic way to learn about new potential causes. Many of your teammates will have more experience in troubleshooting, and you may be able to use their knowledge of potential causes to bolster your own knowledge.</p>
+<p>In addition to learning from your teammates, simply talking through the issue with someone else serves as <a class="reference external" href="https://en.wikipedia.org/wiki/Rubber_duck_debugging" target="_blank">rubber duck debugging<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. Often, just the act of explaining everything out loud will bring a potential cause to the top of your mind!</p>
+</div>
+<div class="section" id="create-a-visual-representation-of-the-system">
+<h3>11.4.2.4. Create a Visual Representation of the System<a class="headerlink" href="#create-a-visual-representation-of-the-system" title="Permalink to this headline">¶</a></h3>
+<p>To further your insight into potential causes of issues, take some time to sketch out the entire deployment. Doing so will force you to think about all of the components and their interactions. Visualizing the system, as opposed to simply talking about it, forces you to examine the system from a new perspective.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">This visualization is similar to creating a mental model of the system. However the act of drawing the system by hand will engage different areas of your brain, which may spur the creativity necessary for you to identify a new potential cause.</p>
+</div>
+</div>
+<div class="section" id="trial-and-error">
+<h3>11.4.2.5. Trial and Error<a class="headerlink" href="#trial-and-error" title="Permalink to this headline">¶</a></h3>
+<p>As a final suggestion for researching, you can use trial and error. Trial and error is the processing of making an educated guess of the root cause of an issue and making a small change related to that guess.</p>
+<p>Trial and error can be tricky, because every change made to the state must be recorded. If you aren’t certain that your guess is correct, you should record the change that you made. If your guess is incorrect, you may need to revert the change to reset the deployment to its initial state.</p>
+<p>Trial and error is a valid research strategy when the above methods don’t provide you with the information you need to resolve the issue. However, trial and error should be approached with care unless you are in a controlled environment, such as an education environment (this class), or a personal environment.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">You should only resort to trial and error when working with a live environment or data set as a last resort.</p>
+</div>
+</div>
+</div>
+<div class="section" id="create-a-mental-model-of-the-system">
+<h2>11.4.3. Create a Mental Model of the System<a class="headerlink" href="#create-a-mental-model-of-the-system" title="Permalink to this headline">¶</a></h2>
+<p>Troubleshooting follows a very specific pattern, as mentioned at the start of this section and in the previous section.</p>
+<p>The pattern is relatively easy to follow once you have come up with a <em>list of potential causes</em>. You will learn many of the potential causes throughout your career, but when you are first starting it is difficult to know many potential causes.</p>
+<p>A highly beneficial tool for determining potential causes is having a strong mental model of the deployment. If you can recognize the individual components, and are aware of how the components can fail or be misconfigured, you are well on your way to performing a root cause analysis.</p>
+<p>To help determine a list of potential causes, consider the related components and categorize issues based on the related components. This will help you come up with a troubleshooting checklist of potential issues to check.</p>
+<p>To assist you in the task of categorizing issues, we have created various levels. The levels are completely arbitrary, and differ between deployments.</p>
+<p>Use these categories as a tool to help you determine potential causes and develop a troubleshooting checklist.</p>
+<div class="section" id="network-level">
+<h3>11.4.3.1. Network Level<a class="headerlink" href="#network-level" title="Permalink to this headline">¶</a></h3>
+<p>The networking of our system. The Coding Events API doesn’t contain much networking and only consists of the Network Security Group rules.</p>
+<p>However for more complex deployment you may also consider:</p>
+<ul class="simple">
+<li>Subnets</li>
+<li>CIDR blocks</li>
+<li>Internet gateways</li>
+<li>Public vs private access</li>
+<li>Virtual Private Cloud</li>
+</ul>
+</div>
+<div class="section" id="service-level">
+<h3>11.4.3.2. Service Level<a class="headerlink" href="#service-level" title="Permalink to this headline">¶</a></h3>
+<p>Our Coding Events API only works with two services:</p>
+<ul class="simple">
+<li>Key Vault (database connection string &amp; has granted access to our VM)</li>
+<li>AADB2C</li>
+</ul>
+<p>Not only must these services exist and be accessible to the deployed application, they must be configured properly as well. In the case of our API, our Key Vault must have a secret, and must grant the VM <code class="docutils literal notranslate"><span class="pre">get</span></code> access to the secret. Our AADB2C must be configured to issue identity tokens and access tokens. Our AADB2C tenant must have exposed the registered Coding Events API, and appropriate scopes must be granted for the registered front end application, Postman.</p>
+<p>For a more complex deployment you may also consider:</p>
+<ul class="simple">
+<li>External database server</li>
+<li>External API that an application depends on</li>
+<li>External search engine service</li>
+</ul>
+</div>
+<div class="section" id="host-level">
+<h3>11.4.3.3. Host Level<a class="headerlink" href="#host-level" title="Permalink to this headline">¶</a></h3>
+<p>Our Coding Events API has a lot of things going on at the Host level inside the VM. We must have:</p>
+<ul class="simple">
+<li>Properly installed API dependencies (dotnet, mysql, nginx, systemd, unit file)</li>
+<li>Source code delivery mechanism (git)</li>
+<li>Source code build mechanism (dotnet publish)</li>
+<li>Appropriate folder and file structure</li>
+<li>NGINX</li>
+<li>MySQL</li>
+<li>properly configured <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code></li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">In this class we have been working with a VM-embedded database. In many real-world deployments this database would be a service that is external to the VM. For our deployment, we consider any database issues to be at the Host level.</p>
+</div>
+</div>
+</div>
+<div class="section" id="general-troubleshooting-questions">
+<h2>11.4.4. General Troubleshooting Questions<a class="headerlink" href="#general-troubleshooting-questions" title="Permalink to this headline">¶</a></h2>
+<p>Using the mental model of this deployment, we can start coming up with questions to guide our research into the issue:</p>
+<div class="section" id="is-this-an-issue">
+<h3>11.4.4.1. Is This an Issue?<a class="headerlink" href="#is-this-an-issue" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Was it user error?</li>
+<li>Is this something I can reproduce?</li>
+</ul>
+</div>
+<div class="section" id="what-is-the-issue">
+<h3>11.4.4.2. What is the Issue?<a class="headerlink" href="#what-is-the-issue" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Is this issues something I have seen before?</li>
+<li>Is there an error message I can use as a starting point for my research?</li>
+<li>How would I summarize this issue to others?</li>
+<li>Can I state this issue in plain English?</li>
+<li>How would I enter this issue to a search engine?</li>
+</ul>
+</div>
+<div class="section" id="what-is-the-category-of-this-issue">
+<h3>11.4.4.3. What is the Category of This Issue?<a class="headerlink" href="#what-is-the-category-of-this-issue" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Which level is this issue affecting (network, service, host)?</li>
+<li>Could this issue span multiple levels?</li>
+<li>Is this an operations or development issue?</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">If you don’t know the category, research the issue by talking with teammates, or searching the internet for other people’s experiences that have had similar problems.</p>
+</div>
+<p>You can then create a troubleshooting checklist of possible solutions based on the questions you answered above.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting-checklist">
+<h2>11.4.5. Troubleshooting Checklist<a class="headerlink" href="#troubleshooting-checklist" title="Permalink to this headline">¶</a></h2>
+<p>Using our general troubleshooting questions and our Coding Events API mental model, we have started a troubleshooting checklist for this specific deployment. (Note it is not complete, and you will be expanding on this in the upcoming walkthrough and throughout the rest of your career):</p>
+<div class="section" id="networking-issues">
+<h3>11.4.5.1. Networking issues<a class="headerlink" href="#networking-issues" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Do I have the proper NSG rules?</li>
+<li>Are all of my services on the same network?</li>
+</ul>
+</div>
+<div class="section" id="service-issues">
+<h3>11.4.5.2. Service Issues<a class="headerlink" href="#service-issues" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Are my external services up and running?</li>
+<li>Have my services been configured correctly?</li>
+<li>Do my services have the proper level of authorization to access each other?</li>
+</ul>
+</div>
+<div class="section" id="host-issues">
+<h3>11.4.5.3. Host Issues<a class="headerlink" href="#host-issues" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Are the proper dependencies fully installed?</li>
+<li>Are my internal services running?</li>
+<li>Are my internal services configured properly?</li>
+<li>Are there any errors in the logs of the API?</li>
+<li>Does the application use any configuration files?</li>
+<li>Are the configuration files configured properly?</li>
+</ul>
+</div>
+<div class="section" id="troubleshooting-checklist-final-thoughts">
+<h3>11.4.5.4. Troubleshooting Checklist Final Thoughts<a class="headerlink" href="#troubleshooting-checklist-final-thoughts" title="Permalink to this headline">¶</a></h3>
+<p>Using a troubleshooting checklist in combination with the steps of troubleshooting can provide you with the information necessary to solve a problem.</p>
+<p>Remember that resolving one issue can bring a new issue to the surface. Seeing a change in error message or behavior in the deployment is a great hint towards fixing the broken deployment!</p>
+<p>The most effective way to build your skills in troubleshooting is by practicing troubleshooting. Each time you solve a new issue you will learn a new solution and you will increase your ability to research issues.</p>
+<p>A very beneficial thing to do is to build <em>your own troubleshooting checklist</em>. The questions above provide a good starter checklist. As you continue to learn more about operations, continue adding to the checklist with your new experiences.</p>
+</div>
+</div>
+<div class="section" id="communicate-the-issue">
+<h2>11.4.6. Communicate the Issue<a class="headerlink" href="#communicate-the-issue" title="Permalink to this headline">¶</a></h2>
+<p>Communicating the issue is as simple as defining each part of the troubleshooting process you have worked through so far:</p>
+<ul class="simple">
+<li>State how the problem was identified</li>
+<li>State how the problem was proven through reproduction</li>
+<li>State the potential causes that were discovered</li>
+<li>State the solution to the problem</li>
+<li>State how the solution was verified or any steps taken to pass the issue to someone else</li>
+</ul>
+<p>You will find communicating is not only a powerful tool for reporting to superiors, but is a beneficial tool when building a mental model of the system, and when researching potential causes by talking to coworkers.</p>
+</div>
+<div class="section" id="troubleshooting-tools">
+<h2>11.4.7. Troubleshooting Tools<a class="headerlink" href="#troubleshooting-tools" title="Permalink to this headline">¶</a></h2>
+<p>The tools you will use for troubleshooting vary. Sometimes you are locked in to a set of troubleshooting tools based on the tech stack of your deployment. For example, if you are using Windows Server and have a personal Windows operating system, the troubleshooting tools will be slightly different than if you were deploying to an Ubuntu server and have a personal MacOS.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>In some instances, you will use multiple sets of troubleshooting tools.</p>
+<p class="last">Consider the Coding Events API deployed to an Ubuntu Virtual Machine. If you need to access a tool internal to the VM you are locked in to the tools that are usable with Ubuntu. However, your personal computer may have access to a completely different set of tools.</p>
+</div>
+<p>Tool preference will also vary across teams and individuals. You may have a personal preference for one tool, but choose to work with a different tool to match the preference of your team. You will experience new tools as you advance throughout your career. Learning the preferred tools is one of the first tasks you should accomplish when joining a new team.</p>
+<p>In the upcoming walkthrough we will introduce a variety of tools that can be used throughout the troubleshooting process of the Coding Events API. Part of being a successful troubleshooter is the ability to learn and effectively use new troubleshooting tools. Feel free to share any other tools that would be helpful with your fellow teammates.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="development-troubleshooting-case-study.html"><span aria-hidden="true">&larr;</span> 11.3. Development Troubleshooting Case Studies</a></li>
+        
+        
+        <li class="next"><a href="walkthrough_troubleshooting-linux-deployment.html">11.5. Group Walkthrough: Troubleshooting a Broken Linux Deployment <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/troubleshooting-next-steps/how-to-troubleshoot.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

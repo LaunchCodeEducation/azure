@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>8.1. Why Should We Use a CLI Instead of a Web Portal? &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="8.2. Azure CLI Practical Fundamentals" href="az-cli-fundamentals.html" />
+    <link rel="prev" title="8. The Azure CLI" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">8. The Azure CLI</a></li>
+    <li class="active">8.1. Why Should We Use a CLI Instead of a Web Portal?</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="why-should-we-use-a-cli-instead-of-a-web-portal">
+<span id="intro-az-cli"></span><h1>8.1. Why Should We Use a CLI Instead of a Web Portal?<a class="headerlink" href="#why-should-we-use-a-cli-instead-of-a-web-portal" title="Permalink to this headline">¶</a></h1>
+<p>Up to this point, we have been using the Azure Web Portal to provision and manage our Azure resources. This site is as a graphical user interface, or GUI. Graphical user interfaces can be convenient and intuitive to use, but have different use cases than their text-based counterpart, the CLI.</p>
+<p>GUIs are great to look at and arguably offer a more intuitive experience to a <em>human</em>. But when it comes to programmatic management, CLIs shine in the following key areas:</p>
+<ul class="simple">
+<li>Access to features</li>
+<li>Workflow efficiency</li>
+<li>Automation capability</li>
+</ul>
+<p>While the purpose of this lesson is to inspire your understanding and appreciation for CLIs, they are not <em>always</em> the best choice. Sometimes GUIs offer an abstraction over more tedious work that can make them worth using. Like most things in the development world, you should not blindly adhere to a single approach. What is most important is <em>to select the right tool for the job</em> that empowers your workflow.</p>
+<div class="section" id="the-azure-brain">
+<h2>8.1.1. The Azure Brain<a class="headerlink" href="#the-azure-brain" title="Permalink to this headline">¶</a></h2>
+<p>The Azure Web Portal, with its intuitive layout and interactive menus, is actually just a <em>skin</em> that is backed by a comprehensive <em>brain</em> of a REST API. Any actions you take on the web portal to manage your Azure resources are ultimately fulfilled by HTTP requests sent <a class="reference external" href="https://docs.microsoft.com/en-us/rest/api/azure/" target="_blank">to this REST API<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. What are the benefits of developing a REST API that is distinct from the online GUI front end?</p>
+<p>Recall that a web API operates <em>independent of any user interface(s) that consume it</em>. By separating their data management [API] from their presentation [UI] they are able to support flexibility and <em>multiple types of interfaces</em> against a single consistent service. In the case of Azure, that single REST API supports both the GUI web portal <em>and</em> the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code>.</p>
+<p>At this point you understand the design decision of decoupling their API from their UIs, but the question still remains: Why should we bother using a CLI?</p>
+</div>
+<div class="section" id="access-to-features">
+<h2>8.1.2. Access to Features<a class="headerlink" href="#access-to-features" title="Permalink to this headline">¶</a></h2>
+<p>A GUI inherently requires additional development work to produce the layouts, buttons, and other components needed for a user to interact with it. Their graphical nature will always be more complex to develop and maintain than a text-based, CLI counterpart.</p>
+<p>Whenever a new resource, service, or capability is supported internally by Azure, it takes time for both GUI and CLI to have the feature added for use. The process looks something like:</p>
+<ol class="arabic simple">
+<li>Internal development of new feature</li>
+<li>Implement support in the Azure REST API</li>
+<li>Implement support in the CLI</li>
+<li>Implement support in the GUI (if at all)</li>
+</ol>
+<p>Because of the complexity of developing GUIs, you can expect that access to new features will be released to the CLI before the web interface is updated, if it ever is.</p>
+<p>Now consider the more granular management tasks that you may need to perform on your resources. It makes sense that priority in GUI development will always be given to the <em>most common</em> needs before spending time developing the graphics to support more niche areas. Again, because of their simplicity, CLIs will have more more comprehensive features added to them that may never even reach the GUI.</p>
+<p>There are two key takeaways here about a system, of which Azure is but one example, which supports both a GUI and CLI:</p>
+<ul class="simple">
+<li>The CLI will receive the <em>latest</em> additions and updates <em>before</em> the GUI</li>
+<li>The CLI will have more <em>granular</em> management capabilities that <em>aren’t</em> present on the GUI</li>
+</ul>
+</div>
+<div class="section" id="workflow-efficiency">
+<h2>8.1.3. Workflow Efficiency<a class="headerlink" href="#workflow-efficiency" title="Permalink to this headline">¶</a></h2>
+<p>When it comes to humans interacting with computers, there is little doubt that GUIs are more intuitive to work with. But as a technical user, your top priority is in choosing an interface that helps you get the job done quickly. On the whole, CLIs are the speedier choice for power users because they enable you to issue the exact commands you need and bypass visual distractions.</p>
+<p>CLIs trade ease of exploration—beneficial to newcomers—for brevity and precise control. Whereas GUIs excel in visually guiding you, CLI tools leave it to you to be the guide. They require you to be direct with what you need done, but by doing so allow you to complete your tasks more efficiently.</p>
+<p>As an example, let’s consider the process of provisioning a new VM from both the web GUI and the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code>.</p>
+<p>Using the web portal you would need to:</p>
+<ol class="arabic simple">
+<li>Open your browser</li>
+<li>Navigate to the azure portal and log in</li>
+<li>Search for the VM resource</li>
+<li>Load the <em>Create VM</em> wizard</li>
+<li>Work through several menus to configure the VM</li>
+<li>Confirm and provision</li>
+</ol>
+<p>Using the CLI, you would need to open your terminal and enter a single command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ az vm create &lt;configuration options&gt;
+</pre></div>
+</div>
+<p>On the one hand, the GUI is helpful in providing visual cues and menus to guide you through the process. On the other hand, the CLI allows you to skip directly to issuing the exact instructions for the work you need done. This is just one example that highlights the conciseness with regard to <em>manual</em> steps. The real power of CLI tools, however, comes in their automation capabilities.</p>
+</div>
+<div class="section" id="automation-showdown">
+<h2>8.1.4. Automation Showdown<a class="headerlink" href="#automation-showdown" title="Permalink to this headline">¶</a></h2>
+<p>While the CLI is faster to work with, we only looked through the lens of manually interacting with the two interfaces. Eventually the goal of any ops specialist is to automate their work! Automation is as much about saving valuable work time as it is about ensuring <em>consistent behavior</em>.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">Computers excel at performing tasks exactly the same way every time. Whatever they are commanded to do, they will do without fail or fatigue. Humans, on the other hand, are prone to introducing errors. For large complex systems, the less human interaction involved, the less likely it is that errors will occur. For this reason, automation is a core tenant of modern development.</p>
+</div>
+<p>Let’s revisit the example from earlier, but this time consider the task of provisioning 1000 VMs. Any human-based solution would require repeating steps 4-6 from above 1000 times. You can imagine that at some point the human would grow tired and as a result make a mistake in one or more of the configuration options. While humans don’t have the ability to loop, our scripting languages certainly do!</p>
+<p>Here is a basic example in PowerShell invoking the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">powershell example</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="nv">$VmCount</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="nv">$VmCount</span> <span class="o">-lt</span> <span class="n">1000</span><span class="p">;</span> <span class="p">++</span><span class="nv">$VmCount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">az</span> <span class="n">vm</span> <span class="n">create</span> <span class="p">&lt;</span><span class="n">configuration</span> <span class="n">options</span><span class="p">&gt;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>You might ask, <em>Couldn’t we write a browser script to automate navigating the web portal?</em> While this is possible, it is significantly more complex than a 2-line loop. Worse yet is that GUIs, especially web-based GUIs, are more prone to updates and redesigns than CLIs. Which means that if UI updates occur your script will likely break.</p>
+<p>This is just one of thousands of automation examples you will come across in your career. We will explore semi-automatic and fully-automatic automation approaches in the coming sections. For now, you can take away an appreciation for the CLI—as foreign as it may seem initially—since it will soon become one of your closest allies.</p>
+</div>
+<div class="section" id="next-step">
+<h2>8.1.5. Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">¶</a></h2>
+<p>At this point you understand the strengths of CLI tools like the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code> and are ready to see how it can be used. In the next section, we will explore how its commands are organized and used to manage your Azure resources.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="index.html"><span aria-hidden="true">&larr;</span> 8. The Azure CLI</a></li>
+        
+        
+        <li class="next"><a href="az-cli-fundamentals.html">8.2. Azure CLI Practical Fundamentals <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/az-cli/intro_az-cli.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2.2. Walkthrough: Navigating the File System With Bash &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.3. Walkthrough: Working With Directories &amp; Files in Bash" href="walkthrough_dirs-and-files.html" />
+    <link rel="prev" title="2.1. Bash Fundamentals" href="intro.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">2. Introduction to Bash</a></li>
+    <li class="active">2.2. Walkthrough: Navigating the File System With Bash</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="walkthrough-navigating-the-file-system-with-bash">
+<h1>2.2. Walkthrough: Navigating the File System With Bash<a class="headerlink" href="#walkthrough-navigating-the-file-system-with-bash" title="Permalink to this headline">¶</a></h1>
+<p>Everything in the File System (FS) and commands that affect it are based around relative and absolute paths. Refer to the Shell introduction articles for a more detailed explanation. Below is a practical refresher:</p>
+<ul class="simple">
+<li><strong>relative path</strong>: relative to a variable location, your current working directory (CWD)</li>
+<li><strong>absolute path</strong>: relative to a constant location, the root directory (<code class="docutils literal notranslate"><span class="pre">/</span></code>)</li>
+</ul>
+<p>You will notice that most of the FS related commands make use of path arguments that can be written as relative or absolute paths.</p>
+<div class="section" id="navigation-essentials">
+<h2>2.2.1. Navigation Essentials<a class="headerlink" href="#navigation-essentials" title="Permalink to this headline">¶</a></h2>
+<p>Let’s begin by reviewing the essential commands for navigating the FS from the command-line. If you have not already set up the Ubuntu VM with Bash refer to the installation walkthrough article before continuing.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">While you can simply read these commands and trust their outputs <strong>it is important that you try them on your own machine</strong>. The only way to integrate a new tool in your workflow is to practice with it!</p>
+</div>
+<div class="section" id="getting-help">
+<h3>2.2.1.1. Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h3>
+<p>Most commands will provide documentation through the <code class="docutils literal notranslate"><span class="pre">--help</span></code> option or a <code class="docutils literal notranslate"><span class="pre">man</span></code> (manual) entry. When you are unsure about a command or want to learn more about how it is used you can use get help like this:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">command</span> --help
+<span class="c1"># prints help documentation</span>
+
+$ man &lt;<span class="nb">command</span> name&gt;
+<span class="c1"># enters a documentation viewer</span>
+<span class="c1"># scroll up with J key, down with K key</span>
+<span class="c1"># quit with Q key</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Like the <code class="docutils literal notranslate"><span class="pre">man</span></code> command you will find that many tools in Bash rely strictly on keyboard input rather than the use of a mouse. While this may seem foreign at first you will eventually get comfortable (and fast) at working without a mouse. Most of the CLI tools will follow the standard conventions for scrolling (<code class="docutils literal notranslate"><span class="pre">J</span></code> and <code class="docutils literal notranslate"><span class="pre">K</span></code>) and quitting (<code class="docutils literal notranslate"><span class="pre">Q</span></code>).</p>
+</div>
+</div>
+<div class="section" id="show-the-cwd">
+<h3>2.2.1.2. Show the CWD<a class="headerlink" href="#show-the-cwd" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">pwd</span></code> (print working directory) command will give you the absolute path of your current working directory (CWD) in the FS:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+</pre></div>
+</div>
+</div>
+<p>If you are in a new Shell session it will default to a CWD of <code class="docutils literal notranslate"><span class="pre">/home/&lt;username&gt;</span></code>.</p>
+</div>
+<div class="section" id="change-directories">
+<h3>2.2.1.3. Change directories<a class="headerlink" href="#change-directories" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">cd</span></code> (change directory) command takes one argument – the relative or absolute path of where you want to go:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># relative paths begin with a &#39;./&#39;</span>
+$ <span class="nb">cd</span> ./path/name
+<span class="c1"># or just the path name with no leading &#39;/&#39;</span>
+$ <span class="nb">cd</span> path/name
+
+<span class="c1"># absolute paths always begin from the root (/) directory</span>
+<span class="nb">cd</span> /home/student/path/name
+</pre></div>
+</div>
+</div>
+<p>If you want to change to a directory using a relative path that is <em>under</em> your CWD this is straightforward. But what if you need to refer to a relative path <em>above</em> your CWD? For this Bash includes two special characters for relative references:</p>
+<ul class="simple">
+<li><cite>.</cite> character: a single dot refers to <em>this directory</em></li>
+<li><cite>..</cite> characters: a double dot refers to the <em>parent directory</em> (up one directory)</li>
+</ul>
+<p>We will discuss the use of the <em>this directory</em> character (<code class="docutils literal notranslate"><span class="pre">.</span></code>) soon. Consider the following example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/home/student
+   /Downloads
+      /album
+   /Media &lt;-- your target
+      /Videos &lt;-- your CWD
+</pre></div>
+</div>
+<p>If you want to move to the <cite>Media</cite> directory <em>relative</em> to <cite>Videos</cite> you need to go <em>up one directory</em> level:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student/Media/Videos
+
+$ <span class="nb">cd</span> ../
+
+<span class="c1"># for going up one directory only you can leave off the trailing &#39;/&#39;</span>
+$ <span class="nb">cd</span> ..
+
+$ <span class="nb">pwd</span>
+/home/student/Media
+</pre></div>
+</div>
+</div>
+<p>What if you again start inside <code class="docutils literal notranslate"><span class="pre">Videos</span></code> and you want to switch to the <code class="docutils literal notranslate"><span class="pre">album</span></code> directory?</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/home/student
+   /Downloads
+      /album &lt;-- your target
+   /Media
+      /Videos &lt;-- your CWD
+</pre></div>
+</div>
+<p>Relative to where you are, you need to:</p>
+<ul class="simple">
+<li>go up one directory to the <code class="docutils literal notranslate"><span class="pre">Media</span></code> parent directory: <code class="docutils literal notranslate"><span class="pre">../</span></code></li>
+<li>go up one more level (home directory) where <code class="docutils literal notranslate"><span class="pre">Media</span></code> and <code class="docutils literal notranslate"><span class="pre">Downloads</span></code> are: <code class="docutils literal notranslate"><span class="pre">../../</span></code></li>
+<li>down a level into <code class="docutils literal notranslate"><span class="pre">Downloads</span></code>: <code class="docutils literal notranslate"><span class="pre">../Downloads</span></code></li>
+<li>then down another level into <code class="docutils literal notranslate"><span class="pre">album</span></code>: <code class="docutils literal notranslate"><span class="pre">../Downloads/album</span></code></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student/Media/Videos
+
+$ <span class="nb">cd</span> ../Downloads/album
+
+$ <span class="nb">pwd</span>
+/home/student/Downloads/album
+</pre></div>
+</div>
+</div>
+<p>This process can be repeated for going up (<code class="docutils literal notranslate"><span class="pre">../</span></code>) or down (<code class="docutils literal notranslate"><span class="pre">/</span></code>) as many times as needed to create the proper relative path. When in doubt check your CWD!</p>
+<p>There are also two useful shorthands for quickly navigating around:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">~</span></code>: the tilda (next to the <code class="docutils literal notranslate"><span class="pre">1</span></code> key) is a shorthand for the home directory of the logged in user (relies on the <code class="docutils literal notranslate"><span class="pre">$HOME</span></code> environment variable)</li>
+<li><code class="docutils literal notranslate"><span class="pre">-</span></code>: the dash character (next to the <code class="docutils literal notranslate"><span class="pre">0</span></code> key) is a shorthand for returning to the <em>previous</em> CWD (thanks to the <code class="docutils literal notranslate"><span class="pre">$OLDPWD</span></code> environment variable)</li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student/Media
+
+$ <span class="nb">cd</span> ~
+$ <span class="nb">pwd</span>
+/home/student
+
+$ <span class="nb">cd</span> -
+$ <span class="nb">pwd</span>
+/home/student/Media
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">~</span></code> shorthand can also be used as a base <em>relative to HOME</em> path:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student/Media
+
+$ <span class="nb">cd</span> ~/Downloads/album
+$ <span class="nb">pwd</span>
+/home/student/Downloads/album
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="list-directory-contents">
+<h3>2.2.1.4. List directory contents<a class="headerlink" href="#list-directory-contents" title="Permalink to this headline">¶</a></h3>
+<p>Our final navigation command is <code class="docutils literal notranslate"><span class="pre">ls</span></code> (list contents). As mentioned previously <code class="docutils literal notranslate"><span class="pre">ls</span></code> can be used with no arguments to view the contents of the CWD:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+$ ls
+<span class="c1"># contents of CWD (&quot;empty&quot; for a new user)</span>
+</pre></div>
+</div>
+</div>
+<p>But <code class="docutils literal notranslate"><span class="pre">ls</span></code> can also be used view the contents of another directory using a relative or absolute path as its <strong>argument</strong>:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+<span class="c1"># absolute path</span>
+$ ls /usr/bin
+<span class="c1"># contents of the user binaries directory</span>
+
+<span class="c1"># relative path</span>
+$ ls ../../usr/bin
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-command-options">
+<h3>2.2.1.5. Using command options<a class="headerlink" href="#using-command-options" title="Permalink to this headline">¶</a></h3>
+<p>You can provide options to <code class="docutils literal notranslate"><span class="pre">ls</span></code> to change the behavior of its output.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-a</span></code> option means <em>all</em> and modifies <code class="docutils literal notranslate"><span class="pre">ls</span></code> to show <em>all the files</em>, both visible and <strong>hidden files</strong>.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">Hidden files are special configuration files that are hidden to prevent accidental changes to them from consumers. However, when working with CLI tools you will often use these <strong>dot files</strong> as a way of configuring the way your tools behave on your machine.</p>
+</div>
+<p>While the home directory appeared empty earlier it actually contained several hidden files:</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+$ ls -a
+<span class="c1"># hidden files like .bashrc, .profile</span>
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">-l</span></code> option outputs in <em>long form</em> which shows additional details about the contents.</p>
+<p>In the following example it is combined with <code class="docutils literal notranslate"><span class="pre">-a</span></code> to see detailed information about the hidden files in the home directory:</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+/home/student
+
+<span class="c1"># or shorthand: ls -al</span>
+$ ls -a -l
+</pre></div>
+</div>
+</div>
+<p>In this output you can view details like the <a class="reference external" href="http://linuxcommand.org/lc3_lts0090.php" target="_blank">file type and access mode<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> as well as the <a class="reference external" href="https://www.linode.com/docs/tools-reference/linux-users-and-groups/" target="_blank">user and group<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> that owns the file.</p>
+<p>We will not go into permission modes and ownership in this class. However, it is worth knowing that regular files are denoted by a <code class="docutils literal notranslate"><span class="pre">-</span></code> character and directory files by the <code class="docutils literal notranslate"><span class="pre">d</span></code> character (on the far left of each file’s information).</p>
+<div class="admonition-fun-fact admonition">
+<p class="first admonition-title"><i class="fas fa-rocket" aria-hidden="true"></i>Fun Fact</p>
+<p>Notice how the <code class="docutils literal notranslate"><span class="pre">.</span></code> and <code class="docutils literal notranslate"><span class="pre">..</span></code> are actually listed as <em>directory files</em> (the first <code class="docutils literal notranslate"><span class="pre">d</span></code> in the long output).</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">.</span></code> and <code class="docutils literal notranslate"><span class="pre">..</span></code> are actually treated as <em>files</em> (because <em>everything is a file</em> in Linux). They refer to the <em>current directory file</em> and <em>parent (up) directory file</em> respectively.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="intro.html"><span aria-hidden="true">&larr;</span> 2.1. Bash Fundamentals</a></li>
+        
+        
+        <li class="next"><a href="walkthrough_dirs-and-files.html">2.3. Walkthrough: Working With Directories &amp; Files in Bash <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/bash-intro/walkthrough_fs-navigation.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

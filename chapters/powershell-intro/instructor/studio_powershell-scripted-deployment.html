@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PowerShell Scripted Deployment Solution &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Least-Privileged Access" href="../../secrets-and-backing/least-privileged-access.html" />
+    <link rel="prev" title="PowerShell Intro Scripting Solution" href="studio_intro-powershell-scripting.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../../index.html">Contents</a></li>
+    <li><a href="index.html">Instructor Solutions</a></li>
+    <li class="active">PowerShell Scripted Deployment Solution</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="powershell-scripted-deployment-solution">
+<h1>PowerShell Scripted Deployment Solution<a class="headerlink" href="#powershell-scripted-deployment-solution" title="Permalink to this headline">¶</a></h1>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">provision-resources.ps1 solution</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-Powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># TODO: set variables</span>
+<span class="nv">$studentName</span> <span class="p">=</span> <span class="s2">&quot;[student-name]&quot;</span>
+<span class="nv">$rgName</span> <span class="p">=</span> <span class="s2">&quot;$studentName-lc-rg&quot;</span>
+<span class="nv">$vmName</span> <span class="p">=</span> <span class="s2">&quot;$studentName-lc-vm&quot;</span>
+<span class="nv">$vmSize</span> <span class="p">=</span> <span class="s2">&quot;Standard_B2s&quot;</span>
+<span class="nv">$vmImage</span> <span class="p">=</span> <span class="s2">&quot;</span><span class="p">$(</span><span class="n">az</span> <span class="n">vm</span> <span class="n">image</span> <span class="n">list</span> <span class="p">-</span><span class="n">-query</span> <span class="s2">&quot;[? contains(urn, &#39;Ubuntu&#39;)] | [0].urn&quot;</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="nv">$vmAdminUsername</span> <span class="p">=</span> <span class="s2">&quot;student&quot;</span>
+<span class="nv">$kvName</span> <span class="p">=</span> <span class="s2">&quot;$studentName-lc0820-ps-kv&quot;</span>
+<span class="nv">$kvSecretName</span> <span class="p">=</span> <span class="s2">&quot;ConnectionStrings--Default&quot;</span>
+<span class="nv">$kvSecretValue</span> <span class="p">=</span> <span class="s2">&quot;server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode&quot;</span>
+
+<span class="n">az</span> <span class="n">configure</span> <span class="p">-</span><span class="n">-default</span> <span class="n">location</span><span class="p">=</span><span class="n">eastus</span>
+
+<span class="c"># TODO: provision RG</span>
+
+<span class="n">az</span> <span class="nb">group </span><span class="n">create</span> <span class="n">-n</span> <span class="nv">$rgName</span>
+
+<span class="n">az</span> <span class="n">configure</span> <span class="p">-</span><span class="n">-default</span> <span class="n">group</span><span class="p">=</span><span class="nv">$rgName</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">rg</span><span class="p">.</span><span class="n">json</span>
+
+<span class="c"># TODO: provision VM</span>
+
+<span class="n">az</span> <span class="n">vm</span> <span class="n">create</span> <span class="n">-n</span> <span class="nv">$vmName</span> <span class="p">-</span><span class="n">-size</span> <span class="nv">$vmSize</span> <span class="p">-</span><span class="n">-image</span> <span class="nv">$vmImage</span> <span class="p">-</span><span class="n">-admin-username</span> <span class="nv">$vmAdminUsername</span> <span class="p">-</span><span class="n">-admin-password</span> <span class="s2">&quot;LaunchCode-@zure1&quot;</span> <span class="p">-</span><span class="n">-authentication-type</span> <span class="s2">&quot;password&quot;</span> <span class="p">-</span><span class="n">-assign-identity</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">vm</span><span class="p">.</span><span class="n">json</span>
+
+<span class="n">az</span> <span class="n">configure</span> <span class="p">-</span><span class="n">-default</span> <span class="n">vm</span><span class="p">=</span><span class="nv">$vmName</span>
+
+<span class="c"># TODO: capture the VM systemAssignedIdentity</span>
+
+<span class="nv">$vm</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="n">vm</span><span class="p">.</span><span class="n">json</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span>
+
+<span class="c"># TODO: open vm port 443</span>
+
+<span class="n">az</span> <span class="n">vm</span> <span class="nb">open-port</span> <span class="p">-</span><span class="n">-port</span> <span class="n">443</span>
+
+<span class="c"># provision KV</span>
+
+<span class="n">az</span> <span class="n">keyvault</span> <span class="n">create</span> <span class="n">-n</span> <span class="nv">$kvName</span> <span class="p">-</span><span class="n">-enable-soft-delete</span> <span class="s2">&quot;false&quot;</span> <span class="p">-</span><span class="n">-enabled-for-deployment</span> <span class="s2">&quot;true&quot;</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">kv</span><span class="p">.</span><span class="n">json</span>
+
+<span class="c"># TODO: create KV secret (database connection string)</span>
+
+<span class="n">az</span> <span class="n">keyvault</span> <span class="n">secret</span> <span class="nb">set </span><span class="p">-</span><span class="n">-vault-name</span> <span class="nv">$kvName</span> <span class="p">-</span><span class="n">-description</span> <span class="s2">&quot;db connection string&quot;</span> <span class="p">-</span><span class="n">-name</span> <span class="nv">$kvSecretName</span> <span class="p">-</span><span class="n">-value</span> <span class="nv">$kvSecretValue</span>
+
+<span class="c"># TODO: set KV access-policy (using the vm ``systemAssignedIdentity``)</span>
+
+<span class="n">az</span> <span class="n">keyvault</span> <span class="nb">set-policy</span> <span class="p">-</span><span class="n">-name</span> <span class="s2">&quot;$kvName&quot;</span> <span class="p">-</span><span class="n">-object-id</span> <span class="nv">$vm</span><span class="p">.</span><span class="n">identity</span><span class="p">.</span><span class="n">systemAssignedIdentity</span> <span class="p">-</span><span class="n">-secret-permissions</span> <span class="n">list</span> <span class="n">get</span>
+
+<span class="n">az</span> <span class="n">vm</span> <span class="n">run-command</span> <span class="n">invoke</span> <span class="p">-</span><span class="n">-command-id</span> <span class="n">RunShellScript</span> <span class="p">-</span><span class="n">-scripts</span> <span class="nv">@vm</span><span class="n">-configuration-scripts</span><span class="p">/</span><span class="n">1configure-vm</span><span class="p">.</span><span class="n">sh</span>
+
+<span class="n">az</span> <span class="n">vm</span> <span class="n">run-command</span> <span class="n">invoke</span> <span class="p">-</span><span class="n">-command-id</span> <span class="n">RunShellScript</span> <span class="p">-</span><span class="n">-scripts</span> <span class="nv">@vm</span><span class="n">-configuration-scripts</span><span class="p">/</span><span class="n">2configure-ssl</span><span class="p">.</span><span class="n">sh</span>
+
+<span class="n">az</span> <span class="n">vm</span> <span class="n">run-command</span> <span class="n">invoke</span> <span class="p">-</span><span class="n">-command-id</span> <span class="n">RunShellScript</span> <span class="p">-</span><span class="n">-scripts</span> <span class="nv">@deliver</span><span class="n">-deploy</span><span class="p">.</span><span class="n">sh</span>
+
+<span class="c"># TODO: print VM public IP address to STDOUT or save it as a file</span>
+
+<span class="nb">Write-Output</span> <span class="nv">$vm</span><span class="p">.</span><span class="n">publicIpAddress</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">deliver-deploy.sh solution</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-Powershell notranslate"><div class="highlight"><pre><span></span>#! /usr/bin/env bash
+
+set -ex
+
+# -- env vars --
+
+# for cloning in delivery
+github_username=[student-name]
+solution_branch=[student-solution-branch]
+
+# api
+api_service_user=api-user
+api_working_dir=/opt/coding-events-api
+
+# needed to use dotnet from within RunCommand
+export HOME=/home/student
+export DOTNET_CLI_HOME=/home/student
+
+# -- end env vars --
+
+# -- set up API service --
+
+# create API service user and dirs
+useradd -M &quot;$api_service_user&quot; -N
+mkdir &quot;$api_working_dir&quot;
+
+chmod 700 /opt/coding-events-api/
+chown $api_service_user /opt/coding-events-api/
+
+# generate API unit file
+cat &lt;&lt; EOF &gt; /etc/systemd/system/coding-events-api.service
+[Unit]
+Description=Coding Events API
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=$api_service_user
+WorkingDirectory=$api_working_dir
+ExecStart=/usr/bin/dotnet ${api_working_dir}/CodingEventsAPI.dll
+Restart=always
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=coding-events-api
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+Environment=DOTNET_HOME=$api_working_dir
+EOF
+
+# -- end setup API service --
+
+# -- deliver --
+
+# deliver source code
+
+git clone https://github.com/$github_username/coding-events-api /tmp/coding-events-api
+
+cd /tmp/coding-events-api/CodingEventsAPI
+
+# checkout branch that has the appsettings.json we need to connect to the KV
+git checkout $solution_branch
+
+dotnet publish -c Release -r linux-x64 -o &quot;$api_working_dir&quot;
+
+# -- end deliver --
+
+# -- deploy --
+
+# start API service
+service coding-events-api start
+
+# -- end deploy --
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">appsettings.json solution</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+   &quot;Logging&quot;: {
+      &quot;LogLevel&quot;: {
+         &quot;Default&quot;: &quot;Information&quot;,
+         &quot;Microsoft&quot;: &quot;Warning&quot;,
+         &quot;Microsoft.Hosting.Lifetime&quot;: &quot;Information&quot;
+      }
+   },
+   &quot;AllowedHosts&quot;: &quot;*&quot;,
+   &quot;ServerOrigin&quot;: &quot;&quot;,
+   &quot;KeyVaultName&quot;: &quot;[student-name-lc0820-ps-kv&quot;,
+   &quot;JWTOptions&quot;: {
+      .. trimmed ..
+      }
+   }
+}
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="studio_intro-powershell-scripting.html"><span aria-hidden="true">&larr;</span> PowerShell Intro Scripting Solution</a></li>
+        
+        
+        <li class="next"><a href="../../secrets-and-backing/least-privileged-access.html">Least-Privileged Access <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../../_sources/chapters/powershell-intro/instructor/studio_powershell-scripted-deployment.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

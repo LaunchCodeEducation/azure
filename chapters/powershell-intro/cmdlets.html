@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>9.2. Cmdlet Basics &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9.3. Working With the File System" href="fs-navigation.html" />
+    <link rel="prev" title="9.1. PowerShell Fundamentals" href="intro.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">9. Introduction to PowerShell</a></li>
+    <li class="active">9.2. Cmdlet Basics</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="cmdlet-basics">
+<h1>9.2. Cmdlet Basics<a class="headerlink" href="#cmdlet-basics" title="Permalink to this headline">¶</a></h1>
+<p>PowerShell cmdlets behave similarly to Bash commands. They begin with their name and are followed by arguments and options. PowerShell cmdlets follow a <em>verb/noun</em> pattern.</p>
+<div class="section" id="the-verb-noun-pattern">
+<h2>9.2.1. The Verb-Noun Pattern<a class="headerlink" href="#the-verb-noun-pattern" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">Cmdlets begin with <strong>verbs</strong> like <code class="docutils literal notranslate"><span class="pre">Get-</span></code> and <code class="docutils literal notranslate"><span class="pre">Set-</span></code> followed by the <strong>noun</strong> that the Verb is acting on. This declarative naming approach makes reading and writing PowerShell easy to understand.</p>
+<p>For example, the cmdlets <code class="docutils literal notranslate"><span class="pre">Get-Location</span></code> and <code class="docutils literal notranslate"><span class="pre">Set-Location</span></code> both operate on your <code class="docutils literal notranslate"><span class="pre">Location</span></code> in the file system. The former returns your current working directory (equivalent to <code class="docutils literal notranslate"><span class="pre">pwd</span></code> in Bash) while the latter changes this directory (equivalent to <code class="docutils literal notranslate"><span class="pre">cd</span></code>).</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Location</span>
+<span class="c"># absolute path of your CWD</span>
+
+<span class="p">&gt;</span> <span class="nb">Set-Location</span> <span class="p">/</span><span class="n">path</span><span class="p">/</span><span class="n">to</span><span class="p">/</span><span class="n">destination</span>
+<span class="c"># changes CWD to destination path</span>
+</pre></div>
+</div>
+</div>
+<p>While a bit more verbose than Bash commands, they are often more intuitive, and can read like a sentence. Every command you enter is telling the shell a statement of instructions for it to perform.</p>
+<p>In general terms, there is a verb, a noun being acted on, and a subject.</p>
+<blockquote>
+<div>[do] verb [to the] noun [of] subject</div></blockquote>
+<p>In the commands above, the subject is <em>implied</em> as the Shell process that is managing your current working directory, or Location in the file system. For example, <code class="docutils literal notranslate"><span class="pre">Get-Location</span></code>:</p>
+<blockquote>
+<div>Get [the] Location [of] (this shell process)</div></blockquote>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Set-Location</span></code> example, an additional term is added to the sentence, the path argument:</p>
+<blockquote>
+<div>Set [the] Location [of] (this shell process) to (the path)</div></blockquote>
+<p>The analogy of commands and sentences can not be generalized to a single formula, but can be useful when learning PowerShell.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p>You can view the full list of built-in cmdlets and functions using the <code class="docutils literal notranslate"><span class="pre">Get-Command</span></code> cmdlet:</p>
+<div class="literal-block-wrapper last docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Command</span>
+<span class="c"># list of all built-ins available on the machine</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="options-arguments">
+<h2>9.2.2. Options &amp; Arguments<a class="headerlink" href="#options-arguments" title="Permalink to this headline">¶</a></h2>
+<p>PowerShell refers to the many types of inputs to cmdlets as <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/cmdlet-parameters?view=powershell-7" target="_blank">parameters<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. As with Bash commands, some of the parameters are positional, or may even have default values. Options, or named parameters, are all written in long form (no single-letter shorthands) and use a single dash (<code class="docutils literal notranslate"><span class="pre">-</span></code>).</p>
+<p>For example, the <code class="docutils literal notranslate"><span class="pre">Get-Command</span></code> cmdlet has a <code class="docutils literal notranslate"><span class="pre">-Type</span></code> option for filtering the results list by types like <code class="docutils literal notranslate"><span class="pre">Cmdlet</span></code> and <code class="docutils literal notranslate"><span class="pre">Function</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Command</span> <span class="n">-Type</span> <span class="n">Cmdlet</span>
+<span class="c"># list of built-in cmdlets only</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="autocompletion">
+<h2>9.2.3. Autocompletion<a class="headerlink" href="#autocompletion" title="Permalink to this headline">¶</a></h2>
+<p>PowerShell cmdlets and functions allow for expansion using the <code class="docutils literal notranslate"><span class="pre">tab</span></code>  key. This can be helpful to autocomplete command names and options. The <code class="docutils literal notranslate"><span class="pre">tab</span></code> key will either complete a partially written name (if it is unique) or list the possible choices.</p>
+<p>For example, let’s explore the named parameters of <code class="docutils literal notranslate"><span class="pre">Get-Command</span></code>. If we enter a <code class="docutils literal notranslate"><span class="pre">-</span></code> (start of a named parameter) and hit <code class="docutils literal notranslate"><span class="pre">tab</span></code> it will show us a list of options available on <code class="docutils literal notranslate"><span class="pre">Get-Command</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Command</span> <span class="p">-</span>
+<span class="n">Name</span>                      <span class="n">CommandType</span>               <span class="n">All</span>                       <span class="n">UseAbbreviationExpansion</span>  <span class="n">InformationAction</span>         <span class="n">OutBuffer</span>
+<span class="n">Verb</span>                      <span class="n">TotalCount</span>                <span class="n">ListImported</span>              <span class="n">Verbose</span>                   <span class="n">ErrorVariable</span>             <span class="n">PipelineVariable</span>
+<span class="n">Noun</span>                      <span class="n">Syntax</span>                    <span class="n">ParameterName</span>             <span class="n">Debug</span>                     <span class="n">WarningVariable</span>
+<span class="n">Module</span>                    <span class="n">ShowCommandInfo</span>           <span class="n">ParameterType</span>             <span class="n">ErrorAction</span>               <span class="n">InformationVariable</span>
+<span class="n">FullyQualifiedModule</span>      <span class="n">ArgumentList</span>              <span class="n">UseFuzzyMatching</span>          <span class="n">WarningAction</span>             <span class="n">OutVariable</span>
+</pre></div>
+</div>
+</div>
+<p>If we add a few qualifying characters, it can narrow the list down for us:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Command</span> <span class="n">-Out</span>
+<span class="n">OutVariable</span>  <span class="n">OutBuffer</span>
+</pre></div>
+</div>
+</div>
+<p>Whenever enough characters are available to uniquely identify a name it will autocomplete it:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Command</span> <span class="n">-OutV</span>
+<span class="c"># after tab</span>
+<span class="p">&gt;</span> <span class="nb">Get-Command</span> <span class="n">-OutVariable</span>
+</pre></div>
+</div>
+</div>
+<p>You can use this feature to automatically fill in command names, named parameters, and even paths!</p>
+</div>
+<div class="section" id="getting-help">
+<h2>9.2.4. Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h2>
+<p>While the <code class="docutils literal notranslate"><span class="pre">--help</span></code> option is available for <em>some</em> CLI tools that we will use in the class, the primary mode of viewing command documentation uses the <code class="docutils literal notranslate"><span class="pre">Get-Help</span></code> cmdlet.</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Help</span> <span class="p">&lt;</span><span class="n">cmdlet</span> <span class="n">name</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Get-Help</span></code>, by default, will display the <em>summary documentation</em> for the given cmdlet directly in the PowerShell terminal. To view the <em>full documentation</em> for a cmdlet you can add the <code class="docutils literal notranslate"><span class="pre">-Full</span></code> option:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Help</span> <span class="p">&lt;</span><span class="n">cmdlet</span> <span class="n">name</span><span class="p">&gt;</span> <span class="n">-Full</span>
+</pre></div>
+</div>
+</div>
+<p>Another useful option for <code class="docutils literal notranslate"><span class="pre">Get-Help</span></code> is <code class="docutils literal notranslate"><span class="pre">-Examples</span></code> which will provide practical examples of using the cmdlet:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Help</span> <span class="p">&lt;</span><span class="n">cmdlet</span> <span class="n">name</span><span class="p">&gt;</span> <span class="n">-Examples</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>If you prefer to use the browser, using the <code class="docutils literal notranslate"><span class="pre">-Online</span></code> option will automatically open your browser to the <em>full documentation</em>:</p>
+<div class="literal-block-wrapper last docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Help</span> <span class="p">&lt;</span><span class="n">cmdlet</span> <span class="n">name</span><span class="p">&gt;</span> <span class="n">-Online</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="updating-help-documentation">
+<h3>9.2.4.1. Updating Help Documentation<a class="headerlink" href="#updating-help-documentation" title="Permalink to this headline">¶</a></h3>
+<p id="index-1">PowerShell keeps commonly used documentation locally on your machine, so that it can be accessed more quickly and offline. In some cases, you will need to update your <em>local</em> documentation cache. You can update the local help documentation using the <code class="docutils literal notranslate"><span class="pre">Update-Help</span></code> cmdlet.</p>
+<p>You can append the <code class="docutils literal notranslate"><span class="pre">-Confirm</span></code> option to auto-confirm the download and skip the prompt:</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Update-Help</span> <span class="n">-Confirm</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="intro.html"><span aria-hidden="true">&larr;</span> 9.1. PowerShell Fundamentals</a></li>
+        
+        
+        <li class="next"><a href="fs-navigation.html">9.3. Working With the File System <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/powershell-intro/cmdlets.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>9.8. Making API Requests Using Invoke-RestMethod &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9.9. Studio: Automated Deployment of the Coding Events API" href="studio_powershell-scripted-deployment.html" />
+    <link rel="prev" title="9.7. Piping in PowerShell" href="piping.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">9. Introduction to PowerShell</a></li>
+    <li class="active">9.8. Making API Requests Using Invoke-RestMethod</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="making-api-requests-using-invoke-restmethod">
+<h1>9.8. Making API Requests Using Invoke-RestMethod<a class="headerlink" href="#making-api-requests-using-invoke-restmethod" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7" target="_blank">Invoke-RestMethod<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> is a PowerShell cmdlet that provides the ability to send requests from the command line to a REST API.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> can be used to make web requests to any server, but is specifically intended to work with REST APIs that use JSON as their data representations.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-7" target="_blank">Invoke-WebRequest<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> cmdlet is a more generalized tool for working with other formats like XML or HTML.</p>
+</div>
+<div class="section" id="command-line-rest">
+<h2>9.8.1. Command-Line REST<a class="headerlink" href="#command-line-rest" title="Permalink to this headline">¶</a></h2>
+<p>Throughout this class, we have used Postman as a way for making requests to a RESTful API. Postman offers a GUI that is a very pleasant interface to work with. However, a GUI is not always the best interface for a given job.</p>
+<p>A benefit of making requests from a CLI is that you can combine as many requests as necessary into a single script. This creates the ability to automate interactions with a RESTful API.</p>
+</div>
+<div class="section" id="id1">
+<h2>9.8.2. <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Similarly to Postman, <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> allows you to fully configure each HTTP request including setting the:</p>
+<ul class="simple">
+<li>URI</li>
+<li>Method</li>
+<li>Headers</li>
+<li>Body</li>
+</ul>
+<p>The JSON responses received by an <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> call are automatically converted from a JSON-formatted string to a <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-pscustomobject?view=powershell-7" target="_blank">PSCustomObject<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. The fields of the JSON response are then accessible as properties of this object using dot notation.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">These response objects can be used directly within a PowerShell session, in a script, or can be saved to a JSON file.</p>
+</div>
+</div>
+<div class="section" id="open-notify-examples">
+<h2>9.8.3. Open-Notify Examples<a class="headerlink" href="#open-notify-examples" title="Permalink to this headline">¶</a></h2>
+<p>Open-Notify is a publicly available REST API that returns information about astronauts in space.</p>
+<p>The <a class="reference external" href="http://open-notify.org/" target="_blank">Open-Notify API<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> contains live data that is continuously updated. Let’s explore this API by making a simple <code class="docutils literal notranslate"><span class="pre">GET</span></code> request for its <code class="docutils literal notranslate"><span class="pre">Astros</span></code> resource using <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code>.</p>
+<div class="section" id="astronaut-resource-shapes">
+<h3>9.8.3.1. Astronaut Resource Shapes<a class="headerlink" href="#astronaut-resource-shapes" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Astros</span></code> resource has the following shape:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">the Astros resource shape</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nx">message</span><span class="o">:</span> <span class="nx">integer</span><span class="p">,</span>
+   <span class="nx">number</span><span class="o">:</span> <span class="nx">integer</span><span class="p">,</span>
+   <span class="nx">people</span><span class="o">:</span> <span class="nx">Person</span><span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">people</span></code> field is an array of <code class="docutils literal notranslate"><span class="pre">Person</span></code> resources with the following shape:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Person Resource shape</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nx">name</span><span class="o">:</span> <span class="nx">string</span><span class="p">,</span>
+   <span class="nx">craft</span><span class="o">:</span> <span class="nx">string</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="making-a-request">
+<h3>9.8.3.2. Making a Request<a class="headerlink" href="#making-a-request" title="Permalink to this headline">¶</a></h3>
+<p>Let’s make a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request for the <code class="docutils literal notranslate"><span class="pre">Astros</span></code> resource. If you don’t specify the request method it will default to <code class="docutils literal notranslate"><span class="pre">GET</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> will convert the JSON response to a <code class="docutils literal notranslate"><span class="pre">PSCustomObject</span></code>. By default, these custom objects are printed in the terminal in a table presentation:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; Invoke-RestMethod -URI &quot;http://api.open-notify.org/astros.json&quot;
+
+message number people
+------- ------ ------
+success      5 {@{craft=ISS; name=Chris Cassidy}, @{craft=ISS; name=Anatoly Iv…
+</pre></div>
+</div>
+</div>
+<div class="section" id="grouping-to-access-fields-of-the-json-response">
+<h3>9.8.3.3. Grouping to Access Fields of the JSON Response<a class="headerlink" href="#grouping-to-access-fields-of-the-json-response" title="Permalink to this headline">¶</a></h3>
+<p>Using the grouping operator, we can access the <code class="docutils literal notranslate"><span class="pre">people</span></code> array property of the custom object in the following way:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; (Invoke-RestMethod -URI &quot;http://api.open-notify.org/astros.json&quot;).people
+
+craft name
+----- ----
+ISS   Chris Cassidy
+ISS   Anatoly Ivanishin
+ISS   Ivan Vagner
+ISS   Doug Hurley
+ISS   Bob Behnken
+</pre></div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The grouping operator will cause the <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> to be executed <em>first</em>. The resulting custom object can then have its properties accessed using dot notation on the closing parenthesis: <code class="docutils literal notranslate"><span class="pre">)</span></code>.</p>
+</div>
+</div>
+<div class="section" id="piping-to-access-nested-fields">
+<h3>9.8.3.4. Piping to Access Nested Fields<a class="headerlink" href="#piping-to-access-nested-fields" title="Permalink to this headline">¶</a></h3>
+<p>Because we are working with objects, we can filter the response down further by piping the <code class="docutils literal notranslate"><span class="pre">people</span></code> array object to the <code class="docutils literal notranslate"><span class="pre">Select-Object</span></code> cmdlet:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; $uri = &quot;http://api.open-notify.org/astros.json&quot;
+&gt; (Invoke-RestMethod -URI $uri).people | Select-Object -Property name
+
+name
+----
+Chris Cassidy
+Anatoly Ivanishin
+Ivan Vagner
+Doug Hurley
+Bob Behnken
+</pre></div>
+</div>
+</div>
+<div class="section" id="storing-response-objects-in-a-reusable-variable">
+<h3>9.8.3.5. Storing Response Objects in a Reusable Variable<a class="headerlink" href="#storing-response-objects-in-a-reusable-variable" title="Permalink to this headline">¶</a></h3>
+<p>Storing the result in a variable becomes useful, so that we don’t have to keep making the same request to access its data:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$webRequest</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-URI</span> <span class="s2">&quot;http://api.open-notify.org/astros.json&quot;</span>
+</pre></div>
+</div>
+<p>We can then work with the data through the variable. For example, we can access the <code class="docutils literal notranslate"><span class="pre">people</span></code> field:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$webRequest</span><span class="p">.</span><span class="n">people</span>
+
+<span class="n">craft</span> <span class="n">name</span>
+<span class="p">-----</span> <span class="p">----</span>
+<span class="n">ISS</span>   <span class="n">Chris</span> <span class="n">Cassidy</span>
+<span class="n">ISS</span>   <span class="n">Anatoly</span> <span class="n">Ivanishin</span>
+<span class="n">ISS</span>   <span class="n">Ivan</span> <span class="n">Vagner</span>
+<span class="n">ISS</span>   <span class="n">Doug</span> <span class="n">Hurley</span>
+<span class="n">ISS</span>   <span class="n">Bob</span> <span class="n">Behnken</span>
+</pre></div>
+</div>
+<p>We can also access the nested <code class="docutils literal notranslate"><span class="pre">name</span></code> field of one of the astronauts by chaining property and array access:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$webRequest</span><span class="p">.</span><span class="n">people</span><span class="p">[</span><span class="n">0</span><span class="p">].</span><span class="n">name</span>
+
+<span class="n">Chris</span> <span class="n">Cassidy</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sorting-response-data">
+<h3>9.8.3.6. Sorting Response Data<a class="headerlink" href="#sorting-response-data" title="Permalink to this headline">¶</a></h3>
+<p>We can even use our variable to control how the <code class="docutils literal notranslate"><span class="pre">people</span></code> array is sorted by piping it to the <code class="docutils literal notranslate"><span class="pre">Sort-Object</span></code> cmdlet:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$webRequest</span><span class="p">.</span><span class="n">people</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">-Property</span> <span class="n">name</span>
+
+<span class="n">craft</span> <span class="n">name</span>
+<span class="p">-----</span> <span class="p">----</span>
+<span class="n">ISS</span>   <span class="n">Anatoly</span> <span class="n">Ivanishin</span>
+<span class="n">ISS</span>   <span class="n">Bob</span> <span class="n">Behnken</span>
+<span class="n">ISS</span>   <span class="n">Chris</span> <span class="n">Cassidy</span>
+<span class="n">ISS</span>   <span class="n">Doug</span> <span class="n">Hurley</span>
+<span class="n">ISS</span>   <span class="n">Ivan</span> <span class="n">Vagner</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="converting-to-other-formats">
+<h3>9.8.3.7. Converting to Other Formats<a class="headerlink" href="#converting-to-other-formats" title="Permalink to this headline">¶</a></h3>
+<p>We can combine these steps in a longer pipe that:</p>
+<ol class="arabic simple">
+<li>Accesses the <code class="docutils literal notranslate"><span class="pre">people</span></code> array field</li>
+<li>Sorts each <code class="docutils literal notranslate"><span class="pre">Person</span></code> element by their nested <code class="docutils literal notranslate"><span class="pre">name</span></code> field</li>
+<li>Converts the sorted array into a CSV format</li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$webRequest</span><span class="p">.</span><span class="n">people</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">-Property</span> <span class="n">name</span> <span class="p">|</span> <span class="nb">ConvertTo-Csv</span>
+
+<span class="s2">&quot;craft&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span>
+<span class="s2">&quot;ISS&quot;</span><span class="p">,</span><span class="s2">&quot;Anatoly Ivanishin&quot;</span>
+<span class="s2">&quot;ISS&quot;</span><span class="p">,</span><span class="s2">&quot;Bob Behnken&quot;</span>
+<span class="s2">&quot;ISS&quot;</span><span class="p">,</span><span class="s2">&quot;Chris Cassidy&quot;</span>
+<span class="s2">&quot;ISS&quot;</span><span class="p">,</span><span class="s2">&quot;Doug Hurley&quot;</span>
+<span class="s2">&quot;ISS&quot;</span><span class="p">,</span><span class="s2">&quot;Ivan Vagner&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="saving-and-loading-as-csv-files">
+<h3>9.8.3.8. Saving and Loading as CSV Files<a class="headerlink" href="#saving-and-loading-as-csv-files" title="Permalink to this headline">¶</a></h3>
+<p>In many cases it is beneficial to save transformed responses to a file for later use. Rather than just printing the converted results we can use the <code class="docutils literal notranslate"><span class="pre">Export-Csv</span></code> cmdlet to write to a file:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$webRequest</span><span class="p">.</span><span class="n">people</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">-Property</span> <span class="n">name</span> <span class="p">|</span> <span class="nb">Export-Csv</span> <span class="s2">&quot;people.csv&quot;</span>
+</pre></div>
+</div>
+<p>You can then use the <code class="docutils literal notranslate"><span class="pre">Get-Content</span></code> cmdlet to view the CSV contents <em>as strings</em>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Content</span> <span class="n">people</span><span class="p">.</span><span class="n">csv</span>
+
+<span class="s2">&quot;craft&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span>
+<span class="s2">&quot;ISS&quot;</span><span class="p">,</span><span class="s2">&quot;Anatoly Ivanishin&quot;</span>
+<span class="s2">&quot;ISS&quot;</span><span class="p">,</span><span class="s2">&quot;Bob Behnken&quot;</span>
+<span class="s2">&quot;ISS&quot;</span><span class="p">,</span><span class="s2">&quot;Chris Cassidy&quot;</span>
+<span class="s2">&quot;ISS&quot;</span><span class="p">,</span><span class="s2">&quot;Doug Hurley&quot;</span>
+<span class="s2">&quot;ISS&quot;</span><span class="p">,</span><span class="s2">&quot;Ivan Vagner&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="saving-and-loading-as-json-files">
+<h3>9.8.3.9. Saving and loading as JSON files<a class="headerlink" href="#saving-and-loading-as-json-files" title="Permalink to this headline">¶</a></h3>
+<p>If we wanted to save in a JSON format we would need to add an additional step in our pipeline to convert the custom object back to a JSON string.</p>
+<p>We use the <code class="docutils literal notranslate"><span class="pre">ConvertTo-Json</span></code> cmdlet to accomplish this <em>serialization</em> from an object back to a JSON string:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$webRequest</span><span class="p">.</span><span class="n">people</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">-Property</span> <span class="n">name</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="s2">&quot;people.json&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>We can also split up this pipeline to make it more readable:</p>
+<div class="literal-block-wrapper last docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; # split for readability
+&gt; $SortedPeople = $webRequest.people | Sort-Object -Property name
+&gt; $SortedPeople | ConvertTo-Json | Set-Content &quot;people.json&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>This approach is invaluable for practicing with data transformations. Whereas a variable in our PowerShell terminal will disappear after closing, a file can be reused indefinitely and shared with others.</p>
+<p>You can then load the JSON contents <em>as a string</em> using <code class="docutils literal notranslate"><span class="pre">Get-Content</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; Get-Content &quot;people.json&quot;
+
+[
+   {
+      &quot;craft&quot;: &quot;ISS&quot;,
+      &quot;name&quot;: &quot;Anatoly Ivanishin&quot;
+   },
+   {
+      &quot;craft&quot;: &quot;ISS&quot;,
+      &quot;name&quot;: &quot;Bob Behnken&quot;
+   },
+   {
+      &quot;craft&quot;: &quot;ISS&quot;,
+      &quot;name&quot;: &quot;Chris Cassidy&quot;
+   },
+   {
+      &quot;craft&quot;: &quot;ISS&quot;,
+      &quot;name&quot;: &quot;Doug Hurley&quot;
+   },
+   {
+      &quot;craft&quot;: &quot;ISS&quot;,
+      &quot;name&quot;: &quot;Ivan Vagner&quot;
+   }
+]
+</pre></div>
+</div>
+</div>
+<p>However, in order to work with the JSON contents as custom objects we need to convert it back (<em>deserialize</em>) using the <code class="docutils literal notranslate"><span class="pre">ConvertFrom-Json</span></code> cmdlet. This will enable dot-notation access of fields like in the original <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> output:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Content</span> <span class="s2">&quot;people.json&quot;</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span>
+
+<span class="n">craft</span> <span class="n">name</span>
+<span class="p">-----</span> <span class="p">----</span>
+<span class="n">ISS</span>   <span class="n">Anatoly</span> <span class="n">Ivanishin</span>
+<span class="n">ISS</span>   <span class="n">Bob</span> <span class="n">Behnken</span>
+<span class="n">ISS</span>   <span class="n">Chris</span> <span class="n">Cassidy</span>
+<span class="n">ISS</span>   <span class="n">Doug</span> <span class="n">Hurley</span>
+<span class="n">ISS</span>   <span class="n">Ivan</span> <span class="n">Vagner</span>
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> cmdlet is a powerful tool for working with APIs. When combined with our knowledge of PowerShell, we have many options for interacting with a REST API and transforming the data we receive.</p>
+</div>
+</div>
+<div class="section" id="codingeventsapi-examples">
+<h2>9.8.4. <code class="docutils literal notranslate"><span class="pre">CodingEventsAPI</span></code> Examples<a class="headerlink" href="#codingeventsapi-examples" title="Permalink to this headline">¶</a></h2>
+<p>Let’s test this out with our Coding Events API. To keep things simple, let’s use the <code class="docutils literal notranslate"><span class="pre">1-sqlite</span></code> branch so we don’t need to worry about setting up a database, a secrets manager, or AADB2C.</p>
+<p>Run this branch to start the Coding Events API on your local machine.</p>
+<div class="section" id="get-example">
+<h3>9.8.4.1. <code class="docutils literal notranslate"><span class="pre">GET</span></code> Example<a class="headerlink" href="#get-example" title="Permalink to this headline">¶</a></h3>
+<p>To get a collection of coding events you could use:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:5000/api/events&quot;</span>
+</pre></div>
+</div>
+<p>To get an individual coding event entity you could use:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$CodingEventId</span> <span class="p">=</span> <span class="n">1</span>
+<span class="p">&gt;</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:5000/api/events/$CodingEventId&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-example">
+<h3>9.8.4.2. <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> Example<a class="headerlink" href="#delete-example" title="Permalink to this headline">¶</a></h3>
+<p>To delete an existing coding event entity you could use:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$CodingEventId</span> <span class="p">=</span> <span class="n">1</span>
+<span class="p">&gt;</span> <span class="nv">$uri</span> <span class="p">=</span> <span class="s2">&quot;http://localhost:5000/api/events/$CodingEventId&quot;</span>
+<span class="p">&gt;</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Method</span> <span class="s2">&quot;Delete&quot;</span> <span class="n">-Uri</span> <span class="nv">$uri</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="post-example">
+<h3>9.8.4.3. <code class="docutils literal notranslate"><span class="pre">POST</span></code> Example<a class="headerlink" href="#post-example" title="Permalink to this headline">¶</a></h3>
+<p>To create a new coding event we need to use two additional options:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">-Method</span></code>: to set the <code class="docutils literal notranslate"><span class="pre">POST</span></code> HTTP method</li>
+<li><code class="docutils literal notranslate"><span class="pre">-Body</span></code>: to define the body of the <code class="docutils literal notranslate"><span class="pre">POST</span></code> request</li>
+</ul>
+<p>To provide the body of the request you can use a <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-hashtable?view=powershell-7#what-is-a-hashtable" target="_blank">HashTable object<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> or a <a class="reference external" href="https://4sysops.com/archives/the-powershell-here-string-preserve-text-formatting/" target="_blank">here-string<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">HashTable</span></code> object is simple to create:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$body</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="n">Title</span> <span class="p">=</span> <span class="s2">&quot;Halloween Hackathon!&quot;</span>
+    <span class="n">Description</span> <span class="p">=</span> <span class="s2">&quot;A gathering of nerdy ghouls...&quot;</span>
+    <span class="n">Date</span> <span class="p">=</span>  <span class="s2">&quot;2020-10-30&quot;</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">HashTable</span></code> object <em>does not have any commas</em> and uses the <code class="docutils literal notranslate"><span class="pre">=</span></code> assignment operator for defining each key-value entry.</p>
+</div>
+<p>However, before it can be used in the request it <em>must be converted to JSON</em> with an appropriate <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header.</p>
+<p>We can use:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ConvertTo-Json</span></code>: in a grouped expression to serialize the <code class="docutils literal notranslate"><span class="pre">HashTable</span></code> as a JSON string</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">-ContentType</span></code> option: to automatically set the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header of <code class="docutils literal notranslate"><span class="pre">application/json</span></code></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$uri</span> <span class="p">=</span> <span class="s2">&quot;http://localhost:5000/api/events&quot;</span>
+<span class="p">&gt;</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Method</span> <span class="s2">&quot;Post&quot;</span> <span class="n">-Uri</span> <span class="nv">$uri</span> <span class="n">-Body</span> <span class="p">(</span><span class="nv">$body</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span><span class="p">)</span> <span class="n">-ContentType</span> <span class="s2">&quot;application/json&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-a-json-file">
+<h4>9.8.4.3.1. Using a JSON File<a class="headerlink" href="#using-a-json-file" title="Permalink to this headline">¶</a></h4>
+<p>You can also load the body from a JSON file. This allows you to use existing files or a GUI editor to create the JSON body in a more intuitive way.</p>
+<p>Let’s assume we have a file <code class="docutils literal notranslate"><span class="pre">~\coding-event.json</span></code> with the following contents:</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; Get-Content ~\coding-event.json
+
+{
+   &quot;Title&quot;: &quot;test title is long&quot;,
+   &quot;Description&quot;: &quot;test description goes here&quot;,
+   &quot;Date&quot;: &quot;2020-10-31&quot;
+}
+</pre></div>
+</div>
+</div>
+<p>We could use this file as the contents of the request body using a grouped expression:</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Method</span> <span class="n">Post</span> <span class="n">-Uri</span> <span class="nv">$uri</span> <span class="n">-Body</span> <span class="p">(</span><span class="nb">Get-Content</span> <span class="p">~\</span><span class="n">coding-event</span><span class="p">.</span><span class="n">json</span><span class="p">)</span> <span class="n">-ContentType</span> <span class="s2">&quot;application/json&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">You can use any of these <code class="docutils literal notranslate"><span class="pre">-Body</span></code> defining approaches for creating and adding bodies to <code class="docutils literal notranslate"><span class="pre">PUT</span></code> and <code class="docutils literal notranslate"><span class="pre">PATCH</span></code> requests as well. When used on a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request the body will be converted to query string parameters in the URI.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="continue-learning">
+<h2>9.8.5. Continue Learning<a class="headerlink" href="#continue-learning" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code>, like Postman, has many additional options we can use to further configure requests.</p>
+<p>You can look over the documentation of <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-7" target="_blank">Invoke-RestMethod<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> to get an understanding of its capabilities.</p>
+<p>You can work with any RESTful APIs using the <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> cmdlet. To continue practicing you can work with any publicly available APIs like the <a class="reference external" href="https://developer.github.com/v3/" target="_blank">GitHub Developer API<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="piping.html"><span aria-hidden="true">&larr;</span> 9.7. Piping in PowerShell</a></li>
+        
+        
+        <li class="next"><a href="studio_powershell-scripted-deployment.html">9.9. Studio: Automated Deployment of the Coding Events API <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/powershell-intro/cmdlet-invoke-restmethod.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

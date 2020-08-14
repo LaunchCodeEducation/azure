@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>1.1. Introduction to CLI Shells &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.2. Shell Fundamentals" href="shell-fundamentals.html" />
+    <link rel="prev" title="1. Introduction to CLI Shells" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">1. Introduction to CLI Shells</a></li>
+    <li class="active">1.1. Introduction to CLI Shells</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="introduction-to-cli-shells">
+<h1>1.1. Introduction to CLI Shells<a class="headerlink" href="#introduction-to-cli-shells" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-a-shell">
+<h2>1.1.1. What is a Shell?<a class="headerlink" href="#what-is-a-shell" title="Permalink to this headline">¶</a></h2>
+<p>Computers are made up of hardware and layers of software designed to interact with it. It isn’t practical for a human to control the electrical signals needed to operate the hardware. Instead, we use these software layers to translate actions that a human understands into signal instructions the hardware understands.</p>
+<p>Every software layer above the hardware is an abstraction to make working with it more natural to humans. An <strong>Operating System</strong> (OS) is the main layer of software used for a human to interact with a computer. At the center of the OS is a <strong>Kernel</strong> which translates user commands into the lowest-level machine instructions for the hardware to compute.</p>
+<p>Around the OS is another layer of software known as the <strong>Shell</strong>. We broadly refer to these Shell programs as <strong>User Interfaces</strong> (UI) because they are used as an <em>interface</em> for a <em>user</em> of a computer. Shells are what humans actually interact with to make the computer perform tasks for them.</p>
+<p>A Shell is responsible for translating high-level user inputs into commands for the OS. The OS then translates them further away from human-understandable instructions for the Kernel. Finally the Kernel translates them to machine code that drives the lowest-level electrical signal instructions understood by the hardware.</p>
+<div class="section" id="gui-shells">
+<h3>1.1.1.1. GUI Shells<a class="headerlink" href="#gui-shells" title="Permalink to this headline">¶</a></h3>
+<p>The type of Shell you are most familiar with is a <strong>GUI Shell</strong>. A Graphical User Interface (GUI) is an interface for humans that consists of graphical components like windows and buttons.</p>
+<p>In a GUI Shell commands are issued from the user to the computer using a mouse and keyboard. GUI Shells have become the natural standard for <em>consumer interactions</em> with computers.</p>
+<div class="admonition-fun-fact admonition">
+<p class="first admonition-title"><i class="fas fa-rocket" aria-hidden="true"></i>Fun Fact</p>
+<p class="last">In the Linux world GUI Shells are called <strong>window managers</strong> or <strong>desktop environments</strong>.</p>
+</div>
+<p>GUI Shells are <em>not a requirement</em> for an OS to be used by a human. Their visual abstraction is more intuitive than the text-based alternative. But this abstraction comes at a tradeoff of more direct control over the machine.</p>
+</div>
+<div class="section" id="cli-shells">
+<h3>1.1.1.2. CLI Shells<a class="headerlink" href="#cli-shells" title="Permalink to this headline">¶</a></h3>
+<p>Before computers reached the consumer market they were used by engineers and early developers. At that time the idea of the modern mouse-based GUI was years away. Instead, they used a text-based Shell. A rudimentary GUI called a <strong>Terminal</strong> was used to enter commands as text using just a keyboard. The term <strong>Command Line Interface</strong> (CLI) Shell was used to describe this mechanism of entering commands into the computer one line at a time.</p>
+<p>Because consumers want simpler and <em>tangible</em> ways of interacting with their computers the GUI Shell became the standard interface for them. But the abstraction that makes them simple to use comes at a cost of complexity to create. Every window, button and icon as well as the actions they correspond to need to be developed before someone can use them.</p>
+<p>The time it takes to develop a GUI element restricts them to only being written for tasks the common user would need. There are thousands of features that are simply not accessible via GUI because the average user won’t need to access them.</p>
+<p>For computer users who require greater control over the OS the CLI Shell is unmatched. For this reason CLI Shells are still widely used by more technically savvy users like developers.</p>
+</div>
+</div>
+<div class="section" id="shell-command-languages">
+<h2>1.1.2. Shell Command Languages<a class="headerlink" href="#shell-command-languages" title="Permalink to this headline">¶</a></h2>
+<p>In the context of software development the term Shell is used as a shorthand for CLI Shells. From this point forward we will refer to CLI Shells as just Shells.</p>
+<p>Shells use <strong>Command Languages</strong> to interpret text-based commands at runtime. Command Languages are interpreted like other scripting languages. They share the same need for dynamic execution rather than pre-compiled instructions. While Command Languages are similar to scripting languages such as JavaScript or Python they are specialized for communicating directly with the OS.</p>
+<p>These days there are hundreds of languages available for use as a Shell. But the two most popular Shells used in modern development are <strong>Bash</strong> (Linux) and <strong>PowerShell</strong> (Windows).</p>
+<div class="section" id="bash">
+<h3>1.1.2.1. Bash<a class="headerlink" href="#bash" title="Permalink to this headline">¶</a></h3>
+<p>Bash is an acronym for the <strong>B</strong>ourne <strong>A</strong>gain <strong>SH</strong>ell language. On Linux machines Bash is used as the <strong>Login Shell</strong> for most distributions. A Login Shell is the default Shell that is started when the machine boots up its OS.</p>
+<p>Every aspect of Linux is designed around minimalism and modularity to support its open-source nature. Because Bash is designed to integrate with the Linux OS and Kernel it aligns with the Linux <em>everything is a file descriptor</em> <a class="reference external" href="https://opensource.com/life/15/9/everything-is-a-file" target="_blank">design<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.  Following this philosophy the Bash built-in and extended tools do not have a concept of different data types like <code class="docutils literal notranslate"><span class="pre">string</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code> and <code class="docutils literal notranslate"><span class="pre">boolean</span></code>.</p>
+<p>Instead, <strong>all inputs and outputs are treated as strings of characters</strong>. While this can seem foreign at times, especially when coming from other languages, it is an integral aspect of its flexibility. This design is one of the most fundamental differences between Bash and PowerShell.</p>
+</div>
+<div class="section" id="powershell">
+<h3>1.1.2.2. PowerShell<a class="headerlink" href="#powershell" title="Permalink to this headline">¶</a></h3>
+<p>PowerShell is a more recent Shell offering created by Microsoft. Whereas Bash was released over 30 years ago, PowerShell was made available in 2006. Because of its more recent development it blended many of the features of Bash with power and modern conveniences.</p>
+<p>However, PowerShell is more of a scripting language than a Command Language because it does not communicate directly with the OS like Bash does.PowerShell commands are interpreted by the .NET Framework which operates as an additional layer of abstraction <a class="reference external" href="https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet-framework#architecture" target="_blank">between the Shell commands and the OS<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<p>In contrast with Linux, Windows is a more complex and object-oriented operating system. As a result the design of PowerShell is itself object-oriented and <strong>treats all inputs and outputs as objects of distinct types</strong>. PowerShell can access any of the .NET <a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/standard/class-library-overview" target="_blank">class libraries<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. In addition, PowerShell allows you to extend these classes or implement your own for deeply customizable development.</p>
+<p>Although it was originally designed just for machines running Windows, the latest release called PowerShell Core is a cross-platform tool. PowerShell Core is built on the .NET Core Framework which allows it to integrate
+with all of the modern OS choices like Windows, Linux and OSX.</p>
+</div>
+<div class="section" id="bash-vs-powershell">
+<h3>1.1.2.3. Bash vs. PowerShell<a class="headerlink" href="#bash-vs-powershell" title="Permalink to this headline">¶</a></h3>
+<p>We will not be entertaining the strict allegiance and <em>near-religious battles</em> that some developers have when discussing the choice of OS or Shell. Instead we encourage an understanding and appreciation for how each of them are designed and the areas they sometimes specialize in.</p>
+<p>Throughout this course we will explore both Linux with Bash and Windows with PowerShell. Although PowerShell <em>can be used</em> on Linux machines and Bash <em>can be used</em> on Windows machines (through the Linux subsystem) we will defer to the default Shells for each of them depending on which machine OS we are working with.</p>
+</div>
+</div>
+<div class="section" id="terminal-emulators">
+<h2>1.1.3. Terminal Emulators<a class="headerlink" href="#terminal-emulators" title="Permalink to this headline">¶</a></h2>
+<p>Years ago humans interacted with computers using Terminal screens which translated keyboard input signals into commands and displayed output as plain text. Today the CLI uses programs called <strong>Terminal Emulators</strong> which <em>emulate</em> the behavior of the original Terminals.</p>
+<p>Terminal Emulators are GUI applications that are used to interact with the CLI Shell of the machine. Because they are emulated in a GUI window they allow some limited use of the mouse for things like copying, pasting and other conveniences.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">We will refer to the Terminal Emulator programs as Terminals going forward for brevity.</p>
+</div>
+<div class="section" id="shell-repl">
+<h3>1.1.3.1. Shell REPL<a class="headerlink" href="#shell-repl" title="Permalink to this headline">¶</a></h3>
+<p>A REPL is a <strong>R</strong>ead <strong>E</strong>valuate <strong>P</strong>rint and <strong>L</strong>oop environment for interacting with a Shell.</p>
+<p>A REPL environment first presents a <strong>prompt</strong> for the user to input a command. It then <strong>R</strong>eads the command that is entered. Once it has parsed the input it <strong>E</strong>valuates the command to compute or perform the requested task. Any output from the command (a response from the OS or another program) is then <strong>P</strong>rinted out in the Terminal. Finally, the process repeats itself by <strong>L</strong>ooping back to the prompt for the next command to be entered.</p>
+<p>When you open a Terminal application a REPL of the Login Shell will begin automatically. While we will primarily be working with the Bash and PowerShell REPLs, but they also exist for other languages like MySQL, JavaScript (NodeJS) and Python.</p>
+</div>
+<div class="section" id="cli-documentation">
+<h3>1.1.3.2. CLI Documentation<a class="headerlink" href="#cli-documentation" title="Permalink to this headline">¶</a></h3>
+<p>CLI documentation traditionally uses the <code class="docutils literal notranslate"><span class="pre">$</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> characters to represent the input prompt for Bash and PowerShell respectively. Every line that begins with one of these characters <strong>should be treated as an individual command</strong> to be entered into the Terminal.</p>
+<p>Some commands will be the same in both Shells. For others we will make it clear which OS and Shell we are referring to.</p>
+<p>Linux and Bash examples will be labeled as <code class="docutils literal notranslate"><span class="pre">Linux/Bash</span></code> and use the <code class="docutils literal notranslate"><span class="pre">$</span></code> symbol:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">command</span>
+</pre></div>
+</div>
+</div>
+<p>Windows and PowerShell examples will be labeled as <code class="docutils literal notranslate"><span class="pre">Windows/PowerShell</span></code> and use the <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> symbol:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">command</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="index.html"><span aria-hidden="true">&larr;</span> 1. Introduction to CLI Shells</a></li>
+        
+        
+        <li class="next"><a href="shell-fundamentals.html">1.2. Shell Fundamentals <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/shell-intro/intro.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

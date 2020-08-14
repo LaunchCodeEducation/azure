@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Introduction to Troubleshooting &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Next Steps" href="next-steps.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li class="active">Introduction to Troubleshooting</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="introduction-to-troubleshooting">
+<h1>Introduction to Troubleshooting<a class="headerlink" href="#introduction-to-troubleshooting" title="Permalink to this headline">¶</a></h1>
+<p>Troubleshooting is one of the most important skills to the Operations professional.</p>
+<p>Troubleshooting is the process of:</p>
+<ol class="arabic simple">
+<li>realizing an issue exists</li>
+<li>identifying the issue through duplication (how and under what conditions it happens)</li>
+<li>researching the potential causes of the issue</li>
+<li>isolate the root cause of the issue by systematically eliminating the potential causes</li>
+<li>researching a fix for the root cause of the issue</li>
+<li>fixing the root cause of the issue</li>
+<li>checking that the fix resolves the issue</li>
+<li>communicating about the issue with others</li>
+</ol>
+<p>As you can see from this list <strong>research is a foundational aspect of troubleshooting</strong>. After an issue has been discovered it is usually up to the Operations team to identify the issue, research the issue, and ultimately fix the issue. Troubleshooting skills are improved through experience. At the start of your career you won’t have much knowledge of what can wrong, and how to fix a broken deployment. However, as you continue to research and fix issues your troubleshooting skills will grow with your knowledge.</p>
+<p>In this article we will discuss issues you may have already experienced through this class, talk about a methodology to assist you in researching issues, and talk about some of the basic tools you can use while troubleshooting.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>note</p>
+<p class="last">This article is in no way exhaustive, as you continue throughout your career you will learn about new techniques, tools, and solutions to issues.</p>
+</div>
+<p>Although development troubleshooting will be mentioned this class will primarily focus on Operations troubleshooting.</p>
+<p>To start let’s build some troubleshooting knowledge by examining some issues we may have seen already when deploying the Coding Events API.</p>
+<div class="section" id="what-you-may-have-experienced-already">
+<h2>What You May Have Experienced Already<a class="headerlink" href="#what-you-may-have-experienced-already" title="Permalink to this headline">¶</a></h2>
+<p>Throughout the Azure portion of this class we have focused on operations and we will explore more operations issues. However, identifying, communicating, and resolving development issues is often a responsibility of the DevOps professional.</p>
+<p>We will look at some of the common operations and development issues.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The issues throughout this article will be framed as issues in the Coding Events API. Many of the issues discussed may be similar, or identical, to issues seen across many different deployments.</p>
+</div>
+</div>
+<div class="section" id="example-operation-issues">
+<h2>Example Operation Issues<a class="headerlink" href="#example-operation-issues" title="Permalink to this headline">¶</a></h2>
+<p>Operation issues are issues that don’t involve the source code of the deployed application. This could be issues relating to:</p>
+<ul class="simple">
+<li>Virtual Machine</li>
+<li>Key Vault</li>
+<li>AADB2C</li>
+<li>MySQL</li>
+<li>NGINX</li>
+<li>application software dependencies (dotnet)</li>
+<li>the VM operating system (file permission issue)</li>
+<li>the network connecting the various resources (a network security group rule)</li>
+<li>application external configurations (<code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> or a Key Vault secret)</li>
+</ul>
+<p>The first example will walk you through all of the troubleshooting steps to illustrate the process. The remaining examples will simply discuss or show the issue and talk about the potential root causes.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The following group walkthrough will require you to perform the troubleshooting steps together. If you pay attention to the potential root causes, you may figure out how to solve some of the issues will a relatively small amount of research.</p>
+</div>
+<div class="section" id="connection-timeout">
+<h3>Connection Timeout<a class="headerlink" href="#connection-timeout" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="realize-issue">
+<h4>Realize Issue<a class="headerlink" href="#realize-issue" title="Permalink to this headline">¶</a></h4>
+<p>The troubleshooting process is kicked off by an issue brought to our attention. In this case someone sends us a screenshot of their browser encountering a <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> when attempting to access our API in the browser:</p>
+<img alt="../../_images/connection-timeout-browser.png" src="../../_images/connection-timeout-browser.png" />
+</div>
+<div class="section" id="identify-issue-through-duplication">
+<h4>Identify Issue through Duplication<a class="headerlink" href="#identify-issue-through-duplication" title="Permalink to this headline">¶</a></h4>
+<p>Our first step is to identify this issue by reproducing it on our system. This will rule out the possibility of end user error.</p>
+<p>First up let’s reproduce the issue in the exact way the end user did with a request from the browser:</p>
+<img alt="../../_images/connection-timeout-browser.png" src="../../_images/connection-timeout-browser.png" />
+<p>Looks like we are getting the same issue. Let’s reproduce this error with PowerShell using <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> from our terminal:</p>
+<img alt="../../_images/connection-timeout-powershell.png" src="../../_images/connection-timeout-powershell.png" />
+<p>Since this is a learning environment let’s reproduce the issue again this time from Bash using curl:</p>
+<img alt="../../_images/connection-timeout-bash.png" src="../../_images/connection-timeout-bash.png" />
+<p>We can definitively state that a <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> is happening when users attempt to access the Coding Events API on port 443 from the browser, Invoke-RestMethod and curl!</p>
+</div>
+<div class="section" id="research-potential-causes">
+<h4>Research Potential Causes<a class="headerlink" href="#research-potential-causes" title="Permalink to this headline">¶</a></h4>
+<p>The next step is to research the potential causes of the issue. Typically you would rely on your experience and research skills to come up with a list of potential causes, but to save time we have provided them for you:</p>
+<ul class="simple">
+<li>the URL may have been incorrect</li>
+<li>the VM is currently down</li>
+<li>the VM lacks a Network Security Group rule for the given port</li>
+</ul>
+</div>
+<div class="section" id="isolate-root-cause">
+<h4>Isolate Root Cause<a class="headerlink" href="#isolate-root-cause" title="Permalink to this headline">¶</a></h4>
+<p>The next step is to isolate the <a class="reference external" href="http://www.thwink.org/sustain/glossary/LawsOfRootCauseAnalysis.htm" target="_blank">root cause<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> of the issue by systematically eliminating potential causes until we have found the root cause, or have exhausted our known options.</p>
+<p>In this case we would need to check that the initial request was going to the correct URL, that the VM is currently running, and that the VM has the appropriate NSG inbound security rule for port 443. At this point in time in the class you should know how to do these things through the Azure Web Portal or the AZ CLI.</p>
+<p>Just to continue the example let’s say the root cause was that <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">VM</span> <span class="pre">lacks</span> <span class="pre">a</span> <span class="pre">NSG</span> <span class="pre">rule</span> <span class="pre">for</span> <span class="pre">port</span> <span class="pre">443</span></code>, and we discovered this by looking at all three of the potential issues and the only one that was incorrect were the NSG rules.</p>
+</div>
+<div class="section" id="research-root-cause-fixes">
+<h4>Research Root Cause Fixes<a class="headerlink" href="#research-root-cause-fixes" title="Permalink to this headline">¶</a></h4>
+<p>Our next step would be to research a solution to the issue, in this case we simply need to create a new NSG inbound rule for port 443.</p>
+</div>
+<div class="section" id="implement-root-cause-fix">
+<h4>Implement Root Cause Fix<a class="headerlink" href="#implement-root-cause-fix" title="Permalink to this headline">¶</a></h4>
+<p>After fixing the issue our final step is to reproduce the steps to ensure our issue has been resolved!</p>
+</div>
+<div class="section" id="check-that-fix-resolves-issue">
+<h4>Check that Fix Resolves Issue<a class="headerlink" href="#check-that-fix-resolves-issue" title="Permalink to this headline">¶</a></h4>
+<p>Browser:</p>
+<img alt="../../_images/connection-timeout-resolved-browser.png" src="../../_images/connection-timeout-resolved-browser.png" />
+<p>Our screen advanced and now we are getting the message about accepting the risk associated with a self-signed certificate. That’s what we expect! Let’s checkout PowerShell and Bash:</p>
+<p>PowerShell:</p>
+<img alt="../../_images/connection-timeout-resolved-powershell.png" src="../../_images/connection-timeout-resolved-powershell.png" />
+<p>Bash:</p>
+<img alt="../../_images/connection-timeout-resolved-bash.png" src="../../_images/connection-timeout-resolved-bash.png" />
+<p>Uh oh!</p>
+<p>We are getting a new error.</p>
+<p>The good news is we resolved our connection timeout issue by opening port 443 NSG inbound rule. Our fix resolved the issue, we are no longer experiencing a <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> error. We have solved this error and need to move on to the next one which according to our web requests is a <code class="docutils literal notranslate"><span class="pre">502</span> <span class="pre">Bad</span> <span class="pre">Gateway</span></code>.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>An issue is not always solved with one change. In some instances a combination of steps are necessary to solve one issue.</p>
+<p class="last">In this case solving one issue revealed a new issue. Revealing a new issue is great progress in troubleshooting assuming you have checked that your fix resolved the initial issue, which we have done!</p>
+</div>
+<p>The final step is being able to communicate this issue with others:</p>
+</div>
+<div class="section" id="communicate-issue-with-others">
+<h4>Communicate Issue with Others<a class="headerlink" href="#communicate-issue-with-others" title="Permalink to this headline">¶</a></h4>
+<p>The Coding Events API located at <code class="docutils literal notranslate"><span class="pre">https://40.114.86.145/</span></code> was not responding to HTTP requests in the browser, <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> or <code class="docutils literal notranslate"><span class="pre">curl</span></code>. Users were experiencing a <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> error. We researched potential causes for this issue and determined that the Virtual Machine did not have a NSG inbound rule for port 443. We opened this port to all traffic and the issue was fixed. <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> errors have not been experienced across <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">curl</span></code> or the browser after making the change.</p>
+</div>
+</div>
+<div class="section" id="connection-refused">
+<h3>Connection Refused<a class="headerlink" href="#connection-refused" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>Realize Issue<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>A user reports from the browser:</p>
+<img alt="../../_images/connection-refused-browser.png" src="../../_images/connection-refused-browser.png" />
+</div>
+<div class="section" id="id2">
+<h4>Identify Issue through Duplication<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>We replicate the issue from PowerShell:</p>
+<img alt="../../_images/connection-refused-terminal.png" src="../../_images/connection-refused-terminal.png" />
+<p>We replicate the issue from Bash:</p>
+<img alt="../../_images/connection-refused-curl.png" src="../../_images/connection-refused-curl.png" />
+</div>
+<div class="section" id="id3">
+<h4>Research Potential Causes<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>We research potential causes:</p>
+<ul class="simple">
+<li>the VM internal firewall is blocking access to the given port</li>
+<li>no applications are listening on the port the request was made to (port 443: NGINX)</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h4>Isolate Root Cause<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>We isolate the root cause of the issue by eliminating potential causes. It is determined that the VM does not have a running application that is listening on port 443.</p>
+</div>
+<div class="section" id="id5">
+<h4>Research Root Cause Fixes<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>We research fixes for the problem and determine a tool called <code class="docutils literal notranslate"><span class="pre">service</span></code> that allows you to check the status of services and allow you to start services.</p>
+</div>
+<div class="section" id="id6">
+<h4>Implement Root Cause Fix<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<p>We implement the fix for the issue by starting NGINX using the <code class="docutils literal notranslate"><span class="pre">service</span></code> tool.</p>
+</div>
+<div class="section" id="id7">
+<h4>Check that Fix Resolves Issue<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<p>We check that NGINX is successfully running this time using the <code class="docutils literal notranslate"><span class="pre">service</span></code> tool. Then we verify that our fix resolved the problem by accessing the application in the browser, from PowerShell and Bash.</p>
+</div>
+<div class="section" id="id8">
+<h4>Communicate Issue with Others<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<p>Users were reporting a connection refused when making HTTP requests to the Coding Events API. The issue was confirmed by using the browser, Invoke-RestMethod and curl. It was determined that the NGINX web server was not running. We started the NGINX web server and the issue was resolved. We verified the issue was resolved by using a web browser, Invoke-RestMethod and curl.</p>
+</div>
+</div>
+<div class="section" id="bad-gateway">
+<h3>Bad Gateway<a class="headerlink" href="#bad-gateway" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h4>Realize Issue<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<p>From the browser:</p>
+<img alt="../../_images/bad-gateway-browser.png" src="../../_images/bad-gateway-browser.png" />
+</div>
+<div class="section" id="id10">
+<h4>Identify Issue through Duplication<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<p>From PowerShell:</p>
+<img alt="../../_images/bad-gateway-powershell.png" src="../../_images/bad-gateway-powershell.png" />
+<p>From Bash:</p>
+<img alt="../../_images/bad-gateway-curl.png" src="../../_images/bad-gateway-curl.png" />
+</div>
+<div class="section" id="id11">
+<h4>Research Potential Causes<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<p>Research the error code to determine potential causes:</p>
+<p>A bad gateway is an issue between <em>servers</em>. In the case of our Coding Events API we have two web servers NGINX which proxies requests to the Coding Events API server.</p>
+<p>Research potential causes:</p>
+<ul class="simple">
+<li>the <code class="docutils literal notranslate"><span class="pre">coding-events-api</span></code> service was never started</li>
+<li>the VM was restarted and the <code class="docutils literal notranslate"><span class="pre">coding-events-api</span></code> is not configured to start itself on a reboot</li>
+<li>an error in the Coding Events API source code has kept the application from starting</li>
+<li>the Coding Events API may require access to another cloud resource (like Key Vault), but lacks the authorization, or name of the resource</li>
+</ul>
+</div>
+<div class="section" id="id12">
+<h4>Isolate Root Cause<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
+<p>Isolate the root cause by systematically checking the potential causes to determine the VM was restarted and the <code class="docutils literal notranslate"><span class="pre">coding-events-api</span></code> was not configured to restart itself after a VM reboot.</p>
+</div>
+<div class="section" id="id13">
+<h4>Research Root Cause Fixes<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
+<p>To fix the issue we will need to start the coding-events-api which we can do with the <code class="docutils literal notranslate"><span class="pre">service</span></code> tool we previously learned about, however to keep this issue from happening in the future we need to figure out how to make the coding-events-api restart itself if the VM reboots. Our research resulted in <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units" target="_blank">systemctl enable<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> which gives us the ability to start a service on reboot, and it will attempt to restart itself any time it goes down!</p>
+</div>
+<div class="section" id="id14">
+<h4>Implement Root Cause Fix<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
+<p>We implement the fix by using <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">enable</span></code> and <code class="docutils literal notranslate"><span class="pre">service</span></code> to start the service.</p>
+</div>
+<div class="section" id="id15">
+<h4>Check that Fix Resolves Issue<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h4>
+<p>We check that the coding-events-api is running by using <code class="docutils literal notranslate"><span class="pre">service</span></code> again and by making a request to the API in the browser, from PowerShell and from Bash!</p>
+</div>
+<div class="section" id="id16">
+<h4>Communicate Issue with Others<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h4>
+<p>Users were reporting a <code class="docutils literal notranslate"><span class="pre">502</span> <span class="pre">Bad</span> <span class="pre">Gateway</span></code>. Reports were confirmed in browser and by using <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> and <code class="docutils literal notranslate"><span class="pre">curl</span></code>. It was determined that the <code class="docutils literal notranslate"><span class="pre">coding-events-api</span></code> was not running after a recent VM reboot. The API was started with the <code class="docutils literal notranslate"><span class="pre">service</span></code> tool and the service was <em>enabled</em> so it will automatically start the next time the VM reboots.</p>
+</div>
+</div>
+</div>
+<div class="section" id="example-development-issues">
+<h2>Example Development Issues<a class="headerlink" href="#example-development-issues" title="Permalink to this headline">¶</a></h2>
+<p>Development issues relate to the source code of a deployed application. <em>Ideally</em> these issues are discovered before reaching the live production environment by automated tests and Quality Assurance testers. However, sometimes these issues are discovered by end users who usually report that the application is not behaving correctly.</p>
+<p>The deployment isn’t necessarily broken, however the application is not behaving properly.</p>
+<div class="section" id="internal-server-error">
+<h3>500 Internal Server Error<a class="headerlink" href="#internal-server-error" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id17">
+<h4>Realize Issue<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h4>
+<p>A user sends a report that they received an HTTP response of <code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code> when sending a GET request for a specific coding event.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code> is almost <strong>always</strong> the result of a runtime error within the source code of the application.</p>
+</div>
+<div class="section" id="id18">
+<h4>Identify Issue through Duplication<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h4>
+<p>We first reproduce the issue by requesting the specific coding event, and then we continue attempting to reproduce the issue with other specific coding events. We are trying to determine if it is something special about this one coding event, or if it is a behavior seen across all coding events. In this case it’s just this specific coding event that is experiencing this issue.</p>
+</div>
+<div class="section" id="id19">
+<h4>Research Potential Causes<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h4>
+<p>In researching potential causes across the internet and talking to some of the developers on the team we come up with one potential reason:</p>
+<ul class="simple">
+<li>this coding event may have a special character that is not serializing to or from the database correctly</li>
+</ul>
+</div>
+<div class="section" id="id20">
+<h4>Isolate Root Cause<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h4>
+<p>It’s a short list, but at least we can check something.</p>
+<p>We fire up MySQL and make a request for the specific coding events record. We notice this coding event has some special characters in it <code class="docutils literal notranslate"><span class="pre">â€</span></code>. We put in a breakpoint to pause the application before it pulls the data out of the database and step through. Alas as our API tries to serialize the special characters the ORM throws an error and our API returns a <code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code>.</p>
+</div>
+<div class="section" id="id21">
+<h4>Research Root Cause Fixes<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h4>
+<p>Next we research solving this error and find a couple of solutions:</p>
+<ul class="simple">
+<li>change the underlying data in MySQL</li>
+<li>implement a third party library that assists in special character serialization</li>
+<li>write our own database special character serialization library</li>
+</ul>
+<p>It is never a good idea to change the underlying data that is owned by end users so the first option is out! The remaining two options have obvious pros and cons. It would be faster to implement the third party library, however we would need to research the library to make sure it doesn’t contain insecure code and that it won’t break any of our existing functionality. Writing our own library would give us full control and the ability to make it as secure as we need, but would take development time.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The decision between implementing a third party library and writing an in house solution is one that is typically made by management and senior level engineers. This is a situation in which effectively communicating the issue is extremely important!</p>
+</div>
+</div>
+<div class="section" id="id22">
+<h4>Implement Root Cause Fix<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
+<p>Being a junior dev we decide <em>this issue needs to be elevated to our superior</em> as we don’t feel comfortable reviewing the security of a third party library.</p>
+<p>We explain the issue, the solutions we found, and pass the information to our senior who thanks us for not only finding the issue, but with researching potential fixes. The senior engineers will research the third party library and management will decide on the proper course of action!</p>
+</div>
+<div class="section" id="id23">
+<h4>Communicate Issue with Others<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h4>
+<p>An HTTP <code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code> was encountered when a database record contained various special characters. Upon debugging the application it was discovered that the current ORM serialization libraries were incapable of working with various special characters. The issue was elevated to senior developers who are determining on how to resolve the issue.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The Coding Events API does not behave this way! This was simply an example of how a 500 Internal Server Error could occur and how you may resolve, or in this case, identify, isolate, research, and pass it to a more senior developer.</p>
+</div>
+</div>
+</div>
+<div class="section" id="api-bug">
+<h3>API Bug<a class="headerlink" href="#api-bug" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id24">
+<h4>Realize Issue<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h4>
+<p>A user reports a bug in the API. It isn’t throwing any errors, but the application is not behaving correctly. When the user deletes a coding event they are the owner of they can still view and edit the coding event.</p>
+<p>An API bug is almost <strong>always</strong> the result of a logic error within the source code of the application.</p>
+</div>
+<div class="section" id="id25">
+<h4>Identify Issue through Duplication<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h4>
+<p>We first reproduce the issue with a copy of the exact event in which we also behave the incorrect DELETE error. We also notice that any coding event we create cannot be deleted despite a proper DELETE request coming through.</p>
+</div>
+<div class="section" id="research-isolate-root-cause">
+<h4>Research &amp; Isolate Root Cause<a class="headerlink" href="#research-isolate-root-cause" title="Permalink to this headline">¶</a></h4>
+<p>We research the issue, luckily this is easy because we know how a RESTful API works and feel confident looking at the source code. Upon looking at the source code we can see the line that sends the resource deletion to the ORM is commented out and skips straight to sending back a <code class="docutils literal notranslate"><span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code>! Our research indicates:</p>
+<ul class="simple">
+<li>fixing the source code error may resolve the issue</li>
+</ul>
+</div>
+<div class="section" id="id26">
+<h4>Implement Root Cause Fix<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
+<p>We build the project locally on our machine and make the change. It seems to work, however since this is not a project we are a developer for we will just communicate this issue and resolution to the dev team responsible for this project. After all the dev team may have their reasons for that specific line we edited.</p>
+<p>Luckily we are very capable of explaining the issue, our research, and our proposed solution to the problem. After communicating it to them the dev team will be responsible for making the change and running it through the automated tests to make sure the change doesn’t result in any unexpected behaviors.</p>
+</div>
+<div class="section" id="id27">
+<h4>Communicate Issue with Others<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
+<p>Users reported that after deleting an event the event was still accessible. We reproduced the issue and found that the reported behavior was consistent across all events. Upon investigating the issue it was determined that the RESTful API event DELETE method was not implemented correctly. The dev team needs to re-examine this method to determine why the RESTful API is not deleting resources correctly.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The Coding Events API does not behave this way! This was an example to illustrate a logic error in a deployed application.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="categorize-issues">
+<h2>Categorize Issues<a class="headerlink" href="#categorize-issues" title="Permalink to this headline">¶</a></h2>
+<p>As you may have realized troubleshooting follows a very specific pattern. The pattern is pretty simple to follow once you have come up with a list of potential causes. You will learn many of the potential causes throughout your career, but when you are first starting it is difficult to know many potential causes.</p>
+<p>A highly beneficial tool for determining potential causes is having a strong mental model of the deployment. If you can recognize the individual components and are aware of how the components can fail, or be misconfigured you are well on your way to performing a root cause analysis.</p>
+<p>To perform the root cause analysis you need potential causes which you can create by categorizing similar issues together. Once you have created a list of possible issues in each category you will have a place to start isolating potential issues to find the root cause. The levels are completely arbitrary, and differ between deployments. These categories are a tool used to help you determine potential causes until you’ve increased your experience.</p>
+<p>Let’s briefly define the different levels we could encounter an issue in our Coding Events API:</p>
+<div class="section" id="network-level">
+<h3>Network Level<a class="headerlink" href="#network-level" title="Permalink to this headline">¶</a></h3>
+<p>The networking of our system. The Coding Events API doesn’t contain much networking and only consists of the Network Security Group rules.</p>
+<p>However for more complex deployment you may also consider:</p>
+<ul class="simple">
+<li>Subnets</li>
+<li>CIDR blocks</li>
+<li>Internet gateways</li>
+<li>Public vs private access</li>
+<li>Virtual Private Cloud</li>
+<li>Virtual Networks</li>
+</ul>
+</div>
+<div class="section" id="service-level">
+<h3>Service Level<a class="headerlink" href="#service-level" title="Permalink to this headline">¶</a></h3>
+<p>Our Coding Events API only works with two services:</p>
+<ul class="simple">
+<li>Key Vault (database connection string &amp; has granted access to our VM)</li>
+<li>AADB2C</li>
+</ul>
+<p>Not only must these services exist, and be accessible to the deployed application they must be configured properly as well. In the case of our API our Key Vault must have a secret, and most grant the VM <code class="docutils literal notranslate"><span class="pre">get</span></code> access to the secret. Our AADB2C must be configured to issue identity tokens and access tokens. Our AADB2C tenant must have exposed the registered Coding Events API and appropriate scopes must be granted for the registered front end application, Postman.</p>
+</div>
+<div class="section" id="host-level">
+<h3>Host Level<a class="headerlink" href="#host-level" title="Permalink to this headline">¶</a></h3>
+<p>Our Coding Events API has a lot of things going on at the Host level inside the VM we must have:</p>
+<ul class="simple">
+<li>properly installed API dependencies (dotnet, mysql, nginx, systemd, unit file)</li>
+<li>source code delivery mechanism (git)</li>
+<li>source code build mechanism (dotnet publish)</li>
+<li>appropriate folder and file structure</li>
+<li>NGINX</li>
+<li>MySQL</li>
+<li>properly configured <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code></li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">In this class we have been working with a VM embedded database. In many real-world deployments this database would be a service that is external to the VM. For our deployment we consider any database issues to be at the Host level.</p>
+</div>
+</div>
+</div>
+<div class="section" id="how-to-troubleshoot">
+<h2>How to Troubleshoot<a class="headerlink" href="#how-to-troubleshoot" title="Permalink to this headline">¶</a></h2>
+<p>As a reminder troubleshooting is the process of:</p>
+<ol class="arabic simple">
+<li>realizing an issue exists</li>
+<li>identifying the issue through duplication (how and under what conditions it happens)</li>
+<li>researching the potential causes of the issue</li>
+<li>isolate the root cause of the issue by systematically eliminating the potential causes</li>
+<li>researching a fix for the root cause of the issue</li>
+<li>fixing the root cause of the issue</li>
+<li>checking that the fix resolves the issue</li>
+<li>communicating about the issue with others</li>
+</ol>
+<p>When you are first starting it might be easiest for you to check each individual aspect of the deployment. With a simple deployment like our Coding Events API this wouldn’t be difficult. You would need to simply understand all the components of the deployment and then just check their configurations one by one until you found the issue. This can be an effective way to troubleshoot a deployment, but it is very time consuming.</p>
+<p>A better approach is to have a mental model of the deployment and then ask questions that <em>lead you</em> to the <strong>root cause</strong> of the issue.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">It is this question and answer approach that makes experience extremely valuable when troubleshooting. If you have seen the exact problem before and found a solution it will be easier for you to resolve that issue again because you are now aware of more potential questions and answers.</p>
+</div>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> section above you were presented with three potential causes of the <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> issue within the Coding Events API.</p>
+<p>Let’s review them again:</p>
+<ul class="simple">
+<li>the URL may have been incorrect</li>
+<li>the VM is currently down</li>
+<li>the VM lacks a Network Security Group rule for the given port</li>
+</ul>
+<p>When we make a request from the browser to the Coding Events API (<a class="reference external" href="https:/" target="_blank">https:/<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>/&lt;coding-events-api-public-ip&gt;) if a <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> issue is noticed we would need to answer three simple questions to find the root cause of our issue:</p>
+<ul class="simple">
+<li>did we type the URL correctly?</li>
+<li>is the VM running?</li>
+<li>does the VM have an inbound Network Security Group rule for port 443 that allows all traffic?</li>
+</ul>
+<p>If the answer to any of these questions is <em>no</em> we have found a potential solution to the issue.</p>
+<p>To resolve this issue we will need to fix the question, or questions, that we responded <em>no</em> to. After ensuring that all three of these things are correct we make a new request to Coding Events API to see if the issue was resolved.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">When you are starting out it is a good idea to try each question we responded <em>no</em> to by itself and re-try the request. This will help you isolate the issue, so upon solving the issue you know definitively what caused the issue.</p>
+</div>
+<p>Understanding these potential causes comes from understanding the components of the deployment, research and experience. When you are starting with troubleshooting you don’t have much experience so you will have to lean on your research skills to figure out the potential causes to a problem.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>Research looks a little different for everyone as we all learn in different ways:</p>
+<ul class="simple">
+<li>searching the internet</li>
+<li>talking with coworkers</li>
+<li>trial and error</li>
+<li>drawing components and integrations</li>
+</ul>
+<p class="last">Usually it comes down to a combination of research forms to find the root cause of an issue.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting-script">
+<h3>Troubleshooting Script<a class="headerlink" href="#troubleshooting-script" title="Permalink to this headline">¶</a></h3>
+<p>After building a mental model of the deployment you can build a troubleshooting script of questions to ask when diagnosing issues for a specific deployment.</p>
+<p>An example troubleshooting script for the Coding Events API is provided below:</p>
+<div class="section" id="is-this-an-issue">
+<h4>Is this an issue?<a class="headerlink" href="#is-this-an-issue" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>is this something I can reproduce?</li>
+<li>was it user error?</li>
+</ul>
+</div>
+<div class="section" id="what-is-the-issue">
+<h4>What is the issue?<a class="headerlink" href="#what-is-the-issue" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>is it something I have seen before?</li>
+<li>is there an error message I can use as a starting point?</li>
+<li>how would I summarize this issue to others?</li>
+<li>how would I phrase this issue using a search engine?</li>
+</ul>
+</div>
+<div class="section" id="what-is-the-category-of-this-issue">
+<h4>What is the category of this issue?<a class="headerlink" href="#what-is-the-category-of-this-issue" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Which level is this issue affecting?</li>
+<li>Could this issue span across multiple levels?</li>
+<li>Is this an Operations or Development issue?</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">If you don’t know the category research it by talking with teammates, or searching the internet for individual’s that have had similar experiences.</p>
+</div>
+<p>You can then create a script of possible solutions based on the questions you answered above:</p>
+</div>
+<div class="section" id="networking-issues">
+<h4>Networking issues<a class="headerlink" href="#networking-issues" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Do I have the proper NSG rules?</li>
+<li>Are all of my services on the same network?</li>
+</ul>
+</div>
+<div class="section" id="service-issues">
+<h4>Service Issues<a class="headerlink" href="#service-issues" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Are my services up and running?</li>
+<li>Have my services been configured correctly?</li>
+<li>Do my services have the proper level of authorization to access each other?</li>
+</ul>
+</div>
+<div class="section" id="host-issues">
+<h4>Host Issues<a class="headerlink" href="#host-issues" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Are the proper dependencies fully installed? are they at the proper version (updated)?</li>
+<li>Are my internal services running (web server, API, MySQL)?</li>
+<li>Are my internal services configured properly?</li>
+<li>Are there any errors in the logs of the API (<code class="docutils literal notranslate"><span class="pre">journalctl</span> <span class="pre">-u</span> <span class="pre">coding-events-api</span></code>)?</li>
+<li>Does the application use any configuration files?</li>
+<li>Are the configuration files configured properly?</li>
+</ul>
+</div>
+<div class="section" id="troubleshooting-script-final-thoughts">
+<h4>Troubleshooting Script Final Thoughts<a class="headerlink" href="#troubleshooting-script-final-thoughts" title="Permalink to this headline">¶</a></h4>
+<p>Using a troubleshooting question script in combination with the steps of troubleshooting and some persistence on your part can provide you with the information necessary to solve a problem.</p>
+<p>Remember that resolving one issue can bring a new issue to the service. Seeing a change in error message or behavior in the deployment is a great hint towards fixing the deployment!</p>
+<p>The most effective way to build your skills in troubleshooting is by practicing troubleshooting. Each time you solve a new issue you will learn a new solution and you will increase your ability to research issues. A very beneficial thing to do is to build your own troubleshooting script. The questions above give a good introduction for a troubleshooting script, as you continue to learn more about Operations continue adding to the script with your new experiences.</p>
+</div>
+</div>
+</div>
+<div class="section" id="identify-the-issue">
+<h2>Identify the Issue<a class="headerlink" href="#identify-the-issue" title="Permalink to this headline">¶</a></h2>
+<p>Identifying an issue is sometimes the most difficult part of troubleshooting. As we’ve mentioned multiple times as you gain more experience it will become easier to identify issues.</p>
+<p>For now knowing what some of the most <strong>common issues</strong> encountered are, and being able to <strong>ask questions about your deployment</strong> will be your two biggest tools for identifying an issue.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>When you are still in the process of identifying an issue it is crucial to <strong>not make any changes</strong>!</p>
+<p class="last">Every change you make needs to be accounted for because you may need to undo the change to put the system back in its original state. Changes are necessary to resolve the issue, but while you are still identifying and researching you want the system to exist in its initial state.</p>
+</div>
+<p>Let’s take a look at some of the most common issues seen in deployments (this list is not exhaustive):</p>
+<table border="1" class="colwidths-given docutils" id="id28">
+<caption><span class="caption-text">Common Issues</span><a class="headerlink" href="#id28" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="27%" />
+<col width="36%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Error Message</th>
+<th class="head">Description</th>
+<th class="head">Common cause</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Connection Refused</td>
+<td>The server received the request, but refuses to handle it</td>
+<td>no application listening on the given port</td>
+</tr>
+<tr class="row-odd"><td>Connection Timeout</td>
+<td>The server did not respond to the client request within a specific time period</td>
+<td>missing NSG inbound rule</td>
+</tr>
+<tr class="row-even"><td>HTTP Status Code: 502 Bad Gateway</td>
+<td>A server received an incorrect response from another server</td>
+<td>web server is running, but the application is not</td>
+</tr>
+<tr class="row-odd"><td>HTTP Status Code: 401 Unauthorized</td>
+<td>The request did not include credentials indicating a user needs to <strong>authenticate</strong></td>
+<td>credentials were not included</td>
+</tr>
+<tr class="row-even"><td>HTTP Status Code: 403 Forbidden</td>
+<td>The request included credentials, but the authenticated user does not have the proper level of <strong>authorization</strong></td>
+<td>credentials are not correct, or have not been configured properly</td>
+</tr>
+<tr class="row-odd"><td>HTTP Status Code: 500 Internal Server Error</td>
+<td>The request was received, however the server encountered an issue it doesn’t know how to resolve</td>
+<td>runtime error in the source code</td>
+</tr>
+</tbody>
+</table>
+<p>As you may have noticed may of the most common issues are <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank">HTTP status codes<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. These status codes are a standard across HTTP so learning the various categories and individual status codes will be <em>invaluable</em> when troubleshooting a web deployment.</p>
+</div>
+<div class="section" id="communicate-the-issue">
+<h2>Communicate the Issue<a class="headerlink" href="#communicate-the-issue" title="Permalink to this headline">¶</a></h2>
+<p>Communicating the issue is a simple as defining each part of the troubleshooting process you have worked through so far:</p>
+<p>State how the problem was identified. State how the problem was proven through reproduction. State the potential causes that were discovered. State the solution to the problem. State how the solution was verified.</p>
+</div>
+<div class="section" id="isolate-resolve-the-issue">
+<h2>Isolate &amp; Resolve the Issue<a class="headerlink" href="#isolate-resolve-the-issue" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>even if you cant resolve just going through the previous steps can go a long way in helping towards the resolution</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>pass off to a more senior member who will praise you for your effort</dt>
+<dd><ul class="first last">
+<li>you are saving their expert time from doing preliminary steps</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="troubleshooting-tools">
+<h2>Troubleshooting Tools<a class="headerlink" href="#troubleshooting-tools" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="debugging-requests">
+<h3>Debugging Requests<a class="headerlink" href="#debugging-requests" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>browser dev Tools</li>
+<li>curl</li>
+<li>Invoke-RestMethod / Invoke-WebRequest</li>
+<li>postman</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="remote-management">
+<h3>Remote Management<a class="headerlink" href="#remote-management" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>SSH</li>
+<li>RDP</li>
+<li>az CLI</li>
+<li>accessing logs
+- journalctl</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="source-code-debugging">
+<h3>Source Code Debugging<a class="headerlink" href="#source-code-debugging" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>debugger</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="next-steps.html"><span aria-hidden="true">&larr;</span> Next Steps</a></li>
+        
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/troubleshooting-next-steps/troubleshooting.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

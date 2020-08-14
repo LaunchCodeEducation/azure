@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.6. Studio Part 1: Deploy Coding Events API with AADB2C &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7.7. Studio Part 2: Explore Authorization With the Deployed API" href="studio_2-aadb2c-explore.html" />
+    <link rel="prev" title="7.5. Walkthrough: Set Up Access Token Authorization with Azure ADB2C" href="walkthrough_aadb2c-access.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">7. Introduction to Authentication &amp; Authorization with Azure AD B2C</a></li>
+    <li class="active">7.6. Studio Part 1: Deploy Coding Events API with AADB2C</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="studio-part-1-deploy-coding-events-api-with-aadb2c">
+<h1>7.6. Studio Part 1: Deploy Coding Events API with AADB2C<a class="headerlink" href="#studio-part-1-deploy-coding-events-api-with-aadb2c" title="Permalink to this headline">¶</a></h1>
+<p>In this studio your mission is to practice accessing protected resources in the final version of the Coding Events API.</p>
+<p>You will begin by working with the API locally to make sure that the latest updates are functioning properly. Afterwards, you will deploy the API to Azure to be served securely over HTTPS.</p>
+<p>Before we continue let’s consider what we have already set up in the previous walkthroughs:</p>
+<ul class="simple">
+<li>An AADB2C tenant for managing user identity accounts</li>
+<li>Two registered applications: the Coding Events API and its consumer, the Postman desktop client application</li>
+<li>A configuration for access tokens with a <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope to protect the API by only allowing requests from the registered Postman application</li>
+<li>A configuration for the Postman application to request an access token and use it for making requests to the new endpoints available in the Coding Events API collection</li>
+</ul>
+<p>At a high level this studio will require you to:</p>
+<ul class="simple">
+<li>Update the Coding Events API source code with settings to integrate with your AADB2C tenant and validate the access tokens it receives from Postman</li>
+<li>Deploy the API to Azure with the correct VM, Key vault and security configurations that you have seen in previous deployments</li>
+<li>Run setup scripts that configure the VM and serve the API over a secure connection as a <em>background service</em></li>
+<li>Test out the protected endpoints on your own or with a partner</li>
+</ul>
+<p>At the end of the studio you will share the public IP address of your deployed API to your TA for review.</p>
+<div class="section" id="setup">
+<h2>7.6.1. Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>Before you deploy the API you will set up a local environment to test it. For this setup you will need to:</p>
+<ol class="arabic simple">
+<li>set up a local MySQL <code class="docutils literal notranslate"><span class="pre">coding_events</span></code> database</li>
+<li>update your Coding Events API <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> to integrate with AADB2C</li>
+</ol>
+<div class="section" id="set-up-local-mysql">
+<h3>7.6.1.1. Set Up Local MySQL<a class="headerlink" href="#set-up-local-mysql" title="Permalink to this headline">¶</a></h3>
+<p>You will use the MySQL Workbench GUI you installed in the previous unit to run the user and database setup script. This is the same script you have seen in previous deployments:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Coding Events API MySQL database setup script</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-mysql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">coding_events</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="n">USER</span> <span class="s1">&#39;coding_events&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;launchcode&#39;</span><span class="p">;</span>
+<span class="k">GRANT</span> <span class="k">ALL</span> <span class="n">PRIVILEGES</span> <span class="k">ON</span> <span class="n">coding_events</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;coding_events&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+<span class="k">FLUSH</span> <span class="n">PRIVILEGES</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<p>First open the MySQL Workbench application by searching for it in your taskbar:</p>
+<img alt="Windows search for MySQL Workbench application" src="../../_images/mysql-open-workbench.png" />
+<p>Then log in to your local server instance:</p>
+<img alt="MySQL Workbench log in to local server instance" src="../../_images/mysql-login-local-instance.png" />
+<p>In the script area paste in the setup script from above:</p>
+<img alt="MySQL Workbench paste in setup script" src="../../_images/mysql-paste-setup-script.png" />
+<p>You can run the script using the lightning icon, <code class="docutils literal notranslate"><span class="pre">ctrl+shift+enter</span></code> or using the menu option at the top:</p>
+<img alt="MySQL Workbench paste in setup script" src="../../_images/mysql-run-setup-script.png" />
+<p>You should then see a success output from the executed script like the image below:</p>
+<img alt="MySQL Workbench paste in setup script" src="../../_images/mysql-setup-script-success.png" />
+</div>
+<div class="section" id="set-up-local-secrets-manager">
+<h3>7.6.1.2. Set Up Local Secrets Manager<a class="headerlink" href="#set-up-local-secrets-manager" title="Permalink to this headline">¶</a></h3>
+<p>Recall that the Key vault that provides the database connection string, <code class="docutils literal notranslate"><span class="pre">ConnectionStrings--Default</span></code>, to the API is <strong>only used</strong> in the deployed <code class="docutils literal notranslate"><span class="pre">Production</span></code> environment.</p>
+<p>When <em>working locally</em>, in the <code class="docutils literal notranslate"><span class="pre">Development</span></code> environment, your API will expect the default connection string to be available via the <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">user-secrets</span></code> tool. Refer to the previous chapter for a refresher on how to use this tool.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">The syntax for local secret names is slightly different than what you have used for the Key vault. You will need to use <code class="docutils literal notranslate"><span class="pre">ConnectionStrings:Default</span></code> as the name of the local secret.</p>
+</div>
+</div>
+<div class="section" id="update-the-coding-events-api">
+<h3>7.6.1.3. Update the Coding Events API<a class="headerlink" href="#update-the-coding-events-api" title="Permalink to this headline">¶</a></h3>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">Before continuing make sure you are working from inside <strong>your forked repo directory</strong> on the <code class="docutils literal notranslate"><span class="pre">3-aadb2c</span></code> branch.</p>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> project configuration file you will notice some familiar fields as well as a few new ones:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">coding-events-api/CodingEventsAPI/appsettings.json</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;Logging&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;LogLevel&quot;</span><span class="p">:</span> <span class="p">{</span>
+         <span class="nt">&quot;Default&quot;</span><span class="p">:</span> <span class="s2">&quot;Information&quot;</span><span class="p">,</span>
+         <span class="nt">&quot;Microsoft&quot;</span><span class="p">:</span> <span class="s2">&quot;Warning&quot;</span><span class="p">,</span>
+         <span class="nt">&quot;Microsoft.Hosting.Lifetime&quot;</span><span class="p">:</span> <span class="s2">&quot;Information&quot;</span>
+      <span class="p">}</span>
+   <span class="p">},</span>
+   <span class="nt">&quot;AllowedHosts&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="hll">   <span class="nt">&quot;ServerOrigin&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span>   <span class="nt">&quot;KeyVaultName&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;JWTOptions&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="hll">      <span class="nt">&quot;Audience&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span class="hll">      <span class="nt">&quot;MetadataAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span>      <span class="nt">&quot;RequireHttpsMetadata&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="nt">&quot;TokenValidationParameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+         <span class="nt">&quot;ValidateIssuer&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+         <span class="nt">&quot;ValidateAudience&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+         <span class="nt">&quot;ValidateLifetime&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+         <span class="nt">&quot;ValidateIssuerSigningKey&quot;</span><span class="p">:</span> <span class="kc">true</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>To complete this studio you will need to update the following fields before deploying the API:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">KeyVaultName</span></code>: populate this field <em>after provisioning your resources</em> used in the deployment</li>
+<li><code class="docutils literal notranslate"><span class="pre">ServerOrigin</span></code>: a new field (discussed below)</li>
+<li><code class="docutils literal notranslate"><span class="pre">JWTOptions</span></code>: a new object field (discussed below)</li>
+</ul>
+<div class="section" id="serverorigin">
+<h4>7.6.1.3.1. <code class="docutils literal notranslate"><span class="pre">ServerOrigin</span></code><a class="headerlink" href="#serverorigin" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">ServerOrigin</span></code> field is used to define the <strong>origin</strong> of a server. The API has been configured to use this origin for creating resource links (for actions or relations to other resources). The term origin is defined by <strong>where the server is hosted</strong> and is comprised of:</p>
+<ul class="simple">
+<li>the protocol (<code class="docutils literal notranslate"><span class="pre">http</span></code> or <code class="docutils literal notranslate"><span class="pre">https</span></code>)</li>
+<li>the <a class="reference external" href="https://networkencyclopedia.com/fully-qualified-domain-name-fqdn/" target="_blank">Fully Qualified Domain Name (FQDN)<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li>the port (if it differs from the implicit port derived from the protocol)</li>
+</ul>
+<p>Locally, your API <code class="docutils literal notranslate"><span class="pre">ServerOrigin</span></code> will be:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">https://localhost:5001</span></code> (as seen in the <code class="docutils literal notranslate"><span class="pre">appsettings.Development.json</span></code> file).</li>
+</ul>
+<p>However, <strong>after you deploy the API</strong> the <code class="docutils literal notranslate"><span class="pre">ServerOrigin</span></code> will <strong>need to be updated</strong> to reference the new location it is hosted from (the host VM’s public IP address):</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">https://&lt;public</span> <span class="pre">IP&gt;</span></code> (where port <code class="docutils literal notranslate"><span class="pre">443</span></code> is <em>implied</em> by the <code class="docutils literal notranslate"><span class="pre">https</span></code> protocol in the origin)</li>
+</ul>
+</div>
+<div class="section" id="jwtoptions">
+<h4>7.6.1.3.2. <code class="docutils literal notranslate"><span class="pre">JWTOptions</span></code><a class="headerlink" href="#jwtoptions" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">JWTOptions</span></code> are used to configure the <a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer?view=aspnetcore-3.0" target="_blank">JWT authentication middleware<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> used by the API to validate the access tokens it receives. The nested <code class="docutils literal notranslate"><span class="pre">TokenValidationParameters</span></code> object set the boolean flags for controlling which claims in the token should be validated:</p>
+<ul class="simple">
+<li>the issuer is your AADB2C tenant</li>
+<li>the audience is the client ID for the correct registered application</li>
+<li>the token is not expired</li>
+<li>the token was signed using your AADB2C tenant signing key (which it automatically retrieves from the metadata document)</li>
+</ul>
+<p>The two fields within the <code class="docutils literal notranslate"><span class="pre">JWTOptions</span></code> object entry that you will need to update are:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">MetadataAddress</span></code>: the URL of the JSON metadata document that describes the OIDC capabilities and endpoints for your AADB2C service</li>
+<li><code class="docutils literal notranslate"><span class="pre">Audience</span></code>: the application ID (client ID) of the <strong>intended audience</strong> for the token.</li>
+</ul>
+<p>You may need to refer to your notes or previous walkthroughs to get these values.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p>Be careful with the <code class="docutils literal notranslate"><span class="pre">Audience</span></code> field. Consider which registered application client ID is appropriate, that of your Postman client application or of the Coding Events API. If the incorrect client ID is used you will receive a <code class="docutils literal notranslate"><span class="pre">401</span></code> response from the API.</p>
+<p class="last">Hint – look at the claims on the access token from the previous walkthrough. One of these client IDs refers to the <strong>authorized party</strong> while the other is the <strong>audience</strong> you are after.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="run-locally">
+<h2>7.6.2. Run Locally<a class="headerlink" href="#run-locally" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="checklist">
+<h3>7.6.2.1. Checklist<a class="headerlink" href="#checklist" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>set up your <code class="docutils literal notranslate"><span class="pre">coding_events</span></code> database locally</li>
+<li>update the AADB2C fields (<code class="docutils literal notranslate"><span class="pre">JWTOptions</span></code>) of your <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> file</li>
+<li>request a valid access token (refer to the previous walkthrough for a refresher on this process)</li>
+</ul>
+</div>
+<div class="section" id="viewing-documentation">
+<h3>7.6.2.2. Viewing Documentation<a class="headerlink" href="#viewing-documentation" title="Permalink to this headline">¶</a></h3>
+<p>The API serves documentation from the Swagger UI page at the root of the server. This time you will notice that the endpoints have been separated into the respective Roles (RBAC) and Attributes (ABAC) used for authorization of requests. Although you will be using Postman to issue requests, the Swagger UI is a helpful resource for exploring the endpoints and resource schemas.</p>
+<img alt="Swagger UI for final version of Coding Events API" src="../../_images/swagger-ui-overview.png" />
+</div>
+<div class="section" id="make-requests-to-protected-endpoints">
+<h3>7.6.2.3. Make Requests to Protected Endpoints<a class="headerlink" href="#make-requests-to-protected-endpoints" title="Permalink to this headline">¶</a></h3>
+<p>Before you deploy the API you should practice making a few requests to ensure that you have configured everything properly. It is much easier to debug and fix issues locally than wasting time and resources troubleshooting a deployed application.</p>
+<p>For this step make sure the API is listening on <code class="docutils literal notranslate"><span class="pre">https://localhost:5001</span></code> (to match the pre-configured <code class="docutils literal notranslate"><span class="pre">baseUrl</span></code> variable in the Postman collection)</p>
+<p>After getting everything running make requests to the following endpoints:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/events</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/tags</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/api/events/{codingEventId}/tags/{tagId}</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/events/{codingEventId}</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="limited-guidance-api-deployment">
+<h2>7.6.3. Limited Guidance: API Deployment<a class="headerlink" href="#limited-guidance-api-deployment" title="Permalink to this headline">¶</a></h2>
+<p>The majority of this deployment will be familiar to you based on your previous learning. However, the setup scripts will be new to you.</p>
+<p>The scripts will be responsible for:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">configure-vm.sh</span></code>: configures the runtime environment for the API, nearly identical to the script you wrote in your previous deployment</li>
+<li><code class="docutils literal notranslate"><span class="pre">configure-ssl.sh</span></code>: installs and configures the NGINX web server and provisions a self-signed certificate for serving the API over a secure connection</li>
+<li><code class="docutils literal notranslate"><span class="pre">deliver-deploy.sh</span></code>: delivers and deploys Coding Events API as a <em>background service</em> running in the VM</li>
+</ul>
+<div class="section" id="provision-resources">
+<h3>7.6.3.1. Provision Resources<a class="headerlink" href="#provision-resources" title="Permalink to this headline">¶</a></h3>
+<p>For this deployment you will need to provision the same resources as you did in the previous studio. Configuring these resources will be similar as well, with the exception of the three new scripts that must be executed using the RunCommand console.</p>
+<p>Rather than creating a new resource group you should provision and configure the VM and Key vault within the <code class="docutils literal notranslate"><span class="pre">adb2c-deploy-rg</span></code> group created in the first AADB2C walkthrough.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>After setting up the VM and Key vault you will need to update the entries in your <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code>.</p>
+<p class="last"><strong>Don’t forget to commit and push</strong> these changes before deploying!</p>
+</div>
+</div>
+<div class="section" id="configuration-scripts">
+<h3>7.6.3.2. Configuration Scripts<a class="headerlink" href="#configuration-scripts" title="Permalink to this headline">¶</a></h3>
+<p>Aside from the first script the other two will appear foreign to you. Even if you don’t believe that <em>currently</em> you are capable of writing them, you will likely surprise yourself with how much you are able understand.</p>
+<p>Take some time to look over and discuss these scripts with your classmates and TA to decipher what they are doing. We will explore these in more detail in the upcoming scripting lessons.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>You <strong>must run these scripts in the following order</strong>:</p>
+<ol class="last arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">configure-vm.sh</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">configure-ssl.sh</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">deliver-deploy.sh</span></code></li>
+</ol>
+</div>
+<div class="section" id="configure-the-vm">
+<h4>7.6.3.2.1. Configure the VM<a class="headerlink" href="#configure-the-vm" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference external" href="https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/1configure-vm.sh" target="_blank">configure-vm.sh script<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> should look familiar to you based on the script you wrote in the previous deployment.</p>
+</div>
+<div class="section" id="configure-nginx-for-tls-termination">
+<h4>7.6.3.2.2. Configure Nginx for TLS Termination<a class="headerlink" href="#configure-nginx-for-tls-termination" title="Permalink to this headline">¶</a></h4>
+<p>As mentioned previously, AADB2C requires a secure connection for authenticating and requesting an access token. In order to support the <code class="docutils literal notranslate"><span class="pre">https</span></code> <strong>encrypted connection</strong> a Web Server uses a <a class="reference external" href="https://www.cloudflare.com/learning/ssl/what-is-an-ssl-certificate/" target="_blank">SSL certificate<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> to perform something called a <a class="reference external" href="https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/" target="_blank">TLS handshake<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p>The Secure Socket Layer (<strong>SSL</strong>) protocol was succeeded by the more recent Transport Layer Security (<strong>TLS</strong>) protocol. Although TLS is what is used in modern development, the term <em>SSL</em> was ubiquitous for so long that SSL and TLS are often used interchangeably.</p>
+<p class="last">If you are curious <a class="reference external" href="https://www.globalsign.com/en/blog/ssl-vs-tls-difference" target="_blank">this TLS/SSL article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> provides a great breakdown of the history behind these protocols and terms.</p>
+</div>
+<p>In a production environment you would fully utilize <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/seccertenroll/public-key-infrastructure" target="_blank">Public Key Infrastructure (PKI)<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> to ensure the security of communication between your applications and their users. However, delving into these topics would require an entire course dedicated to exploring them!</p>
+<p>Because we are in a learning environment we will relax our security considerations and use a <a class="reference external" href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs#generating-ssl-certificates" target="_blank">self-signed certificate<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> instead. This certificate is similar to the one you set up when first running a dotnet project locally on your machine.</p>
+<p>While all of this is complex there are numerous tools available for simplifying the process. We will narrow the scope of our learning by abstracting this process behind the <a class="reference external" href="https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/vm-configuration-scripts/2configure-ssl.sh" target="_blank">configure-ssl.sh script<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> that utilizes the following tools:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">openssl</span></code>: a <a class="reference external" href="https://openssl.org" target="_blank">CLI tool<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> that will create the self-signed certificate</li>
+<li><code class="docutils literal notranslate"><span class="pre">nginx</span></code>: a web server that will perform <a class="reference external" href="https://docs.nginx.com/nginx/admin-guide/security-controls/terminating-ssl-http/" target="_blank">TLS/SSL termination<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> using the self-signed certificate</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>In production settings on Linux servers NGINX is the standard because of it’s <a class="reference external" href="https://www.nginx.com/resources/wiki/community/why_use_it/" target="_blank">advanced features and performance<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<p class="last">In an upcoming lesson we will deploy the API to Windows Server and use the IIS web server instead of NGINX. On Windows server machines the Microsoft IIS web server is the clear choice because of it’s native Windows and .NET integrations.</p>
+</div>
+<p>For now all you need to understand is that within the VM there will be two Web Servers, NGINX and the built-in Kestrel Web Server of the Coding Events API. The NGINX Web Server acts as a <a class="reference external" href="https://www.nginx.com/resources/glossary/reverse-proxy-server/" target="_blank">reverse proxy<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> (a request middle-man) for requests to and from the API.</p>
+<p>As the middle-man, NGINX is responsible for decrypting incoming requests and encrypting outgoing responses from the API. Effectively, requests go <em>through</em> NGINX to reach the API.</p>
+</div>
+<div class="section" id="deliver-deploy-the-coding-events-api">
+<h4>7.6.3.2.3. Deliver &amp; Deploy the Coding Events API<a class="headerlink" href="#deliver-deploy-the-coding-events-api" title="Permalink to this headline">¶</a></h4>
+<p>The final script will configure the VM to run the Coding Events API as a <a class="reference external" href="https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files" target="_blank">Systemd unit<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> instead of executing the API manually <em>in the foreground</em> as you have done before. Aside from how the API artifact is executed, the majority of the script (cloning and publishing) should look familiar to you.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>Configuring an application to run as a <strong>background service</strong> provides many benefits including:</p>
+<ul class="last simple">
+<li>the service can be configured to start automatically when the VM starts up</li>
+<li>the service runs in the background (does not attach to the Terminal)</li>
+<li>the service and any output logs can be easily monitored using <code class="docutils literal notranslate"><span class="pre">systemctl</span></code></li>
+<li>the service can be automatically restarted if it fails</li>
+</ul>
+</div>
+<p>The <a class="reference external" href="https://raw.githubusercontent.com/LaunchCodeEducation/powershell-az-cli-scripting-deployment/master/deliver-deploy.sh" target="_blank">deliver-deploy.sh script<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> will <strong>require you to fill in</strong> the following two environment variables used in the delivery step:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">github_username</span></code>: your username used to create the URL of your forked repo</li>
+<li><code class="docutils literal notranslate"><span class="pre">solution_branch</span></code>: the updated <code class="docutils literal notranslate"><span class="pre">3-aadb2c</span></code> branch</li>
+</ul>
+<p>This file creates a Systemd Unit file which describes the API service. In addition, it will set up a new user account: <code class="docutils literal notranslate"><span class="pre">api-user</span></code>. This service account <strong>can not be logged into</strong> like a traditional user account such as <code class="docutils literal notranslate"><span class="pre">student</span></code>.</p>
+<p>As a security best practice, the <code class="docutils literal notranslate"><span class="pre">api-user</span></code> account is used <strong>exclusively</strong> to execute the API artifact that starts the underlying <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> process of the background service.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>The script sets up the permissions that restrict all users except <code class="docutils literal notranslate"><span class="pre">root</span></code> and the <code class="docutils literal notranslate"><span class="pre">api-user</span></code> service account from reading, writing or executing the published API artifact.</p>
+<p class="last">By compartmentalizing the service account from the login account (<code class="docutils literal notranslate"><span class="pre">student</span></code>). An attacker who is able to enter the VM as the <code class="docutils literal notranslate"><span class="pre">student</span></code> user will be restricted from controlling the API service or accessing its related files.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="gotchas">
+<h2>7.6.4. Gotchas<a class="headerlink" href="#gotchas" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="expired-or-missing-access-token">
+<h3>7.6.4.1. Expired or Missing Access Token<a class="headerlink" href="#expired-or-missing-access-token" title="Permalink to this headline">¶</a></h3>
+<p>If your request fails due to a missing access token you will, expectedly, receive a <code class="docutils literal notranslate"><span class="pre">401</span></code> (failed authentication) response:</p>
+<img alt="Postman failed authentication due to missing token" src="../../_images/postman-401-missing-token.png" />
+<p>Similarly if your access token has expired you will receive a <code class="docutils literal notranslate"><span class="pre">401</span></code> response indicating this failure in the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate" target="_blank">WWW-Authenticate (challenge) header<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<img alt="Postman failed authentication due to expired token" src="../../_images/postman-401-expired-token.png" />
+<p>Refer to your notes or the previous walkthrough for a solution to this issue.</p>
+</div>
+<div class="section" id="incorrect-configuration-in-appsettings-json">
+<h3>7.6.4.2. Incorrect Configuration in <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code><a class="headerlink" href="#incorrect-configuration-in-appsettings-json" title="Permalink to this headline">¶</a></h3>
+<p>The JWT authentication middleware is fickle. As it should be – there is no margin for error in the security space of a project. In addition to the JWT settings the API will crash if the Key vault and origin values are not configured correctly.</p>
+<p>Make sure that all of the following fields are updated before deploying the API:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ServerOrigin</span></code>: available after provisioning your Azure VM</li>
+<li><code class="docutils literal notranslate"><span class="pre">KeyVaultName</span></code>: available after provisioning your Azure Key vault</li>
+<li><code class="docutils literal notranslate"><span class="pre">JWTOptions:Audience</span></code>: available in the AADB2C tenant, updated in the local steps</li>
+<li><code class="docutils literal notranslate"><span class="pre">JWTOptions:MetadataAddress</span></code>: available in the AADB2C tenant, updated in the local steps</li>
+</ul>
+</div>
+<div class="section" id="opening-the-correct-port">
+<h3>7.6.4.3. Opening the Correct Port<a class="headerlink" href="#opening-the-correct-port" title="Permalink to this headline">¶</a></h3>
+<p>For this deployment the API will be served over <code class="docutils literal notranslate"><span class="pre">https</span></code>. For security reasons AADB2C does not support authentication over insecure connections. You will need to open the correct port for your deployed API to function properly.</p>
+</div>
+</div>
+<div class="section" id="deliverable">
+<h2>7.6.5. Deliverable<a class="headerlink" href="#deliverable" title="Permalink to this headline">¶</a></h2>
+<p>At the end of this setup studio you will need to provide your TA with the public IP address of your fully functional deployed API.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="walkthrough_aadb2c-access.html"><span aria-hidden="true">&larr;</span> 7.5. Walkthrough: Set Up Access Token Authorization with Azure ADB2C</a></li>
+        
+        
+        <li class="next"><a href="studio_2-aadb2c-explore.html">7.7. Studio Part 2: Explore Authorization With the Deployed API <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/intro-oauth-with-aadb2c/studio_1-aadb2c-deployment.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.4. Walkthrough: Set Up Azure ADB2C Tenant &amp; Identity Tokens &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7.5. Walkthrough: Set Up Access Token Authorization with Azure ADB2C" href="walkthrough_aadb2c-access.html" />
+    <link rel="prev" title="7.3. Azure AD B2C Practical Fundamentals" href="aadb2c-fundamentals.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">7. Introduction to Authentication &amp; Authorization with Azure AD B2C</a></li>
+    <li class="active">7.4. Walkthrough: Set Up Azure ADB2C Tenant &amp; Identity Tokens</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="walkthrough-set-up-azure-adb2c-tenant-identity-tokens">
+<h1>7.4. Walkthrough: Set Up Azure ADB2C Tenant &amp; Identity Tokens<a class="headerlink" href="#walkthrough-set-up-azure-adb2c-tenant-identity-tokens" title="Permalink to this headline">¶</a></h1>
+<p>Azure Active Directory B2C (AADB2C) is a service that manages user identities and coordinates their access across the different applications in your organization.  When provisioning an AADB2C service Azure will create a <strong>tenant directory</strong>.</p>
+<p>The tenant directory is an Active Directory instance that centralizes user identities for a SSO experience across your organization. This means that a user can have a <strong>single identity</strong> they create and access through multiple identity providers like Microsoft, GitHub or a <strong>local account</strong> provider that uses an Email and password.</p>
+<p>Each AADB2C tenant uses <strong>User identity flows</strong>, or policies, that customize how a user registers and manages their identity in your organization. These user accounts can be used to authenticate and interact with your organization’s <strong>registered applications</strong>.</p>
+<p>In this walkthrough we will register the Coding Events API application and create a user account in our AADB2C tenant directory. We will then inspect the <strong>identity token</strong> received after completing the OIDC flow for our registered API.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>note</p>
+<p>Azure ADB2C is a multi-faceted service. In this walkthrough we will focus on the <strong>authentication</strong> configuration using <strong>identity tokens</strong>.</p>
+<p class="last">In the following walkthrough we will extend this behavior to protect our registered API by configuring its own <strong>access tokens</strong>. We will use these tokens for <strong>authorization</strong> of requests sent from the Postman <em>client application</em>.</p>
+</div>
+<div class="section" id="checklist">
+<h2>7.4.1. Checklist<a class="headerlink" href="#checklist" title="Permalink to this headline">¶</a></h2>
+<p>Setting up our AADB2C service will involve the following steps:</p>
+<ol class="arabic simple">
+<li>create an AADB2C tenant directory</li>
+<li>link the tenant directory to an active Azure Subscription</li>
+<li>register our Coding Events API application</li>
+<li>configure a <strong>S</strong>ign <strong>U</strong>p and <strong>S</strong>ign <strong>I</strong>n (SUSI) flow using an Email provider</li>
+</ol>
+<p>After we have completed these steps we will register an identity using the SUSI flow and inspect the resulting JWT (identity token). We will be using the Microsoft <a class="reference external" href="https://jwt.ms" target="_blank">JWT decoder tool<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> to inspect the claims within the identity token.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>The screenshots for this walkthrough use the generic <code class="docutils literal notranslate"><span class="pre">student</span></code> name.</p>
+<p class="last">Anywhere you see <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">student</span></code> you should <strong>replace with your name.</strong></p>
+</div>
+</div>
+<div class="section" id="set-up-aadb2c-tenant-directory">
+<h2>7.4.2. Set Up AADB2C Tenant Directory<a class="headerlink" href="#set-up-aadb2c-tenant-directory" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-tenant-directory">
+<h3>7.4.2.1. Create Tenant Directory<a class="headerlink" href="#create-tenant-directory" title="Permalink to this headline">¶</a></h3>
+<p>From the dashboard of the Azure Portal select the <strong>Create a resource</strong> button:</p>
+<img alt="Azure Portal create a resource" src="../../_images/1create-resource.png" />
+<p>In the search box enter: <code class="docutils literal notranslate"><span class="pre">Azure</span> <span class="pre">Active</span> <span class="pre">Directory</span> <span class="pre">B2C</span></code> then select <strong>create</strong>:</p>
+<img alt="Azure ADB2C marketplace service" src="../../_images/2create-aadb2c.png" />
+<p>Before linking to a Subscription we have to create the tenant directory, select the first choice:</p>
+<img alt="AADB2C create new tenant" src="../../_images/3create-aadb2c-tenant-dir.png" />
+<p>This will present the AADB2C creation form. Enter the following values:</p>
+<ul class="simple">
+<li><strong>Organization name</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span> <span class="pre">ADB2C</span></code> (the tenant directory name)</li>
+<li><strong>Initial domain name</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;0720tenant</span></code> (subdomain name of your tenant on the <code class="docutils literal notranslate"><span class="pre">.onmicrosoft.com</span></code> domain Azure provides)</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The pattern for the subdomain is: <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;&lt;MMYY&gt;tenant</span></code>. To ensure the subdomains are unique select the correct month and year when you are taking the course.</p>
+</div>
+<img alt="AADB2C create directory form" src="../../_images/4create-aadb2c-form1.png" />
+<p>Select <strong>Review and create</strong> and confirm that your configuration matches the image below. Then create it.</p>
+<img alt="AADB2C review configuration" src="../../_images/5create-aadb2c-form2.png" />
+</div>
+<div class="section" id="link-tenant-directory-to-your-subscription">
+<h3>7.4.2.2. Link tenant directory to your Subscription<a class="headerlink" href="#link-tenant-directory-to-your-subscription" title="Permalink to this headline">¶</a></h3>
+<p>The new tenant directory is <strong>not usable</strong> until it is linked to an active Azure Subscription.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">We will not dicuss the relationship between Azure accounts, Subscriptions, and directories. If you are curious,   <a class="reference external" href="https://techcommunity.microsoft.com/t5/azure/understanding-azure-account-subscription-and-directory/td-p/34800" target="_blank">this forum post has some great discussion and links to further reading<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+<p>After creating the tenant directory you can click the <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">new</span> <span class="pre">B2C</span> <span class="pre">Tenant</span> <span class="pre">or</span> <span class="pre">Link</span> <span class="pre">to</span> <span class="pre">existing</span> <span class="pre">Tenant</span></code> link in the upper-left breadcrumb links. If you are signed into Azure you can <a class="reference external" href="https://portal.azure.com/#create/Microsoft.AzureADB2C" target="_blank">click this link<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> to navigate directly to it.</p>
+<p>The link will take you back to the initial AADB2C view. This time select the second option to link the tenant:</p>
+<img alt="AADB2C link subscription to tenant" src="../../_images/6link-to-existing-b2c-tenant.png" />
+<p>The Subscription linking form will require:</p>
+<ul class="simple">
+<li>the tenant (by its subdomain)</li>
+<li>the Subscription to link the tenant to</li>
+<li>a RG for containing the linked tenant resource</li>
+</ul>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Make sure you select the correct Subscription. This will be the Azure Labs <em>Subscription Handout</em> that you received during initial registration, <strong>not your personal Subscription</strong>.</p>
+<p class="last">The Subscription name will likely differ from the screenshot below.</p>
+</div>
+<img alt="AADB2C link Subscription form" src="../../_images/7subscription-linking-form.png" />
+<p>For the RG create a new one with the name <code class="docutils literal notranslate"><span class="pre">adb2c-deploy-rg</span></code>. It will house both this linked tenant as well as the other resources we will provision in the upcoming Studio deployment.</p>
+<img alt="AADB2C link Subscription form create Resource Group (RG)" src="../../_images/8create-rg.png" />
+<p>Check that your form matches the image below <strong>and that you have chosen the Azure Labs Handout Subscription</strong>, then you can <strong>create</strong> the link:</p>
+<img alt="../../_images/9-create-final-review.png" src="../../_images/9-create-final-review.png" />
+</div>
+</div>
+<div class="section" id="register-configure-an-aadb2c-application">
+<h2>7.4.3. Register &amp; Configure an AADB2C Application<a class="headerlink" href="#register-configure-an-aadb2c-application" title="Permalink to this headline">¶</a></h2>
+<p>Now that our AADB2C tenant is set up we can register our Coding Events API application. The AADB2C accounts we create exist as part of the tenant directory. Each application that is registered with the tenant directory allows it to integrate with the identities of those user accounts.</p>
+<p>As a result, registering an application is a configuration that takes place <em>within the tenant</em>. For this reason we will need to <strong>switch to the tenant directory</strong>.</p>
+<div class="section" id="register-the-coding-events-api-application">
+<h3>7.4.3.1. Register the Coding Events API application<a class="headerlink" href="#register-the-coding-events-api-application" title="Permalink to this headline">¶</a></h3>
+<p>In the search bar at the top of the Azure Portal enter: <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;0720</span></code> and select the tenant resource:</p>
+<img alt="Azure Portal search for tenant resource" src="../../_images/10search-for-tenant-resource.png" />
+<p>This will send you to the linked ADB2C tenant resource view:</p>
+<img alt="AADB2C tenant resource dashboard" src="../../_images/11tenant-home.png" />
+<p>Select the <strong>Azure ADB2C Settings</strong> icon. This will open a <strong>new tab in the tenant directory</strong>:</p>
+<img alt="AADB2C tenant settings icon" src="../../_images/12tenant-portal.png" />
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">In the top-right corner notice that <strong>in this new tab</strong> your Azure directory has been automatically switched. It should now say you are in the <code class="docutils literal notranslate"><span class="pre">&lt;Name&gt;</span> <span class="pre">ADB2C</span></code> tenant directory rather than your <code class="docutils literal notranslate"><span class="pre">Default</span></code> directory.</p>
+</div>
+<p>On the left sidebar select the <strong>App Registration</strong> link. Then select <strong>New registration</strong>:</p>
+<img alt="AADB2C tenant App Registrations" src="../../_images/13new-registration.png" />
+<p>For this form we will <strong>leave all of the default settings</strong> except for the following:</p>
+<ul class="simple">
+<li><strong>Name</strong>: the name of our application, <code class="docutils literal notranslate"><span class="pre">Coding</span> <span class="pre">Events</span> <span class="pre">API</span></code></li>
+<li><strong>Redirect URI</strong>: where to redirect the user after authenticating, <code class="docutils literal notranslate"><span class="pre">https://jwt.ms</span></code></li>
+</ul>
+<p>For the Redirect URI we will provide the URL of the Microsoft JWT tool. After authenticating and being redirected, the tool will automatically extract the identity token and provide a UI for inspecting it.</p>
+<p>Confirm that your configuration matches the screenshot below, then select <strong>Register</strong>:</p>
+<img alt="AADB2C tenant App Registration completed form" src="../../_images/14new-app-registration-form-final.png" />
+</div>
+<div class="section" id="configure-the-coding-events-api-application-registration">
+<h3>7.4.3.2. Configure the Coding Events API application registration<a class="headerlink" href="#configure-the-coding-events-api-application-registration" title="Permalink to this headline">¶</a></h3>
+<p>After registering you will be sent to the Coding Events API application dashboard. Each registered application will have its own dashboard like this one that allows you to configure it independently from the others.</p>
+<img alt="Coding Events API application registration dashboard" src="../../_images/15app-dashboard.png" />
+<p>We will need to configure this application to support the <strong>implicit grant OAuth flow</strong> for receiving the identity token of an authenticated user. In the left sidebar select the <strong>Authentication</strong> settings.</p>
+<p>We will leave all defaults except for the <strong>Implicit grant</strong> section. Scroll down to this section then select both checkboxes to enable the implicit grant:</p>
+<ul class="simple">
+<li><strong>Access Tokens</strong></li>
+<li><strong>ID tokens</strong></li>
+</ul>
+<p>Confirm your configuration matches the screenshot below then use the <strong>Save</strong> icon at the top:</p>
+<img alt="Coding Events API application Authentication implicit grant settings" src="../../_images/16grant-implicit-flow.png" />
+<p>Before continuing to the next step, return to the tenant dashboard. You can use the <code class="docutils literal notranslate"><span class="pre">Azure</span> <span class="pre">AD</span> <span class="pre">B2C</span> <span class="pre">|</span> <span class="pre">App</span> <span class="pre">Registrations</span></code> breadcrumb link at the top as a shortcut.</p>
+</div>
+</div>
+<div class="section" id="set-up-the-susi-flow">
+<h2>7.4.4. Set Up the SUSI Flow<a class="headerlink" href="#set-up-the-susi-flow" title="Permalink to this headline">¶</a></h2>
+<p>The final step of our configuration is to set up a User Flow for registering and authenticating users in our AADB2C tenant directory. We will be configuring a Sign Up / Sign In <strong>(SUSI) flow</strong> with an Email provider to manage these identifies with an email and password.</p>
+<p>After users have created accounts in the tenant directory our registered application (the Coding Events API) will be able to use their identifies.</p>
+<p>A User Flow (identity flow) allows you to customize the user <em>processes</em> for interacting with their AADB2C account. Such as creating an account and signing in or out.</p>
+<p>For each User Flow you can configure:</p>
+<ul class="simple">
+<li>the identity provider(s) that the flow will allow</li>
+<li>the appearance of the AADB2C account UI (like a registration form)</li>
+<li>the <strong>claims</strong> collected during registration and returned in the identity tokens</li>
+</ul>
+<p>Each flow can specify the claims (user attributes) that need to be <strong>collected</strong> from the user during registration and <strong>returned</strong> in the identity token.</p>
+<p>Claims are used to standardize the identity data that is collected across the identity providers used in a flow. Some examples of claims include common built-in claims like:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Job</span> <span class="pre">Title</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">Legal</span> <span class="pre">Age</span> <span class="pre">Group</span> <span class="pre">Classification</span></code></li>
+</ul>
+<p>You can also define <a class="reference external" href="https://docs.microsoft.com/en-us/azure/active-directory-b2c/user-profile-attributes" target="_blank">custom claims<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> that apply to more specific use cases.</p>
+<p>In the left sidebar of the <strong>tenant dashboard</strong> switch from App Registrations by selecting the <strong>User Flows</strong> option under <em>Policies</em>.</p>
+<img alt="AADB2C tenant dashboard select User Flows configuration" src="../../_images/17select-user-flows.png" />
+<div class="section" id="create-a-susi-flow">
+<h3>7.4.4.1. Create a SUSI flow<a class="headerlink" href="#create-a-susi-flow" title="Permalink to this headline">¶</a></h3>
+<p>In the User Flows view select <strong>New User flow</strong>:</p>
+<img alt="AADB2C User Flows select new User flow" src="../../_images/18-new-user-flow-select.png" />
+<p>Then select the recommended <strong>Sign up and sign in</strong> (SUSI) flow template:</p>
+<img alt="select SUSI User Flow template" src="../../_images/19select-susi-flow.png" />
+<p>This will present the SUSI flow form. As mentioned previously we will allow users to register using the generic Email provider.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>The Email provider is available by default. Additional providers can be configured in the <strong>Identity providers</strong> settings on the left sidebar. After they are configured they will be available for use in creating or editing your tenant’s User Flows.</p>
+<img alt="Identity provider settings view" class="last" src="../../_images/fluff-2-identity-providers-show.png" />
+</div>
+<p>For the top half of the form (steps 1-3) configure the following settings:</p>
+<ol class="arabic simple">
+<li><strong>Name</strong>: after the <code class="docutils literal notranslate"><span class="pre">B2C_1_</span></code> prefix enter <code class="docutils literal notranslate"><span class="pre">susi-flow</span></code></li>
+<li><strong>Providers</strong>: we will use the <code class="docutils literal notranslate"><span class="pre">Email</span> <span class="pre">signup</span></code> provider</li>
+<li><strong>MFA</strong>: leave <code class="docutils literal notranslate"><span class="pre">disabled</span></code></li>
+</ol>
+<img alt="SUSI flow steps 1-3 completed" src="../../_images/20susi-flow-steps1-3.png" />
+<p>Scrolling down to the bottom half of the form you will see a section for configuring the claims. Claims are separated into <strong>collected</strong> (during registration) and <strong>returned</strong> (in the identity token).</p>
+<p>For our SUSI flow we will use the following <strong>collected claims</strong>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">Name</span></code> (username)</li>
+<li><code class="docutils literal notranslate"><span class="pre">Email</span> <span class="pre">Address</span></code></li>
+</ul>
+<p>And the following <strong>returned claims</strong>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">Name</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">Email</span> <span class="pre">Addresses</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">User's</span> <span class="pre">Object</span> <span class="pre">ID</span></code></li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">User's</span> <span class="pre">Object</span> <span class="pre">ID</span></code> (<strong>OID</strong> field) is the unique identifier for each user within the AADB2C tenant. It can be found <strong>at the end</strong> of the claims sidebar.</p>
+</div>
+<p>Click the <strong>show more</strong> link to open the full claims selection panel. Select each collected and returned claim then close the panel.</p>
+<img alt="SUSI flow claims sidebar (top)" src="../../_images/22show-more-user-attributes-form1.png" />
+<img alt="SUSI flow claims sidebar (bottom with OID)" src="../../_images/23show-more-user-attributes-form2.png" />
+<p>After setting the claims you can <strong>create</strong> the SUSI flow. This will send you back to the User Flows view:</p>
+<img alt="User Flows settings view with new SUSI flow" src="../../_images/25after-flow-created.png" />
+</div>
+</div>
+<div class="section" id="test-the-user-flow">
+<h2>7.4.5. Test the User Flow<a class="headerlink" href="#test-the-user-flow" title="Permalink to this headline">¶</a></h2>
+<p>Our final step is to test out the SUSI flow we created. We will register our first user accounts in the new AADB2C tenant using this flow. After registering we will inspect the identity token and the returned claims that were included in it.</p>
+<p>From the User Flows view select the new flow, <code class="docutils literal notranslate"><span class="pre">B2C_1_susi-flow</span></code>. This will take you to the SUSI flow dashboard where you can modify and test (run) the flow:</p>
+<img alt="SUSI flow dashboard view" src="../../_images/26flow-dashboard.png" />
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>For our purposes we used the built-in claims and default UI styling provided by AADB2C. However, from this dashboard you can modify the flow’s:</p>
+<ul class="last simple">
+<li>identity providers (to add additional providers like Microsoft or GitHub)</li>
+<li>user attributes (previously referred to as collected claims)</li>
+<li>application claims (previously referred to as the returned claims)</li>
+<li><a class="reference external" href="https://docs.microsoft.com/en-us/azure/active-directory-b2c/customize-ui-overview" target="_blank">page layouts<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> (the styling of the UI)</li>
+</ul>
+</div>
+<div class="section" id="run-the-susi-flow">
+<h3>7.4.5.1. Run the SUSI flow<a class="headerlink" href="#run-the-susi-flow" title="Permalink to this headline">¶</a></h3>
+<p>In the top left corner of the SUSI flow dashboard select the <strong>Run user flow</strong> button:</p>
+<img alt="SUSI flow dashboard Run User Flow button" src="../../_images/27run-user-flow.png" />
+<p>This will open the flow sidebar panel:</p>
+<img alt="SUSI flow sidebar panel to configure and initiate the flow" src="../../_images/28run-user-flow-sidebar.png" />
+<p>At the top of the panel you will see the <a class="reference external" href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#fetch-the-openid-connect-metadata-document" target="_blank">OIDC metadata URL<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">This document provides metadata with the OIDC endpoints for using the AADB2C identity management service. Although it is human readable it is meant for programmatic access by applications to integrate into the AADB2C system.</p>
+</div>
+<p>The run flow panel allows you to test out the flow with a specific application and reply (redirect) URL. In our case we only have a single application and reply URL to choose from. Select the <strong>Run user flow</strong> button to open a new tab with the AADB2C tenant login page:</p>
+<img alt="AADB2C login page" src="../../_images/29user-flow-auth-form.png" />
+</div>
+<div class="section" id="register-a-user-account">
+<h3>7.4.5.2. Register a user account<a class="headerlink" href="#register-a-user-account" title="Permalink to this headline">¶</a></h3>
+<p>Initially the AADB2C tenant directory will not have any user accounts in it. Let’s create a new account by selecting the <strong>Sign up now</strong> link at the bottom.</p>
+<p>You will need to provide <em>and verify</em> your email address.</p>
+<img alt="AADB2C registration email verification" src="../../_images/30signup-email.png" />
+<p>Azure will email you a temporary verification code which you need to enter:</p>
+<img alt="AADB2C enter email verification code" src="../../_images/31-signup-email-verification-code.png" />
+<p>After verifying your email address you need to provide a username and password. The password has default security constraints that require a relatively complex value:</p>
+<img alt="AADB2C password constraints" src="../../_images/32signup-email-password-requirements.png" />
+<p>As with other passwords in this course we will all use the same one to make troubleshooting more consistent:</p>
+<ul class="simple">
+<li><strong>password</strong>: <code class="docutils literal notranslate"><span class="pre">LaunchCode-&#64;zure1</span></code></li>
+</ul>
+<p>The username field is presented because we chose the <code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">Name</span></code> <em>collected field</em> when configuring the SUSI flow. You can enter your name here (in place of <code class="docutils literal notranslate"><span class="pre">student</span></code> in the screenshot):</p>
+<img alt="AADB2C registration final form" src="../../_images/33signup-email-final.png" />
+<p>After registering you will be <em>redirected</em> to the redirect URL (<code class="docutils literal notranslate"><span class="pre">https://jwt.ms</span></code>). This tool will capture the JWT identity token and decode it for inspection.</p>
+</div>
+<div class="section" id="inspect-the-identity-token">
+<h3>7.4.5.3. Inspect the identity token<a class="headerlink" href="#inspect-the-identity-token" title="Permalink to this headline">¶</a></h3>
+<p>Congratulations, you now have your first managed user identity!</p>
+<p>As a reminder the redirect will provide the identity token as a query parameter (<code class="docutils literal notranslate"><span class="pre">id-token</span></code>) which you can view in the URL bar. The Microsoft JWT tool will automatically extract this token from the URL and decode it.</p>
+<p>From within the tool you can view the decoded JWT:</p>
+<ul class="simple">
+<li><strong>header</strong>: highlighted in red</li>
+<li><strong>payload</strong>: highlighted in purple</li>
+<li><strong>signature</strong>: highlighted in green</li>
+</ul>
+<img alt="decoded identity token" src="../../_images/34final-token.png" />
+<p>Selecting the <strong>Claims</strong> tab will switch to a break down of the claims in the payload. For each claim you can view a description of its meaning and usage:</p>
+<img alt="decoded identity token claims" src="../../_images/35final-token-claims.png" />
+<p>Notice that these claims describe the relationship between the user (you), the AADB2C tenant (the identity manager) and the registered application that receives the token (the Coding Events API) recipient of the token (the Coding Events API):</p>
+<ul class="simple">
+<li><strong>iss[uer]</strong>: the AADB2C tenant is the <em>issuer</em> of the identity token while behaving (in this context) as the <strong>identity management server</strong></li>
+<li><strong>sub[ject]</strong>: the subject of the token is your OID (unique identifier of your account in the AADB2C tenant directory)</li>
+<li><strong>aud[ience]</strong>: the audience, or <strong>intended recipient</strong>, of the token is the Coding Event API application identifier (Client ID)</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="aadb2c-fundamentals.html"><span aria-hidden="true">&larr;</span> 7.3. Azure AD B2C Practical Fundamentals</a></li>
+        
+        
+        <li class="next"><a href="walkthrough_aadb2c-access.html">7.5. Walkthrough: Set Up Access Token Authorization with Azure ADB2C <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/intro-oauth-with-aadb2c/walkthrough_aadb2c-identity.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

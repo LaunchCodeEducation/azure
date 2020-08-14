@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>6.2. Application Environments &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6.3. Backing Services" href="backing-services.html" />
+    <link rel="prev" title="6.1. Secrets Management" href="secrets-management.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">6. Secrets Management &amp; Backing Services</a></li>
+    <li class="active">6.2. Application Environments</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="application-environments">
+<h1>6.2. Application Environments<a class="headerlink" href="#application-environments" title="Permalink to this headline">¶</a></h1>
+<p>Consider the application we have been deploying throughout our operations training, <code class="docutils literal notranslate"><span class="pre">CodingEventsAPI</span></code>. We have used different strategies for running this application in different environments.</p>
+<p>When running our application on our local machines, we used <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">run</span></code>. When running our application on a VM, we first build the project with <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">publish</span></code> and then run the executable build artifact.</p>
+<p>To the end user, our CodingEventsAPI behaves the <em>same way</em> wether it is run on our local machine or hosted on a remote machine. However, these are two distinct environments: our local development machine and an Azure Virtual Machine.</p>
+<p>Let’s consider some of the differences between our local machine and our VM:</p>
+<table border="1" class="colwidths-given docutils" id="id2">
+<caption><span class="caption-text">Differences across local and production environments</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="40%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Difference</th>
+<th class="head">Local</th>
+<th class="head">Production</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>OS</td>
+<td>Windows PC</td>
+<td>Ubuntu Server</td>
+</tr>
+<tr class="row-odd"><td>Hardware</td>
+<td>physical hard drive, RAM, CPU</td>
+<td>virtualized slice of physical machine</td>
+</tr>
+<tr class="row-even"><td>Login Shell</td>
+<td>PowerShell</td>
+<td>Bash</td>
+</tr>
+<tr class="row-odd"><td>Networking</td>
+<td>configured for home/work LAN</td>
+<td>configured to be accessible via internet</td>
+</tr>
+<tr class="row-even"><td>Secrets Manager</td>
+<td><code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">user-secrets</span></code></td>
+<td>Azure Key Vault</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h2>6.2.1. Application Environments<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Every project has it’s own requirements and may utilize different environments. However, most modern web development projects adopt their environments from the basic pattern:</p>
+<blockquote>
+<div>Local -&gt; Development -&gt; Production</div></blockquote>
+<p>The arrows indicate the order in which the app moves from one environment to the next during the development cycle.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>There are two additional common environments: Testing and Staging. These environments are outside the scope of this class but you can learn more via further reading:</p>
+<ul class="last simple">
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Deployment_environment#Testing" target="_blank">Testing deployment environment<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Deployment_environment#Staging" target="_blank">Staging deployment environment<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+</ul>
+</div>
+<div class="section" id="the-local-environment">
+<h3>6.2.1.1. The Local Environment<a class="headerlink" href="#the-local-environment" title="Permalink to this headline">¶</a></h3>
+<p id="index-0">The <strong>local environment</strong> is one we are already familiar with, your local development machine! This is the environment in which coding happens.</p>
+<p>In this environment, you may be working on a feature branch in which you are the only contributor. As you work on your code you run your application on your local machine to make sure your code behaves the way it should.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Checking the behavior of your code usually includes automated testing and limited manual quality assurance.</p>
+</div>
+<p>After verifying the behavior of the code for your feature branch, you push your code to GitHub and open a <em>Pull Request</em> to notify your team that your work is completed, locally tested and ready for review.</p>
+<p>Think about the local environment and consider that each contributor to the project has their own unique local environment. Your local machine is probably very different than your teammate’s local machine. Even if you have the exact same hardware you probably have different software. In addition, your local environment will be even more different from that in which the code is hosted. This means that additional testing and verification must happen to ensure that the code you write locally will work as expected once deployed.</p>
+<p>Luckily, the next environment will ensure code that was run in different local environments is compatible with the final production environment.</p>
+</div>
+<div class="section" id="the-development-environment">
+<h3>6.2.1.2. The Development Environment<a class="headerlink" href="#the-development-environment" title="Permalink to this headline">¶</a></h3>
+<p id="index-1">The <strong>development environment</strong> is the environment in which all of the work from individual local environments is combined together. The local environment is where you test the change <em>you</em> made, whereas the development environment ensures your changes integrate with the entire codebase. This is a crucial environment that runs the full suite of automated tests.</p>
+<p>The development environment environment is completely automated in a process called <a class="reference external" href="https://www.atlassian.com/continuous-delivery/continuous-integration" target="_blank">continuous integration (CI)<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. After a pull request is merged into the development branch, automation software pulls the entire development branch, runs the automated tests in a development environment and generates test results. If any incompatibilities (i.e. test failures) are found they can be stopped and corrected before reaching a live environment.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">We will not be using CI in this class, but it is worth exploring since you will encounter it throughout your career. Effective use of CI is a modern best-practice to prevent regression, which enables faster development.</p>
+</div>
+</div>
+<div class="section" id="the-production-environment">
+<h3>6.2.1.3. The Production Environment<a class="headerlink" href="#the-production-environment" title="Permalink to this headline">¶</a></h3>
+<p id="index-2">The final environment is the <strong>production environment</strong> which is where the deployed application lives. This is the end-goal of the web development code we write. Ultimately, our deployed application needs to live in an environment that is accessible via the web so it can be reached by end users.</p>
+<p>The production environment is directly tied to the success of the business. This high-stakes environment deals with live data and infrastructure. Failure with either can be catastrophic to a business. Every environment leading to production is an opportunity to catch issues early and prevent their propagation.</p>
+</div>
+</div>
+<div class="section" id="managing-application-environments">
+<h2>6.2.2. Managing Application Environments<a class="headerlink" href="#managing-application-environments" title="Permalink to this headline">¶</a></h2>
+<p>A best practice for running an application across multiple environments is to put a significant emphasis on making each environment as much alike as possible. This similarity is what will give us confidence that the application will work in the production environment.</p>
+<div class="section" id="parity">
+<h3>6.2.2.1. Parity<a class="headerlink" href="#parity" title="Permalink to this headline">¶</a></h3>
+<p id="index-3"><strong>Parity</strong> is the similarity between environments. If your local environment is identical to your production environment, we would say those environments have perfect parity. In reality, perfect parity is never completely possible, but we should still aim to get to close it.</p>
+<div class="section" id="achieving-high-parity">
+<h4>6.2.2.1.1. Achieving High Parity<a class="headerlink" href="#achieving-high-parity" title="Permalink to this headline">¶</a></h4>
+<p>Parity is achieved via reproducible environments. Here are some things we can do to enable reproducibility:</p>
+<ul class="simple">
+<li>Use the same database server versions, e.g. MySQL version 8.0.20</li>
+<li>Use cross-platform tools like .NET Core</li>
+<li>Write dynamic code that can be configured at runtime</li>
+</ul>
+<p>The first two points are simply policies we can adopt across our development team. The last point is something we have already experienced from managing secrets. If you recall, the secrets were loaded at runtime from the external secret stores. This is an example of runtime configuration.</p>
+</div>
+</div>
+<div class="section" id="externalize-configurations">
+<h3>6.2.2.2. Externalize Configurations<a class="headerlink" href="#externalize-configurations" title="Permalink to this headline">¶</a></h3>
+<p>To achieve a high level of parity, we install the same version of MySQL server on both our local machine and our production server. However, our project must know how to connect to a MySQL database.</p>
+<p>When we run our project locally, we want our project to connect to our local MySQL server by using a DB connection string that points to the locally hosted database.</p>
+<p>Traditionally, when we run our project in a production environment, it should consume an external data store (i.e. a data store on a different server). In that case, the connection string would point at the IP address of the remotely hosted database.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Because of our simple context, we are using a locally hosted database in our production environment achieving near-perfect parity. This parity is driven by the cross-platform nature of .NET Core, MySQL and Azure Key Vault.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="secrets-management.html"><span aria-hidden="true">&larr;</span> 6.1. Secrets Management</a></li>
+        
+        
+        <li class="next"><a href="backing-services.html">6.3. Backing Services <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/secrets-and-backing/application-environments.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.1. Web APIs &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.2. REST: Abstract Fundamentals" href="rest-abstract.html" />
+    <link rel="prev" title="3. Introduction to Web APIs &amp; REST" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">3. Introduction to Web APIs &amp; REST</a></li>
+    <li class="active">3.1. Web APIs</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="web-apis">
+<h1>3.1. Web APIs<a class="headerlink" href="#web-apis" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Recall the high level <a class="reference external" href="https://education.launchcode.org/intro-to-professional-web-dev/chapters/fetch-json/introduction.html#api" target="_blank">definition of APIs<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> from an earlier unit: <em>An API is the interface that allows one application to communicate with another application.</em></p>
+<blockquote>
+<div><strong>Web APIs</strong> are how applications communicate with other applications <strong>over a network</strong>.</div></blockquote>
+<p id="index-1">Throughout the remainder of this chapter we will explore web APIs and a pattern for organizing them called REST. Although REST may sound complicated, it is just another pattern like MVC.</p>
+<div class="section" id="mvc-without-the-v">
+<h2>3.1.1. MVC Without the V<a class="headerlink" href="#mvc-without-the-v" title="Permalink to this headline">¶</a></h2>
+<p>A good start to thinking about web APIs is that they are similar to MVC web applications with one major distinction:</p>
+<blockquote>
+<div>Web APIs are <strong>not concerned with the presentation</strong> of data.</div></blockquote>
+<p>A web API encompasses the Model and Controller aspects of MVC but is not responsible for the View layer. In a web API, the View, or presentation of data, is decoupled from the Model and Controller that manage and transfer data.</p>
+<p>This separation leads to the development of two separate applications, a <strong>client (front end)</strong> and <strong>web API (back-end)</strong>.</p>
+<p>The separation between client and web API provides the following benefits:</p>
+<ul class="simple">
+<li><strong>Platforms</strong>: A different client can be developed for each platform (web, mobile, CLI, GUI, etc) using the same back end.</li>
+<li><strong>Teams</strong>: The client and web API can be developed by different specialized groups of developers.</li>
+<li><strong>Scaling</strong>: The client and web API can be hosted on separate infrastructure.</li>
+</ul>
+<div class="admonition-fun-fact admonition">
+<p class="first admonition-title"><i class="fas fa-rocket" aria-hidden="true"></i>Fun Fact</p>
+<p class="last">Client applications involve User Interface (UI) and User Experience (UX) development.</p>
+</div>
+<div class="section" id="client-interacts-with-data">
+<h3>3.1.1.1. Client Interacts With Data<a class="headerlink" href="#client-interacts-with-data" title="Permalink to this headline">¶</a></h3>
+<p>Despite being separated from each other, the client application still relies on <em>interactions with the data</em> through the web API.</p>
+<p>A front-end client must ultimately <em>present</em> data to an end user. This means the client must request a <em>representation</em> of the data from the web API. After the client receives the representation it is parsed, styled and rendered to the user.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">A web API and is interacted with, or <strong>consumed</strong>, by a client application. This process involves transferring data representations and instructions like create, read, update and delete.</p>
+</div>
+</div>
+</div>
+<div class="section" id="responsibilities-of-a-web-api">
+<h2>3.1.2. Responsibilities of a Web API<a class="headerlink" href="#responsibilities-of-a-web-api" title="Permalink to this headline">¶</a></h2>
+<p>The chief responsibility of a web API is to provide <em>interactions with</em> and exchange <em>representations of data</em> with its client application.</p>
+<div class="section" id="data-delivery">
+<h3>3.1.2.1. Data Delivery<a class="headerlink" href="#data-delivery" title="Permalink to this headline">¶</a></h3>
+<p id="index-2">Think about how a View works in MVC: Data is injected into a template file that is rendered into HTML in the Controller before being sent back to the user. We call this approach <strong>server-side rendering</strong>.</p>
+<p>A client application and web API work in a similar way. However, instead of injecting the data into a template on the server it is transferred over the network via requests made by the client.</p>
+<p>When the client application receives the data it uses JavaScript to inject it into the HTML, all from within the browser. This approach is called <strong>client-side rendering</strong> because the web API only sends data, while the HTML is assembled on the user’s end.</p>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<p>Consider requesting the <code class="docutils literal notranslate"><span class="pre">/events</span></code> path of your MVC project. The response was an HTML <em>presentation of the data</em>. In other words, the data was already included in the presentation.</p>
+<blockquote>
+<div><strong>MVC</strong>: <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/events</span></code> -&gt; HTML with data</div></blockquote>
+<p>In a web API analog, the <code class="docutils literal notranslate"><span class="pre">/events</span></code> path would return just the underlying data.</p>
+<blockquote>
+<div><strong>web API</strong>: <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/events</span></code> -&gt; just data</div></blockquote>
+<p class="last">It is then the client application’s responsibility to integrate the received data into its presentation.</p>
+</div>
+</div>
+<div class="section" id="management-of-data">
+<h3>3.1.2.2. Management of Data<a class="headerlink" href="#management-of-data" title="Permalink to this headline">¶</a></h3>
+<p id="index-3">A web API manages data by using objects that represent the underlying business data. This should seem familiar, as it’s the exact same process we saw in MVC. Our models are class files that drive the interactions in our codebase.</p>
+<p>Web APIs often take advantage of object-relational mappers (ORMs) just like MVC applications do. If you have underlying classes that can be mapped to data in a database then you can easily make data available for use within the web API codebase.</p>
+</div>
+<div class="section" id="transferring-data">
+<h3>3.1.2.3. Transferring Data<a class="headerlink" href="#transferring-data" title="Permalink to this headline">¶</a></h3>
+<p>In addition to managing the data, a web API is concerned with transferring data.</p>
+<p>A client application will make a request for some data. Our web API must contain controller classes that can handle these requests. As a part of handling the request, a controller must inspect the request, access the requested data, package the data in an acceptable format, and send the response to the client.</p>
+<p>Here are the steps of a hypothetical web API using an ORM:</p>
+<ol class="arabic simple">
+<li>A request from a client application for is received by the application.</li>
+<li>The appropriate controller method is called to process the request.</li>
+<li>The controller determines if the request is valid.</li>
+<li>The controller retrieves data using an ORM system.</li>
+<li>The controller transforms the object into a format that the client application can work with.</li>
+<li>The controller responds to the client with the packaged data.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="representation-of-data">
+<h2>3.1.3. Representation of Data<a class="headerlink" href="#representation-of-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="presentation-vs-representation">
+<h3>3.1.3.1. Presentation Vs. Representation<a class="headerlink" href="#presentation-vs-representation" title="Permalink to this headline">¶</a></h3>
+<p id="index-4">As mentioned above, the client application presents the data to the end user. However, the client must consume a representation of data from the web API.</p>
+<p><strong>Presentation</strong> is the rendered combination of data and visual styling intended for end users. The client application needs to know what format the data is in so that it can be transformed into a human readable presentation (HTML/CSS) of the data.</p>
+<p>Since the presentation is handled by the client application, the web API’s responsibility is to package the data into a format the client application is expecting. The client application team and the web API team must agree to the underlying data format. The specific data format that is used is a <strong>representation</strong> of the data.</p>
+</div>
+<div class="section" id="universal-representation">
+<h3>3.1.3.2. Universal Representation<a class="headerlink" href="#universal-representation" title="Permalink to this headline">¶</a></h3>
+<p id="index-5">It is necessary to adopt a <strong>universal representation</strong> because web APIs and client applications may be written in two different programming languages. Your web API may be written in C#/ASP.NET while the client  may be written using JavaScript and React.</p>
+<p>While there are many languages and frameworks available in web development they all support the creation and parsing of JSON. JSON is a standard in web development because it is simple to process in any language, compatible with HTTP, and seamlessly represents the structure of data objects.</p>
+<div class="section" id="json">
+<h4>3.1.3.2.1. JSON<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h4>
+<p id="index-6">We have already <a class="reference external" href="https://education.launchcode.org/intro-to-professional-web-dev/chapters/fetch-json/data-formats-json.html#json" target="_blank">worked with JSON<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> in this course.</p>
+<p>JSON is the universal representation of data accepted by client applications. This means our web API must package the data requested by the client application as JSON and attach it to the response.</p>
+<p>Let’s examine the steps we looked at earlier, with the final two steps modified slightly:</p>
+<ol class="arabic simple">
+<li>A request from a client application for is received by the application.</li>
+<li>The appropriate controller method is called to process the request.</li>
+<li>The controller determines if the request is valid.</li>
+<li>The controller retrieves data using an ORM system.</li>
+<li>The controller transforms the object into a JSON representation.</li>
+<li>The controller responds to the client with the JSON representation.</li>
+</ol>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last"><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction" target="_blank">XML<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> is another popular data format, however it is used less commonly than JSON by web APIs.</p>
+</div>
+<p>In the next section, we will discuss exactly how a client application makes a request and how a web API responds.</p>
+</div>
+</div>
+</div>
+<div class="section" id="http-as-the-language-of-web-apis">
+<h2>3.1.4. HTTP As the Language of Web APIs<a class="headerlink" href="#http-as-the-language-of-web-apis" title="Permalink to this headline">¶</a></h2>
+<p id="index-7"><strong>Hypertext Transfer Protocol (HTTP)</strong> is the protocol used for communication between a web API and a client application.</p>
+<p>Web APIs communicate over a network. The most common protocol of the internet is HTTP, so it comes as no surprise that HTTP is the language of web APIs.</p>
+<p>Similarly, our MVC applications used HTTP as the protocol for an end user to access the application. Web APIs go a step further in that HTTP also facilitates the communication between client application and web API.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">We will refer to web APIs as APIs going forward since the web prefix is implied.</p>
+</div>
+<p>Luckily we have already worked with <a class="reference external" href="https://education.launchcode.org/intro-to-professional-web-dev/chapters/http/how-the-internet-works.html#http" target="_blank">HTTP in this class<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> as it is a very important protocol to understand when working with web applications.</p>
+<p>As a primer, recall that HTTP:</p>
+<ul class="simple">
+<li>Is a stateless request/response protocol.</li>
+<li>Requests and responses <em>may</em> include HTTP bodies but are not required to.</li>
+<li>Responses always contain a three-digit HTTP status code.</li>
+<li>Requests and responses <em>always</em> include HTTP headers.</li>
+</ul>
+<p>Since HTTP is a stateless request/response protocol <em>every request and response must transfer the necessary state</em> required by the client application or API. State is transferred via HTTP in the form of HTTP bodies, HTTP status codes, and HTTP headers.</p>
+<div class="section" id="http-body">
+<h3>3.1.4.1. HTTP Body<a class="headerlink" href="#http-body" title="Permalink to this headline">¶</a></h3>
+<p id="index-8">The HTTP body is part of how we express state through the stateless HTTP protocol. An HTTP body can contain a varity of different media types, known as <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types" target="_blank">MIME types<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<p id="index-9">A <strong>MIME type</strong> is associated with the HTTP header <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code>, which is what specifies which content type the HTTP body contains.</p>
+<p>In this class, you have seen a <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> HTTP header that has been set to <code class="docutils literal notranslate"><span class="pre">text/html</span></code>.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Example from <a class="reference external" href="https://education.launchcode.org/intro-to-professional-web-dev/chapters/html/structure.html#structure-rules" target="_blank">HTML chapter<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+   <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>My Web Page<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+      content
+   <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+   <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+      content
+   <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</div>
+<p>This is the header for HTML documents and is used throughout the web.</p>
+<p>APIs sending representations of data in JSON format require the header <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> to be <code class="docutils literal notranslate"><span class="pre">application/json</span></code>.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Example from <a class="reference external" href="https://education.launchcode.org/intro-to-professional-web-dev/chapters/fetch-json/data-formats-json.html#json" target="_blank">JSON chapter<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="s2">&quot;An Astronaut&#39;s Guide to Life on Earth&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;author&quot;</span><span class="o">:</span> <span class="s2">&quot;Chris Hadfield&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;ISBN&quot;</span><span class="o">:</span> <span class="mi">9780316253017</span><span class="p">,</span>
+   <span class="s2">&quot;year_published&quot;</span><span class="o">:</span> <span class="mi">2013</span><span class="p">,</span>
+   <span class="s2">&quot;subject&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;Hadfield, Chris&quot;</span><span class="p">,</span> <span class="s2">&quot;Astronauts&quot;</span><span class="p">,</span> <span class="s2">&quot;Biography&quot;</span><span class="p">],</span>
+   <span class="s2">&quot;available&quot;</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The HTTP body <em>may</em> include JSON that represents the data being passed between API and client application. In the following article you will learn about which HTTP requests/responses will include HTTP bodies.</p>
+</div>
+<div class="section" id="http-status-codes">
+<h3>3.1.4.2. HTTP Status Codes<a class="headerlink" href="#http-status-codes" title="Permalink to this headline">¶</a></h3>
+<p id="index-10">The next HTTP component that transfers state is the <strong>HTTP status code</strong>. The HTTP status code is included as a part of <em>every</em> HTTP response. The status code is the API’s way of telling the client application how their request was handled.</p>
+<p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank">HTTP response status codes<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> are a part of the HTTP spec and their usage goes beyond API design. However, many of these codes have been adopted as a standard within API design.</p>
+<table border="1" class="colwidths-given docutils" id="id3">
+<caption><span class="caption-text">Common HTTP status codes in API design</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="24%" />
+<col width="19%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Status Code Group</th>
+<th class="head">Commonly Used</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>2XX</td>
+<td>200, 201, 204</td>
+<td>request was successful</td>
+</tr>
+<tr class="row-odd"><td>3XX</td>
+<td>301, 302</td>
+<td>request was redirected</td>
+</tr>
+<tr class="row-even"><td>4XX</td>
+<td>400, 401, 403, 404, 405</td>
+<td>client error</td>
+</tr>
+<tr class="row-odd"><td>5XX</td>
+<td>500, 502, 504</td>
+<td>server error</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="http-headers">
+<h3>3.1.4.3. HTTP Headers<a class="headerlink" href="#http-headers" title="Permalink to this headline">¶</a></h3>
+<p id="index-11">The final HTTP component that transfers state is the <strong>HTTP header</strong>. Any <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers" target="_blank">number of headers<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> can be included in a request or response.</p>
+<p>Above we saw the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header. This is the header that allows us to inform the API (request header) or client application (response header) of the format of the data included in the body. There are many additional headers, but this is the most important one to us currently.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">A client can specify which <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> they want to receive in the API response using the <code class="docutils literal notranslate"><span class="pre">Accept</span></code> request header.</p>
+</div>
+</div>
+</div>
+<div class="section" id="api-design">
+<h2>3.1.5. API Design<a class="headerlink" href="#api-design" title="Permalink to this headline">¶</a></h2>
+<p>The design of an API is a contract that defines how the client and API interact with data.</p>
+<p>The API is responsible for <em>upholding</em> the data management and transfer <em>behaviors</em> of the <em>contract</em>.</p>
+<p>The client application is responsible for <em>consuming</em> (AJAX requests) an API according to the <em>contract</em>.</p>
+<p>As long as both sides of the <em>interface</em> (the client and API logic) uphold the contract, then front and back-end teams can operate independently. This provides the following freedoms:</p>
+<ul class="simple">
+<li>Front-end developers can choose or change the internal styling, libraries, frameworks and design patterns.</li>
+<li>Back-end developers can choose or change the internal server language, libraries, frameworks and design patterns.</li>
+<li>Both sides can choose or change their external hosting infrastructure at any time without affecting the other.</li>
+<li>Both sides can make and deploy changes to their code bases at any time without needing to coordinate with or wait for the other.</li>
+</ul>
+<p>Only when a change must be made to either the client requests or API behavior do the two teams need to communicate and agree upon a new contract.</p>
+<div class="section" id="rest">
+<h3>3.1.5.1. REST<a class="headerlink" href="#rest" title="Permalink to this headline">¶</a></h3>
+<p id="index-12">Adopting the REST specification into the design of an API provides consistency during development and consumption. The two sections explore REST in detail.</p>
+<p>Much like following the patterns of MVC allows other developers to easily understand your code, following REST gives other developers the benefit of understanding how your API is structured and behaves.</p>
+<p>As an added bonus, a REST API also gives the client application a base-line understanding on how to interact with your API.</p>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="index.html"><span aria-hidden="true">&larr;</span> 3. Introduction to Web APIs &amp; REST</a></li>
+        
+        
+        <li class="next"><a href="rest-abstract.html">3.2. REST: Abstract Fundamentals <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/web-apis/intro_web-apis.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

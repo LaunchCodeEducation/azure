@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>9.1. PowerShell Fundamentals &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9.2. Cmdlet Basics" href="cmdlets.html" />
+    <link rel="prev" title="9. Introduction to PowerShell" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">9. Introduction to PowerShell</a></li>
+    <li class="active">9.1. PowerShell Fundamentals</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="powershell-fundamentals">
+<h1>9.1. PowerShell Fundamentals<a class="headerlink" href="#powershell-fundamentals" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Now that you have learned some fundamental shell and Bash syntax, you are ready to learn about PowerShell. Because many PowerShell features and behaviors were inspired by Bash, you will find that much of the knowledge you have already gained will be applicable to this new tool.</p>
+<div class="section" id="core-tenets">
+<h2>9.1.1. Core Tenets<a class="headerlink" href="#core-tenets" title="Permalink to this headline">¶</a></h2>
+<p>Although Bash and PowerShell share many similarities, there are some key distinctions between them. Just as before, we will establish some core concepts behind PowerShell and Windows to help rationalize the <em>why</em> of their behavior.</p>
+<div class="section" id="file-system-paths">
+<h3>9.1.1.1. File System Paths<a class="headerlink" href="#file-system-paths" title="Permalink to this headline">¶</a></h3>
+<p>Windows treats each of its <strong>drives</strong> (devices managed by the operating system) as independent file system trees. Each drive has a name and ends with a <code class="docutils literal notranslate"><span class="pre">:</span></code> character, such as <code class="docutils literal notranslate"><span class="pre">C:</span></code> or <code class="docutils literal notranslate"><span class="pre">D:</span></code>. The <code class="docutils literal notranslate"><span class="pre">C:</span></code> drive is your primary disk drive and serves as the default installation location of the Windows OS. For this reason, the <code class="docutils literal notranslate"><span class="pre">C:</span></code> drive is typically considered the root directory.</p>
+<p>Some other characteristics are:</p>
+<ul class="simple">
+<li>Paths are separated by back-slashes (<code class="docutils literal notranslate"><span class="pre">\</span></code>)</li>
+<li>File and directory names are not case-sensitive</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">C:\</span></code> directory is used as the root directory for absolute paths</li>
+</ul>
+</div>
+<div class="section" id="framework-interpretation">
+<h3>9.1.1.2. Framework Interpretation<a class="headerlink" href="#framework-interpretation" title="Permalink to this headline">¶</a></h3>
+<p>The .NET framework is used to interpret and translate PowerShell commands for the OS. This is different from the direct communication channel seen between Bash and Linux. The object-oriented <em>power</em> of PowerShell comes from this layer of abstraction between itself and the Windows OS.</p>
+</div>
+<div class="section" id="everything-is-an-object">
+<h3>9.1.1.3. Everything Is An Object<a class="headerlink" href="#everything-is-an-object" title="Permalink to this headline">¶</a></h3>
+<p>Since Windows NT, the Windows OS releases have all followed an object-oriented design. By extension, PowerShell treats all of its <em>inputs and outputs as distinct types of objects</em>. This departure from the string-based approach of Bash makes working with PowerShell a more <em>tangible</em> shell experience.</p>
+<p>PowerShell commands and scripts are able to work with a wide range of objects, ranging from those provided by the underlying .NET framework to custom-developed types. Like other object-oriented languages, PowerShell objects contain properties and methods that make them intuitive to work with.</p>
+</div>
+<div class="section" id="file-extensions-matter">
+<h3>9.1.1.4. File Extensions Matter<a class="headerlink" href="#file-extensions-matter" title="Permalink to this headline">¶</a></h3>
+<p>File extensions are an integral aspect of how Windows works. There are thousands of file extensions built into the Windows OS, but <a class="reference external" href="https://support.microsoft.com/en-us/help/4479981/windows-10-common-file-name-extensions" target="_blank">there are only 10 common types<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> that you will typically encounter. Every file is bound to one of these extensions that enforces which program will be used to interpret it.</p>
+<p>You can think of a file in Windows as an object whose type is specified by its file extension. This file type, like an object type, defines the properties and methods used by programs that interact with it.</p>
+</div>
+<div class="section" id="cmdlets-functions-and-modules">
+<h3>9.1.1.5. Cmdlets, Functions, and Modules<a class="headerlink" href="#cmdlets-functions-and-modules" title="Permalink to this headline">¶</a></h3>
+<p id="index-1">In PowerShell, the commands you use are categorized as either a <strong>cmdlet</strong> or a <strong>function</strong>. Cmdlets are written in a .NET supported language (like C#) and as such must be compiled before they can be used. Functions, on the other hand, are written in PowerShell syntax within a script file.</p>
+<p>Functions are used to group a set of cmdlet instructions together as a single utility for performing custom tasks. Functions and cmdlets are used in mostly the same way (with arguments and options) and can be called at the PowerShell terminal prompt or in scripts.</p>
+<p id="index-2">Functions satisfy the <strong>single responsibility principle</strong>—a core philosophy of PowerShell—by enabling cmdlets to remain simple and focused on a single purpose. If you need a cmdlet to do something <em>extra</em> you are encouraged to create a function that <em>wraps the cmdlet</em> to expose new options and behavior.</p>
+<p id="index-3"><strong>Modules</strong> are collections of cmdlets and functions that share a common theme of use. They are used to bundle together related functionality into a single package that can be shared. The .NET framework provides the essential modules that include utilities, powershell modifiers, and system access.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>We won’t get into the grittier details between functions, advanced functions, and cmdlets. This <a class="reference external" href="https://letsautomate.it/article/powershell-scripts-functions-modules-cmdlets-oh-my/" target="_blank">PowerShell article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> offers a great high-level overview.</p>
+<p class="last">You can find even more detail in the official Microsoft documentation <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions?view=powershell-7" target="_blank">about simple functions<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> and <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced?view=powershell-7" target="_blank">advanced functions<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> .</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="index.html"><span aria-hidden="true">&larr;</span> 9. Introduction to PowerShell</a></li>
+        
+        
+        <li class="next"><a href="cmdlets.html">9.2. Cmdlet Basics <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/powershell-intro/intro.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

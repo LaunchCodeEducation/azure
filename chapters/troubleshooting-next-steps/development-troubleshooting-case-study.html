@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>11.3. Development Troubleshooting Case Studies &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="11.4. How to Troubleshoot" href="how-to-troubleshoot.html" />
+    <link rel="prev" title="11.2. Operations Troubleshooting Case Study" href="operations-troubleshooting-case-study.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">11. Introduction to Troubleshooting</a></li>
+    <li class="active">11.3. Development Troubleshooting Case Studies</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="development-troubleshooting-case-studies">
+<h1>11.3. Development Troubleshooting Case Studies<a class="headerlink" href="#development-troubleshooting-case-studies" title="Permalink to this headline">¶</a></h1>
+<p>Development issues relate to the source code of a deployed application. <em>Ideally</em> these issues are discovered before reaching the live production environment by automated tests and Quality Assurance testers. However, sometimes these issues are discovered by end users who report that the application is not behaving correctly.</p>
+<p>In these situations, the deployment isn’t necessarily broken, but the application is not behaving properly.</p>
+<div class="section" id="case-study-500-internal-server-error">
+<h2>11.3.1. Case Study: 500 Internal Server Error<a class="headerlink" href="#case-study-500-internal-server-error" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="realize-issue">
+<h3>11.3.1.1. Realize Issue<a class="headerlink" href="#realize-issue" title="Permalink to this headline">¶</a></h3>
+<p>A user sends a report that they received an HTTP response of <code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code> when sending a GET request for a specific coding event.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code> is almost <em>always</em> the result of a runtime error within the source code of the application.</p>
+</div>
+<div class="section" id="identify-issue-through-duplication">
+<h3>11.3.1.2. Identify Issue through Duplication<a class="headerlink" href="#identify-issue-through-duplication" title="Permalink to this headline">¶</a></h3>
+<p>We first reproduce the issue by requesting the specific coding event, and then we continue attempting to reproduce the issue with other specific coding events. We are trying to determine if it is something special about this one coding event, or if it is a behavior seen across all coding events. In this case, it’s only the one specific coding event that is experiencing this issue.</p>
+</div>
+<div class="section" id="research-potential-causes">
+<h3>11.3.1.3. Research Potential Causes<a class="headerlink" href="#research-potential-causes" title="Permalink to this headline">¶</a></h3>
+<p>In researching potential causes across the Internet and talking to some of the developers on the team, we come up with one potential reason:</p>
+<ul class="simple">
+<li>This coding event may have a special character that is not serializing to or from the database correctly</li>
+</ul>
+</div>
+<div class="section" id="isolate-root-cause">
+<h3>11.3.1.4. Isolate Root Cause<a class="headerlink" href="#isolate-root-cause" title="Permalink to this headline">¶</a></h3>
+<p>It’s a short list, but at least we can check something.</p>
+<p>We fire up MySQL and make a request for the specific coding events record. We notice this coding event has some special characters in it: <code class="docutils literal notranslate"><span class="pre">â€</span></code>. We put in a breakpoint to pause the application before it pulls the data out of the database and step through the code. Alas, as our API tries to serialize the special characters, the ORM throws an error and our API returns a <code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code>.</p>
+</div>
+<div class="section" id="research-root-cause-fixes">
+<h3>11.3.1.5. Research Root Cause Fixes<a class="headerlink" href="#research-root-cause-fixes" title="Permalink to this headline">¶</a></h3>
+<p>Next we research solving this error and find a couple of solutions:</p>
+<ul class="simple">
+<li>Change the underlying data in MySQL</li>
+<li>Implement a third-party library that assists in special character serialization</li>
+<li>Write our own database special character serialization library</li>
+</ul>
+<p>It is never a good idea to change the underlying data that is owned by end users, so the first option is out. The remaining two options have obvious pros and cons. It would be faster to use the third party library, however we would need to research the library to make sure it doesn’t contain insecure code and that it won’t break any of our existing functionality. Writing our own library would give us full control and the ability to make it as secure as we need, but would take development time.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The decision between using a third-party library and writing an in-house solution is one that is typically made by management and senior level engineers. This is a situation in which effectively communicating the issue is extremely important.</p>
+</div>
+</div>
+<div class="section" id="implement-root-cause-fix">
+<h3>11.3.1.6. Implement Root Cause Fix<a class="headerlink" href="#implement-root-cause-fix" title="Permalink to this headline">¶</a></h3>
+<p>Being a junior dev, we decide <em>this issue needs to be elevated to our superior</em>, as we don’t feel comfortable reviewing the security of a third-party library.</p>
+<p>We explain the issue, the solutions we found, and pass the information to our senior who thanks us for not only finding the issue, but for researching potential fixes. The senior engineers will research the third-party library and management will decide on the proper course of action.</p>
+</div>
+<div class="section" id="communicate-issue-with-others">
+<h3>11.3.1.7. Communicate Issue With Others<a class="headerlink" href="#communicate-issue-with-others" title="Permalink to this headline">¶</a></h3>
+<p>A communication to the affected team members might look like this:</p>
+<blockquote>
+<div>An HTTP <code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code> was encountered when a database record contained various special characters. Upon debugging the application, it was discovered that the current ORM serialization libraries were incapable of working with various special characters. The issue was elevated to senior developers who are determining how to resolve the issue.</div></blockquote>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The Coding Events API does not behave this way, so you won’t encounter this issue when running that app. This was simply a hypothetical example of how a 500 Internal Server Error could occur and how you may resolve, or in this case, identify, isolate, research, and pass it to a more senior developer.</p>
+</div>
+</div>
+</div>
+<div class="section" id="case-study-api-bug">
+<h2>11.3.2. Case Study: API Bug<a class="headerlink" href="#case-study-api-bug" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>11.3.2.1. Realize Issue<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>A user reports a bug in the API. It isn’t throwing any errors, but the application is not behaving correctly. When the user deletes a coding event they are the owner of, they can still view and edit the coding event.</p>
+<p>An API bug is almost <em>always</em> the result of a logic error within the source code of the application.</p>
+</div>
+<div class="section" id="id2">
+<h3>11.3.2.2. Identify Issue Through Duplication<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>We first reproduce the issue with a copy of the exact event in which we also experience the incorrect DELETE error. We also notice that any coding event we create cannot be deleted, despite a proper DELETE request coming through.</p>
+</div>
+<div class="section" id="research-isolate-root-cause">
+<h3>11.3.2.3. Research &amp; Isolate Root Cause<a class="headerlink" href="#research-isolate-root-cause" title="Permalink to this headline">¶</a></h3>
+<p>We research the issue. Luckily, this is easy because we know how a RESTful API works and feel confident looking at the source code. Upon looking at the source code, we can see the line that sends the resource deletion to the ORM is commented out and skips straight to sending back a <code class="docutils literal notranslate"><span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code>. Our research indicates:</p>
+<ul class="simple">
+<li>Fixing the source code error may resolve the issue</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>11.3.2.4. Implement Root Cause Fix<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>We build the project locally on our machine and make the change. It seems to work, however since we are not a developer on this project we will just communicate this issue and resolution to the responsible dev team. After all, the dev team may have their reasons for that specific line we edited.</p>
+<p>Luckily, we are very capable of explaining the issue, our research, and our proposed solution to the problem. After communicating it to them, the dev team will be responsible for making the change and running it through the automated tests to make sure the change doesn’t result in any unexpected behaviors.</p>
+</div>
+<div class="section" id="id4">
+<h3>11.3.2.5. Communicate Issue with Others<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>A communication to the affected team members might look like this:</p>
+<blockquote>
+<div>Users reported that after deleting an event the event was still accessible. We reproduced the issue and found that the reported behavior was consistent across all events. Upon investigating the issue it was determined that the RESTful API event DELETE method was not implemented correctly. The dev team needs to re-examine this method to determine why the RESTful API is not deleting resources correctly.</div></blockquote>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The Coding Events API does not behave this way. This was a hypothetical example to illustrate a logic error in a deployed application.</p>
+</div>
+<p>In summary, we understand the steps of the troubleshooting process and have seen examples of how it can be used to effectively:</p>
+<ul class="simple">
+<li>Realize issues</li>
+<li>Identify issues</li>
+<li>Research potential causes</li>
+<li>Isolate root causes</li>
+<li>Resolve issues</li>
+<li>Verify the resolution of issues</li>
+<li>Communicate about issues and their solutions</li>
+</ul>
+</div>
+</div>
+<div class="section" id="next-steps">
+<h2>11.3.3. Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>We have seen three different case studies that illustrate the troubleshooting process and have gained an <em>understanding of the troubleshooting process</em>.</p>
+<p>The next section will provide opinionated strategies on <em>how</em> to troubleshoot issues using this process.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="operations-troubleshooting-case-study.html"><span aria-hidden="true">&larr;</span> 11.2. Operations Troubleshooting Case Study</a></li>
+        
+        
+        <li class="next"><a href="how-to-troubleshoot.html">11.4. How to Troubleshoot <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/troubleshooting-next-steps/development-troubleshooting-case-study.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

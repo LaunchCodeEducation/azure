@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>11.2. Operations Troubleshooting Case Study &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="11.3. Development Troubleshooting Case Studies" href="development-troubleshooting-case-study.html" />
+    <link rel="prev" title="11.1. Introduction to Troubleshooting" href="what-is-troubleshooting.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">11. Introduction to Troubleshooting</a></li>
+    <li class="active">11.2. Operations Troubleshooting Case Study</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="operations-troubleshooting-case-study">
+<h1>11.2. Operations Troubleshooting Case Study<a class="headerlink" href="#operations-troubleshooting-case-study" title="Permalink to this headline">¶</a></h1>
+<p>Operation issues are issues that don’t involve the source code of the deployed application. However, you may end up with issues related to external configuration files such as <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code>.</p>
+<p>This could be issues relating to:</p>
+<ul class="simple">
+<li>Virtual Machine</li>
+<li>Key Vault</li>
+<li>AADB2C</li>
+<li>MySQL</li>
+<li>NGINX</li>
+<li>Application software dependencies (dotnet)</li>
+<li>The VM operating system (file permission issue)</li>
+<li>The network connecting the various resources (a network security group rule)</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The following group walkthrough will require you to perform these troubleshooting steps together to fix a broken deployment. The following is one example of something that <em>could be</em> wrong.</p>
+</div>
+<div class="section" id="case-study-connection-timeout">
+<h2>11.2.1. Case Study: Connection Timeout<a class="headerlink" href="#case-study-connection-timeout" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="realize-issue">
+<h3>11.2.1.1. Realize Issue<a class="headerlink" href="#realize-issue" title="Permalink to this headline">¶</a></h3>
+<p>The troubleshooting process is kicked off when an issue is brought to our attention. In this case, someone sends us a screenshot of their browser encountering a <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> when attempting to access the public address of the hosted Coding Events API:</p>
+<img alt="../../_images/connection-timeout-browser.png" src="../../_images/connection-timeout-browser.png" />
+</div>
+<div class="section" id="identify-issue-through-duplication">
+<h3>11.2.1.2. Identify Issue through Duplication<a class="headerlink" href="#identify-issue-through-duplication" title="Permalink to this headline">¶</a></h3>
+<p>Our first step is to identify this issue by reproducing it on our system. This will rule out the possibility of end-user error.</p>
+<p>First, let’s reproduce the issue in the exact way the end user did with a request from the browser:</p>
+<img alt="../../_images/connection-timeout-browser.png" src="../../_images/connection-timeout-browser.png" />
+<p>Looks like we are getting the same issue. Let’s reproduce this error with PowerShell using <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> from our terminal:</p>
+<img alt="../../_images/connection-timeout-powershell.png" src="../../_images/connection-timeout-powershell.png" />
+<p>Since this is a learning environment, let’s reproduce the issue again, this time from Bash using curl:</p>
+<img alt="../../_images/connection-timeout-bash.png" src="../../_images/connection-timeout-bash.png" />
+<p>We can definitively state that a <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> is happening when users attempt to access the Coding Events API on port 443 from the browser, <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> and <code class="docutils literal notranslate"><span class="pre">curl</span></code>.</p>
+</div>
+<div class="section" id="research-potential-causes">
+<h3>11.2.1.3. Research Potential Causes<a class="headerlink" href="#research-potential-causes" title="Permalink to this headline">¶</a></h3>
+<p>The next step is to research the potential causes of the issue. Typically you would rely on your experience and research skills to come up with a list of potential causes, but to save time we have provided them for you:</p>
+<ul class="simple">
+<li>The URL may have been incorrect</li>
+<li>The VM is currently down</li>
+<li>The VM lacks a Network Security Group rule for the given port</li>
+</ul>
+</div>
+<div class="section" id="isolate-root-cause">
+<h3>11.2.1.4. Isolate Root Cause<a class="headerlink" href="#isolate-root-cause" title="Permalink to this headline">¶</a></h3>
+<p>The next step is to isolate the <a class="reference external" href="http://www.thwink.org/sustain/glossary/LawsOfRootCauseAnalysis.htm" target="_blank">root cause<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> of the issue by systematically eliminating potential causes until we have found the root cause, or have exhausted our known options.</p>
+<p>In this case, we would need to check that the initial request was going to the correct URL, that the VM is currently running, and that the VM has the appropriate NSG inbound security rule for port 443. At this point in time in the class, you should know how to do these things through the Azure Web Portal or the AZ CLI.</p>
+<p>Let’s suppose that the root cause was that the VM lacks a NSG rule for port 443, and we discovered this by looking at all three of the potential issues and the only one that was incorrect were the NSG rules.</p>
+</div>
+<div class="section" id="research-root-cause-fixes">
+<h3>11.2.1.5. Research Root Cause Fixes<a class="headerlink" href="#research-root-cause-fixes" title="Permalink to this headline">¶</a></h3>
+<p>Our next step would be to research a solution to the issue, but because of our experience we can <em>skip researching</em> as we already know how to fix it. In this case, we simply need to create a new NSG inbound rule for port 443.</p>
+</div>
+<div class="section" id="implement-root-cause-fix">
+<h3>11.2.1.6. Implement Root Cause Fix<a class="headerlink" href="#implement-root-cause-fix" title="Permalink to this headline">¶</a></h3>
+<p>After creating the inbound port rule, our final step is to reproduce the steps to ensure our issue has been resolved.</p>
+</div>
+<div class="section" id="check-that-the-fix-resolves-issue">
+<h3>11.2.1.7. Check That the Fix Resolves Issue<a class="headerlink" href="#check-that-the-fix-resolves-issue" title="Permalink to this headline">¶</a></h3>
+<p>Browser:</p>
+<img alt="../../_images/connection-timeout-resolved-browser.png" src="../../_images/connection-timeout-resolved-browser.png" />
+<p>Our screen advanced and now we are getting the message about accepting the risk associated with a self-signed certificate. That’s what we expect. Let’s checkout PowerShell and Bash:</p>
+<p>PowerShell:</p>
+<img alt="../../_images/connection-timeout-resolved-powershell.png" src="../../_images/connection-timeout-resolved-powershell.png" />
+<p>Bash:</p>
+<img alt="../../_images/connection-timeout-resolved-bash.png" src="../../_images/connection-timeout-resolved-bash.png" />
+<p>Uh oh.</p>
+<p>We are getting a new error.</p>
+<p>The good news is that we resolved our first issue by creating a port 443 NSG inbound rule. Our fix resolved the issue, and we are no longer experiencing a <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> error. We have fixed this error and need to move on to the next one, which according to our web requests is a <code class="docutils literal notranslate"><span class="pre">502</span> <span class="pre">Bad</span> <span class="pre">Gateway</span></code>.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>An issue is not always solved with one change. In some instances, a combination of steps are necessary to fix one issue.</p>
+<p class="last">In this case, fixing one issue revealed a new issue. Revealing a new issue is great progress in troubleshooting, assuming you have checked that your fix resolved the initial issue, which we have done.</p>
+</div>
+<p>The final step is being able to communicate this issue and its resolution with others.</p>
+</div>
+<div class="section" id="communicate-issue-with-others">
+<h3>11.2.1.8. Communicate Issue With Others<a class="headerlink" href="#communicate-issue-with-others" title="Permalink to this headline">¶</a></h3>
+<p>A communication to the affected team members might look like this:</p>
+<blockquote>
+<div><p>The Coding Events API located at <code class="docutils literal notranslate"><span class="pre">https://40.114.86.145/</span></code> was not responding to HTTP requests in the browser, <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> or <code class="docutils literal notranslate"><span class="pre">curl</span></code>. Users were experiencing a <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> error.</p>
+<p>We researched potential causes for this issue and determined that the virtual machine did not have a NSG inbound rule allowing traffic through port 443. We opened this port to all public traffic and the issue was fixed.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">Timeout</span></code> errors have not been experienced across <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">curl</span></code> or the browser after making the change.</p>
+</div></blockquote>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>This section illustrates the entire troubleshooting process for a hypothetical operations issue in the Coding Events API deployment.</p>
+<p class="last">The next section will discuss two hypothetical case studies that explore potential development issues. The objective is the same, to gain a <em>strong understanding of the troubleshooting process</em>.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="what-is-troubleshooting.html"><span aria-hidden="true">&larr;</span> 11.1. Introduction to Troubleshooting</a></li>
+        
+        
+        <li class="next"><a href="development-troubleshooting-case-study.html">11.3. Development Troubleshooting Case Studies <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/troubleshooting-next-steps/operations-troubleshooting-case-study.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

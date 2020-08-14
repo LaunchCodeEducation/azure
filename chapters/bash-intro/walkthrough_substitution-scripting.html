@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2.5. Walkthrough: Substitutions &amp; Scripting in Bash &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.6. Walkthrough: Working With a Package Manager in Bash" href="walkthrough_cli-tools.html" />
+    <link rel="prev" title="2.4. Bash Scripting Fundamentals" href="scripting.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">2. Introduction to Bash</a></li>
+    <li class="active">2.5. Walkthrough: Substitutions &amp; Scripting in Bash</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="walkthrough-substitutions-scripting-in-bash">
+<h1>2.5. Walkthrough: Substitutions &amp; Scripting in Bash<a class="headerlink" href="#walkthrough-substitutions-scripting-in-bash" title="Permalink to this headline">¶</a></h1>
+<p>In this walkthrough we will explore the concept of <strong>substitution</strong>. In Bash, and PowerShell, substitution is one of the most common features used when working from the command-line or writing scripts.</p>
+<p>A substitution, as the name implies, will substitute a value into another expression. The substituted value can be a reference to a variable or an embedded command that will be executed before substituting its output.</p>
+<div class="section" id="variables">
+<h2>2.5.1. Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
+<p>Earlier we discussed environment variables – variables that affect every command and script executed in the Shell. You can also have variables that are only available within a script.</p>
+<p>In relatable programming terms, <strong>script variables are scoped to the script</strong> whereas <strong>environment variables are globally scoped</strong> to the whole Shell.</p>
+<div class="section" id="defining-variables">
+<h3>2.5.1.1. Defining variables<a class="headerlink" href="#defining-variables" title="Permalink to this headline">¶</a></h3>
+<p>When defining variables in a script the convention is to use lowercase letters and separate words with underscores (<code class="docutils literal notranslate"><span class="pre">_</span></code>). Environment variables are written in all capital letters so they are easy to distinguish from script variables.</p>
+<p>Because Bash does not have any data types a variable is simple to declare and assign. First you define the name of the variable followed by an assignment symbol (<code class="docutils literal notranslate"><span class="pre">=</span></code>) and the value of it on the right side.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Spaces are use to delimit, or distinguish, different parts of a command called <strong>tokens</strong>. Token splitting is what allows Bash to see a command along with its arguments and options as individual units to be evaluated – each separated by a space.</p>
+</div>
+<p>When defining a variable <strong>there can be no spaces between the variable declaration and assignment</strong>:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># correct: no spaces</span>
+<span class="nv">variable_name</span><span class="o">=</span>value
+
+<span class="c1"># wrong: spaces between declaration and assignment</span>
+<span class="nv">variable_name</span> <span class="o">=</span> value
+</pre></div>
+</div>
+</div>
+<p>When the value of a variable does not have any spaces it can be written as shown above. When you need to have spaces you can put single-quotes (<cite>‘’</cite>) around the value. These serve to group the whole string value together including the spaces:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">variable_name</span><span class="o">=</span><span class="s1">&#39;a longer value&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="referencing-variables">
+<h3>2.5.1.2. Referencing variables<a class="headerlink" href="#referencing-variables" title="Permalink to this headline">¶</a></h3>
+<p>Once a variable has been defined (either in the script or a global environment variable) it can be referenced by prefixing a <code class="docutils literal notranslate"><span class="pre">$</span></code> symbol before it:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># define the variable</span>
+<span class="nv">my_variable</span><span class="o">=</span><span class="s1">&#39;hello world&#39;</span>
+
+<span class="c1"># reference the script variable</span>
+<span class="nv">$my_variable</span>
+
+<span class="c1"># reference a global variable</span>
+<span class="nv">$PATH</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="variable-substitution">
+<h2>2.5.2. Variable Substitution<a class="headerlink" href="#variable-substitution" title="Permalink to this headline">¶</a></h2>
+<p>Referencing a variable is straightforward. But in most cases this process is done <em>inside</em> of a command, referencing in the open as we have done above has no effect. For this behavior Bash has a mechanism called <strong>variable substitution</strong>.</p>
+<p>For example, consider this simple script that creates and moves a directory using variables to hold the paths. Above each command is a comment showing what the command looks like when its variables have been substituted.</p>
+<p>Create a directory called <code class="docutils literal notranslate"><span class="pre">bash-examples</span></code> in your home (<code class="docutils literal notranslate"><span class="pre">~</span></code>) directory and open a new file called <code class="docutils literal notranslate"><span class="pre">variable-substitution.sh</span></code> within it. You can use any editor you would like to paste in the contents below.</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">~/bash-examples/variable-substitution.sh</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">target_path</span><span class="o">=</span>/tmp/dir-name
+
+<span class="c1"># ~ is a shorthand for /home/&lt;username&gt;</span>
+<span class="nv">destination_path</span><span class="o">=</span>~/dir-name
+
+<span class="c1"># mkdir /tmp/dirname</span>
+mkdir <span class="s2">&quot;</span><span class="nv">$target_path</span><span class="s2">&quot;</span>
+
+<span class="c1"># mv /tmp/dir-name ~/dir-name</span>
+mv <span class="s2">&quot;</span><span class="nv">$target_path</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$destination_path</span><span class="s2">&quot;</span>
+
+<span class="c1"># $HOME is an environment variable with a value of /home/&lt;username&gt;</span>
+<span class="c1"># ls /home/&lt;username&gt;</span>
+ls <span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>You should now have a file with the path <code class="docutils literal notranslate"><span class="pre">~/bash-examples/variable-substitution.sh</span></code> that you can execute using <code class="docutils literal notranslate"><span class="pre">bash</span></code> as the interpreter:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ bash ~/bash-examples/variable-substitution.sh
+</pre></div>
+</div>
+</div>
+<div class="section" id="quoting-syntax">
+<h3>2.5.2.1. Quoting syntax<a class="headerlink" href="#quoting-syntax" title="Permalink to this headline">¶</a></h3>
+<p>You likely noticed that the variables are contained in double-quotes (<code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>) when used in commands. This is a best practice when working with substitutions as it can prevent unintended behavior caused by spaces or special characters. This is especially true when scripts receive user input which, as you now know, should never be trusted!</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">You can read more about the behavior of <a class="reference external" href="https://linux.101hacks.com/bash-scripting/quotes-inside-shell-script/" target="_blank">escape characters and single and double quotes<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> in this article. If it goes over your head it’s okay, just follow the best practice to stay safe and come back to understanding the <em>why</em> later.</p>
+</div>
+</div>
+</div>
+<div class="section" id="command-substitution">
+<h2>2.5.3. Command Substitution<a class="headerlink" href="#command-substitution" title="Permalink to this headline">¶</a></h2>
+<p><strong>Command substitution</strong>, as the name implies, is just like variable substitution but for commands. It allows you to execute a command within another command. We will see many examples of its usage throughout this course but for now consider the basic aspects of it.</p>
+<p>We will refer to command substitutions interchangeably with <strong>in-line executions</strong> as they are evaluations performed <em>in the line</em> of a command being executed. An in-line execution allows you to <em>embed</em> a command within another like this:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">command</span> <span class="k">$(</span>sub-command<span class="k">)</span>
+</pre></div>
+</div>
+</div>
+<p>In this example the <code class="docutils literal notranslate"><span class="pre">sub-command</span></code> will first be evaluated (in-line), then the main <code class="docutils literal notranslate"><span class="pre">command</span></code> will be evaluated. When the <code class="docutils literal notranslate"><span class="pre">command</span></code> is evaluated the output of <code class="docutils literal notranslate"><span class="pre">$(sub-command)</span></code> will <em>substituted in</em> as its argument.</p>
+<p>You can treat in-line executions as you would any other command, with arguments and options. The only difference is that, like all programming languages, commands are evaluated from the inside out. Any in-line executions will first be evaluated before stepping outwards and substituting their output.</p>
+<p>Consider a more complicated example to understand how it works:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">command</span> <span class="k">$(</span>sub-command <span class="k">$(</span>sub-sub-command<span class="k">))</span>
+</pre></div>
+</div>
+</div>
+<p>This command would be evaluated in the following order:</p>
+<ol class="arabic simple">
+<li>innermost level: <code class="docutils literal notranslate"><span class="pre">$(sub-sub-command)</span></code></li>
+<li>next level: <code class="docutils literal notranslate"><span class="pre">$(sub-command</span> <span class="pre">&lt;output</span> <span class="pre">of</span> <span class="pre">sub-sub-command&gt;)</span></code></li>
+<li>outermost level: <code class="docutils literal notranslate"><span class="pre">command</span> <span class="pre">&lt;output</span> <span class="pre">of</span> <span class="pre">sub-command&gt;</span></code></li>
+</ol>
+<p>This is particularly useful in scripts when you want to capture the output of a command in a variable for reuse elsewhere in a script.</p>
+</div>
+<div class="section" id="substitutions-practice-in-a-script">
+<h2>2.5.4. Substitutions Practice in a Script<a class="headerlink" href="#substitutions-practice-in-a-script" title="Permalink to this headline">¶</a></h2>
+<p>Because substitution is a more advanced topic we will return to it later in a context that necessitates it. For now consider the following contrived example where we store our “history” of working directories (WD) in variables to navigate around them.</p>
+<p>In your <code class="docutils literal notranslate"><span class="pre">bash-examples</span></code> directory create another file called <code class="docutils literal notranslate"><span class="pre">command-substitution.sh</span></code> and paste in the following contents. We will use the <code class="docutils literal notranslate"><span class="pre">echo</span></code> command to print out our CWD throughout the script:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">~/bash-examples/command-substitution.sh</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># in-line execution in a string message</span>
+<span class="nb">echo</span> <span class="s2">&quot;CWD is: </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span>
+
+<span class="c1"># in-line execution to assign the value</span>
+<span class="nv">first_wd</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+
+<span class="nb">cd</span> /tmp
+<span class="nb">echo</span> <span class="s2">&quot;CWD is: </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span>
+
+<span class="nv">second_wd</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+
+<span class="nb">cd</span> /usr/bin
+<span class="nb">echo</span> <span class="s2">&quot;CWD is: </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span>
+
+<span class="nv">third_wd</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+
+<span class="c1"># return to the first</span>
+<span class="nb">echo</span> <span class="s2">&quot;returning to first WD&quot;</span>
+<span class="nb">cd</span> <span class="s2">&quot;</span><span class="nv">$first_wd</span><span class="s2">&quot;</span>
+<span class="nb">echo</span> <span class="s2">&quot;CWD is: </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span>
+
+<span class="c1"># jump to the second</span>
+<span class="nb">echo</span> <span class="s2">&quot;jumping to second WD&quot;</span>
+<span class="nb">cd</span> <span class="s2">&quot;</span><span class="nv">$second_wd</span><span class="s2">&quot;</span>
+<span class="nb">echo</span> <span class="s2">&quot;CWD is: </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>Then execute the script the same way as before:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ bash ~/bash-examples/command-substitution.sh
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>As a good programmer you are likely miffed by the copy and pasting of an identical statement. Although we won’t be getting into <a class="reference external" href="https://linuxize.com/post/bash-functions/" target="_blank">Bash functions<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> you should be able to make sense of them.</p>
+<p>Here is a cleaner approach to help you sleep at night!</p>
+<div class="literal-block-wrapper last docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">~/bash-examples/command-substitution.sh</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>print_cwd<span class="o">()</span> <span class="o">{</span>
+   <span class="nb">echo</span> <span class="s2">&quot;CWD is: </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="o">}</span>
+
+print_cwd
+
+<span class="nv">first_wd</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+
+<span class="nb">cd</span> /tmp
+print_cwd
+
+<span class="nv">second_wd</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+
+<span class="nb">cd</span> /usr/bin
+print_cwd
+
+<span class="nv">third_wd</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+
+<span class="c1"># return to the first</span>
+<span class="nb">echo</span> <span class="s2">&quot;returning to first WD&quot;</span>
+<span class="nb">cd</span> <span class="s2">&quot;</span><span class="nv">$first_wd</span><span class="s2">&quot;</span>
+print_cwd
+
+<span class="c1"># jump to the second</span>
+<span class="nb">echo</span> <span class="s2">&quot;jumping to second WD&quot;</span>
+<span class="nb">cd</span> <span class="s2">&quot;</span><span class="nv">$second_wd</span><span class="s2">&quot;</span>
+print_cwd
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="learn-more">
+<h2>2.5.5. Learn More<a class="headerlink" href="#learn-more" title="Permalink to this headline">¶</a></h2>
+<p>This has been an introduction to the practical fundamentals of Bash. You are <em>not expected to have memorized any of it</em> by any means. Feel free to refer back to this article throughout the course to refresh your memory.</p>
+<p>Learning Bash takes a lot of time. We covered a lot of ground today and will be revisiting the fundamentals regularly until they become second nature.</p>
+<p>If you want to learn more advanced usage this <a class="reference external" href="https://devhints.io/bash" target="_blank">Bash cheat-sheet from DevHints<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> will get you up to speed quickly. DevHints is an open source site filled with quick-reference guides for many languages and frameworks. All of their guides are written and edited through contributions from the open source community.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="scripting.html"><span aria-hidden="true">&larr;</span> 2.4. Bash Scripting Fundamentals</a></li>
+        
+        
+        <li class="next"><a href="walkthrough_cli-tools.html">2.6. Walkthrough: Working With a Package Manager in Bash <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/bash-intro/walkthrough_substitution-scripting.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

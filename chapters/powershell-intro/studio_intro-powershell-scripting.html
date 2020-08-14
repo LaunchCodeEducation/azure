@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>9.6. Studio: Introduction to PowerShell Scripting &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9.7. Piping in PowerShell" href="piping.html" />
+    <link rel="prev" title="9.5. Expression Evaluation" href="expressions.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">9. Introduction to PowerShell</a></li>
+    <li class="active">9.6. Studio: Introduction to PowerShell Scripting</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="studio-introduction-to-powershell-scripting">
+<h1>9.6. Studio: Introduction to PowerShell Scripting<a class="headerlink" href="#studio-introduction-to-powershell-scripting" title="Permalink to this headline">¶</a></h1>
+<p>Understanding a scripting language is an important part of the operations toolkit. We have covered the basics of <em>individual commands</em>. However, to use any shell language at a professional level you must delve into scripting.</p>
+<p>You can learn new scripting concepts, best practices, and tips and tricks in many different ways. One of the most effective ways to accelerate your learning is by using documentation.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">Learning to use the documentation of your tools is the difference between memorizing a few basic commands and being able to compose solutions to solve practical problems.</p>
+</div>
+<p>In this and the following studio, we will reference documentation for the tools used in accomplishing the tasks. The majority of the references will be specific links in the <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/?view=powershell-7" target="_blank">PowerShell Utility Module<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">The <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/scripting/how-to-use-docs?view=powershell-7" target="_blank">PowerShell Documentation<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> is extensive and easy to navigate. Every cmdlet documentation includes practical examples to help you with common tasks.</p>
+</div>
+<div class="section" id="running-powershell-scripts">
+<h2>9.6.1. Running PowerShell Scripts<a class="headerlink" href="#running-powershell-scripts" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="allow-script-execution">
+<h3>9.6.1.1. Allow script execution<a class="headerlink" href="#allow-script-execution" title="Permalink to this headline">¶</a></h3>
+<p>This walkthrough will require you to create and execute PowerShell scripts. As a security measure, Windows does not allow the execution of <em>unsigned</em>, or untrusted scripts by default. You will need to grant your PowerShell session an elevated <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1&amp;redirectedfrom=MSDN" target="_blank">execution policy<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> to run your own scripts.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">As a best practice, this execution policy will only be applied to the <em>scope</em> of the PowerShell process that executes the command. If you end that process (by exiting or closing the PowerShell Terminal) you will have to call the cmdlet again.</p>
+</div>
+<p>We will be using the <em>least privileged access</em> necessary to run our scripts, which corresponds to the <code class="docutils literal notranslate"><span class="pre">RemoteSigned</span></code> execution policy.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Set-ExecutionPolicy</span> <span class="n">-Scope</span> <span class="k">Process</span> <span class="n">-ExecutionPolicy</span> <span class="n">RemoteSigned</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="executing-your-first-script">
+<h3>9.6.1.2. Executing your first script<a class="headerlink" href="#executing-your-first-script" title="Permalink to this headline">¶</a></h3>
+<p>As a reminder, one of the core tenets of Windows is that all files must have a specific extension. The <code class="docutils literal notranslate"><span class="pre">.ps1</span></code> extension indicates that the file should be executed by PowerShell. You can create PowerShell scripts using any editor such as VS Code or even <code class="docutils literal notranslate"><span class="pre">notepad</span></code>.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p>You can open a file in <code class="docutils literal notranslate"><span class="pre">notepad</span></code> from the command-line using an absolute or relative path to the file:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">notepad</span> <span class="n">path</span><span class="p">/</span><span class="n">to</span><span class="p">/</span><span class="n">file</span><span class="p">.</span><span class="n">ext</span>
+</pre></div>
+</div>
+</div>
+<p class="last">If the file does not yet exist, it will create it for you.</p>
+</div>
+<div class="section" id="creating-a-powershell-script">
+<h4>9.6.1.2.1. Creating a PowerShell Script<a class="headerlink" href="#creating-a-powershell-script" title="Permalink to this headline">¶</a></h4>
+<p>The first script we will write will make use of the variable and sub-expression substitutions covered in the previous articles. You can use the following links to learn more about using <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_variables?view=powershell-7#types-of-variables" target="_blank">variables<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> and variable <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scopes?view=powershell-7#powershell-scopes" target="_blank">scopes<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<p>Using the editor of your choice, create the <code class="docutils literal notranslate"><span class="pre">hello-world.ps1</span></code> file in your home (<code class="docutils literal notranslate"><span class="pre">~</span></code>) directory:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">~/hello-world.ps1</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$Name</span> <span class="p">=</span> <span class="s1">&#39;Your Name&#39;</span>
+
+<span class="nb">Write-Output</span> <span class="s2">&quot;Hello $Name!&quot;</span>
+
+<span class="nb">Write-Output</span> <span class="s2">&quot;Can you let me out of here? I am stuck inside </span><span class="p">$(</span><span class="nb">Get-Location</span><span class="p">)</span><span class="s2">!!&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>Notice how <em>literal</em> strings (those that do not go under substitution), such as the <code class="docutils literal notranslate"><span class="pre">$Name</span></code> variable, use single quotes. Strings that <em>do undergo</em> substitution, like those printed by <code class="docutils literal notranslate"><span class="pre">Write-Output</span></code>, use double-quotes.</p>
+<p class="last">You can read more about the effect of quoting in the <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules?view=powershell-7" target="_blank">About Quoting documentation<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></p>
+</div>
+<p>Along with learning how to <em>write</em> scripts it is equally important to learn how to <em>read</em> them. Before we execute the script, try parsing it in your head. What do you expect to be printed to the PowerShell Terminal?</p>
+</div>
+<div class="section" id="executing-a-powershell-script">
+<h4>9.6.1.2.2. Executing a PowerShell Script<a class="headerlink" href="#executing-a-powershell-script" title="Permalink to this headline">¶</a></h4>
+<p>Recall in the Bash chapter that <em>implicit execution</em> of scripts required us to <a class="reference external" href="https://linuxize.com/post/bash-shebang/" target="_blank">define the script interpreter<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> at the top of the script file. Otherwise we needed to <em>explicitly execute</em> a script by providing the file path as input to its interpreter program, like <code class="docutils literal notranslate"><span class="pre">bash</span></code> or <code class="docutils literal notranslate"><span class="pre">python</span></code>.</p>
+<p>In PowerShell, the Windows standard for file extensions means that every file’s interpreter is pre-defined. This means they can be executed implicitly by referencing the script’s filename.</p>
+<p>Try executing the <code class="docutils literal notranslate"><span class="pre">hello-world.ps1</span></code> script:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">execute ~/hello-world.ps1 script</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># general form</span>
+<span class="p">&gt;</span> <span class="p">.\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">script</span><span class="p">.</span><span class="n">ps1</span>
+
+<span class="c"># execute the script</span>
+<span class="p">&gt;</span> <span class="p">.\</span><span class="n">hello-world</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Did the output match what you expected when reading the script? If not, then ask your TA or instructor to guide you in correcting your understanding.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-auto-committing-setup-script">
+<h2>9.6.2. The Auto-Committing-Setup Script<a class="headerlink" href="#the-auto-committing-setup-script" title="Permalink to this headline">¶</a></h2>
+<p>In this section, you will write a more complex script that clones the forked practice repository, then <em>moves, adds, commits, and pushes itself</em> back to GitHub automatically!</p>
+<p>You will need to <a class="reference external" href="https://github.com/LaunchCodeEducation/powershell-practice" target="_blank">fork the practice repository<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> before continuing. This is the repo you will be working in for the remaining studio exercises.</p>
+<p>This challenge will require you to create a PowerShell script named <code class="docutils literal notranslate"><span class="pre">auto-committing-setup.ps1</span></code>. You can create this file <em>anywhere in your file system</em> and, if written correctly, it will still execute successfully.</p>
+<div class="section" id="requirements">
+<h3>9.6.2.1. Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<p>Let’s consider the individual steps, or commands, that we need to compose in this script:</p>
+<ol class="arabic simple">
+<li>Declare a <code class="docutils literal notranslate"><span class="pre">$GitHubUsername</span></code> variable with your username (this will be used to clone your forked repo)</li>
+<li>Declare a <code class="docutils literal notranslate"><span class="pre">$CommitMessage</span></code> variable with the value <code class="docutils literal notranslate"><span class="pre">auto</span> <span class="pre">committed</span> <span class="pre">from</span> <span class="pre">auto-committing-setup.ps1!</span></code></li>
+<li>Declare a <code class="docutils literal notranslate"><span class="pre">$PracticeRepoDir</span></code> variable with the value of the path where the repo will be cloned</li>
+<li>Clone your forked repo into a directory at the <code class="docutils literal notranslate"><span class="pre">$PracticeRepoDir</span></code> path</li>
+<li>Copy the <code class="docutils literal notranslate"><span class="pre">auto-committing-setup.ps1</span></code> script (<strong>by its absolute path</strong>) into the cloned repo directory</li>
+<li>Change into the cloned directory (<code class="docutils literal notranslate"><span class="pre">$PracticeRepoDir</span></code>)</li>
+<li>Add the new script file in the cloned directory to <code class="docutils literal notranslate"><span class="pre">git</span></code> staging</li>
+<li>Commit the changes to the repo using the message variable (<code class="docutils literal notranslate"><span class="pre">$CommitMessage</span></code>)</li>
+<li>Push the local <code class="docutils literal notranslate"><span class="pre">git</span></code> history back to your forked repo</li>
+</ol>
+</div>
+<div class="section" id="limited-guidance">
+<h3>9.6.2.2. Limited Guidance<a class="headerlink" href="#limited-guidance" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="jump-start">
+<h4>9.6.2.2.1. Jump Start<a class="headerlink" href="#jump-start" title="Permalink to this headline">¶</a></h4>
+<p>In order to jump start your script, here are steps 1-4:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">auto-committing-setup.ps1</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># declare variables</span>
+<span class="nv">$GitHubUsername</span><span class="p">=</span><span class="s1">&#39;&#39;</span>
+<span class="nv">$PracticeRepoDir</span><span class="p">=</span><span class="s1">&#39;&#39;</span>
+<span class="nv">$CommitMessage</span><span class="p">=</span><span class="s1">&#39;auto committed from auto-committing-setup.ps1!&#39;</span>
+
+<span class="c"># fork and clone this repo into the powershell-studio directory</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="s2">&quot;https://github.com/$GitHubUsername/powershell-practice&quot;</span> <span class="s2">&quot;$PracticeRepoDir&quot;</span>
+
+<span class="c"># TODO: complete steps 5-9</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="referencing-the-script-path">
+<h4>9.6.2.2.2. Referencing the Script Path<a class="headerlink" href="#referencing-the-script-path" title="Permalink to this headline">¶</a></h4>
+<p>To reference <em>the absolute path of the script</em> from inside the script itself you can use the <code class="docutils literal notranslate"><span class="pre">$PSCommandPath</span></code> <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7#myinvocation" target="_blank">variable<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<p>For example, if you have a script located at the filepath <code class="docutils literal notranslate"><span class="pre">~/scripts/my-script.ps1</span></code> that prints the <code class="docutils literal notranslate"><span class="pre">$PSCommandPath</span></code> variable:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">~/scripts/my-script.ps1</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Write-Output</span> <span class="s2">&quot;PSCommandPath is: $PSCommandPath&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>Executing this script from the home directory would print the following output:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; .\scripts\my-script.ps1
+
+PSCommandPath is: C:\Users\&lt;username&gt;\scripts\my-script.ps1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="setting-a-commit-message">
+<h4>9.6.2.2.3. Setting a Commit Message<a class="headerlink" href="#setting-a-commit-message" title="Permalink to this headline">¶</a></h4>
+<p>When committing from the command-line, you can use the <code class="docutils literal notranslate"><span class="pre">-m</span></code> option to attach a message:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s2">&quot;&lt;message in here&gt;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="command-bank">
+<h3>9.6.2.3. Command Bank<a class="headerlink" href="#command-bank" title="Permalink to this headline">¶</a></h3>
+<p>For this script, you will use the following <code class="docutils literal notranslate"><span class="pre">git</span></code> and PowerShell commands.</p>
+<div class="section" id="git-commands">
+<h4>9.6.2.3.1. Git Commands<a class="headerlink" href="#git-commands" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><a class="reference external" href="https://www.git-scm.com/docs/git-clone" target="_blank">git clone<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li><a class="reference external" href="https://www.git-scm.com/docs/git-add" target="_blank">git add<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li><a class="reference external" href="https://www.git-scm.com/docs/git-commit" target="_blank">git commit<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li><a class="reference external" href="https://www.git-scm.com/docs/git-push" target="_blank">git push<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+</ul>
+</div>
+<div class="section" id="powershell-cmdlets">
+<h4>9.6.2.3.2. PowerShell Cmdlets<a class="headerlink" href="#powershell-cmdlets" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/copy-item?view=powershell-7" target="_blank">Copy-Item<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li><a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-location?view=powershell-7" target="_blank">Set-Location<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">As a bonus, try capturing the <code class="docutils literal notranslate"><span class="pre">$GitHubUsername</span></code> and <code class="docutils literal notranslate"><span class="pre">$PracticeRepoDir</span></code> variables from user input using the <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/read-host?view=powershell-7" target="_blank">Read-Host cmdlet<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. This <a class="reference external" href="https://www.itprotoday.com/powershell/prompting-user-input-powershell" target="_blank">short article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> is a great primer.</p>
+</div>
+</div>
+</div>
+<div class="section" id="submitting-your-work">
+<h3>9.6.2.4. Submitting your work<a class="headerlink" href="#submitting-your-work" title="Permalink to this headline">¶</a></h3>
+<p>Upon completing and executing the script, it will automatically be pushed to your GitHub repository. You will know you have completed this task correctly when your remote forked repository contains:</p>
+<ul class="simple">
+<li>A file named: <code class="docutils literal notranslate"><span class="pre">auto-committing-setup.ps1</span></code>.</li>
+<li>A new commit with the message <code class="docutils literal notranslate"><span class="pre">auto</span> <span class="pre">committed</span> <span class="pre">from</span> <span class="pre">auto-committing-setup.ps1!</span></code></li>
+</ul>
+<p>After it succeeds, you can send the repo link to your TA for review.</p>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="expressions.html"><span aria-hidden="true">&larr;</span> 9.5. Expression Evaluation</a></li>
+        
+        
+        <li class="next"><a href="piping.html">9.7. Piping in PowerShell <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/powershell-intro/studio_intro-powershell-scripting.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

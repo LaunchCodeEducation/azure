@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.3. REST: Practical Fundamentals &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.4. Walkthrough: Setup Your Development Machine" href="walkthrough_setup-powershell.html" />
+    <link rel="prev" title="3.2. REST: Abstract Fundamentals" href="rest-abstract.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">3. Introduction to Web APIs &amp; REST</a></li>
+    <li class="active">3.3. REST: Practical Fundamentals</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="rest-practical-fundamentals">
+<h1>3.3. REST: Practical Fundamentals<a class="headerlink" href="#rest-practical-fundamentals" title="Permalink to this headline">¶</a></h1>
+<p>Now that you have an understanding of the more abstract aspects of REST, let’s turn our attention to the practical details. The previous section covered the following terms in great depth:</p>
+<ul class="simple">
+<li><strong>State</strong>: data that can change, or transition, through interactions between an API and its client.</li>
+<li><strong>Representation</strong>: the convertible format that enables state to be transferred and used by the client and API.</li>
+<li><strong>Resource</strong>: the representation of a type of state (as an entity or collection) that the API exposes to its client for interaction.</li>
+<li><strong>Entity</strong>: a single resource that is uniquely identifiable in a collection.</li>
+<li><strong>Collection</strong>: entities of the same resource type treated as a whole.</li>
+</ul>
+<p>This section provides a more practical summary.</p>
+<div class="section" id="shapes">
+<h2>3.3.1. Shapes<a class="headerlink" href="#shapes" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">A <strong>shape</strong> is a the blueprint that describes the representation of an input or output of an API.</p>
+<p>The shape describes the input or output of an API in terms of its fields and data types. There are no rules for how the shapes should be defined. However, the goal should be to describe the shapes in a way that is <em>easy to understand</em>.</p>
+<p>For this reason, they are typically shown in a way that is similar to the representation format. Because we use JSON as the representation format, the <a class="reference external" href="https://json-schema.org/understanding-json-schema/reference/type.html" target="_blank">JSON data types<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> are used.</p>
+<p>You can think of the shape like a class definition in an object-oriented application:</p>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">The internal data model class (blueprint) of a <code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code></span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">CodingEvent</span> <span class="p">{</span>
+   <span class="k">public</span> <span class="kt">long</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+   <span class="k">public</span> <span class="kt">string</span> <span class="n">Title</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+   <span class="k">public</span> <span class="kt">string</span> <span class="n">Description</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+   <span class="k">public</span> <span class="n">DateTime</span> <span class="n">Date</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper last docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">The output resource shape (blueprint) of a <code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code></span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">CodingEvent</span> <span class="p">{</span>
+   <span class="nx">Id</span><span class="o">:</span> <span class="nx">integer</span>
+   <span class="nx">Title</span><span class="o">:</span> <span class="nx">string</span>
+   <span class="nx">Description</span><span class="o">:</span> <span class="nx">string</span>
+   <span class="nb">Date</span><span class="o">:</span> <span class="nx">string</span> <span class="p">(</span><span class="nx">ISO</span> <span class="mi">8601</span> <span class="nx">date</span> <span class="nx">format</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The JSON representation of the resource that the API sends out is then based on the shape. Like an object is based on the blueprint of its class:</p>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<div class="literal-block-wrapper last docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">sample Coding Event JSON representation</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;Id&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+   <span class="s2">&quot;Title&quot;</span><span class="o">:</span> <span class="s2">&quot;Halloween Hackathon!&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;Description&quot;</span><span class="o">:</span> <span class="s2">&quot;A gathering of nerdy ghouls to work on GitHub Hacktoberfest contributions&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;Date&quot;</span><span class="o">:</span> <span class="s2">&quot;2020-10-31&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can think of inputs as a <em>partial state</em> provided by the client during create and update interactions. Only some of the fields are included because the API is responsible for providing the others.</p>
+<p>Consider the following example of an input shape. Notice that the <code class="docutils literal notranslate"><span class="pre">Id</span></code> field is not included:</p>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">The input shape (blueprint) used to Create a Coding Event</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">CodingEvent</span> <span class="p">{</span>
+   <span class="nx">Title</span><span class="o">:</span> <span class="nx">string</span>
+   <span class="nx">Description</span><span class="o">:</span> <span class="nx">string</span>
+   <span class="nb">Date</span><span class="o">:</span> <span class="nx">string</span> <span class="p">(</span><span class="nx">ISO</span> <span class="mi">8601</span> <span class="nx">date</span> <span class="nx">format</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Some of the common fields the API is responsible for managing:</p>
+<ul class="last simple">
+<li>The unique identifier (<code class="docutils literal notranslate"><span class="pre">Id</span></code>) .</li>
+<li>The created or last updated timestamp.</li>
+<li>Links for relationships between resources.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="endpoints">
+<h2>3.3.2. Endpoints<a class="headerlink" href="#endpoints" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">An <strong>endpoint</strong> consists of the HTTP <em>path</em> and <em>method</em> that define the location of a resource and the action to take on its state.</p>
+<p>An API exposes endpoints to its consumers. Each endpoint is made up of a:</p>
+<ul class="simple">
+<li><strong>Path</strong>: the <em>noun</em> that identifies the resource.</li>
+<li><strong>Method</strong>: the <em>verb</em>, or action, to take on the resource’s state.</li>
+</ul>
+<div class="section" id="identifying-the-resource">
+<h3>3.3.2.1. Identifying the Resource<a class="headerlink" href="#identifying-the-resource" title="Permalink to this headline">¶</a></h3>
+<p id="index-2"><strong>Paths</strong> are used to identify the resource. Recall the hierarchal nature of resources where <em>an entity only exists within a collection</em>.</p>
+<p>RESTful APIs separate the resources they expose into one or more <strong>resource entry-points</strong>. As the name implies, these entry-points are the start of the hierarchy, and they identify each <strong>top-level resource collection</strong>.</p>
+<p>Let’s consider two resources exposed by a RESTful API:</p>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<p>The Coding Events API would have the following familiar resources (among others):</p>
+<table border="1" class="docutils" id="id5">
+<caption><span class="caption-text">Resource and corresponding collection entry-point</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Resource</td>
+<td><code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">Tag</span></code></td>
+</tr>
+<tr class="row-even"><td>Collection entry-point</td>
+<td><code class="docutils literal notranslate"><span class="pre">/events</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">/tags</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>The name of the path is arbitrary, but should follow these rules of thumb to maintain consistency:</p>
+<ul class="last simple">
+<li>The name iss lowercase and separated by underscores if necessary.</li>
+<li>The name adequately describes the resource in as few characters as necessary.</li>
+<li>The name <em>is a noun</em> (actions are described by the method of the endpoint).</li>
+</ul>
+</div>
+<p>Notice that the entry-points are pluralized. The pluralized path indicates that the <em>state of the resource collection</em> is the subject of the interaction.</p>
+<p>Consider a request to the following endpoint (path and method):</p>
+<table border="1" class="docutils" id="id6">
+<caption><span class="caption-text">Identify the resource</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Path</th>
+<th class="head">Noun (subject)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">/collection</span></code></td>
+<td>Resource collection</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="id7">
+<caption><span class="caption-text">Interact with its state</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HTTP method</th>
+<th class="head">Verb (action)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">GET</span></code></td>
+<td>view representation of the collection</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s see this in action with our example API. Using what we have learned so far, we can expect the state of the resource collection to be represented in a JSON array, <code class="docutils literal notranslate"><span class="pre">[]</span></code>:</p>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">response from a request to the GET <code class="docutils literal notranslate"><span class="pre">/events</span></code> endpoint</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+   <span class="nx">CodingEvent</span> <span class="p">{</span> <span class="p">...</span> <span class="p">},</span>
+   <span class="p">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p class="last">The state of the <code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code> collection is made up of the <em>collective state</em> of each <code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code> entity within it.</p>
+</div>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">response from a request to the GET <code class="docutils literal notranslate"><span class="pre">/tags</span></code> endpoint</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+   <span class="nx">Tag</span> <span class="p">{</span> <span class="p">...</span> <span class="p">},</span>
+   <span class="p">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p class="last">A request to the endpoint of the <code class="docutils literal notranslate"><span class="pre">Tag</span></code> collection would include its respective <code class="docutils literal notranslate"><span class="pre">Tag</span></code> entity representations (JSON objects).</p>
+</div>
+<p>Suppose we wanted to interact with an <em>individual</em> resource entity. We would need to identify it within its collection.</p>
+<p>The path to identify a resource entity would need to include:</p>
+<ul class="simple">
+<li>The collection identifier, or resource entry-point (<code class="docutils literal notranslate"><span class="pre">/collection</span></code>).</li>
+<li>The unique resource entity identifier (<code class="docutils literal notranslate"><span class="pre">/{entityId}</span></code>) within the collection.</li>
+</ul>
+<p id="index-3">Because the unique identifier of the entity is <em>variable</em> we use a <strong>path variable</strong> (<code class="docutils literal notranslate"><span class="pre">{entityId}</span></code>) to describe it in a generic way.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p>The hierarchy of collections and entities is similar to directories and files. To identify an entity is <em>like identifying a file within a directory</em>.</p>
+<p class="last">You need both the directory (collection) name and a <em>sub-path</em> that uniquely identifies the file (entity).</p>
+</div>
+<p>Consider a request to the following endpoint for viewing a single resource entity:</p>
+<table border="1" class="docutils" id="id10">
+<caption><span class="caption-text">Identify the resource</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Path</th>
+<th class="head">Noun (subject)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">/collection/{entityId}</span></code></td>
+<td>Resource entity</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="id11">
+<caption><span class="caption-text">Interact with its state</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HTTP method</th>
+<th class="head">Verb (action)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">GET</span></code></td>
+<td>view representation of a single entity</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s take another look at our example API:</p>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<p>The generic path to identify a <code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code> resource would be described as <code class="docutils literal notranslate"><span class="pre">/events/{codingEventId}</span></code>.</p>
+<p>Let’s assume a Coding Event exists with an <code class="docutils literal notranslate"><span class="pre">Id</span></code> of <code class="docutils literal notranslate"><span class="pre">12</span></code>.</p>
+<p>We could make a request to the <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/events/12</span></code> endpoint to read its current state:</p>
+<div class="literal-block-wrapper last docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">response from a GET request to /events/12</span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;Id&quot;</span><span class="o">:</span> <span class="mi">12</span><span class="p">,</span>
+   <span class="s2">&quot;Title&quot;</span><span class="o">:</span> <span class="s2">&quot;Halloween Hackathon!&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;Description&quot;</span><span class="o">:</span> <span class="s2">&quot;A gathering of nerdy ghouls...&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;Date&quot;</span><span class="o">:</span> <span class="s2">&quot;2020-10-31&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="crud-operations-http-methods">
+<h3>3.3.2.2. CRUD Operations &amp; HTTP Methods<a class="headerlink" href="#crud-operations-http-methods" title="Permalink to this headline">¶</a></h3>
+<p>In a RESTful API the <em>interactions</em> a client takes on a resource are described using HTTP methods.</p>
+<p>If the resource path describes the noun (subject) the HTTP method describes the verb (action) that is taken on that subject’s state.</p>
+<p>As we saw in the previous article, state is something that can be interacted using CRUD operations. By convention, each of these operations corresponds to an HTTP method:</p>
+<table border="1" class="docutils" id="id13">
+<caption><span class="caption-text">HTTP method and corresponding <strong>CRUD</strong> operation</span><a class="headerlink" href="#id13" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><th class="stub">HTTP method</th>
+<td><code class="docutils literal notranslate"><span class="pre">POST</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">GET</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">PUT/PATCH*</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DELETE</span></code></td>
+</tr>
+<tr class="row-even"><th class="stub">CRUD operation</th>
+<td>create</td>
+<td>read</td>
+<td>update</td>
+<td>delete</td>
+</tr>
+</tbody>
+</table>
+<p>The use case of an API dictates the design of its contract. This includes which actions the client can take on each resource. In other words, <em>not every action must be exposed</em> for each resource the API manages.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">If a client tries to take an action on a resource that is not supported by the API, they will receive a <code class="docutils literal notranslate"><span class="pre">405</span></code> status code or <code class="docutils literal notranslate"><span class="pre">Method</span> <span class="pre">not</span> <span class="pre">allowed</span></code> error response.</p>
+</div>
+</div>
+</div>
+<div class="section" id="endpoint-behavior">
+<h2>3.3.3. Endpoint Behavior<a class="headerlink" href="#endpoint-behavior" title="Permalink to this headline">¶</a></h2>
+<p>Depending on the endpoint, the effect of the request can differ. In other words, the <em>behavior of an endpoint</em> is dependent on the subject, an entity or the collection as a whole.</p>
+<div class="section" id="operating-on-collections">
+<h3>3.3.3.1. Operating on Collections<a class="headerlink" href="#operating-on-collections" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils" id="id14">
+<caption><span class="caption-text">Endpoint behaviors for a resource collection</span><a class="headerlink" href="#id14" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><th class="stub">HTTP method</th>
+<td><code class="docutils literal notranslate"><span class="pre">POST</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">GET</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">PUT/PATCH</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DELETE</span></code></td>
+</tr>
+<tr class="row-even"><th class="stub">Behavior with resource state</th>
+<td>create a new entity in the collection</td>
+<td>view the <em>current</em> list of all entities in the collection</td>
+<td>bulk update of entities in the collection</td>
+<td>remove all entities in the collection</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Exposing the ability to modify or delete <em>all</em> of the entities in a collection at once can be risky. In many cases, the design of a RESTful API will only support <code class="docutils literal notranslate"><span class="pre">GET</span></code> and <code class="docutils literal notranslate"><span class="pre">POST</span></code> endpoints for collections.</p>
+</div>
+<p>Let’s consider a request for creating a resource entity. Recall that this operation acts on the <em>state</em> of the collection by adding a new entity to it.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">POST</span></code> endpoint of the collection, that the entity belongs to, can be used with a request body. This request body is a <em>representation</em> of the initial state the client must provide as an <em>input</em> to the API.</p>
+<p>Let’s take a look at a request in the context of our example API:</p>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<p>As we saw earlier, the <em>input shape</em> for creating a <code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code> only includes the fields the consumer is responsible for. The <code class="docutils literal notranslate"><span class="pre">Id</span></code> field is then managed internally by the API.</p>
+<p>We refer to this shape as a <code class="docutils literal notranslate"><span class="pre">NewCodingEvent</span></code> to distinguish it from the <code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code> resource shape:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">NewCodingEvent</span> <span class="p">{</span>
+   <span class="nx">Title</span><span class="o">:</span> <span class="nx">string</span>
+   <span class="nx">Description</span><span class="o">:</span> <span class="nx">string</span>
+   <span class="nb">Date</span><span class="o">:</span> <span class="nx">string</span> <span class="p">(</span><span class="nx">ISO</span> <span class="mi">8601</span> <span class="nx">date</span> <span class="nx">format</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We can describe this request in a shorthand. This shorthand includes the endpoint, input, and outputs:</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/events</span> <span class="pre">(NewCodingEvent)</span> <span class="pre">-&gt;</span> <span class="pre">201,</span> <span class="pre">CodingEvent</span></code></div></blockquote>
+<p>After sending this request, the response would include:</p>
+<ul class="last simple">
+<li>A <code class="docutils literal notranslate"><span class="pre">201</span></code>, or <code class="docutils literal notranslate"><span class="pre">Created</span></code>, status code</li>
+<li>A <code class="docutils literal notranslate"><span class="pre">Location</span></code> response header</li>
+<li>The representation of the created resource entity state (including an assigned <code class="docutils literal notranslate"><span class="pre">Id</span></code> field)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="operating-on-entities">
+<h3>3.3.3.2. Operating on Entities<a class="headerlink" href="#operating-on-entities" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils" id="id15">
+<caption><span class="caption-text">Endpoints behaviors for an individual resource entity</span><a class="headerlink" href="#id15" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><th class="stub">HTTP method</th>
+<td><code class="docutils literal notranslate"><span class="pre">POST</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">GET</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">PUT/PATCH</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DELETE</span></code></td>
+</tr>
+<tr class="row-even"><th class="stub">Behavior with resource state</th>
+<td>N/A (created inside a collection)</td>
+<td>view the <em>current</em> entity state</td>
+<td>update the entity state</td>
+<td>remove the entity from the collection</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>Updating using <code class="docutils literal notranslate"><span class="pre">PUT</span></code> or <code class="docutils literal notranslate"><span class="pre">PATCH</span></code> in REST is a choice left to the API designer. If you’re curious about the considerations involved, read a great <a class="reference external" href="https://restfulapi.net/rest-put-vs-post/" target="_blank">breakdown of the subject<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<p class="last">In this course, we will follow the convention that <code class="docutils literal notranslate"><span class="pre">PATCH</span></code> is used to update the state of a resource entity.</p>
+</div>
+<p>When removing a resource the client is requesting a <em>transition to an empty state</em>. This means that <em>both</em> the request and response body that are transferred—<em>the representations of state</em>—are empty.</p>
+<p>We can see this behavior in action with a request to the <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> endpoint for a single resource entity in our example API:</p>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<p>Let’s once again assume a <code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code> resource exists with an <code class="docutils literal notranslate"><span class="pre">Id</span></code> of <code class="docutils literal notranslate"><span class="pre">12</span></code>. If we want to remove this entity we need to issue a request to its <em>uniquely identified</em> <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> endpoint:</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/events/12</span> <span class="pre">-&gt;</span> <span class="pre">204</span></code></div></blockquote>
+<p>In this shorthand you can see that this request has an <em>empty</em> request body. This is the empty state we are requesting a transition to.</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">204</span></code>, or <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">Content</span></code>, status code in the response indicates that the action was successful and that the response body is empty. The API transfers back a <em>representation of empty state</em> (no response body) to the client.</p>
+</div>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<p>What would happen if we made another request to the endpoint of a resource entity that doesn’t exist, such as <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/events/999</span></code>?</p>
+<p class="last">We would receive a <code class="docutils literal notranslate"><span class="pre">404</span></code>, or <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>, status code that lets us know the request failed because of a client error (providing an <code class="docutils literal notranslate"><span class="pre">Id</span></code> for a nonexistent resource).</p>
+</div>
+</div>
+</div>
+<div class="section" id="headers-status-codes">
+<h2>3.3.4. Headers &amp; Status Codes<a class="headerlink" href="#headers-status-codes" title="Permalink to this headline">¶</a></h2>
+<p>Another aspect of a RESTful API dictates the usage of HTTP response status codes and HTTP request and response headers.</p>
+<p>Response status codes inform the client about how the request was handled, including whether it was handled successfully or not. In the case of an unsuccessful request, the response status code and the attached message will include the information the client must change to fix the request.</p>
+<p>HTTP headers are used to communicate additional information (aka metadata) about a request or response. We will explore some common HTTP headers and their usage in RESTful design.</p>
+<div class="section" id="status-codes">
+<h3>3.3.4.1. Status Codes<a class="headerlink" href="#status-codes" title="Permalink to this headline">¶</a></h3>
+<p id="index-4">Every RESTful API response includes a status code that indicates whether the client’s request succeeded or failed.</p>
+<div class="section" id="success-status-codes">
+<h4>3.3.4.1.1. Success Status Codes<a class="headerlink" href="#success-status-codes" title="Permalink to this headline">¶</a></h4>
+<p>When a request is successful, a <code class="docutils literal notranslate"><span class="pre">2XX</span></code> status code is used. These codes communicate to the consumer the <em>type</em> of success relative to the action that was taken. Here are some of the most common success codes you will encounter:</p>
+<table border="1" class="colwidths-given docutils" id="id16">
+<caption><span class="caption-text">Common client success status codes for each action</span><a class="headerlink" href="#id16" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HTTP method</th>
+<th class="head">Status code</th>
+<th class="head">Message</th>
+<th class="head">Response</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">POST</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">201</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">Created</span></code></td>
+<td>Resource entity and <code class="docutils literal notranslate"><span class="pre">Location</span></code> header</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">GET</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">200</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">OK</span></code></td>
+<td>Resource entity or collection</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DELETE</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">204</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">Content</span></code></td>
+<td>empty response body</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="failure-status-codes">
+<h4>3.3.4.1.2. Failure Status Codes<a class="headerlink" href="#failure-status-codes" title="Permalink to this headline">¶</a></h4>
+<p>Requests can fail. A failed request is due to either the consumer or a bug in the API. Recall the status code groups that categorized the type of failure:</p>
+<ul class="simple">
+<li><strong>Client error</strong>: <code class="docutils literal notranslate"><span class="pre">4XX</span></code> status code group</li>
+<li><strong>Server error</strong>: <code class="docutils literal notranslate"><span class="pre">5XX</span></code> status code group</li>
+</ul>
+<p>Server errors are not something the consumer can control. However, client errors indicate that the request can be <em>reissued</em> with corrections. Each of these status codes and messages notify the consumer of the changes needed for a success.</p>
+<p>Let’s look at some of the common client error status codes:</p>
+<table border="1" class="colwidths-given docutils" id="id17">
+<caption><span class="caption-text">Common client error status codes</span><a class="headerlink" href="#id17" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="30%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Status code</th>
+<th class="head">Message</th>
+<th class="head">Correction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">400</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">Bad</span> <span class="pre">Request</span></code></td>
+<td>Client must fix errors in their request body</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">401</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">Unauthorized</span></code></td>
+<td>Client must authenticate first</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">403</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">Forbidden</span></code></td>
+<td>An authenticated client is <em>not allowed</em> to perform the requested action</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">404</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code></td>
+<td>The path to identify the resource is incorrect or the resource does not exist</td>
+</tr>
+</tbody>
+</table>
+<p>A bad request will include an error message in its response. The response will indicate <em>what the client must change</em> in their request body to succeed. This failure is seen when creating or updating a resource entity:</p>
+<div class="admonition-example admonition">
+<p class="first admonition-title"><i class="fas fa-binoculars" aria-hidden="true"></i>Example</p>
+<p>In the Coding Events API, the <em>state</em> of a <code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code> is validated using the following criteria:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Title</span></code>: 10-100 characters</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: less than 1000 characters</li>
+</ul>
+<p>Imagine a client sending a <code class="docutils literal notranslate"><span class="pre">PATCH</span></code> request to update the <code class="docutils literal notranslate"><span class="pre">CodingEvents</span></code> resource entity with an <code class="docutils literal notranslate"><span class="pre">Id</span></code> of <code class="docutils literal notranslate"><span class="pre">6</span></code>.</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">PATCH</span> <span class="pre">/events/6</span> <span class="pre">(PartialCodingEvent)</span> <span class="pre">-&gt;</span> <span class="pre">CodingEvent</span></code></div></blockquote>
+<p>If their request body contained the following <em>invalid</em> representation of partial state (due to a <code class="docutils literal notranslate"><span class="pre">Title</span></code> field that is too short):</p>
+<div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text">invalid representation in request to <code class="docutils literal notranslate"><span class="pre">PATCH</span> <span class="pre">/events/6</span></code> endpoint</span><a class="headerlink" href="#id18" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;Title&quot;</span><span class="o">:</span> <span class="s2">&quot;short&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The API response would have a <code class="docutils literal notranslate"><span class="pre">400</span></code> status code alerting the client that they must <em>correct their representation</em>. The response body would be used to communicate which aspects were invalid:</p>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">400 failed response body</span><a class="headerlink" href="#id19" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;error&quot;</span><span class="o">:</span> <span class="s2">&quot;invalid fields&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;fields&quot;</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+         <span class="s2">&quot;Title&quot;</span><span class="o">:</span> <span class="s2">&quot;must be between 10 and 100 characters in length&quot;</span>
+      <span class="p">}</span>
+   <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p class="last">Using the hints in the response, the client can fix their request body and reissue the request successfully.</p>
+</div>
+<div class="admonition-fun-fact admonition">
+<p class="first admonition-title"><i class="fas fa-rocket" aria-hidden="true"></i>Fun Fact</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">401</span></code>, or <code class="docutils literal notranslate"><span class="pre">Unauthorized</span></code>, status code actually indicates that the consumer is <em>not authenticated</em>. This means the consumer has not proven their identity to the API.</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">403</span></code>, or <code class="docutils literal notranslate"><span class="pre">Forbidden</span></code>, status code is a more accurate description of being unauthorized. After authenticating, the consumer’s authorization can determine if they are <em>allowed</em> or <em>forbidden</em> from taking the requested action.</p>
+</div>
+</div>
+</div>
+<div class="section" id="headers">
+<h3>3.3.4.2. Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h3>
+<p id="index-5">In RESTful design <strong>headers</strong> are used to communicate metadata about each interaction with a resource.</p>
+<table border="1" class="colwidths-given docutils" id="id20">
+<caption><span class="caption-text">Common request/response headers in REST</span><a class="headerlink" href="#id20" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="40%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Request/Response</th>
+<th class="head">Header</th>
+<th class="head">Meaning</th>
+<th class="head">Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Both</td>
+<td><code class="docutils literal notranslate"><span class="pre">Content-Type</span></code></td>
+<td>The attached body has the following media type</td>
+<td><code class="docutils literal notranslate"><span class="pre">application/json</span></code></td>
+</tr>
+<tr class="row-odd"><td>Request</td>
+<td><code class="docutils literal notranslate"><span class="pre">Accept</span></code></td>
+<td>The client expects the requested resource representation in the given media type</td>
+<td><code class="docutils literal notranslate"><span class="pre">application/json</span></code></td>
+</tr>
+<tr class="row-even"><td>Response</td>
+<td><code class="docutils literal notranslate"><span class="pre">Location</span></code></td>
+<td>The created resource representation can be found at the given URL value</td>
+<td><code class="docutils literal notranslate"><span class="pre">/resources/{id}</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> request header is also commonly used. Later in this course we will learn about authenticating with an API using this header and a <a class="reference external" href="https://auth0.com/docs/protocols/oidc" target="_blank">JWT access token<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="learning-more">
+<h2>3.3.5. Learning More<a class="headerlink" href="#learning-more" title="Permalink to this headline">¶</a></h2>
+<p>This book has covered the fundamental aspects of the RESTful mental model and practical usage. However, RESTful design is a deep topic that even extends <em>beyond the web and use of HTTP</em>!</p>
+<p>If you want to learn more, the following resources are a good start:</p>
+<div class="section" id="practical-understanding">
+<h3>3.3.5.1. Practical Understanding<a class="headerlink" href="#practical-understanding" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="https://www.youtube.com/watch?v=GZvSYJDk-us&amp;t=0s" target="_blank">Craig Dennis: APIs for beginners (YouTube)<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li><a class="reference external" href="https://restful-api-design.readthedocs.io/en/latest/relationships.html" target="_blank">REST sub-collections, relationships and links<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li><a class="reference external" href="https://swagger.io/specification/" target="_blank">OpenAPI specification &amp; Swagger REST tools<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li>The <a class="reference external" href="https://developer.github.com/v3/" target="_blank">GitHub API<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> and <a class="reference external" href="https://stripe.com/docs/api" target="_blank">Stripe (payment processing) API<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> are excellent examples of RESTful design (and fantastic documentation)</li>
+</ul>
+</div>
+<div class="section" id="deep-understanding">
+<h3>3.3.5.2. Deep Understanding<a class="headerlink" href="#deep-understanding" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The <a class="reference external" href="https://www.restapitutorial.com/lessons/whatisrest.html" target="_blank">REST constraints<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li>The <a class="reference external" href="https://www.martinfowler.com/articles/richardsonMaturityModel.html" target="_blank">The Richardson REST maturity model<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li>The original <a class="reference external" href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm" target="_blank">REST doctoral thesis by Roy Fielding<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="rest-abstract.html"><span aria-hidden="true">&larr;</span> 3.2. REST: Abstract Fundamentals</a></li>
+        
+        
+        <li class="next"><a href="walkthrough_setup-powershell.html">3.4. Walkthrough: Setup Your Development Machine <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/web-apis/rest-practical.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

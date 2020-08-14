@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>9.3. Working With the File System &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9.4. Working With Objects" href="objects.html" />
+    <link rel="prev" title="9.2. Cmdlet Basics" href="cmdlets.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">9. Introduction to PowerShell</a></li>
+    <li class="active">9.3. Working With the File System</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="working-with-the-file-system">
+<h1>9.3. Working With the File System<a class="headerlink" href="#working-with-the-file-system" title="Permalink to this headline">¶</a></h1>
+<p>PowerShell brought over many of the essential Bash file system commands and behaviors. While several of the Bash commands are available in PowerShell, they are incompatible with Windows and were brought over as <strong>aliases</strong>.</p>
+<p id="index-0">An alias is like a nickname for a command. Some Bash commands, such as <code class="docutils literal notranslate"><span class="pre">pwd</span></code> or <code class="docutils literal notranslate"><span class="pre">cd</span></code>, are aliases for underlying PowerShell cmdlets, such <code class="docutils literal notranslate"><span class="pre">Get-Location</span></code> and <code class="docutils literal notranslate"><span class="pre">Set-Location</span></code>.</p>
+<p>Because these aliases are not the <em>real</em> Bash command, not all of their parameters are the same in PowerShell. Let’s explore the underlying cmdlets and the common arguments used with them.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>Some of the navigation shorthands are different from in the Bash environment:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">~</span></code>: shorthand for the home directory still works</li>
+<li><code class="docutils literal notranslate"><span class="pre">-</span></code>: shorthand for returning to the <em>previous</em> working directory <em>does not</em></li>
+</ul>
+<p>The <em>this directory</em> and <em>up directory</em> characters are the same, but use the Windows path separator of a back-slash (<code class="docutils literal notranslate"><span class="pre">\</span></code>):</p>
+<ul class="last simple">
+<li><code class="docutils literal notranslate"><span class="pre">.</span></code>: <em>this directory</em> shorthand</li>
+<li><code class="docutils literal notranslate"><span class="pre">.\</span></code>: relative to <em>this directory</em> shorthand</li>
+<li><code class="docutils literal notranslate"><span class="pre">..\</span></code>: <em>up directory</em> level shorthand</li>
+</ul>
+</div>
+<div class="section" id="get-the-current-working-directory">
+<h2>9.3.1. Get the Current Working Directory<a class="headerlink" href="#get-the-current-working-directory" title="Permalink to this headline">¶</a></h2>
+<p>In PowerShell, you can either use the Bash alias:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">pwd</span>
+<span class="c"># C:\Users\&lt;username&gt;</span>
+</pre></div>
+</div>
+</div>
+<p>or its underlying cmdlet, <code class="docutils literal notranslate"><span class="pre">Get-Location</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Get-Location</span>
+<span class="c"># C:\Users\&lt;username&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="change-directory">
+<h2>9.3.2. Change Directory<a class="headerlink" href="#change-directory" title="Permalink to this headline">¶</a></h2>
+<p>The Bash command <code class="docutils literal notranslate"><span class="pre">cd</span></code> can still be used with an absolute or relative path:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; cd relative/path
+
+&gt; cd C:\absolute\path
+</pre></div>
+</div>
+</div>
+<p>It is an alias for the PowerShell cmdlet <code class="docutils literal notranslate"><span class="pre">Set-Location</span></code>, which uses the same arguments:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; Set-Location relative/path
+
+&gt; Set-Location C:\absolute\path
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="list-directory-contents">
+<h2>9.3.3. List Directory Contents<a class="headerlink" href="#list-directory-contents" title="Permalink to this headline">¶</a></h2>
+<p>In Bash, we used the <code class="docutils literal notranslate"><span class="pre">ls</span></code> command with or without a path to list the contents of a directory:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; ls
+# contents of CWD
+
+&gt; ls relative\path
+# contents of dir at relative path to CWD
+
+&gt; ls C:\absolute\path
+# contents of dir from absolute path
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Get-ChildItem</span></code> cmdlet also uses an absolute or relative path of a directory to list directory contents:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; Get-ChildItem
+# contents of CWD
+
+&gt; Get-ChildItem -Path relative\path
+# contents of dir at relative path to CWD
+
+&gt; Get-ChildItem -Path C:\absolute\path
+# contents of dir from absolute path
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="move-a-directory-or-file">
+<h2>9.3.4. Move a Directory or File<a class="headerlink" href="#move-a-directory-or-file" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">mv</span></code> command can be used in Bash or PowerShell with an absolute or relative path for either of its arguments:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; mv path\to\target C:\absolute\path\to\destination
+</pre></div>
+</div>
+</div>
+<p>The PowerShell cmdlet behind <code class="docutils literal notranslate"><span class="pre">mv</span></code> is the more declaratively named <code class="docutils literal notranslate"><span class="pre">Move-Item</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; Move-Item path\to\target C:\absolute\path\to\destination
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="copy-a-directory-or-file">
+<h2>9.3.5. Copy a Directory or File<a class="headerlink" href="#copy-a-directory-or-file" title="Permalink to this headline">¶</a></h2>
+<p>In PowerShell, copying an item can be done using the Bash command <code class="docutils literal notranslate"><span class="pre">cp</span></code>. Recall that we used the <code class="docutils literal notranslate"><span class="pre">-r</span></code> (recursive) option when copying a directory with its contents. For a file, however, we could just use <code class="docutils literal notranslate"><span class="pre">cp</span></code> directly:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># copy a directory recursively</span>
+<span class="p">&gt;</span> <span class="nb">cp </span><span class="n">-r</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">target</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">destination</span>
+
+<span class="c"># copy a file</span>
+<span class="p">&gt;</span> <span class="nb">cp </span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">target</span><span class="p">\</span><span class="n">file</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">destination</span><span class="p">\</span><span class="n">file</span>
+</pre></div>
+</div>
+</div>
+<p>Its cmdlet equivalent, <code class="docutils literal notranslate"><span class="pre">Copy-Item</span></code>, can also be used for files or directories. When copying a directory, the <code class="docutils literal notranslate"><span class="pre">-Recurse</span></code> option can be used like the Bash option <code class="docutils literal notranslate"><span class="pre">-r</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># copy a directory recursively</span>
+<span class="p">&gt;</span> <span class="nb">Copy-Item</span> <span class="n">-Recurse</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">target</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">destination</span>
+
+<span class="c"># copy a file</span>
+<span class="p">&gt;</span> <span class="nb">Copy-Item</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">target</span><span class="p">\</span><span class="n">file</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">destination</span><span class="p">\</span><span class="n">file</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="delete-a-directory-or-file">
+<h2>9.3.6. Delete a Directory or File<a class="headerlink" href="#delete-a-directory-or-file" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">Be <em>very careful</em> when removing (deleting) items in PowerShell. Always use the interactive mode (<code class="docutils literal notranslate"><span class="pre">-Confirm</span></code> option) to confirm each deletion!</p>
+</div>
+<p>Previously, we used the Bash <code class="docutils literal notranslate"><span class="pre">rm</span></code> command with the <code class="docutils literal notranslate"><span class="pre">-i</span></code> (interactive) option to remove files and directories. Just like <code class="docutils literal notranslate"><span class="pre">cp</span></code>, we added the <code class="docutils literal notranslate"><span class="pre">-r</span></code> (recursive) option when deleting a directory and its contents.</p>
+<p>However, in PowerShell these options can not be used. Instead we will use the PowerShell <code class="docutils literal notranslate"><span class="pre">Remove-Item</span></code> cmdlet with the following options:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">-Confirm</span></code>: confirm each item before being deleted (like <code class="docutils literal notranslate"><span class="pre">-i</span></code> interactive mode in Bash)</li>
+<li><code class="docutils literal notranslate"><span class="pre">-Recurse</span></code>: when removing a directory and its contents recursively</li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># delete a directory and contents recursively</span>
+<span class="p">&gt;</span> <span class="nb">Remove-Item</span> <span class="n">-Confirm</span> <span class="n">-Recurse</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">dir-name</span>
+
+<span class="c"># delete a file item</span>
+<span class="p">&gt;</span> <span class="nb">Remove-Item</span> <span class="n">-Confirm</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">file-name</span><span class="p">.</span><span class="n">ext</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="create-a-directory-or-file">
+<h2>9.3.7. Create a Directory or File<a class="headerlink" href="#create-a-directory-or-file" title="Permalink to this headline">¶</a></h2>
+<p>In Bash, we used the <code class="docutils literal notranslate"><span class="pre">mkdir</span></code> command to create new directories. This alias is still available in PowerShell, but its underlying cmdlet is much more powerful:</p>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; mkdir relative\path
+
+&gt; mkdir C:\absolute\path
+</pre></div>
+</div>
+</div>
+<p>Recall that in Bash we used a side-effect of the <code class="docutils literal notranslate"><span class="pre">touch</span></code> command to create a new file. The <code class="docutils literal notranslate"><span class="pre">touch</span></code> alias <em>does not exist</em> in PowerShell.</p>
+<p id="index-1">Instead of using a side-effect, PowerShell has a dedicated cmdlet for creating <strong>items</strong> of any type, such as a file or directory.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">New-Item</span></code> cmdlet has the following options:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">-Name</span> <span class="pre">&quot;&lt;item</span> <span class="pre">name&gt;&quot;</span></code>: the name of the item to create</li>
+<li><code class="docutils literal notranslate"><span class="pre">-Path</span> <span class="pre">&lt;path</span> <span class="pre">of</span> <span class="pre">new</span> <span class="pre">item&gt;</span></code>: will create the item (of the given <code class="docutils literal notranslate"><span class="pre">Name</span></code>) at the absolute or relative path</li>
+<li><code class="docutils literal notranslate"><span class="pre">-ItemType</span> <span class="pre">&quot;&lt;file</span> <span class="pre">type&gt;&quot;</span></code>: will create the item with a specific type (like <code class="docutils literal notranslate"><span class="pre">file</span></code> or <code class="docutils literal notranslate"><span class="pre">directory</span></code>)</li>
+</ul>
+<p>For example, to create a directory:</p>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id13" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; New-Item -Name &quot;dir-name&quot; -ItemType &quot;directory&quot; -Path relative\path
+# creates relative\path\dir-name directory Item
+
+&gt; New-Item -Name &quot;dir-name&quot; -ItemType &quot;directory&quot; -Path C:\absolute\path
+# creates C:\absolute\path\dir-name directory Item
+</pre></div>
+</div>
+</div>
+<p>When creating a file, you can use the <code class="docutils literal notranslate"><span class="pre">-Value</span></code> option to write content to the file in one command. Remember that extensions matter in Windows. You <em>must provide the file extension</em> in the <code class="docutils literal notranslate"><span class="pre">-Name</span></code> option:</p>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id14" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; New-Item -Name &quot;my-file.txt&quot; -ItemType &quot;file&quot; -Path relative\path -Value &quot;contents of the file&quot;
+# creates relative\path\my-file.txt with &quot;contents of the file&quot; written to it
+
+&gt; New-Item -Name &quot;my-file.txt&quot; -ItemType &quot;file&quot; -Path C:\absolute\path -Value &quot;contents of the file&quot;
+# creates C:\absolute\path\my-file.txt with &quot;contents of the file&quot; written to it
+</pre></div>
+</div>
+</div>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">For creating the contents of files that are more than a single line, take a look at this <a class="reference external" href="https://riptutorial.com/powershell/example/20569/here-string" target="_blank">here-string tutorial article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+</div>
+<div class="section" id="reading-file-contents">
+<h2>9.3.8. Reading File Contents<a class="headerlink" href="#reading-file-contents" title="Permalink to this headline">¶</a></h2>
+<p>In Bash, we learned about the <code class="docutils literal notranslate"><span class="pre">cat</span></code> (concatenate) command. We used the side-effect of <code class="docutils literal notranslate"><span class="pre">cat</span></code> to print the contents of a file to the Terminal. We <em>can</em> use <code class="docutils literal notranslate"><span class="pre">cat</span></code> in PowerShell as well:</p>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id15" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; cat relative\path\to\file
+
+&gt; cat C:\absolute\path\to\file
+</pre></div>
+</div>
+</div>
+<p>The PowerShell equivalent to <code class="docutils literal notranslate"><span class="pre">cat</span></code> is <code class="docutils literal notranslate"><span class="pre">Get-Content</span></code>. Notice how declarative the naming is—you are <em>getting</em> the <em>contents</em> of the <em>file</em>:</p>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id16" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; Get-Content relative\path
+# contents of file at relative path to CWD
+
+&gt; Get-Content C:\absolute\path
+# contents of file from absolute path
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Get-Content</span></code> cmdlet will output an object based on the content in the file. Most of the time, this will be a single <code class="docutils literal notranslate"><span class="pre">String</span></code> object for each line in the file.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">Get-Content</span></code> cmdlet has a number of options that can be used to get certain lines of a file’s contents, or even filter the output. You can read more about the options <a class="reference external" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-content?view=powershell-7" target="_blank">in this documentation article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></p>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="cmdlets.html"><span aria-hidden="true">&larr;</span> 9.2. Cmdlet Basics</a></li>
+        
+        
+        <li class="next"><a href="objects.html">9.4. Working With Objects <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/powershell-intro/fs-navigation.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

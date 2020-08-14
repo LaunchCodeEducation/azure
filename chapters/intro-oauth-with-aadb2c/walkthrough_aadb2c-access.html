@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.5. Walkthrough: Set Up Access Token Authorization with Azure ADB2C &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7.6. Studio Part 1: Deploy Coding Events API with AADB2C" href="studio_1-aadb2c-deployment.html" />
+    <link rel="prev" title="7.4. Walkthrough: Set Up Azure ADB2C Tenant &amp; Identity Tokens" href="walkthrough_aadb2c-identity.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">7. Introduction to Authentication &amp; Authorization with Azure AD B2C</a></li>
+    <li class="active">7.5. Walkthrough: Set Up Access Token Authorization with Azure ADB2C</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="walkthrough-set-up-access-token-authorization-with-azure-adb2c">
+<h1>7.5. Walkthrough: Set Up Access Token Authorization with Azure ADB2C<a class="headerlink" href="#walkthrough-set-up-access-token-authorization-with-azure-adb2c" title="Permalink to this headline">¶</a></h1>
+<p>In the previous walkthrough we created our AADB2C tenant and configured an identity token flow. These steps integrated our Coding Events API with our AADB2C tenant as a centralized identity manager. At this point the API can use <strong>OIDC</strong> to <strong>authenticate the identity</strong> of users in the AADB2C tenant.</p>
+<p>In this walkthrough we will explore the other half of AADB2C – protecting applications using access tokens. We can use <strong>OAuth</strong> access tokens as a means of <strong>delegating authorization</strong> for one service to interact with another service on behalf of a user.</p>
+<p>An API can only be consumed by client applications. We can use AADB2C as an <strong>authorization server</strong> to protect our API by restricting access to only <em>registered applications</em>. In our case we will use Postman as the consuming client application.</p>
+<div class="section" id="checklist">
+<h2>7.5.1. Checklist<a class="headerlink" href="#checklist" title="Permalink to this headline">¶</a></h2>
+<p>The goal of this walkthrough is to configure AADB2C to grant access tokens to the Postman client application. These tokens will need to include a <strong>scope</strong> that <strong>authorizes</strong> Postman (the token <em>bearer</em>) to interact with the protected application (Coding Events API) <strong>on behalf of a user</strong>.</p>
+<p>To accomplish this task we will need to:</p>
+<ol class="arabic simple">
+<li>Configure and <em>expose</em> a <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope for accessing the Coding Events API</li>
+<li>Register the Postman client application in our AADB2C tenant</li>
+<li>Configure the Postman client application to enable requests for access tokens with the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope</li>
+<li>Configure Postman to request access tokens for interacting with the Coding Events API on behalf of an authenticated user in our tenant</li>
+</ol>
+<p>In the following Studio you will then update your Coding Events API source code to integrate with AADB2C and deploy it. Then you will use Postman and an access token to make authorized requests to the final version of the API.</p>
+</div>
+<div class="section" id="the-final-coding-events-api-version">
+<h2>7.5.2. The Final Coding Events API Version<a class="headerlink" href="#the-final-coding-events-api-version" title="Permalink to this headline">¶</a></h2>
+<p>The final branch of the Coding Events API includes many additions to the code base. Beyond the AADB2C integration, the update supports <strong>Role Based Access Control (RBAC)</strong> and <strong>Attribute Based Access Control (ABAC)</strong>. These industry terms describe patterns that are used for organizing logical rules which enforce <strong>authorization</strong>.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">If you would like to learn more about RBAC and ABAC <a class="reference external" href="https://www.dnsstuff.com/rbac-vs-abac-access-control" target="_blank">this article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> provides a great description of their similarities, differences and usages.</p>
+</div>
+<p>This version of the Coding Events API includes logic that restricts access to resources based on the following:</p>
+<ul class="simple">
+<li><strong>Roles</strong>: <code class="docutils literal notranslate"><span class="pre">Public</span> <span class="pre">User</span></code> (<em>anonymous</em>), <code class="docutils literal notranslate"><span class="pre">Authenticated</span> <span class="pre">User</span></code></li>
+<li><strong>Attributes</strong>: <code class="docutils literal notranslate"><span class="pre">Coding</span> <span class="pre">Event</span> <span class="pre">Membership</span></code>, <code class="docutils literal notranslate"><span class="pre">Coding</span> <span class="pre">Event</span> <span class="pre">Ownership</span></code></li>
+</ul>
+<p>In addition to this authorization logic and the <code class="docutils literal notranslate"><span class="pre">CodingEvent</span></code> resource you saw before, the API now includes the <code class="docutils literal notranslate"><span class="pre">Member</span></code> and <code class="docutils literal notranslate"><span class="pre">Tag</span></code> resources. Because there are many more endpoints available in this version of the API you will find a Postman collection file in the repo that you can import.</p>
+<p>In the final branch of the API (<code class="docutils literal notranslate"><span class="pre">3-aadb2c</span></code>) the <code class="docutils literal notranslate"><span class="pre">coding-events-api/CodingEventsAPI</span></code> project directory contains the Postman collection file called <code class="docutils literal notranslate"><span class="pre">Postman_AADB2C-CodingEventsAPI-Collection.json</span></code>. In the next step we will import this file into Postman.</p>
+</div>
+<div class="section" id="set-up-postman">
+<h2>7.5.3. Set Up Postman<a class="headerlink" href="#set-up-postman" title="Permalink to this headline">¶</a></h2>
+<p>This walkthrough will require working in both the Azure Portal on AADB2C as well as Postman to configure its requests for access tokens. We will begin by setting up Postman before switching to the Azure Portal.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">After this initial setup each of the subsequent steps will require you to switch between your browser and Postman to copy values from the Azure Portal into Postman.</p>
+</div>
+<div class="section" id="import-the-coding-events-api-collection">
+<h3>7.5.3.1. Import the Coding Events API Collection<a class="headerlink" href="#import-the-coding-events-api-collection" title="Permalink to this headline">¶</a></h3>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">Make sure you switch to the <code class="docutils literal notranslate"><span class="pre">3-aadb2c</span></code> branch in your forked <code class="docutils literal notranslate"><span class="pre">coding-events-api</span></code> repo before continuing.</p>
+</div>
+<p>Open Postman and select the <strong>Import</strong> button (next to <strong>New</strong>):</p>
+<img alt="Postman import button" src="../../_images/1import-collection.png" />
+<p>Select the <strong>Upload Files</strong> button and then navigate to the collection file in your project directory:</p>
+<img alt="Postman upload collection file" src="../../_images/2upload-file.png" />
+<p>Select the <strong>Import</strong> button to import the collection:</p>
+<img alt="Postman import the uploadedthen collection" src="../../_images/3select-import.png" />
+<p>On the right side of the new collection click the three dots then select <strong>Edit</strong>:</p>
+<img alt="Postman edit the collection" src="../../_images/4edit-collection.png" />
+<p>From the edit collection modal select the <strong>Authorization</strong> tab:</p>
+<img alt="Postman collection Authorization tab" src="../../_images/5select-authorization-tab.png" />
+<p>In addition to the endpoints and organizing directories, this imported collection comes with many of the Authorization settings pre-configured for you. From this tab you can see it has already been configured to use OAuth for getting an access token. After getting the access token it will be automatically sent in the <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> request header for every request made within the collection.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bearer</span></code> prefix will be used to indicate that Postman is the <em>bearer of a token that authorizes its requests</em> for interacting with the API <em>on behalf of its</em> <strong>sub</strong>ject, the AADB2C user who authorized it. The updated API then extracts and validates this token before processing the request using its RBAC and ABAC rules.</p>
+</div>
+<div class="section" id="configure-the-access-token-request-form">
+<h3>7.5.3.2. Configure the Access Token Request Form<a class="headerlink" href="#configure-the-access-token-request-form" title="Permalink to this headline">¶</a></h3>
+<p>Selecting the <strong>Get New Access Token</strong> button will open a modal with a form for configuring the access token request:</p>
+<img alt="Postman Authorization get new access token button" src="../../_images/6fill-out-form.png" />
+<p>This form allows you to define all of the information needed to request an access token. At this point it is empty but you can configure the first field:</p>
+<ul class="simple">
+<li><strong>Token Name</strong>: <code class="docutils literal notranslate"><span class="pre">access</span> <span class="pre">token</span></code></li>
+</ul>
+<p>Throughout this walkthrough we will configure this form so Postman can request access tokens from our AADB2C service. By the end of the walkthrough you will have updated the following fields:</p>
+<ul class="simple">
+<li><strong>Grant Type</strong>: <code class="docutils literal notranslate"><span class="pre">Implicit</span></code> (since we will be using the implicit grant flow)</li>
+<li><strong>Callback URL</strong>: the <em>redirect URI</em> where the token will be sent after authorization</li>
+<li><strong>Auth URL</strong>: the URL of the authorization endpoint for the SUSI User Flow policy we created before</li>
+<li><strong>Client ID</strong>: the ID of the new Postman client application we will be registering (the <em>authorized party</em>, or bearer, of the access token)</li>
+<li><strong>Scope</strong>: the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope exposed by the registered Coding Events API application</li>
+<li><strong>State</strong>: an unguessable value used as an additional security measure (discussed later)</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Leave this form open in Postman and switch over to the Azure Portal in your browser.</p>
+</div>
+</div>
+</div>
+<div class="section" id="protect-the-coding-events-api">
+<h2>7.5.4. Protect the Coding Events API<a class="headerlink" href="#protect-the-coding-events-api" title="Permalink to this headline">¶</a></h2>
+<p>In this step we will configure AADB2C to protect our API. We will be setting up and <em>exposing</em> the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope that Postman will use. At the end of this step you will copy over the URI of this scope into the value for the <strong>Scope</strong> field in the Postman form.</p>
+<p>First navigate to your AADB2C tenant directory. Then select the Coding Events API under <strong>App Registrations</strong>.</p>
+<div class="section" id="expose-a-user-impersonation-scope-for-the-api">
+<h3>7.5.4.1. Expose a <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> Scope for the API<a class="headerlink" href="#expose-a-user-impersonation-scope-for-the-api" title="Permalink to this headline">¶</a></h3>
+<p>From the Coding Events API application dashboard select the <strong>Expose an API</strong> settings from the left panel. From this view we can create and <em>expose</em> scopes used for restricting access to our API.</p>
+<p>Select the <strong>Add a scope</strong> button:</p>
+<img alt="AADB2C expose an API" src="../../_images/1set-api-scopes.png" />
+<p>Since this is the first scope exposed for our API we will need to register its <strong>application ID URI</strong>. This is a unique identifier that associates the exposed scopes to this specific registered application. By default it will use the registered application’s client ID.</p>
+<img alt="AADB2C set application ID URI for new scope" src="../../_images/2set-scope-app-id-uri.png" />
+<p>Select <strong>Save and continue</strong> to proceed to the new scope form.</p>
+<p>We will be exposing a <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope for our API. This scope is what the Postman client application will request access to in order to send requests to the API on behalf of the user. Enter the following values for each of the scope form fields:</p>
+<ul class="simple">
+<li><strong>Scope name</strong>: <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code></li>
+<li><strong>Admin consent display</strong>: <code class="docutils literal notranslate"><span class="pre">User</span> <span class="pre">impersonation</span> <span class="pre">access</span> <span class="pre">to</span> <span class="pre">API</span></code></li>
+<li><strong>Admin consent description</strong>: <code class="docutils literal notranslate"><span class="pre">Allows</span> <span class="pre">the</span> <span class="pre">Client</span> <span class="pre">application</span> <span class="pre">to</span> <span class="pre">access</span> <span class="pre">the</span> <span class="pre">API</span> <span class="pre">on</span> <span class="pre">behalf</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">authenticated</span> <span class="pre">user</span></code></li>
+</ul>
+<img alt="AADB2C add user_impersonation scope to API" src="../../_images/3set-user-impersonation-scope.png" />
+<p>After the scope has been registered copy the scope URI (<strong>using the blue copy icon next to it</strong>):</p>
+<img alt="AADB2C copy scope URI" src="../../_images/3-5copy-scope-uri.png" />
+<p>Switch back to Postman and <strong>replace the Scope field</strong> with the copied value.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Before continuing make sure you have updated the Postman form:</p>
+<ul class="last simple">
+<li><strong>Scope</strong> field: the <strong>scope URI</strong> for the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="register-configure-the-postman-client-application">
+<h2>7.5.5. Register &amp; Configure the Postman Client Application<a class="headerlink" href="#register-configure-the-postman-client-application" title="Permalink to this headline">¶</a></h2>
+<p>Now that our API has exposed its <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope we will register our Postman client application to consume it. Using the <code class="docutils literal notranslate"><span class="pre">Azure</span> <span class="pre">AD</span> <span class="pre">B2C</span> <span class="pre">|</span> <span class="pre">App</span> <span class="pre">registrations</span></code> breadcrumb link in the top left corner go back to the app registrations view.</p>
+<div class="section" id="register-the-postman-client-application">
+<h3>7.5.5.1. Register the Postman Client Application<a class="headerlink" href="#register-the-postman-client-application" title="Permalink to this headline">¶</a></h3>
+<p>Select <strong>New registration</strong>:</p>
+<img alt="new registration (for client app)" src="../../_images/4new-app-registration.png" />
+<p>Just as before <strong>we will leave all the defaults</strong> except for the name and redirect URI. In the app registration form use the following values:</p>
+<ul class="simple">
+<li><strong>Name</strong>: <code class="docutils literal notranslate"><span class="pre">Postman</span></code></li>
+<li><strong>redirect URI</strong>: <code class="docutils literal notranslate"><span class="pre">https://jwt.ms</span></code></li>
+</ul>
+<img alt="Postman client application completed form" src="../../_images/5application-completed-registration-form.png" />
+<p>We will be registering two redirect URIs for this application. The first will use the Microsoft JWT tool so that we can explore the access token (like we did for the identity token in the previous walkthrough). The second will be the redirect URI used when performing the OAuth flow from Postman. We will register the latter URI in the next section.</p>
+<p>After registering the Postman application it will send you to its application dashboard. Copy the <strong>client ID</strong> to your clipboard using the copy icon to the right of it:</p>
+<img alt="copy Postman client ID" src="../../_images/5-1copy-postman-client-id.png" />
+<p>Switch back to Postman and <strong>replace the Client ID field</strong> with the copied value.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Before continuing make sure you have updated the Postman form:</p>
+<ul class="last simple">
+<li><strong>Client ID</strong> field: the <strong>client ID</strong> of your registered <strong>Postman application</strong></li>
+</ul>
+</div>
+</div>
+<div class="section" id="configure-authentication">
+<h3>7.5.5.2. Configure Authentication<a class="headerlink" href="#configure-authentication" title="Permalink to this headline">¶</a></h3>
+<p>We will now configure the Postman application to use the <strong>OAuth implicit flow</strong> and set the redirect URI. On the left sidebar select the <strong>Authentication</strong> settings.</p>
+<div class="section" id="configure-the-redirect-uri">
+<h4>7.5.5.2.1. Configure the Redirect URI<a class="headerlink" href="#configure-the-redirect-uri" title="Permalink to this headline">¶</a></h4>
+<p>In the <strong>Web - Redirect URIs</strong> add a new entry under the existing one. Select <strong>add URI</strong> and paste in the following value which Postman uses for handling OAuth redirects:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">https://www.postman.com/oauth2/callback</span></code></li>
+</ul>
+<p>As a reminder, this is where a user will be redirected after authenticating with AADB2C. When using the implicit flow the token(s) will be present as query string parameters attached to this URI.</p>
+<p>Switch back to Postman and <strong>replace the Callback URL field</strong> with this value.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Before continuing make sure you have updated the Postman form:</p>
+<ul class="last simple">
+<li><strong>Callback URL</strong> field: <code class="docutils literal notranslate"><span class="pre">https://www.postman.com/oauth2/callback</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="configure-implicit-flow">
+<h4>7.5.5.2.2. Configure Implicit Flow<a class="headerlink" href="#configure-implicit-flow" title="Permalink to this headline">¶</a></h4>
+<p>Then scroll down to the <strong>Implicit grant</strong> section and, just as before, select the checkboxes <strong>for both</strong>:</p>
+<ul class="simple">
+<li><strong>Access tokens</strong></li>
+<li><strong>Identity tokens</strong></li>
+</ul>
+<p>Check that your configuration matches the picture below then select <strong>Save</strong>:</p>
+<img alt="Postman Authentication configuration completed view" src="../../_images/5-2postman-authentication-configuration-complete.png" />
+<p>Switch back to Postman and <strong>update the Grant Type field</strong> to reflect this configuration.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Before continuing make sure you have updated the Postman form:</p>
+<ul class="last simple">
+<li><strong>Grant Type</strong> field: select <code class="docutils literal notranslate"><span class="pre">Implicit</span></code> (the grant type used by the registered Postman application)</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="grant-admin-permissions-for-using-the-scope">
+<h3>7.5.5.3. Grant Admin Permissions for Using the Scope<a class="headerlink" href="#grant-admin-permissions-for-using-the-scope" title="Permalink to this headline">¶</a></h3>
+<p>In this step we will configure the Postman application to use the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope exposed by the Coding Events API application. To do this we will need to grant admin permissions for this scope.</p>
+<p>In the sidebar select the <strong>API permissions</strong> settings. Then select the <strong>Add a permission</strong> button:</p>
+<img alt="Postman add an API permission" src="../../_images/7add-permission.png" />
+<p>This will open a sidebar for configuring the permissions. Select the <strong>My APIs</strong> tab on the right side then select the <strong>Coding Events API</strong> application from the list:</p>
+<img alt="Postman grant My APIs - Coding Events API permission" src="../../_images/8my-apis.png" />
+<p>From here we can select the scopes for the selected API (Coding Events API) that we would like to grant permissions for <em>this application</em> (Postman) to use. Select the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope then select <strong>Add Permission</strong>:</p>
+<img alt="add Coding Events API user_impersonation permission to Postman" src="../../_images/9select-user-impersonation-permission.png" />
+<p>This scope <strong>is not valid</strong> until an admin has granted permission for the Postman application to use it. Select the <strong>Grant admin consent for &lt;Name&gt; ADB2C</strong> button to grant it.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">This is a <strong>tenant-wide</strong> permission that will apply to <em>your</em> AADB2C tenant. <code class="docutils literal notranslate"><span class="pre">Student</span></code> is used as a generic placeholder in the image below.</p>
+</div>
+<img alt="grant admin permission to user_impersonation scope for Postman" src="../../_images/10grant-admin-consent.png" />
+<p>After confirming your decision your configuration should match the image below.</p>
+<img alt="granted admin permission success" src="../../_images/11admin-grant-success.png" />
+</div>
+</div>
+<div class="section" id="test-the-user-flow-for-access-tokens">
+<h2>7.5.6. Test the User Flow for Access Tokens<a class="headerlink" href="#test-the-user-flow-for-access-tokens" title="Permalink to this headline">¶</a></h2>
+<p>Let’s take stock of what we have done so far:</p>
+<ul class="simple">
+<li>configured the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope for access tokens used to protect our Coding Events API</li>
+<li>registered the Postman client application used to interact with the API</li>
+<li>configured the Postman application to allow it to use the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope in the access tokens it will use in requests sent to the API</li>
+</ul>
+<p>In parallel with this setup we have also been configuring the Postman form with the values it needs to request an access token from <em>your</em> AADB2C service. The final field we need to update is the <strong>authorization URL</strong> (Auth URL in the form). In this step we will copy over this URL and then test out the access token process using the Microsoft JWT explorer tool (<code class="docutils literal notranslate"><span class="pre">jwt.ms</span></code>).</p>
+<p>We can get the URL and test out the process in the User Flows section of our AADB2C service. In the top left corner use the <code class="docutils literal notranslate"><span class="pre">Azure</span> <span class="pre">AD</span> <span class="pre">B2C</span> <span class="pre">|</span> <span class="pre">App</span> <span class="pre">registrations</span></code> breadcrumb link to go back to the app registrations view.</p>
+<p>Select <strong>User Flows</strong>:</p>
+<img alt="Navigate from App Registrations to User Flows" src="../../_images/12select-user-flows.png" />
+<p>Select the SUSI flow we configured in the previous walkthrough:</p>
+<img alt="Select SUSI flow" src="../../_images/13select-susi-flow.png" />
+<div class="section" id="get-the-authorization-url">
+<h3>7.5.6.1. Get the Authorization URL<a class="headerlink" href="#get-the-authorization-url" title="Permalink to this headline">¶</a></h3>
+<p>From the SUSI flow dashboard select the <strong>Run user flow</strong> button to open the sidebar:</p>
+<img alt="Select Run user flow" src="../../_images/14run-user-flow.png" />
+<p>At the top of the sidebar is the <strong>metadata document</strong> link. As a reminder this is the standard OIDC document that formally describes the capabilities and endpoints used to interact with the AADB2C service.</p>
+<p>Select this link to open the JSON metadata document:</p>
+<img alt="OIDC metadata document select authorization URL" src="../../_images/15user-flow-metadata-document-link.png" />
+<p>From the metadata document copy the <strong>authorization endpoint</strong> URL to your clipboard:</p>
+<img alt="OIDC metadata document copy the authorization endpoint URL" src="../../_images/16metadata-authorization-endpoint.png" />
+<p>Switch back to Postman and <strong>replace the Auth URL field</strong> with the copied value to complete the form.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Before continuing make sure you have updated the Postman form:</p>
+<ul class="last simple">
+<li><strong>Auth URL</strong> field: the <strong>authorization_endpoint</strong> entry in the linked metadata document</li>
+</ul>
+</div>
+</div>
+<div class="section" id="explore-the-access-token">
+<h3>7.5.6.2. Explore the Access Token<a class="headerlink" href="#explore-the-access-token" title="Permalink to this headline">¶</a></h3>
+<p>With the SUSI flow sidebar open let’s configure an <em>access token request</em> that is sent to the Microsoft JWT tool like we did in the previous walkthrough. However, this time we will use it to inspect the <strong>claims in the access token</strong> rather than an identity token.</p>
+<p>First make sure that the following fields are selected:</p>
+<ul class="simple">
+<li><strong>Application</strong>: <code class="docutils literal notranslate"><span class="pre">Postman</span></code></li>
+<li><strong>Reply URL</strong>: <code class="docutils literal notranslate"><span class="pre">https://jwt.ms</span></code></li>
+</ul>
+<p>Then open the <strong>Access Tokens</strong> section by clicking on it. We will now define the resource (our protected API) and the scopes (<code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code>) to request for the access token. Configure the following settings:</p>
+<ul class="simple">
+<li><strong>Resource</strong>: <code class="docutils literal notranslate"><span class="pre">Coding</span> <span class="pre">Events</span> <span class="pre">API</span></code></li>
+<li><strong>Scopes</strong>: select <strong>only</strong> the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope</li>
+</ul>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">Make sure that you <strong>unselect the identity token</strong> (<code class="docutils literal notranslate"><span class="pre">openid</span></code>) scope. Only the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope should be selected.</p>
+</div>
+<p>Check that your configuration matches the image below:</p>
+<img alt="Configure the access token" src="../../_images/17user-flow-final.png" />
+<p>Click the <strong>Run user flow</strong> button to begin the access token flow.</p>
+<p>After authenticating with your AADB2C tenant account you will be redirect to the <code class="docutils literal notranslate"><span class="pre">jwt.ms</span></code> page. Notice that this time the query string parameter is an <code class="docutils literal notranslate"><span class="pre">access_token</span></code> rather than the <code class="docutils literal notranslate"><span class="pre">identity_token</span></code> we saw last time.</p>
+<img alt="Microsoft JWT tool with decoded access token" src="../../_images/18decoded-access-token.png" />
+<p>The access token is provided in the same <em>signed</em> JWT format and in many ways is similar to an identity token. However, it contains several <strong>different claims</strong> that can be used to verify the <strong>authorization</strong> of anyone who <em>bears it</em> (Postman client application), rather than <em>just the identity claims</em>.</p>
+<p>Select the <strong>Claims</strong> tab to switch to the detailed breakdown. You will notice three familiar claims, <code class="docutils literal notranslate"><span class="pre">iss</span></code>, <code class="docutils literal notranslate"><span class="pre">aud</span></code> and <code class="docutils literal notranslate"><span class="pre">sub</span></code>. As a reminder these claims indicate:</p>
+<ul class="simple">
+<li><strong>iss[uer]</strong>: the AADB2C tenant is the <em>issuer</em> of the access token while behaving (in this context) as the <strong>authorization server</strong></li>
+<li><strong>sub[ject]</strong>: the subject of the token is your OID (unique identifier of your account in the AADB2C tenant directory)</li>
+<li><strong>aud[ience]</strong>: the audience, or <strong>intended recipient</strong>, of the token is the Coding Event API application identifier (Client ID)</li>
+</ul>
+<p>In addition to these claims that the two tokens have in common, there are several others that are <strong>only present in an access token</strong>:</p>
+<ul class="simple">
+<li><strong>scp (scope)</strong>: the scope(s) that have been authorized, <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> in this context</li>
+<li><strong>azp (authorized party)</strong>: the Postman client application that has been <em>authorized to bear</em> this token</li>
+</ul>
+<p>These claims are each used to prove the authenticity and validity of the token when it is used. In practice, the <strong>authorized party</strong> (Postman) sends this access token to the intended <strong>audience</strong> (Coding Events API) for each request to a <strong>protected endpoint</strong>.</p>
+<p>The API is then <strong>responsible for validating the claims</strong> in the token before processing the RBAC and ABAC rules associated with the <strong>sub</strong>ject (the user that Postman acts on behalf of).</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>Access tokens are purposefully <strong>short-lived</strong> to limit potential abuse if a malicious party gets a hold of one. By default, the access tokens we receive through AADB2C have a <strong>1-hour lifetime</strong> before they expire (visible in the <strong>exp[iration]</strong> claim).</p>
+<p class="last">Because we are using the implicit OAuth flow we do not have access to <a class="reference external" href="https://developer.okta.com/docs/guides/refresh-tokens/overview/" target="_blank">refresh tokens<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. If an access token received using an implicit flow expires during use you will need to request a new one by repeating the access token request process.</p>
+</div>
+</div>
+</div>
+<div class="section" id="get-the-postman-access-token">
+<h2>7.5.7. Get the Postman Access Token<a class="headerlink" href="#get-the-postman-access-token" title="Permalink to this headline">¶</a></h2>
+<p>In the following studio you will deploy the final version of the Coding Events API that integrates with your AADB2C tenant. You will be using Postman to request an access token to test out the protected endpoints of the API. Let’s explore this process together so you are prepared to make use of it in your studio tasks.</p>
+<p>Switch back to the Postman access token form you have been updating throughout the walkthrough. There is one final field that needs to be updated, the <strong>State field</strong>. This field can be any arbitrary value but should be <strong>unique to each access token request</strong>. It is used to protect against <a class="reference external" href="https://auth0.com/docs/protocols/oauth2/oauth-state" target="_blank">CSRF attacks<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<p>Typically this parameter is used to store the state of a user on a site (like a page to send them back to) or some other unguessable value. For this case, you can enter anything <em>random</em> you would like for the <strong>State field</strong> to complete the form:</p>
+<img alt="Complete the access token request form by setting a random value for the State field" src="../../_images/7-1postman-set-state-field.png" />
+<p>Before issuing the request check that you have updated all of the following fields:</p>
+<ul class="simple">
+<li><strong>Token Name</strong>: <code class="docutils literal notranslate"><span class="pre">access</span> <span class="pre">token</span></code></li>
+<li><strong>Grant Type</strong>: <code class="docutils literal notranslate"><span class="pre">Implicit</span></code></li>
+<li><strong>Callback URL</strong>: <code class="docutils literal notranslate"><span class="pre">https://www.postman.com/oauth2/callback</span></code></li>
+<li><strong>Auth URL</strong>: the <code class="docutils literal notranslate"><span class="pre">authorization_endpoint</span></code> from the JSON metadata document</li>
+<li><strong>Client ID</strong>: your client application identifier from the registered Postman application dashboard</li>
+<li><strong>Scope</strong>: the <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope URI you exposed for your registered Coding Events API application</li>
+<li><strong>State</strong>: any random string of your choice</li>
+</ul>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Leave the defaults for the remaining fields. Make sure that:</p>
+<ul class="last simple">
+<li>you <strong>do not select</strong> the checkbox option to authorize using the browser (under Callback URL)</li>
+<li>the <strong>Client Authentication</strong> remains as <code class="docutils literal notranslate"><span class="pre">Send</span> <span class="pre">as</span> <span class="pre">Basic</span> <span class="pre">Auth</span> <span class="pre">header</span></code></li>
+</ul>
+</div>
+<p>If everything has been updated properly you are ready to request your first access token! Select the <strong>Request Token</strong> button.</p>
+<p>This will open a popup to authenticate with your AADB2C tenant. As a reminder your password should be:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">LaunchCode-&#64;zure1</span></code></li>
+</ul>
+<img alt="AADB2C tenant sign in" src="../../_images/8postman-adb2c-form-signin.png" />
+<p>After successfully authenticating, Postman will receive and store the access token in its tokens list. Select the <strong>Use Token</strong> button to designate the token Postman should use when making requests to the API:</p>
+<img alt="Select Use Token for the new access token" src="../../_images/9postman-access-token-success.png" />
+<p>Finally you will be returned to the <strong>Authorization</strong> tab in Postman. This time your access token will be populated:</p>
+<img alt="Completed Authorization tab in Postman" src="../../_images/10postman-auth-tab-complete.png" />
+<p>Select the <strong>Update</strong> button to save the changes you have made to the collection. As soon as your API is live you will be able to use Postman to make authorized requests to it using the access token!</p>
+<div class="section" id="replacing-an-expired-access-token">
+<h3>7.5.7.1. Replacing an Expired Access Token<a class="headerlink" href="#replacing-an-expired-access-token" title="Permalink to this headline">¶</a></h3>
+<p>As a reminder <strong>you will need to request a new access token after one hour due to its expiration</strong>. If a request fails during the studio it will likely be due to an expired token.</p>
+<p>Postman can detect when a token is expired and will cross it out in the tokens list when it can no longer be used. These tokens can be discarded using the <strong>Delete</strong> menu or the <strong>trash icon</strong> when hovering over them:</p>
+<img alt="Postman expired token" src="../../_images/11postman-expired-token.png" />
+<p>Fortunately now that you have everything configured it will be a quick process to request a new access token:</p>
+<ol class="arabic simple">
+<li>open the collection settings (three dots next to the collection name)</li>
+<li>switch to the <strong>Authorization tab</strong> and select <strong>Get New Access Token</strong></li>
+<li>select <strong>Request Token</strong> to re-authorize and receive a new one</li>
+<li>select <strong>Use Token</strong> (and discard any expired ones)</li>
+<li>select <strong>Update</strong> to save the changes to the collection</li>
+</ol>
+<p>You should then be able to re-issue the requests using the valid access token.</p>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="walkthrough_aadb2c-identity.html"><span aria-hidden="true">&larr;</span> 7.4. Walkthrough: Set Up Azure ADB2C Tenant &amp; Identity Tokens</a></li>
+        
+        
+        <li class="next"><a href="studio_1-aadb2c-deployment.html">7.6. Studio Part 1: Deploy Coding Events API with AADB2C <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/intro-oauth-with-aadb2c/walkthrough_aadb2c-access.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

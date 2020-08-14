@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.4. Walkthrough: Linux Starter App Deployment &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.5. Studio: Deploy CodingEventsAPI" href="studio.html" />
+    <link rel="prev" title="5.3. Introduction to virtual machines" href="virtual-machine.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">5. Introduction to Azure and Virtual Machines</a></li>
+    <li class="active">5.4. Walkthrough: Linux Starter App Deployment</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="walkthrough-linux-starter-app-deployment">
+<h1>5.4. Walkthrough: Linux Starter App Deployment<a class="headerlink" href="#walkthrough-linux-starter-app-deployment" title="Permalink to this headline">¶</a></h1>
+<p>In this walkthrough, we will deploy our first web application on Azure.</p>
+<p>Throughout the next few lessons we will use Ubuntu operating system on the hardware of our virtual machine. Eventually, we will be deploying to a Windows Server operating system. Due to the cross-platform design of .NET Core the same project will be deployable to multiple operating systems.</p>
+<p>We have a few steps we will need to accomplish to deploy and access our application:</p>
+<ul class="simple">
+<li>Create a resource group</li>
+<li>Spin up a VM with an Ubuntu OS</li>
+<li>Configure our VM to run our application</li>
+<li>Create our source code</li>
+<li>Create the build artifacts (publishing)</li>
+<li>Deploy the build artifacts</li>
+<li>Open the VM security group</li>
+<li>Connect to deployed project</li>
+</ul>
+<div class="section" id="login-to-azure-portal">
+<h2>5.4.1. Login to Azure Portal<a class="headerlink" href="#login-to-azure-portal" title="Permalink to this headline">¶</a></h2>
+<p>Before we can deploy our application to a VM, we will need to first access our Azure accounts. You should have set this up already, so go ahead and login and navigate to the main screen.</p>
+<img alt="../../_images/walkthrough-azure-home.png" src="../../_images/walkthrough-azure-home.png" />
+</div>
+<div class="section" id="create-a-resource-group">
+<h2>5.4.2. Create a Resource Group<a class="headerlink" href="#create-a-resource-group" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">A resource group is a great way of organizing your Azure resources. Since we are deploying a project for the first time, let’s create a unique resource group to contain all of the resources we will need to create for this project.</p>
+<p>Navigate to the resource group blade by searching for “resource group” in the search bar.</p>
+<img alt="../../_images/walkthrough-search-resource-group.png" src="../../_images/walkthrough-search-resource-group.png" />
+<p>From here, you will want to add a new resource group, which will provide you with a form for creating your resource group.</p>
+<img alt="../../_images/walkthrough-new-rg.png" src="../../_images/walkthrough-new-rg.png" />
+<p>Name your resource group following this pattern: <code class="docutils literal notranslate"><span class="pre">your-name-lc-rg-web-api</span></code>. You will need to remember this resource group name so that you can shutdown all your resources at the end of the day.</p>
+<img alt="../../_images/walkthrough-new-rg-form.png" src="../../_images/walkthrough-new-rg-form.png" />
+<p>After entering your resource group name, click <em>Review + create</em>, and then finally the <em>Create</em> button on the review screen. You will be directed back to the resource group home page, and after a couple of minutes you will see your new resource group.</p>
+<img alt="../../_images/walkthrough-all-rgs.png" src="../../_images/walkthrough-all-rgs.png" />
+<p>Now, if you go to the resource group blade homepage you should see the new resource group with the name you entered in the list.</p>
+</div>
+<div class="section" id="provision-the-vm">
+<h2>5.4.3. Provision the VM<a class="headerlink" href="#provision-the-vm" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have a resource group to contain all of the resources we need for this project we can start spinning up the resources we will need for our deployment.</p>
+<p>Luckily this deployment is pretty simple and will only need one Ubuntu VM.</p>
+<p>To spin up this VM, search for the virtual machine blade in the search bar.</p>
+<img alt="../../_images/walkthrough-search-vm.png" src="../../_images/walkthrough-search-vm.png" />
+<p>Clicking this blade will take you to the home page for all your VMs. For now, it is most likely an empty list. We will change that soon.</p>
+<img alt="../../_images/walkthrough-vm-home.png" src="../../_images/walkthrough-vm-home.png" />
+<p>We will need to create a new VM, which will require us to go through a lengthy web form. To get started, click <em>Create virtual machine</em> button which will take you to the first screen.</p>
+<p>On this page we will need to fill out quite a few things, but will be sticking to defaults as much as possible.</p>
+<p>We will need to set:</p>
+<ul class="simple">
+<li>Resource group: <code class="docutils literal notranslate"><span class="pre">your-name-lc-rg-web-api</span></code></li>
+<li>Virtual machine name: <code class="docutils literal notranslate"><span class="pre">your-name-lc-vm-web-api</span></code></li>
+<li>Region: East US</li>
+<li>Image: Ubuntu Server 18.04 LTS</li>
+<li>Size: Standard_B2s - 2 vcpu, 4 GiB memory ($$$)</li>
+</ul>
+<img alt="../../_images/walkthrough-vm-1.png" src="../../_images/walkthrough-vm-1.png" />
+<p>Scrolling down, you can complete the remaining fields:</p>
+<ul class="simple">
+<li>Authentication type: Password</li>
+<li>Username: student</li>
+<li>Password: <code class="docutils literal notranslate"><span class="pre">LaunchCode-&#64;zure1</span></code></li>
+<li>Confirm password: <code class="docutils literal notranslate"><span class="pre">LaunchCode-&#64;zure1</span></code></li>
+</ul>
+<img alt="../../_images/walkthrough-vm-2.png" src="../../_images/walkthrough-vm-2.png" />
+<p>After filling out the form, click <em>Review + create</em>. On the review screen, double check that you created your VM with the settings listed above, then finally click <em>Create</em>.</p>
+<p>The screen after <em>Review</em> shows the status as your VM spins up. It will take a few minutes, but eventually your VM will be ready to work with.</p>
+<img alt="../../_images/walkthrough-vm-3.png" src="../../_images/walkthrough-vm-3.png" />
+<p>After creating the VM, it will take a couple of minutes for the VM to fully provision. This takes time because Azure is doing a lot of things for us in the background. They are accessing a server at one of their many data centers in the region we selected and creating a virtual machine with the requirements we entered. Then it has to create the file structure on the virtual machine. After that, it has to configure the network so the machine is accessible to us through the internet by assigning it a public IP address. Only when all of that is done can we access our machine.</p>
+</div>
+<div class="section" id="configure-the-vm">
+<h2>5.4.4. Configure the VM<a class="headerlink" href="#configure-the-vm" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have created a VM we need to configure it so that it is ready to run our project. To configure our VM we will need to access the resource.</p>
+<p>Navigate back to the virtual machine blade, then select the VM you just spun up by clicking on the VM’s name.</p>
+<img alt="../../_images/walkthrough-access-vm.png" src="../../_images/walkthrough-access-vm.png" />
+<p>Configuration can be done in many ways, and you will see a couple of them in this class. Today, we will configure our VM by sending it Bash commands through the <em>Run Command</em> console of the Azure Portal.</p>
+<p>When we enter commands here they will be run as if we were in the Bash terminal of the VM.</p>
+<p>To find the <em>Run Command</em> we need to look at the home page of our VM. Under operations select <em>Run Command</em>.</p>
+<img alt="../../_images/walkthrough-select-run-command.png" src="../../_images/walkthrough-select-run-command.png" />
+<p>From here you will be provided with a couple of options. Make sure to select <em>RunShellScript</em>.</p>
+<p>From here a screen will pop out showing you a text box where we can send Bash commands to our VM.</p>
+<img alt="../../_images/walkthrough-run-command-1.png" src="../../_images/walkthrough-run-command-1.png" />
+<p>We need to install the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> CLI onto this Ubuntu machine, which we can do by adding the following code block to the <em>Run Command</em>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+sudo apt-get update<span class="p">;</span> <span class="se">\</span>
+  sudo apt-get install -y apt-transport-https <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  sudo apt-get update <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  sudo apt-get install -y dotnet-sdk-3.1
+</pre></div>
+</div>
+<img alt="../../_images/walkthrough-run-command-2.png" src="../../_images/walkthrough-run-command-2.png" />
+<p>Then hit <em>Run</em> to execute the Bash command on the VM. This will take a couple of minutes. When the command is done the standard output of the terminal will be displayed in the output.</p>
+<p>You should look over the output to make sure everything installed properly. Below is a picture showing a section of the output that shows the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> CLI was installed and is ready to be used.</p>
+<img alt="../../_images/walkthrough-run-command-3.png" src="../../_images/walkthrough-run-command-3.png" />
+<p>For this walkthrough we are going to deploy a starter .NET MVC web app that we will create using the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> CLI.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">In the future there will be additional configuration steps.</p>
+</div>
+</div>
+<div class="section" id="create-the-project">
+<h2>5.4.5. Create the Project<a class="headerlink" href="#create-the-project" title="Permalink to this headline">¶</a></h2>
+<p>Our next step is to create our project. Since we installed the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> CLI in the previous step we can use that tool to generate a “hello world” starter project.</p>
+<p>We will again be using the <em>Run Command</em> console to run our <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> CLI commands.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">DOTNET_CLI_HOME</span><span class="o">=</span>/home/student
+<span class="nb">export</span> <span class="nv">HOME</span><span class="o">=</span>/home/student
+<span class="nb">cd</span> /home/student
+dotnet new mvc -n hello-world
+</pre></div>
+</div>
+<img alt="../../_images/walkthrough-run-command-4.png" src="../../_images/walkthrough-run-command-4.png" />
+<p>The first two lines set a couple of environment variables for the Bash shell, namely <code class="docutils literal notranslate"><span class="pre">DOTNET_CLI_HOME</span></code> and <code class="docutils literal notranslate"><span class="pre">HOME</span></code>. We have to perform this step because when you run commands from the <em>Run Command</em> operation in the Azure Portal, the commands are always run as the root user, and not as the student user.</p>
+<p>The root user does not have a home directory so it is not able to run the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> CLI.</p>
+<p>The command <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/home/student</span></code> changes the working directory to the home directory for the student.</p>
+<p>Finally, the <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">new</span> <span class="pre">mvc</span> <span class="pre">-n</span> <span class="pre">hello-world</span></code> command created a new .NET MVC project named <code class="docutils literal notranslate"><span class="pre">hello-world</span></code>. This created a base project for us in the working directory <code class="docutils literal notranslate"><span class="pre">/home/student/hello-world</span></code>.</p>
+<p>Let’s run one final command to make sure the everything worked as expected.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> /home/student/hello-world
+<span class="nb">pwd</span>
+ls
+</pre></div>
+</div>
+<img alt="../../_images/walkthrough-run-command-5.png" src="../../_images/walkthrough-run-command-5.png" />
+<p>As we can see from the output, our <code class="docutils literal notranslate"><span class="pre">pwd</span></code> command tells us we are in <code class="docutils literal notranslate"><span class="pre">/home/student/hello-world</span></code>. If the directory had not been created by the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> CLI then the <code class="docutils literal notranslate"><span class="pre">cd</span></code> command would have failed. The <code class="docutils literal notranslate"><span class="pre">ls</span></code> command displays the contents of the <code class="docutils literal notranslate"><span class="pre">hello-world</span></code> directory and confirms the project files were all created successfully.</p>
+</div>
+<div class="section" id="publish-the-project">
+<h2>5.4.6. Publish the Project<a class="headerlink" href="#publish-the-project" title="Permalink to this headline">¶</a></h2>
+<p>Our source code exists and we now need to create the build artifacts from it to deploy our project. Earlier we learned about the <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">publish</span></code> command that creates the build artifacts. Let’s use that command now.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">DOTNET_CLI_HOME</span><span class="o">=</span>/home/student
+<span class="nb">export</span> <span class="nv">HOME</span><span class="o">=</span>/home/student
+<span class="nb">cd</span> /home/student/hello-world
+dotnet publish -c Release -r linux-x64 -p:PublishSingleFile<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+<img alt="../../_images/walkthrough-run-command-6.png" src="../../_images/walkthrough-run-command-6.png" />
+<p>This will publish to <code class="docutils literal notranslate"><span class="pre">/home/student/hello-world/bin/Release/netcoreapp3.1/linux-x64/publish/</span></code>.</p>
+<p>We can look into this folder with <code class="docutils literal notranslate"><span class="pre">ls</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls /home/student/hello-world/bin/Release/netcoreapp3.1/linux-x64/publish/
+</pre></div>
+</div>
+<img alt="../../_images/walkthrough-run-command-7.png" src="../../_images/walkthrough-run-command-7.png" />
+<p>The publish directory has our build artifacts and we have everything we need to deploy.</p>
+</div>
+<div class="section" id="open-network-security-groups">
+<h2>5.4.7. Open Network Security Groups<a class="headerlink" href="#open-network-security-groups" title="Permalink to this headline">¶</a></h2>
+<p>Before we deploy our build artifacts we will need to create a new inbound and outbound Network Security Group (NSG) rule to allow inbound and outbound traffic to our machine. Our app will be listening on port 80 in the Server so we will need to open that port.</p>
+<p>In the Azure VM page look for the Networking tab of the Setting sections.</p>
+<img alt="../../_images/walkthrough-settings-networking.png" src="../../_images/walkthrough-settings-networking.png" />
+<p>When looking at the networking section of your VM the inbound rules are listed by default. A few were created automatically for you, we won’t be touching these, but will be creating a new inbound rule for port 80.</p>
+<p>Click the <em>Add inbound port rule</em> button to create a new rule.</p>
+<img alt="../../_images/walkthrough-add-inbound.png" src="../../_images/walkthrough-add-inbound.png" />
+<p>This brings up a box that allows you to quickly and easily create a new rule. We will be changing the port to 80, and giving it a name, <code class="docutils literal notranslate"><span class="pre">web-app-inbound</span></code>.</p>
+<img alt="../../_images/walkthrough-inbound-form.png" src="../../_images/walkthrough-inbound-form.png" />
+<p>After entering the port and the name, click the <em>Add</em> button. It will take a few seconds for the rule to be created. While it’s spinning up, let’s create the outbound rule too. Click the <em>Outbound port rules</em> tab, and then the <em>Add outbound port rule</em> button to bring up the outbound rule form. Again fill in port 80 and the name <code class="docutils literal notranslate"><span class="pre">web-app-outbound</span></code>.</p>
+<img alt="../../_images/walkthrough-outbound-form.png" src="../../_images/walkthrough-outbound-form.png" />
+<p>Click the <em>Add</em> button to create this outbound rule. After a few seconds you should see the new rules in their respective areas.</p>
+<p>Double check both the inbound and outbound port rules. If these are not configured correctly you won’t be able access your web app from your browser.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>Tip</p>
+<p class="last">Misconfiguring a Network Security Group is a common error when deploying applications and should be one of the first things you check if you receive a connection timeout when attempting to connect to your deployed app.</p>
+</div>
+</div>
+<div class="section" id="deploy-the-project">
+<h2>5.4.8. Deploy the Project<a class="headerlink" href="#deploy-the-project" title="Permalink to this headline">¶</a></h2>
+<p>We will deploy our project using the executable artifact created by our publishing step. However, we want this project to run on port 80 (the default HTTP port), not the .NET default port of 5000. We are going to set an environment variable to override the .NET default port when we run our executable.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> /home/student/hello-world
+<span class="nv">ASPNETCORE_URLS</span><span class="o">=</span><span class="s2">&quot;http://*:80&quot;</span> ./bin/Release/netcoreapp3.1/linux-x64/publish/hello-world
+</pre></div>
+</div>
+<p>This command is a little different. Traditionally when you run an executable .NET project, the terminal attaches itself to the process as the project runs. Since it does this, you won’t see anything in the output section, and it will appear to be frozen like in the following picture.</p>
+<img alt="../../_images/walkthrough-run-command-8.png" src="../../_images/walkthrough-run-command-8.png" />
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The reason it appears to be frozen is because the Azure Portal Run Command can only display information once it gets a response from the terminal on the VM that ran our command. Since that terminal is attached to the process associated with our project, and our project runs until it crashes, it will not send a response back to the Azure Portal <em>Run Command</em> window.</p>
+</div>
+</div>
+<div class="section" id="connect-to-app">
+<h2>5.4.9. Connect to App<a class="headerlink" href="#connect-to-app" title="Permalink to this headline">¶</a></h2>
+<p>As a final step, we will be connecting to our running web app in our browser. To do this, we will need the public IP address of our VM. You can find this in the overview section of the VM view:</p>
+<img alt="../../_images/walkthrough-overview-public-ip.png" src="../../_images/walkthrough-overview-public-ip.png" />
+<p>In your browser, navigate to the public IP address found in the overview section of your VM and you should see the deployed application.</p>
+<img alt="../../_images/walkthrough-connect-to-app.png" src="../../_images/walkthrough-connect-to-app.png" />
+<p>The <code class="docutils literal notranslate"><span class="pre">hello-world</span></code> app we created on the VM is running and we can connect to it from a browser using it’s public IP address!</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Our Network Security Group rules allow traffic from <em>any</em> IP address. This means that anyone can connect to it if they know the public IP of the machine.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h2>5.4.10. Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p>For this first deployment we are doing things in a less-than-ideal way. We have been using the Azure Portal <em>Run Command</em> which isn’t very flexible. We will learn about more robust ways to deploy applications later in the class.</p>
+<p>We will continue to develop our troubleshooting strategy in tandem with learning other deployment mechanisms. Troubleshooting is a very important skill in Operations, and it’s a good idea to start taking note of what things trip you up when deploying.</p>
+<p>For today, if you run into errors when following this guide, the best advice is to throw everything you’ve done away and start over. Fortunately this can be done quickly by deleting the Resource Group and starting again from the top of this article.</p>
+</div>
+<div class="section" id="cleaning-up">
+<h2>5.4.11. Cleaning Up<a class="headerlink" href="#cleaning-up" title="Permalink to this headline">¶</a></h2>
+<p>After you have completed this walkthrough and connected to your deployed application, you will want to delete your resource group. Running a VM costs money and by removing unused resources you can preserve your subscription credits.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="virtual-machine.html"><span aria-hidden="true">&larr;</span> 5.3. Introduction to virtual machines</a></li>
+        
+        
+        <li class="next"><a href="studio.html">5.5. Studio: Deploy <code class="docutils literal notranslate"><span class="pre">CodingEventsAPI</span></code> <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/azure-intro/walkthrough.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

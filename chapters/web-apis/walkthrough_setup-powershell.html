@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.4. Walkthrough: Setup Your Development Machine &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.5. Walkthrough: Consuming the CodingEventsAPI With Postman" href="walkthrough_postman-rest.html" />
+    <link rel="prev" title="3.3. REST: Practical Fundamentals" href="rest-practical.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">3. Introduction to Web APIs &amp; REST</a></li>
+    <li class="active">3.4. Walkthrough: Setup Your Development Machine</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="walkthrough-setup-your-development-machine">
+<h1>3.4. Walkthrough: Setup Your Development Machine<a class="headerlink" href="#walkthrough-setup-your-development-machine" title="Permalink to this headline">¶</a></h1>
+<p>In this walkthrough we will use PowerShell and a Windows package manager called Chocolatey to set up our local development machines. We will be exploring PowerShell in greater detail later in this course. However, to begin learning about operations we will first need to install the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> and <code class="docutils literal notranslate"><span class="pre">git</span></code> CLI tools.</p>
+<div class="section" id="the-chocolatey-package-manager">
+<h2>3.4.1. The Chocolatey Package Manager<a class="headerlink" href="#the-chocolatey-package-manager" title="Permalink to this headline">¶</a></h2>
+<p>Windows has a pre-installed manager of Features and Services (native Windows applications and tools) which can be accessed through PowerShell. However, for third-party CLI tools we will need to install Chocolatey, an open-source package manager for Windows. Chocolatey is not a native package manager, like Ubuntu’s pre-installed <code class="docutils literal notranslate"><span class="pre">apt</span></code>, but is <a class="reference external" href="https://devblogs.microsoft.com/commandline/join-us-for-a-hot-cup-o-chocolatey/" target="_blank">recognized by Microsoft in as an industry standard<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<div class="section" id="installing-chocolatey">
+<h3>3.4.1.1. Installing Chocolatey<a class="headerlink" href="#installing-chocolatey" title="Permalink to this headline">¶</a></h3>
+<p>You can find the installation instructions on the <a class="reference external" href="https://chocolatey.org/install" target="_blank">Chocolatey installation article<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+<p>We will install Chocolatey using PowerShell, however it will require elevated permissions to download and install. You will need to open a PowerShell session <em>as an administrator</em> before running the following command. Recall that you can open in admin mode by right-clicking the taskbar icon for PowerShell and selecting <em>run as administrator</em>:</p>
+<img alt="Open PowerShell as administrator from taskbar" src="../../_images/powershell-open-as-admin.png" />
+<p>Once you have opened PowerShell in admin mode, enter the following command:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell admin mode</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">Set-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="n">-Scope</span> <span class="k">Process</span> <span class="n">-Force</span><span class="p">;</span> <span class="no">[System.Net.ServicePointManager]</span><span class="p">::</span><span class="n">SecurityProtocol</span> <span class="p">=</span> <span class="no">[System.Net.ServicePointManager]</span><span class="p">::</span><span class="n">SecurityProtocol</span> <span class="o">-bor</span> <span class="n">3072</span><span class="p">;</span> <span class="nb">iex </span><span class="p">((</span><span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">WebClient</span><span class="p">).</span><span class="n">DownloadString</span><span class="p">(</span><span class="s1">&#39;https://chocolatey.org/install.ps1&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>This command is lengthy, but in summary it is setting a policy to allow the Chocolatey installation script to be executed and then downloading it by making a request with the .NET standard library <code class="docutils literal notranslate"><span class="pre">WebClient</span></code> object. Once the installation script has been downloaded it will automatically execute and install the package manager for you.</p>
+<p>Chocolatey is the full name of the package manager, but the name of the CLI program used in PowerShell is simply <code class="docutils literal notranslate"><span class="pre">choco</span></code>.</p>
+</div>
+<div class="section" id="getting-help">
+<h3>3.4.1.2. Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h3>
+<p>After installing Chocolatey, you can access help documentation with the <code class="docutils literal notranslate"><span class="pre">--help</span></code> option.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">choco</span> <span class="p">-</span><span class="n">-help</span>
+</pre></div>
+</div>
+</div>
+<p>An advantage of <code class="docutils literal notranslate"><span class="pre">choco</span></code> being open-source is that you can find a lot of assistance in online forums and the crowd-sourced <a class="reference external" href="https://chocolatey.org/docs" target="_blank">Chocolatey documentation<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+<div class="section" id="installing-a-package">
+<h3>3.4.1.3. Installing a Package<a class="headerlink" href="#installing-a-package" title="Permalink to this headline">¶</a></h3>
+<p>Chocolatey is modeled after many popular Linux package managers like <code class="docutils literal notranslate"><span class="pre">apt</span></code>. For this reason, the syntax for chocolatey should look familiar:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">choco</span> <span class="n">install</span> <span class="p">&lt;</span><span class="n">package</span> <span class="n">name</span><span class="p">&gt;</span> <span class="n">-y</span>
+</pre></div>
+</div>
+</div>
+<p>Chocolatey also supports a number of options like <code class="docutils literal notranslate"><span class="pre">--yes</span></code> or <code class="docutils literal notranslate"><span class="pre">-y</span></code> which, like the <code class="docutils literal notranslate"><span class="pre">apt</span></code> option, skips confirmation prompts, automatically downloads and installs the package. To view more options view the <a class="reference external" href="https://chocolatey.org/docs/commands-install" target="_blank">Chocolatey install command documentation<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+<div class="section" id="upgrading-a-package">
+<h3>3.4.1.4. Upgrading a Package<a class="headerlink" href="#upgrading-a-package" title="Permalink to this headline">¶</a></h3>
+<p>We can upgrade packages in Chocolatey with the simple command <code class="docutils literal notranslate"><span class="pre">choco</span> <span class="pre">upgrade</span></code>.</p>
+<p>To upgrade the <code class="docutils literal notranslate"><span class="pre">dotnetcore-sdk</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">choco</span> <span class="n">upgrade</span> <span class="p">&lt;</span><span class="n">package</span> <span class="n">name</span><span class="p">&gt;</span> <span class="n">-y</span>
+</pre></div>
+</div>
+</div>
+<p>Chocolatey also supports upgrading all of the packages it downloaded and installed at once.</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">choco</span> <span class="n">upgrade</span> <span class="n">all</span> <span class="n">-y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="updating-package-sources">
+<h3>3.4.1.5. Updating Package Sources<a class="headerlink" href="#updating-package-sources" title="Permalink to this headline">¶</a></h3>
+<p>Chocolatey is also responsible for keeping track of package repository sources. When you download Chocolatey for the first time it automatically loads the Chocolatey trusted sources which host common packages. In some instances, you may need to install a package that is not a part of the Chocolatey hosted sources. In this case you would need to add a custom source.</p>
+<p>We will not be adding any sources beyond the default Chocolatey sources, but an example of the usage would follow this pattern:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">choco</span> <span class="n">add</span> <span class="n">source</span> <span class="p">&lt;</span><span class="n">source</span> <span class="n">target</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</div>
+<p>You can find more information about adding Chocolatey repository by viewing the <a class="reference external" href="https://chocolatey.org/docs/commands-sources" target="_blank">Chocolatey sources documentation<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+</div>
+<div class="section" id="course-tools-installation">
+<h2>3.4.2. Course Tools Installation<a class="headerlink" href="#course-tools-installation" title="Permalink to this headline">¶</a></h2>
+<p>Two of the CLI tools we will begin using this week are the <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">CLI</span></code> and the <code class="docutils literal notranslate"><span class="pre">git</span></code> version control system (VCS). Let’s install them now before learning how to use them in the coming days.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Whenever you install a new CLI tool using <code class="docutils literal notranslate"><span class="pre">choco</span></code> you <em>must exit all PowerShell sessions</em> before they can be used. You can exit a PowerShell session by entering the <code class="docutils literal notranslate"><span class="pre">exit</span></code> command or by closing <em>all</em> of the open PowerShell terminal windows.</p>
+</div>
+<div class="section" id="install-net-sdk">
+<h3>3.4.2.1. Install .NET SDK<a class="headerlink" href="#install-net-sdk" title="Permalink to this headline">¶</a></h3>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">choco</span> <span class="n">install</span> <span class="n">dotnetcore-sdk</span> <span class="n">-y</span>
+</pre></div>
+</div>
+</div>
+<p>Don’t forget to close and re-open PowerShell before entering the following command to test the installation:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">dotnet</span> <span class="p">-</span><span class="n">-version</span>
+<span class="c"># dotnet version output</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="install-git-vcs">
+<h3>3.4.2.2. Install Git VCS<a class="headerlink" href="#install-git-vcs" title="Permalink to this headline">¶</a></h3>
+<p>You likely have been using the Git Bash program to access <code class="docutils literal notranslate"><span class="pre">git</span></code> and GitHub. What you may not have realized is that Git Bash is a terminal that emulates basic Bash commands and <code class="docutils literal notranslate"><span class="pre">git</span></code>. However, now that we are comfortable working from the command-line we can use <code class="docutils literal notranslate"><span class="pre">git</span></code> natively within PowerShell and Bash. Let’s install <code class="docutils literal notranslate"><span class="pre">git</span></code> in PowerShell using <code class="docutils literal notranslate"><span class="pre">choco</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">choco</span> <span class="n">install</span> <span class="n">git</span> <span class="n">-y</span>
+</pre></div>
+</div>
+</div>
+<p>After <em>closing and re-opening</em> PowerShell you can confirm the installation with the following command:</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">git</span> <span class="p">-</span><span class="n">-version</span>
+<span class="c"># git version output</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="rest-practical.html"><span aria-hidden="true">&larr;</span> 3.3. REST: Practical Fundamentals</a></li>
+        
+        
+        <li class="next"><a href="walkthrough_postman-rest.html">3.5. Walkthrough: Consuming the <code class="docutils literal notranslate"><span class="pre">CodingEventsAPI</span></code> With Postman <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/web-apis/walkthrough_setup-powershell.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

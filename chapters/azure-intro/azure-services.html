@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.2. Introduction to Azure &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3. Introduction to virtual machines" href="virtual-machine.html" />
+    <link rel="prev" title="5.1. Introduction to Infrastructure and IaaS" href="intro_infrastructure.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">5. Introduction to Azure and Virtual Machines</a></li>
+    <li class="active">5.2. Introduction to Azure</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="introduction-to-azure">
+<h1>5.2. Introduction to Azure<a class="headerlink" href="#introduction-to-azure" title="Permalink to this headline">¶</a></h1>
+<p>Azure will be the cloud services provider we use in this class.</p>
+<p>We will work with a couple of different Azure Services, but the main focus will be the virtual machine.</p>
+<div class="section" id="azure-account">
+<h2>5.2.1. Azure Account<a class="headerlink" href="#azure-account" title="Permalink to this headline">¶</a></h2>
+<p>After creating a Microsoft Azure account you will have access to many tools including:</p>
+<ul class="simple">
+<li>Virtual machine</li>
+<li>Key Vault</li>
+<li>Azure Active Directory</li>
+<li>Various SQL services</li>
+<li>Resource groups</li>
+</ul>
+<p id="index-0">A <strong>virtual machine</strong> is a highly configurable computer with an operating system such as Ubuntu, which is one of the various Linux operating systems. Anything you could do on your computer (like running an application) can be done on the VM.</p>
+<p id="index-1"><strong>Key Vault</strong> is an accessible service that stores information. Unlike SQL, Key Vault isn’t intended to store business data. Rather, it is used to store sensitive or configuration data. This can be data our application may need but that we don’t want to store on our server, or as a part of our source code. An example is a database connection string. Our application needs access to the database connection string, but we don’t want to store this information on our VM, or in our source code. We can safely store it in Key Vault, and access it from our application when we need the data.</p>
+<p id="index-2"><strong>Azure Active Directory</strong> is a powerful tool that allows us to authenticate users using one of several different auth flows. You will learn about OAuth implicit flow later in this book, but there are many different flows you can use with Azure Active Directory. Azure Active Directory allows us to authenticate users and access information about their identity from our application. This gives us the ability to use one main flow for many different applications, and it allows us to focus more on the features of the application instead of handling authentication.</p>
+<p id="index-3">Azure offers Various SQL Services. Using relational databases is an important aspect in most applications. After all, most applications are only as good as the underlying data they have. Azure provides the ability to create databases of different types and make them available to VMs, other Azure services, or even the public Internet.</p>
+<p id="index-4"><strong>Azure resource groups</strong> are organizational tools to help you manage the various Azure resources you create. Every resource you create must be associated to a resource group. You can create as many resource groups as you need. A general convention is to create a resource group for each new project, and then to put every resource you need from Azure into the same resource group so you can easily find all the resources used by one project. For simple projects, you may only have a couple of resources in each resource group. But for much larger projects you may have dozens, or even more, resources in one resource group.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="intro_infrastructure.html"><span aria-hidden="true">&larr;</span> 5.1. Introduction to Infrastructure and IaaS</a></li>
+        
+        
+        <li class="next"><a href="virtual-machine.html">5.3. Introduction to virtual machines <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/azure-intro/azure-services.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>8.4. Exploration: an Automated Deployment Bash Script &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9. Introduction to PowerShell" href="../powershell-intro/index.html" />
+    <link rel="prev" title="8.3. Walkthrough: Provisioning Resources Using the Azure CLI" href="walkthrough_az-cli.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">8. The Azure CLI</a></li>
+    <li class="active">8.4. Exploration: an Automated Deployment Bash Script</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="exploration-an-automated-deployment-bash-script">
+<h1>8.4. Exploration: an Automated Deployment Bash Script<a class="headerlink" href="#exploration-an-automated-deployment-bash-script" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">Do not run this script! You will be writing your own automated deployment script in a future chapter. So it is in your interest to understand what this script is doing, but we do not recommend running it because there are a few extra steps when using the Azure CLI when working with WSL that are not included in this article.</p>
+</div>
+<p>A huge benefit of using the Azure CLI from a shell terminal is that we can bundle many commands together in a script. In this walkthrough, we will explore a Bash script that does a complete deployment using the Azure CLI.</p>
+<p>The deployment Bash scripts will be used to:</p>
+<ol class="arabic simple">
+<li>Provision resources</li>
+<li>Configure resources</li>
+<li>Deliver source code</li>
+<li>Deploy source code</li>
+</ol>
+<div class="section" id="bash-scripts-breakdown">
+<h2>8.4.1. Bash Scripts Breakdown<a class="headerlink" href="#bash-scripts-breakdown" title="Permalink to this headline">¶</a></h2>
+<p>To orient ourselves, let’s take a look at the entry point script, <code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>. This is a rather involved script that dictates our deployment. After we look at the script as a whole, we will break down its individual sections.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Recall that the Azure CLI is cross-platform, so its CLI commands should work the same regardless of the underlying operating system. Although this script is a Bash script, a PowerShell script will look very similar.</p>
+</div>
+</div>
+<div class="section" id="provision-resources-script">
+<h2>8.4.2. Provision Resources Script<a class="headerlink" href="#provision-resources-script" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="provision-resources-script-steps">
+<h3>8.4.2.1. Provision Resources Script Steps<a class="headerlink" href="#provision-resources-script-steps" title="Permalink to this headline">¶</a></h3>
+<p>This script does quite a few things. Most of them are related to our Azure resources:</p>
+<ol class="arabic simple">
+<li>Declare variables</li>
+<li>Configure the default location</li>
+<li>Provision resource group</li>
+<li>Configure the default resource group</li>
+<li>Provision virtual machine &amp; capture output information in variables</li>
+<li>Extract data from VM output into useable variables: <code class="docutils literal notranslate"><span class="pre">$vm_id</span></code> and <code class="docutils literal notranslate"><span class="pre">$vm_ip</span></code></li>
+<li>Open port 443 on the VM</li>
+<li>Configure the default virtual machine</li>
+<li>Provision a Key Vault</li>
+<li>Create a new secret in the Key Vault with a description, name, and value</li>
+<li>Attach a new access policy to the Key Vault granting the VM access</li>
+<li>Send three separate Bash scripts to the VM using <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">vm</span> <span class="pre">run-command</span> <span class="pre">invoke</span></code></li>
+<li>Print out the public IP address of the VM</li>
+</ol>
+</div>
+<div class="section" id="script-goal">
+<h3>8.4.2.2. Script Goal<a class="headerlink" href="#script-goal" title="Permalink to this headline">¶</a></h3>
+<p>This script is responsible for setting up and configuring the resources using the Azure CLI.</p>
+<p>Take note of the second-to-last step in the list: “Send three separate Bash scripts to the vm using <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">vm</span> <span class="pre">run-command</span> <span class="pre">invoke</span></code>”. It is passing three additional Bash scripts to be run by the VM using the RunCommand tool we worked with in the Azure Portal.</p>
+<p>We need to do this because we have additional VM configuration steps that we cannot accomplish with just the Azure CLI. However, we can access <code class="docutils literal notranslate"><span class="pre">RunCommand</span></code> from the Azure CLI which allows us to run any additional scripts on the VM that are needed.</p>
+</div>
+<div class="section" id="id1">
+<h3>8.4.2.3. Provision Resources Script<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Let’s take a look at the script and then talk about what it’s doing:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#! /usr/bin/env bash</span>
+
+<span class="nb">set</span> -e
+
+<span class="c1"># --- start ---</span>
+
+<span class="c1"># variables</span>
+
+<span class="nv">student_name</span><span class="o">=</span><span class="s2">&quot;student&quot;</span>
+
+<span class="nv">rg_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">student_name</span><span class="si">}</span><span class="s2">-cli-scripting-rg&quot;</span>
+
+<span class="c1"># -- vm</span>
+<span class="nv">vm_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">student_name</span><span class="si">}</span><span class="s2">-cli-scripting-vm&quot;</span>
+
+<span class="nv">vm_admin_username</span><span class="o">=</span>student
+<span class="nv">vm_admin_password</span><span class="o">=</span><span class="s1">&#39;LaunchCode-@zure1&#39;</span>
+
+<span class="nv">vm_size</span><span class="o">=</span>Standard_B2s
+<span class="nv">vm_image</span><span class="o">=</span><span class="k">$(</span>az vm image list --query <span class="s2">&quot;[? contains(urn, &#39;Ubuntu&#39;)] | [0].urn&quot;</span> -o tsv<span class="k">)</span>
+
+<span class="c1"># -- kv</span>
+<span class="nv">kv_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">student_name</span><span class="si">}</span><span class="s2">-cli-scripting-kv&quot;</span>
+<span class="nv">kv_secret_name</span><span class="o">=</span><span class="s1">&#39;ConnectionStrings--Default&#39;</span>
+<span class="nv">kv_secret_value</span><span class="o">=</span><span class="s1">&#39;server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode&#39;</span>
+
+<span class="c1"># set az location default</span>
+
+az configure --default <span class="nv">location</span><span class="o">=</span>eastus
+
+<span class="c1"># RG: provision</span>
+
+az group create -n <span class="s2">&quot;</span><span class="nv">$rg_name</span><span class="s2">&quot;</span>
+
+<span class="c1"># set az rg default</span>
+
+az configure --default <span class="nv">group</span><span class="o">=</span><span class="nv">$rg_name</span>
+
+<span class="c1"># VM: provision</span>
+
+<span class="c1"># capture vm output for splitting</span>
+<span class="nv">vm_data</span><span class="o">=</span><span class="k">$(</span>az vm create -n <span class="nv">$vm_name</span> --size <span class="nv">$vm_size</span> --image <span class="nv">$vm_image</span> --admin-username <span class="nv">$vm_admin_username</span> --admin-password <span class="nv">$vm_admin_password</span> --authentication-type password --assign-identity --query <span class="s2">&quot;[ identity.systemAssignedIdentity, publicIpAddress ]&quot;</span> -o tsv<span class="k">)</span>
+
+<span class="c1"># vm value is (2 lines):</span>
+<span class="c1"># &lt;identity line&gt;</span>
+<span class="c1"># &lt;public IP line&gt;</span>
+
+<span class="c1"># get the 1st line (identity)</span>
+<span class="nv">vm_id</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$vm_data</span><span class="s2">&quot;</span> <span class="p">|</span> head -n <span class="m">1</span><span class="k">)</span>
+
+<span class="c1"># get the 2nd line (ip)</span>
+<span class="nv">vm_ip</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$vm_data</span><span class="s2">&quot;</span> <span class="p">|</span> tail -n +2<span class="k">)</span>
+
+<span class="c1"># VM: add NSG rule for port 443 (https)</span>
+
+az vm open-port --port <span class="m">443</span>
+
+<span class="c1"># set az vm default</span>
+
+az configure --default <span class="nv">vm</span><span class="o">=</span><span class="nv">$vm_name</span>
+
+<span class="c1"># KV: provision</span>
+
+az keyvault create -n <span class="nv">$kv_name</span> --enable-soft-delete <span class="nb">false</span> --enabled-for-deployment <span class="nb">true</span>
+
+<span class="c1"># KV: set secret</span>
+
+az keyvault secret <span class="nb">set</span> --vault-name <span class="nv">$kv_name</span> --description <span class="s1">&#39;connection string&#39;</span> --name <span class="nv">$kv_secret_name</span> --value <span class="nv">$kv_secret_value</span>
+
+<span class="c1"># KV: grant access to VM</span>
+
+az keyvault set-policy --name <span class="nv">$kv_name</span> --object-id <span class="nv">$vm_id</span> --secret-permissions list get
+
+<span class="c1"># VM setup-and-deploy script</span>
+
+az vm run-command invoke --command-id RunShellScript --scripts @configure-vm.sh @configure-ssl.sh @deliver-deploy.sh
+
+<span class="c1"># finished print out IP address</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;VM available at </span><span class="nv">$vm_ip</span><span class="s2">&quot;</span>
+
+<span class="c1"># --- end ---</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="provision-resources-script-sections">
+<h2>8.4.3. Provision Resources Script Sections<a class="headerlink" href="#provision-resources-script-sections" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="declare-variables">
+<h3>8.4.3.1. Declare Variables<a class="headerlink" href="#declare-variables" title="Permalink to this headline">¶</a></h3>
+<p>The Bash script first declares a suite of variables:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">student_name</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">rg_name</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">vm_name</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">vm_admin_username</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">vm_admin_password</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">vm_size</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">vm_image</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">kv_name</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">kv_secret_name</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">kv_secret_value</span></code></li>
+</ul>
+<p>These variables are used throughout the script. Most of the variables are used as the parameters for provisioning our Azure resources.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>: Variables</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">student_name</span><span class="o">=</span>student
+
+<span class="nv">rg_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">student_name</span><span class="si">}</span><span class="s2">-cli-scripting-rg&quot;</span>
+
+<span class="nv">vm_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">student_name</span><span class="si">}</span><span class="s2">-cli-scripting-vm&quot;</span>
+
+<span class="nv">vm_admin_username</span><span class="o">=</span>student
+<span class="nv">vm_admin_password</span><span class="o">=</span><span class="s1">&#39;LaunchCode-@zure1&#39;</span>
+
+<span class="nv">vm_size</span><span class="o">=</span>Standard_B2s
+<span class="nv">vm_image</span><span class="o">=</span><span class="k">$(</span>az vm image list --query <span class="s2">&quot;[? contains(urn, &#39;Ubuntu&#39;)] | [0].urn&quot;</span> -o tsv<span class="k">)</span>
+
+<span class="nv">kv_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">student_name</span><span class="si">}</span><span class="s2">-cli-scripting-kv&quot;</span>
+<span class="nv">kv_secret_name</span><span class="o">=</span><span class="s1">&#39;ConnectionStrings--Default&#39;</span>
+<span class="nv">kv_secret_value</span><span class="o">=</span><span class="s1">&#39;server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode&#39;</span>
+</pre></div>
+</div>
+</div>
+<p>All of the name variables use the underlying <code class="docutils literal notranslate"><span class="pre">student_name</span></code> variable to create a consistent naming pattern. This allows us to easily spin up a new stack by changing this one variable; it is a single source of truth.</p>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>tip</p>
+<p class="last">For this script to work the deployed Azure Key Vault name is needed to adequately fill out the <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> file.</p>
+</div>
+</div>
+<div class="section" id="provision-resource-group">
+<h3>8.4.3.2. Provision Resource Group<a class="headerlink" href="#provision-resource-group" title="Permalink to this headline">¶</a></h3>
+<p>After our variables we start provisioning our Azure resources using the Azure CLI.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>: Provision resource group</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az group create -n <span class="s2">&quot;</span><span class="nv">$rg_name</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>The resource group must be provisioned first because it is the container that holds all the other resources. To provision a new resource group, we need to provide the name. These names must be unique to your subscription.</p>
+</div>
+<div class="section" id="provision-virtual-machine">
+<h3>8.4.3.3. Provision Virtual Machine<a class="headerlink" href="#provision-virtual-machine" title="Permalink to this headline">¶</a></h3>
+<p>After the resource group we have some flexibility.</p>
+<p>We could spin up the Key Vault or Virtual Machine first, however consider the dependencies of these resources. We will eventually need to set an access policy on our Key Vault that includes information about our Virtual Machine.</p>
+<p>For this reason, it makes more sense to provision the Virtual Machine first.</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>: Provision VM and store response in vm_data</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">vm_data</span><span class="o">=</span><span class="k">$(</span>az vm create -n <span class="nv">$vm_name</span> --size <span class="nv">$vm_size</span> --image <span class="nv">$vm_image</span> --admin-username <span class="nv">$vm_admin_username</span> --admin-password <span class="nv">$vm_admin_password</span> --authentication-type password --assign-identity --query <span class="s2">&quot;[ identity.systemAssignedIdentity, publicIpAddress ]&quot;</span> -o tsv<span class="k">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>note</p>
+<p class="last">This Bash script captures the output of the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">vm</span> <span class="pre">create</span></code> command in the <code class="docutils literal notranslate"><span class="pre">vm_data</span></code> variable. We can do the same thing in PowerShell with slightly different syntax.</p>
+</div>
+<div class="section" id="capture-virtual-machine-s-system-assigned-identity">
+<h4>8.4.3.3.1. Capture Virtual Machine’s System Assigned Identity<a class="headerlink" href="#capture-virtual-machine-s-system-assigned-identity" title="Permalink to this headline">¶</a></h4>
+<p>Upon creating our virtual machine, we store the output from the command in a Bash variable. We do this because we are going to do some Bash scripting to extract some information:</p>
+<ul class="simple">
+<li>The virtual machine system-managed identity</li>
+<li>The virtual machine public IP address</li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>: Extract the necessary information from vm_data</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the 1st line (identity)</span>
+<span class="nv">vm_id</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$vm_data</span><span class="s2">&quot;</span> <span class="p">|</span> head -n <span class="m">1</span><span class="k">)</span>
+
+<span class="c1"># get the 2nd line (ip)</span>
+<span class="nv">vm_ip</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$vm_data</span><span class="s2">&quot;</span> <span class="p">|</span> tail -n +2<span class="k">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>note</p>
+<p>Getting the variables from the Azure CLI output is tedious in Bash. Recall that Bash is a string-based scripting language, so the output from the Azure CLI is a string. In Bash, we must manipulate the string to get the information we need.</p>
+<p class="last">In PowerShell, the Azure CLI output will be an object. Accessing properties can be accomplished using dot-notation, a much easier process!</p>
+</div>
+</div>
+<div class="section" id="create-appropriate-network-security-group">
+<h4>8.4.3.3.2. Create Appropriate Network Security Group<a class="headerlink" href="#create-appropriate-network-security-group" title="Permalink to this headline">¶</a></h4>
+<p>Our application hasn’t been deployed yet, but let’s go ahead and open the HTTPS port so that end users can access the <code class="docutils literal notranslate"><span class="pre">CodingEventsAPI</span></code>.</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>: Open VM HTTPS port</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az vm open-port --port <span class="m">443</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-tip admonition">
+<p class="first admonition-title"><i class="fas fa-lightbulb" aria-hidden="true"></i>tip</p>
+<p class="last">Creating the NSG for our VM that contains the proper port is an easy thing to forget to do, so we are opening it while we are working with our VM. If an appropriate NSG inbound rule is not created users will receive a <strong>connection timeout</strong> when attempting to access our API.</p>
+</div>
+</div>
+</div>
+<div class="section" id="provision-key-vault">
+<h3>8.4.3.4. Provision Key Vault<a class="headerlink" href="#provision-key-vault" title="Permalink to this headline">¶</a></h3>
+<p>We now have a VM and all the information we need to create an access policy for a Key Vault. So let’s provision a Key Vault:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>: Provision Key Vault</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az keyvault create -n <span class="nv">$kv_name</span> --enable-soft-delete <span class="nb">false</span> --enabled-for-deployment <span class="nb">true</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">For a VM to access the Key Vault, it must be <code class="docutils literal notranslate"><span class="pre">enabled-for-deployment</span></code>. We also turn off the <code class="docutils literal notranslate"><span class="pre">soft-delete</span></code> so the Key Vault can be deleted in less than 30 days.</p>
+</div>
+<div class="section" id="set-key-vault-secret">
+<h4>8.4.3.4.1. Set Key Vault Secret<a class="headerlink" href="#set-key-vault-secret" title="Permalink to this headline">¶</a></h4>
+<p>After the Key Vault has been provisioned, we can add whatever secrets our application needs. In this case, we only have one secret: a database connection string.</p>
+<p>The database connection string secret needs:</p>
+<ul class="simple">
+<li>Description</li>
+<li>Name (key)</li>
+<li>Value</li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>: Add connection string secret to Key Vault</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az keyvault secret <span class="nb">set</span> --vault-name <span class="nv">$kv_name</span> --description <span class="s1">&#39;connection string&#39;</span> --name <span class="nv">$kv_secret_name</span> --value <span class="nv">$kv_secret_value</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="set-key-vault-access-policy">
+<h4>8.4.3.4.2. Set Key Vault Access Policy<a class="headerlink" href="#set-key-vault-access-policy" title="Permalink to this headline">¶</a></h4>
+<p>Finally, we use the variable we created earlier that contains the VM system-assigned identity to create an access policy that grants the VM permission to <em>list</em> and <em>get</em> secrets stored in the Key Vault.</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>: Create Key Vault access policy for VM</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az keyvault set-policy --name <span class="nv">$kv_name</span> --object-id <span class="nv">$vm_id</span> --secret-permissions list get
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="send-bash-scripts-to-vm-via-runcommand">
+<h3>8.4.3.5. Send Bash Scripts to VM Via RunCommand<a class="headerlink" href="#send-bash-scripts-to-vm-via-runcommand" title="Permalink to this headline">¶</a></h3>
+<p>Now that all of our infrastructure has been provisioned, we need to finish configuring our VM.</p>
+<p>The VM still needs:</p>
+<ul class="simple">
+<li>Software dependency installations</li>
+<li>Web server configurations</li>
+<li>Database</li>
+<li>Database user</li>
+<li>Source code</li>
+<li>Deployed application</li>
+</ul>
+<p>To accomplish these final steps additional Bash scripts will be sent to the VM using the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">vm</span> <span class="pre">run-command</span> <span class="pre">invoke</span></code> command.</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>: Send (and invoke) configure scripts to VM</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az vm run-command invoke --command-id RunShellScript --scripts @configure-vm.sh, @configure-ssl.sh, @deliver-deploy.sh
+</pre></div>
+</div>
+</div>
+<p>When you are writing your own automated deployment script, in a future chapter, these bash scripts will be provided for you.</p>
+<p>However you should look over them and read the comments that describe what they are doing. Many of the tasks they accomplish go beyond the scope of this course, but are a necessary part of this deployment.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">deliver-deploy.sh</span></code> script clones a project repository and then switches to a specific branch.</p>
+<p>When you are writing this automation script in a future lesson:</p>
+<p><em>You will be responsible for creating this branch and pushing the appropriate code</em>.</p>
+<p class="last">You will need to update the <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> file in this branch to include your Key Vault name and AADB2C information. You will need to push to this branch before running the <code class="docutils literal notranslate"><span class="pre">deliver-deploy.sh</span></code> script!</p>
+</div>
+</div>
+<div class="section" id="print-public-ip-address-to-stdout">
+<h3>8.4.3.6. Print Public IP Address to STDOUT<a class="headerlink" href="#print-public-ip-address-to-stdout" title="Permalink to this headline">¶</a></h3>
+<p>As a final step, the script prints the public IP address to the console. This shows exactly where to access the deployed application.</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code>: Print out VM public IP address</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;VM available at </span><span class="nv">$vm_ip</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="vm-runcommand-scripts">
+<h3>8.4.3.7. VM RunCommand Scripts<a class="headerlink" href="#vm-runcommand-scripts" title="Permalink to this headline">¶</a></h3>
+<p>It is important that the three VM RunCommand scripts run in a specific order. We have defined their order in our <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">vm</span> <span class="pre">run-command</span> <span class="pre">invoke</span></code> command. These scripts must run in this order:</p>
+<ol class="arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">configure-vm.sh</span></code>: Installs <code class="docutils literal notranslate"><span class="pre">dotnet</span></code>, MySQL, and creates the database and user that our application needs</li>
+<li><code class="docutils literal notranslate"><span class="pre">configure-ssl.sh</span></code>: Installs and configures the NGINX web server</li>
+<li><code class="docutils literal notranslate"><span class="pre">deliver-deploy.sh</span></code>: Delivers, builds, and deploys source code</li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">configure-vm.sh</span></code> script should look familiar, since it’s a collection of the steps we have used multiple times throughout this class.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">configure-ssl.sh</span></code> script is outside the scope of this class. In a nutshell, it downloads and configures the NGINX web server our application uses to enable TLS and HTTPS so that our app can be used with AADB2C.</p>
+</div>
+</div>
+<div class="section" id="deliver-deploy-script">
+<h2>8.4.4. Deliver &amp; Deploy Script<a class="headerlink" href="#deliver-deploy-script" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">deliver-deploy.sh</span></code> script has a couple of variables that need to be set by the user. Let’s take a look.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#! /usr/bin/env bash</span>
+
+<span class="nb">set</span> -ex
+
+<span class="c1"># -- env vars --</span>
+
+<span class="c1"># for cloning in delivery</span>
+<span class="nv">github_username</span><span class="o">=</span>student_github_account_name
+<span class="nv">solution_branch</span><span class="o">=</span>github_repository_solution_branch
+
+<span class="c1"># api</span>
+<span class="nv">api_service_user</span><span class="o">=</span>api-user
+<span class="nv">api_working_dir</span><span class="o">=</span>/opt/coding-events-api
+
+<span class="c1"># needed to use dotnet from within RunCommand</span>
+<span class="nb">export</span> <span class="nv">HOME</span><span class="o">=</span>/home/student
+<span class="nb">export</span> <span class="nv">DOTNET_CLI_HOME</span><span class="o">=</span>/home/student
+
+<span class="c1"># -- end env vars --</span>
+
+<span class="c1"># -- set up API service --</span>
+
+<span class="c1"># create API service user and dirs</span>
+useradd -M <span class="s2">&quot;</span><span class="nv">$api_service_user</span><span class="s2">&quot;</span> -N
+mkdir <span class="s2">&quot;</span><span class="nv">$api_working_dir</span><span class="s2">&quot;</span>
+
+chmod <span class="m">700</span> /opt/coding-events-api/
+chown <span class="nv">$api_service_user</span> /opt/coding-events-api/
+
+<span class="c1"># generate API unit file</span>
+cat <span class="s">&lt;&lt; EOF &gt; /etc/systemd/system/coding-events-api.service</span>
+<span class="s">[Unit]</span>
+<span class="s">Description=Coding Events API</span>
+<span class="s">[Install]</span>
+<span class="s">WantedBy=multi-user.target</span>
+<span class="s">[Service]</span>
+<span class="s">User=$api_service_user</span>
+<span class="s">WorkingDirectory=$api_working_dir</span>
+<span class="s">ExecStart=/usr/bin/dotnet ${api_working_dir}/CodingEventsAPI.dll</span>
+<span class="s">Restart=always</span>
+<span class="s">RestartSec=10</span>
+<span class="s">KillSignal=SIGINT</span>
+<span class="s">SyslogIdentifier=coding-events-api</span>
+<span class="s">Environment=ASPNETCORE_ENVIRONMENT=Production</span>
+<span class="s">Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false</span>
+<span class="s">Environment=DOTNET_HOME=$api_working_dir</span>
+<span class="s">EOF</span>
+
+<span class="c1"># -- end setup API service --</span>
+
+<span class="c1"># -- deliver --</span>
+
+<span class="c1"># deliver source code</span>
+
+git clone https://github.com/<span class="nv">$github_username</span>/coding-events-api /tmp/coding-events-api
+
+<span class="nb">cd</span> /tmp/coding-events-api/CodingEventsAPI
+
+<span class="c1"># checkout branch that has the appsettings.json we need to connect to the KV</span>
+git checkout <span class="nv">$solution_branch</span>
+
+dotnet publish -c Release -r linux-x64 -o <span class="s2">&quot;</span><span class="nv">$api_working_dir</span><span class="s2">&quot;</span>
+
+<span class="c1"># -- end deliver --</span>
+
+<span class="c1"># -- deploy --</span>
+
+<span class="c1"># start API service</span>
+service coding-events-api start
+
+<span class="c1"># -- end deploy --</span>
+</pre></div>
+</div>
+<p>This final script needs to know the GitHub user account name and repository that contains the source code to be deployed.</p>
+<p>The middle section does some VM operations work, namely creating directories, granting privileges to those directories, and creating a Systemd unit file that will be used to deploy the application.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>note</p>
+<p class="last">Unit files are outside the scope of this class. Briefly, they allow you to define how an application is run and can be configured to auto-restart the application if it fails. You can learn more by viewing the Digital Ocean <a class="reference external" href="https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files" target="_blank">Systemd Unit File<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> article.</p>
+</div>
+<p>The final section of the script clones and checks out the solution branch, publishes the project to the directory indicated by the unit file, and then starts the service which runs our application.</p>
+<p>This deployment requires the source code from the solution repository to have an <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> file that contains information about the Key Vault and AADB2C utilized by the application.</p>
+<p>An example of this <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> file is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;Logging&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;LogLevel&quot;</span><span class="p">:</span> <span class="p">{</span>
+         <span class="nt">&quot;Default&quot;</span><span class="p">:</span> <span class="s2">&quot;Information&quot;</span><span class="p">,</span>
+         <span class="nt">&quot;Microsoft&quot;</span><span class="p">:</span> <span class="s2">&quot;Warning&quot;</span><span class="p">,</span>
+         <span class="nt">&quot;Microsoft.Hosting.Lifetime&quot;</span><span class="p">:</span> <span class="s2">&quot;Information&quot;</span>
+      <span class="p">}</span>
+   <span class="p">},</span>
+   <span class="nt">&quot;AllowedHosts&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;ServerOrigin&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;KeyVaultName&quot;</span><span class="p">:</span> <span class="s2">&quot;student-bash-kv&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;JWTOptions&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;Audience&quot;</span><span class="p">:</span> <span class="s2">&quot;e13f6217-f8c1-495a-b1e1-b5cd28b26708&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;MetadataAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;https://student0720tenant.b2clogin.com/paul0720tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_coding-events-api-susi&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;RequireHttpsMetadata&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="nt">&quot;TokenValidationParameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+         <span class="nt">&quot;ValidateIssuer&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+         <span class="nt">&quot;ValidateAudience&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+         <span class="nt">&quot;ValidateLifetime&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+         <span class="nt">&quot;ValidateIssuerSigningKey&quot;</span><span class="p">:</span> <span class="kc">true</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Assuming the source code was error free—and that it’s <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> file contains the appropriate information about the Key Vault and AADB2C—the application will be deployed with no issues.</p>
+</div>
+<div class="section" id="deploying">
+<h2>8.4.5. Deploying<a class="headerlink" href="#deploying" title="Permalink to this headline">¶</a></h2>
+<p>We now understand what the Bash scripts are doing. After the user provides the proper information to the scripts, including a branch with the appropriate <code class="docutils literal notranslate"><span class="pre">appsettings.json</span></code> file, they can execute the <code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code> script to automatically deploy the entire application.</p>
+<p>Understanding the steps of deploying is a necessary part of creating an automation script. In the PowerShell chapter you will be writing your own automated deployment script.</p>
+</div>
+<div class="section" id="conclusion">
+<h2>8.4.6. Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>The steps are similar across deployments, but they can be achieved in different ways. Let’s review the different approaches we have used throughout this course:</p>
+<ul class="simple">
+<li>Manual deployment with a GUI: Azure Portal</li>
+<li>Manual deployment with a CLI tool: Azure CLI</li>
+<li>Automated deployment via shell scripts like <code class="docutils literal notranslate"><span class="pre">provision-resources.sh</span></code> and it’s companion scripts</li>
+<li>Automated deployment via pipelining tools: <a class="reference external" href="https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/what-is-azure-pipelines?view=azure-devops" target="_blank">Azure Pipelines<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+<li>Any combination of these</li>
+</ul>
+<p>However, you cannot automate a process until you understand the individual steps necessary to achieve automation. We started from the the Azure Portal, where it was easier to form a mental model of the many new concepts due to the familiarity of a GUI interface. Since then, we have moved towards the CLI environment, which trades the tangibility of a GUI for automation potential and conciseness. Automation is only possible when you have a clear mental model of the units and interactions involved in a deployment.</p>
+<p>As you may have come to realize, <em>automation is the end-goal</em> in operations. Some of the many benefits of automated deployments include reduced time to deploy, decreased likelihood of human error, and predictable behavior. Each of these benefits contributes to faster turnaround of new features and fixes for customers.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="walkthrough_az-cli.html"><span aria-hidden="true">&larr;</span> 8.3. Walkthrough: Provisioning Resources Using the Azure CLI</a></li>
+        
+        
+        <li class="next"><a href="../powershell-intro/index.html">9. Introduction to PowerShell <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/az-cli/walkthrough_bash-scripting-automated-deployment.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

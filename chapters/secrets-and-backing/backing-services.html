@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>6.3. Backing Services &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6.4. Walkthrough: Local &amp; Remote Secrets Management" href="walkthrough.html" />
+    <link rel="prev" title="6.2. Application Environments" href="application-environments.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">6. Secrets Management &amp; Backing Services</a></li>
+    <li class="active">6.3. Backing Services</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="backing-services">
+<h1>6.3. Backing Services<a class="headerlink" href="#backing-services" title="Permalink to this headline">¶</a></h1>
+<p>We have worked with MySQL throughout this course as the primary database for our previous MVC applications. We used these databases to persist the business data that our applications operate on. In other words, we could say our MVC applications <em>required</em> a database to function.</p>
+<p id="index-0">In operations, the general term used to describe any service an application needs to function is a <strong>backing service</strong>.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>The <a class="reference external" href="https://12factor.net/backing-services" target="_blank">12 Factor Manifesto defines<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> a backing service this way:</p>
+<blockquote class="last">
+<div>“A backing service is any service the app consumes over the network as part of its normal operation.”</div></blockquote>
+</div>
+<p>Choosing backing services is determined by an application’s requirements. For example, in our next deployment our application will require a MySQL database. In other cases a project may require multiple different types of backing services.</p>
+<p>Examples of backing services:</p>
+<ul class="simple">
+<li>Relational databases like MySQL, PSQL, MSSQL</li>
+<li>Non-relational databases like MongoDB, CouchDB</li>
+<li>Caching services like Redis, Azure Caching, Memcached</li>
+<li>Secrets management like Azure Key Vault</li>
+</ul>
+<div class="section" id="external-backing-services">
+<h2>6.3.1. External Backing Services<a class="headerlink" href="#external-backing-services" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">An <strong>external backing service</strong> is a dependent service that runs <em>externally</em> to the application. In other words, the backing service and the application run on different host machines and communicate over an <em>external</em> network.</p>
+<p>Let’s explore examples of what using an external backing service would look like over the three application environments we discussed in the previous article.</p>
+<table border="1" class="colwidths-given docutils" id="id1">
+<caption><span class="caption-text">External Backing Services</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="30%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Environment</th>
+<th class="head">Application Host</th>
+<th class="head">Database Host</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Local</td>
+<td>contributor’s local machine</td>
+<td>a shared development database</td>
+</tr>
+<tr class="row-odd"><td>Development</td>
+<td>CI-controlled VM</td>
+<td>A high parity managed database</td>
+</tr>
+<tr class="row-even"><td>Production</td>
+<td>scaled VM</td>
+<td>managed database</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="internal-backing-services">
+<h2>6.3.2. Internal Backing Services<a class="headerlink" href="#internal-backing-services" title="Permalink to this headline">¶</a></h2>
+<p id="index-2">An <strong>internal backing service</strong> is hosted on the same machine as the running application.</p>
+<p>In this class, we have only used internal backing services. An application running in a local environment almost always uses an internal backing service. Let’s look at a few examples of internal backing services.</p>
+<table border="1" class="colwidths-given docutils" id="id2">
+<caption><span class="caption-text">Internal Backing Services</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Environment</th>
+<th class="head">Application Host</th>
+<th class="head">Database Host</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Local</td>
+<td>contributor local machine</td>
+<td>local database service</td>
+</tr>
+<tr class="row-odd"><td>Development</td>
+<td>CI-controlled VM</td>
+<td>database embedded in the CI VM</td>
+</tr>
+<tr class="row-even"><td>Production (<strong>learning only</strong>)</td>
+<td>single VM</td>
+<td>database embedded in the VM</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="application-environment-best-practices">
+<h2>6.3.3. Application Environment Best Practices<a class="headerlink" href="#application-environment-best-practices" title="Permalink to this headline">¶</a></h2>
+<p>In the previous tables, you saw example configurations with both internal and external backing services. Let’s explore the best practices behind those examples.</p>
+<div class="section" id="local">
+<h3>6.3.3.1. Local<a class="headerlink" href="#local" title="Permalink to this headline">¶</a></h3>
+<p>A local environment should use <em>internal</em> backing services.</p>
+<p>Local environments go through rapid change. As developers write code, it is imperative for them to have immediate feedback from the backing services of the application. Keeping the backing service internal gives them full control over the service such as resetting a database or seeding test data.</p>
+</div>
+<div class="section" id="development">
+<h3>6.3.3.2. Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h3>
+<p>A development environment should use <em>internal</em> backing services.</p>
+<p>Development environments are fully automated and only generate reports. Due to this automation, an internal backing service makes more sense. Every time code gets merged into this environment, the automation software (CI) sets up and runs the automated tools.</p>
+<p>One of the responsibilities of a CI system is to create and manage any necessary backing services. Using an internal backing service makes the environment <em>disposable</em> and increases the speed at which the automated tests run (since there is no network latency). In addition, an internal backing service is less expensive than one managed by a cloud service provider.</p>
+<p>With heavy data-processing projects it may make sense to use external backing services for your development environment. Since the nature of the project relies on knowing exactly how the backing services behave, the higher parity may be worth the increases in cost and and decreases in speed. Like most best practices, this is a trade off and not a concrete rule.</p>
+</div>
+<div class="section" id="production">
+<h3>6.3.3.3. Production<a class="headerlink" href="#production" title="Permalink to this headline">¶</a></h3>
+<p>A production environment should use <em>external</em> backing services.</p>
+<p>Production environments are <em>live</em> environments! In a production environment, your applications are interacting with paying customers or mission stakeholders. You cannot afford to lose data caused by logical errors (bugs) or by overloaded infrastructure.</p>
+<p>In most production environments it makes sense to separate your backing services from their dependant applications. When you cannot afford for an application crash to impact the backing service (e.g. data loss cause by a crash) you need to decouple the associated infrastructure. This means you should physically separate your application host from where your backing services are hosted.</p>
+<p>Ideally, any logical errors should be filtered out by the environments leading to production. However, overloaded infrastructure can be an unpredictable risk. By separating your infrastructure it is easier to independently manage your application and backing services.</p>
+<div class="admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Because we are in a learning environment, we are not concerned with the risk of overloading. For this reason, we will be using an internal, or embedded, MySQL backing service in our application host VM.</p>
+</div>
+<p>When you manage your own environment you are responsible for every aspect of the infrastructure. With respect to your application and backing services, you would manage things like database backups and scaling.</p>
+<div class="admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Recall that scaling means creating more copies to match demand, or disposing of copies that have broken or are no longer necessary.</p>
+</div>
+<p>In production you would likely rely on <strong>externally managed</strong> solutions. Externally managed solutions are those managed by the cloud service provider (CSP). This means that the CSP handles the infrastructure responsibilities of the managed services. If the CSP manages your services, you will pay a premium instead of paying in time and concern. The services cost more, but you gain stability and peace-of-mind.</p>
+<div class="admonition-fun-fact admonition">
+<p class="first admonition-title"><i class="fas fa-rocket" aria-hidden="true"></i>Fun Fact</p>
+<p class="last">Azure offers many managed services from <a class="reference external" href="https://docs.microsoft.com/en-us/azure/key-vault/general/overview" target="_blank">secrets managers like Key Vault<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> to <a class="reference external" href="https://azure.microsoft.com/en-us/product-categories/databases/" target="_blank">databases<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> and even managed <a class="reference external" href="https://azure.microsoft.com/en-us/services/app-service/" target="_blank">application environments<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>.</p>
+</div>
+<p>To achieve high parity, one environment must set up all backing services in the exact same way as the production environment. Usually, the environment at the highest level of parity is the staging environment. The staging environment will have an internal backing service only if the production environment also has an internal backing service.</p>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="application-environments.html"><span aria-hidden="true">&larr;</span> 6.2. Application Environments</a></li>
+        
+        
+        <li class="next"><a href="walkthrough.html">6.4. Walkthrough: Local &amp; Remote Secrets Management <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/secrets-and-backing/backing-services.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

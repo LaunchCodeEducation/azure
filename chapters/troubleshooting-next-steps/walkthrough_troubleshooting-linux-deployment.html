@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>11.5. Group Walkthrough: Troubleshooting a Broken Linux Deployment &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Index" href="../../genindex.html" />
+    <link rel="prev" title="11.4. How to Troubleshoot" href="how-to-troubleshoot.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">11. Introduction to Troubleshooting</a></li>
+    <li class="active">11.5. Group Walkthrough: Troubleshooting a Broken Linux Deployment</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="group-walkthrough-troubleshooting-a-broken-linux-deployment">
+<h1>11.5. Group Walkthrough: Troubleshooting a Broken Linux Deployment<a class="headerlink" href="#group-walkthrough-troubleshooting-a-broken-linux-deployment" title="Permalink to this headline">¶</a></h1>
+<p>This walkthrough is different from the walkthroughs you have done so far. Troubleshooting skills can only be developed through experience. The methodologies and tools can be taught, but the experience can only be gained from solving real-world problems. You will be working as a group, like you would be on a professional team. Together your group will be troubleshooting a broken deployment. You will need to work together to engage in a troubleshooting discussion to reach a resolution to the issues presented in the deployment.</p>
+<p>Each student will be given read-only access to the Azure resources used in the deployment. Your TA will be the only member of your group with administrative access. For each issue the group encounters, your TA will facilitate discussion and take any actions the group agrees upon.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">You will be collaborating with your group members and TA. <em>Make sure you do not change anything in the machine</em>. Your role is <em>purely observational</em>. The TA will perform any mutating actions to ensure a manageable process for everyone in the group.</p>
+</div>
+<p>After setting up access of the group members, you will have one hour to reach a functional deployment. After the time is up, your instructor will walkthrough each issue and its resolution.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Take your time on each issue. The purpose of this exercise is to engage as a team in identifying, isolating, and resolving issues with a live deployment.</p>
+</div>
+<div class="section" id="troubleshooting-tools">
+<h2>11.5.1. Troubleshooting Tools<a class="headerlink" href="#troubleshooting-tools" title="Permalink to this headline">¶</a></h2>
+<p>For this troubleshooting exercise we will need troubleshooting tools to work with our broken deployment. Luckily, some of these tools will look familiar, as we have worked with them throughout this course.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">The tools we use in this exercise are not exhaustive. Due to the variable nature of deployments, many different tools have been created to assist in troubleshooting. Throughout your career you will use many of these different tools as a response to different systems, tech stack, or team preferences.</p>
+</div>
+<div class="section" id="our-troubleshooting-tools">
+<h3>11.5.1.1. Our Troubleshooting Tools<a class="headerlink" href="#our-troubleshooting-tools" title="Permalink to this headline">¶</a></h3>
+<p>In large-scale systems you would rely on bulk remote-management tools, but in our case we only need to manage one machine. For our Linux machine we will use <code class="docutils literal notranslate"><span class="pre">ssh</span></code> to securely connect to the shell of the provisioned VM.</p>
+<p>We are bound to the tools that come included in the selected Ubuntu image. This includes the file system navigation tools you learned in the Bash chapter, and the following:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">cat</span></code> or <code class="docutils literal notranslate"><span class="pre">less</span></code>: to inspect configuration files</li>
+<li><code class="docutils literal notranslate"><span class="pre">service</span></code>: to view the status of the services</li>
+<li><code class="docutils literal notranslate"><span class="pre">journalctl</span></code>: to view log outputs</li>
+<li><code class="docutils literal notranslate"><span class="pre">curl</span></code>: to make network requests from inside the Ubuntu machine</li>
+</ul>
+<p>Outside of the host machine, we will use the following tools for <em>external</em> troubleshooting:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code>: for information about each resource component (or the Azure web portal)</li>
+<li>Browser dev tools: to inspect response behavior in the browser</li>
+<li><code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code>: to make network requests from your Windows development machine</li>
+</ul>
+<div class="section" id="ssh-into-the-machine">
+<h4>11.5.1.1.1. SSH Into the Machine<a class="headerlink" href="#ssh-into-the-machine" title="Permalink to this headline">¶</a></h4>
+<p>Within the Setup section of this walkthrough your TA will invite you to your <code class="docutils literal notranslate"><span class="pre">Reader</span></code> role for accessing the Azure resources related to this broken deployment. <em>After you have accepted the invitation</em> and configured your default resource group and VM in the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code> you can request the public IP address of the VM.</p>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code> you can store the public IP in a variable so it can be used as the host component of the <code class="docutils literal notranslate"><span class="pre">ssh</span></code> command:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nv">$VmPublicIp</span> <span class="p">=</span> <span class="n">az</span> <span class="n">vm</span> <span class="n">list-ip-addresses</span> <span class="p">-</span><span class="n">-query</span> <span class="s1">&#39;[0].virtualMachine.network.publicIpAddresses[0].ipAddress&#39;</span>
+</pre></div>
+</div>
+</div>
+<p>The first time you connect to a machine over SSH you will be prompted to trust or reject the remote host. When prompted enter <code class="docutils literal notranslate"><span class="pre">yes</span></code> to trust the host and connect to it:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">ssh</span> <span class="n">student</span><span class="p">@</span><span class="nv">$VmPublicIp</span>
+<span class="c"># trust the remote host</span>
+<span class="c"># enter password: LaunchCode-@zure1</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Using <em>knowledge-based</em> authentication (username and password) is much less secure than using something <em>owned</em> like a private (digital) key.  The topic of using <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2" target="_blank">RSA keys with SSH<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> falls outside the scope of this course, but you should know it is <em>more secure and the preferred mechanism.</em></p>
+<p class="last">We will authenticate using credentials to avoid distracting from the learning goals of this troubleshooting exercise.</p>
+</div>
+<p>Once you have connected to the machine, you will be able to navigate and use Bash and the tools listed above to gather information and plan a solution with your group.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>If you are not on a Windows machine, remember that you will need to output in TSV format using the <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">tsv</span></code> option:</p>
+<div class="literal-block-wrapper last docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Linux/BASH</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nv">vm_public_ip</span><span class="o">=</span><span class="k">$(</span>az vm list-ip-addresses -o tsv --query <span class="s1">&#39;[0].virtualMachine.network.publicIpAddresses[0].ipAddress&#39;</span><span class="k">)</span>
+$ ssh student@<span class="s2">&quot;</span><span class="nv">$vm_public_ip</span><span class="s2">&quot;</span>
+<span class="c1"># trust the remote host</span>
+<span class="c1"># enter password: LaunchCode-@zure1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="using-service">
+<h4>11.5.1.1.2. Using <code class="docutils literal notranslate"><span class="pre">service</span></code><a class="headerlink" href="#using-service" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference external" href="http://manpages.ubuntu.com/manpages/bionic/man8/service.8.html" target="_blank">service<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> program is a wrapper that simplifies how several of the <a class="reference external" href="http://www.troubleshooters.com/linux/init/features_and_benefits.htm" target="_blank">init systems<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> on a Linux machine can be managed through a single tool. Init systems are used to <em>initialize</em> and manage background processes running on Linux systems.</p>
+<p>On Ubuntu machines the <a class="reference external" href="https://www.linode.com/docs/quick-answers/linux-essentials/what-is-systemd/" target="_blank">systemd init system<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> and its client program <a class="reference external" href="https://www.digitalocean.com/community/tutorials/systemd-essentials-working-with-services-units-and-the-journal" target="_blank">systemctl<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> (system control manager) are used by default to manage <em>service units</em>. In the configuration script of our final deployments we created a <em>systemd unit file</em> to define how our Coding Events API would be operated as a background service on the Ubuntu VM.  The script also used the <code class="docutils literal notranslate"><span class="pre">service</span></code> tool (rather than the underlying <code class="docutils literal notranslate"><span class="pre">systemctl</span></code> it wraps) to make our script portable across supporting Linux distributions.</p>
+<p>In addition to controlling services, the <code class="docutils literal notranslate"><span class="pre">service</span></code> tool can be used to view the status of any registered service units like our <code class="docutils literal notranslate"><span class="pre">coding-events-api</span></code>, <code class="docutils literal notranslate"><span class="pre">nginx</span></code>, and <code class="docutils literal notranslate"><span class="pre">mysql</span></code>:</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>Be mindful of your group’s effort in troubleshooting the deployment. <em>Only use</em> the <code class="docutils literal notranslate"><span class="pre">service</span></code> tool <em>for observation</em> with the <code class="docutils literal notranslate"><span class="pre">status</span></code> command.</p>
+<p class="last">After reaching a group consensus your TA can issue the <code class="docutils literal notranslate"><span class="pre">service</span></code> commands that mutate service state.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Linux/BASH</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span> service &lt;service-name&gt; status
+</pre></div>
+</div>
+</div>
+<p>For example, if you were to check the status of a <em>functioning</em> API service you would receive the following output:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Linux/BASH</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ service coding-events-api status
+
+● coding-events-api.service - Coding Events API
+  Loaded: loaded <span class="o">(</span>/etc/systemd/system/coding-events-api.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+  Active: active <span class="o">(</span>running<span class="o">)</span> since Tue <span class="m">2020</span>-10-31 <span class="m">19</span>:04:51 UTC<span class="p">;</span> <span class="m">1</span> day 4h ago
+Main PID: <span class="m">18196</span> <span class="o">(</span>dotnet<span class="o">)</span>
+    Tasks: <span class="m">16</span> <span class="o">(</span>limit: <span class="m">4648</span><span class="o">)</span>
+  CGroup: /system.slice/coding-events-api.service
+          └─18196 /usr/bin/dotnet /opt/coding-events-api/CodingEventsAPI.dll
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-journalctl">
+<h4>11.5.1.1.3. Using <code class="docutils literal notranslate"><span class="pre">journalctl</span></code><a class="headerlink" href="#using-journalctl" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference external" href="https://www.freedesktop.org/software/systemd/man/journalctl.html" target="_blank">journalctl<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> tool can be used to view the logs written by systemd services. You can use it to view the logs of a particular service unit using the <code class="docutils literal notranslate"><span class="pre">-u</span></code> (unit name) option:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Linux/BASH</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ journalctl -u &lt;service-name&gt;
+</pre></div>
+</div>
+</div>
+<p>The systemd journal can store thousands of logs and lines within them. Often it is useful to view just the most recent logs. The <code class="docutils literal notranslate"><span class="pre">-f</span></code> option will <em>follow</em> the logs starting from the last 10 lines and continuously display new lines as they are written:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Linux/BASH</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ journalctl -f -u &lt;service-name&gt;
+
+<span class="c1"># shorthand (-u comes after to pair with the service name argument)</span>
+$ journalctl -fu &lt;service-name&gt;
+</pre></div>
+</div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Like other <em>foreground</em> CLI programs that attach to your Terminal, you can use <code class="docutils literal notranslate"><span class="pre">ctrl+c</span></code> to exit <code class="docutils literal notranslate"><span class="pre">journalctl</span></code>.</p>
+</div>
+</div>
+<div class="section" id="working-with-self-signed-certificates">
+<h4>11.5.1.1.4. Working with Self-Signed Certificates<a class="headerlink" href="#working-with-self-signed-certificates" title="Permalink to this headline">¶</a></h4>
+<p>A self-signed certificate means that the signature used to sign the certificate is not recognized by an external <a class="reference external" href="https://www.ssl.com/faqs/what-is-a-certificate-authority/" target="_blank">certificate authority (CA)<i class="fas fa-external-link-alt" aria-hidden="true"></i></a>. These certificates can still be used for TLS encryption but are not <em>inherently trusted</em> like traditional SSL certificates due to their unknown signing authority. By default, HTTP client applications like browsers or CLI tools will automatically reject self-signed certificates as a security measure.</p>
+<p>In our <code class="docutils literal notranslate"><span class="pre">configure-ssl.sh</span></code> deployment script our VM <em>internally generated</em> the signing key used to sign the SSL certificate with the <code class="docutils literal notranslate"><span class="pre">openssl</span></code> tool. Recall that when you first connected to the Swagger documentation of your API in the browser, you had to bypass the warning and accept (<em>explicitly trust</em>) the self-signed certificate. CLI tools can be configured similarly to also accept self-signed certificates.</p>
+<p>When working with <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> cmdlet the default certificate validation behavior for self-signed certificates results in the following error for servers using self-signed certificates:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span> Invoke-RestMethod: The remote certificate is invalid according to the validation procedure.
+</pre></div>
+</div>
+</div>
+<p>We can override the default validation procedure by using the <code class="docutils literal notranslate"><span class="pre">-SkipCertificateCheck</span></code> option:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; Invoke-RestMethod -Uri https://&lt;PUBLIC IP&gt; -SkipCertificateCheck
+</pre></div>
+</div>
+</div>
+<p>Similarly, when working <em>inside</em> the Ubuntu VM with <code class="docutils literal notranslate"><span class="pre">curl</span></code> the validation can be skipped using the <code class="docutils literal notranslate"><span class="pre">-k</span></code> option:</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Linux/Bash</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>$ curl https://localhost -k
+</pre></div>
+</div>
+</div>
+<p>When troubleshooting within a VM, you can use <code class="docutils literal notranslate"><span class="pre">curl</span></code> to <em>isolate</em> networking-related issues. If you are able to connect successfully from inside the machine, but receive a timeout when connecting externally, it indicates that an internal firewall or external network security rule is the issue.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">In Ubuntu the default <a class="reference external" href="https://help.ubuntu.com/community/UFW" target="_blank">ufw tool<i class="fas fa-external-link-alt" aria-hidden="true"></i></a> is used for managing <em>internal</em> firewall rules.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="discussion-components-of-a-functioning-system">
+<h2>11.5.2. Discussion: Components of a Functioning System<a class="headerlink" href="#discussion-components-of-a-functioning-system" title="Permalink to this headline">¶</a></h2>
+<p>When troubleshooting, your first step is to form a mental model of the system you are working on. Due to the introductory nature of this course, you and your group will begin by discussing what you know about a fully functioning system. Consider all of the deployment components you have learned throughout this course. Pay particular attention to the components that have given you trouble in your previous studios.</p>
+<p>For each component, you should define what expectations need to be met for it to operate in a <em>healthy state</em> and which misconfigurations could lead to a <em>failed state</em>. By thinking about the system holistically you will be able to keep track of which expectations are not met and collectively decide on the actions needed to reach a resolution.</p>
+<p>These assumptions will be the starting points for troubleshooting once your group gains access to Azure. Any expectations that are not met in the broken deployment will offer a clue as to what needs to be fixed.</p>
+<p>Your TA will lead your group in this discussion <em>you will have 20 minutes</em> to discuss the system. Consider the network, service, host, and application levels with regards to the Coding Events API:</p>
+<ul class="simple">
+<li>What components are in this level?</li>
+<li>How does each component need to be configured to function properly?</li>
+<li>What common misconfigurations have you encountered with each component?</li>
+<li>What was the behavior that led to discovering an issue with a component?</li>
+</ul>
+<div class="section" id="example">
+<h3>11.5.2.1. Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>You do not need to be exhaustive, but every expectation you define will help guide you when you are troubleshooting. For example, if you were to describe the components in the service level:</p>
+<ul class="simple">
+<li>AADB2C</li>
+<li>Key vault</li>
+</ul>
+<p>You could then proceed to list some of the expectations of an operational AADB2C component:</p>
+<ul class="simple">
+<li>A tenant directory linked to an active subscription</li>
+<li>At least two registered applications—the Coding Events API and Postman client</li>
+<li>A SUSI flow that uses the local email account provider</li>
+<li>An exposed <code class="docutils literal notranslate"><span class="pre">user_impersonation</span></code> scope for restricting access to the API that has been granted to the Postman client</li>
+<li>Postman is configured to use the implicit flow and the hosted postman redirect URI</li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">After you gain experience with troubleshooting, you will be able to hone in on one component or level at a time. However, when you are just starting out it is beneficial to think about the system as a whole.</p>
+</div>
+</div>
+</div>
+<div class="section" id="setup">
+<h2>11.5.3. Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>Before the troubleshooting timer begins, you will need to work with your TA to set up your access to the Azure resources and VM. For this walkthrough your TA will grant you <code class="docutils literal notranslate"><span class="pre">Reader</span></code> access to their directory and lab subscription. Once you have registered with their directory and assumed the <code class="docutils literal notranslate"><span class="pre">Reader</span></code> role, you will be able to access the public IP address of the VM and <code class="docutils literal notranslate"><span class="pre">ssh</span></code> into the machine.</p>
+<div class="section" id="access-troubleshooting-subscription">
+<h3>11.5.3.1. Access Troubleshooting Subscription<a class="headerlink" href="#access-troubleshooting-subscription" title="Permalink to this headline">¶</a></h3>
+<p>For this exercise, an Azure subscription will be setup for your group. Your TA will be the administrator of this group and each student will have read-only access. You will be able to view the deployment components, but will need to work together with your team to diagnose the issue and tell your TA how to resolve it.</p>
+<p>Even though you already have an account with Microsoft, it is only associated with your subscription. In order to access your TA’s subscription (and the resources of the broken deployment) you will need to register an account in <em>their directory</em> through the following steps:</p>
+<ol class="arabic simple">
+<li>Accept the email for the directory invitation</li>
+<li>Create a new account in your TA’s directory</li>
+<li>Setup your AZ CLI to use the TA’s subscription</li>
+</ol>
+<div class="section" id="accept-email">
+<h4>11.5.3.1.1. Accept Email<a class="headerlink" href="#accept-email" title="Permalink to this headline">¶</a></h4>
+<p>The first step is accessing the email that was sent from Microsoft on your TAs behalf. The email will include a link that will allow you to associate your email address with a new account under the directory and subscription the TA administers.</p>
+<p>Upon clicking the link you will be taken to a Microsoft web page that will prompt you to create an account in your TA’s tenant directory.</p>
+</div>
+<div class="section" id="create-account-in-the-ta-tenant-directory">
+<h4>11.5.3.1.2. Create Account In the TA Tenant Directory<a class="headerlink" href="#create-account-in-the-ta-tenant-directory" title="Permalink to this headline">¶</a></h4>
+<p>The form will come pre-populated with your email address (since you navigated to the webpage from your email client) and you will need to enter a password.</p>
+<p>This account, and subscription, will be temporary, so we will use the same password to make things consistent. Copy the password below, then paste it in the form to avoid spelling mistakes:</p>
+<ul class="simple">
+<li><strong>Password</strong>: <code class="docutils literal notranslate"><span class="pre">LaunchCode-&#64;zure</span></code></li>
+<li><strong>Display name</strong>: your name (should default)</li>
+</ul>
+<img alt="Put in password and display name to create account in TA directory" src="../../_images/create-ta-dir-account.png" />
+<p>An email will be sent to you containing a security code. Copy the code and paste it into the verification form:</p>
+<img alt="Verify email security code to create account in TA directory" src="../../_images/verify-email-ta-dir-account.png" />
+<p>You will then be prompted to accept the invitation permissions (select <code class="docutils literal notranslate"><span class="pre">Accept</span></code>):</p>
+<img alt="Verify email security code to create account in TA directory" src="../../_images/accept-ta-dir-permissions.png" />
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">It may take some time for the account to be created.</p>
+</div>
+<p>At the next prompt, you can select the <em>Skip for now</em> link, as this is only temporary for this final exercise:</p>
+<img alt="Select skip for now for temporary access" src="../../_images/ta-dir-skip-for-now.png" />
+<p>Then select <em>Yes</em> to stay signed in:</p>
+<img alt="Select stay signed in" src="../../_images/ta-dir-stay-signed-in.png" />
+</div>
+<div class="section" id="confirm-resources-access">
+<h4>11.5.3.1.3. Confirm Resources Access<a class="headerlink" href="#confirm-resources-access" title="Permalink to this headline">¶</a></h4>
+<p>You now have access to the resources created under the TA troubleshooting subscription. Select <em>All Resources</em> from the home dashboard to confirm that the broken deployment resources are available for you to view:</p>
+<img alt="View all resources" src="../../_images/ta-dir-all-resources.png" />
+</div>
+<div class="section" id="setup-az-cli">
+<h4>11.5.3.1.4. Setup AZ CLI<a class="headerlink" href="#setup-az-cli" title="Permalink to this headline">¶</a></h4>
+<p>First we need to clear the AZ CLI cache:</p>
+<div class="highlight-PowerShell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">account</span> <span class="nb">clear</span>
+</pre></div>
+</div>
+<p>Now we need to login again which will present us with the form to authenticate:</p>
+<div class="highlight-PowerShell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">login</span>
+</pre></div>
+</div>
+<p>Because you selected <em>Stay signed in</em>, from the previous step, it will default to your account <em>within the TA tenant directory</em>. All you need to do is select your name from the list:</p>
+<img alt="Log into the TA directory from az CLI" src="../../_images/ta-dir-az-login.png" />
+<p>Back in your PowerShell Terminal you will see your account information output:</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span>&gt; az login
+# output example
+[
+   {
+      ...trimmed...
+      &quot;id&quot;: &quot;095dea07-a8e5-4bd1-ba75-54d61d581524&quot;,
+      &quot;name&quot;: &quot;Troubleshooting - TA &lt;Name&gt;&quot;,
+      &quot;user&quot;: {
+         &quot;name&quot;: &quot;patrick@launchcode.org&quot;,
+         &quot;type&quot;: &quot;user&quot;
+      }
+      ...trimmed...
+   }
+]
+</pre></div>
+</div>
+</div>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">Before continuing, confirm that the name of the subscription matches your TA name: <code class="docutils literal notranslate"><span class="pre">Troubleshooting</span> <span class="pre">-</span> <span class="pre">TA</span> <span class="pre">&lt;Name&gt;</span></code>.</p>
+</div>
+<p>After configuring the AZ CLI to use the new subscription, let’s set up our AZ CLI defaults for the correct resource group and virtual machine:</p>
+<div class="highlight-PowerShell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">configure</span> <span class="n">-d</span> <span class="n">group</span><span class="p">=</span><span class="n">linux-ts-rg</span> <span class="n">vm</span><span class="p">=</span><span class="n">broken-linux-vm</span>
+</pre></div>
+</div>
+<p>You can verify everything worked by looking at the default VM. It should be identical to your group-mates and TA:</p>
+<div class="highlight-PowerShell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">vm</span> <span class="n">show</span>
+</pre></div>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">You only have <em>read-access</em> to the resources in your TA’s Azure subscription. Feel free to look around all you want, however any Azure commands will need to be run by your TA.</p>
+</div>
+</div>
+</div>
+<div class="section" id="configure-postman">
+<h3>11.5.3.2. Configure Postman<a class="headerlink" href="#configure-postman" title="Permalink to this headline">¶</a></h3>
+<p>For this walkthrough, you will use a Postman collection that has the AADB2C details pre-configured as variables.</p>
+<div class="section" id="import-the-final-postman-collection">
+<h4>11.5.3.2.1. Import the Final Postman Collection<a class="headerlink" href="#import-the-final-postman-collection" title="Permalink to this headline">¶</a></h4>
+<p>You can import this collection by selecting the <em>Import</em> button and then selecting the <em>Link</em> tab in the import window. Paste in the following link then select <em>Continue</em>:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://gist.githubusercontent.com/lc-education-ci-user/5e4c91152702502c10ceea28899c29ff/raw/9537c5f7974d719c2001a0043a8cedc5201b5640/postman_coding-events-api.json" target="_blank">postman collection link (GitHub gist file)<i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
+</ul>
+<img alt="Postman import collection from gist URL" src="../../_images/postman-import-gist-collection.png" />
+</div>
+<div class="section" id="update-access-token-settings">
+<h4>11.5.3.2.2. Update Access Token Settings<a class="headerlink" href="#update-access-token-settings" title="Permalink to this headline">¶</a></h4>
+<p>After importing, you will need to update your access token settings to use the following pre-defined variables (from top to bottom of the access token form). As a reminder, you can access this by selecting the <em>three dots</em> next to the collection name, selecting <em>Edit</em> then from the <em>Authorization</em> tab select <em>Get New Access Token</em>:</p>
+<ul class="simple">
+<li><strong>Token Name</strong>: <code class="docutils literal notranslate"><span class="pre">{{TokenName}}</span></code></li>
+<li><strong>Redirect URL</strong>: <code class="docutils literal notranslate"><span class="pre">{{RedirectURL}}</span></code></li>
+<li><strong>Auth URL</strong>: <code class="docutils literal notranslate"><span class="pre">{{AuthURL}}</span></code></li>
+<li><strong>Client ID</strong>: <code class="docutils literal notranslate"><span class="pre">{{ClientID}}</span></code></li>
+<li><strong>Scopes</strong>: <code class="docutils literal notranslate"><span class="pre">{{Scopes}}</span></code></li>
+<li><strong>State</strong>: <code class="docutils literal notranslate"><span class="pre">{{State}}</span></code></li>
+</ul>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p>You can copy and paste each <code class="docutils literal notranslate"><span class="pre">{{Variable}}</span></code> value into the settings form. If you misspell any variable it will turn red.</p>
+<p class="last">If you would like to preserve your existing settings, you can copy them to another document before pasting in the variable references.</p>
+</div>
+<p>After updating the form your settings should match the image below:</p>
+<img alt="Postman configure access token variables" src="../../_images/postman-access-token-variables.png" />
+<p>You can now request an access token and <em>create a new account</em> in this shared AADB2C tenant. After receiving your access token, leave the edit collection window open.</p>
+</div>
+<div class="section" id="update-the-baseurl-variable">
+<h4>11.5.3.2.3. Update the <code class="docutils literal notranslate"><span class="pre">baseURL</span></code> Variable<a class="headerlink" href="#update-the-baseurl-variable" title="Permalink to this headline">¶</a></h4>
+<p>From the <em>Authorization</em> tab select the <em>Variables</em> tab. Then (as seen in a previous studio) in the <em>Current Value</em> entry on the right side replace the current value, <code class="docutils literal notranslate"><span class="pre">https://localhost:5001</span></code>, with the public IP address of your group’s VM:</p>
+<img alt="Postman update the baseUrl variable with the public IP address of the API" src="../../_images/postman-update-baseurl.png" />
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">You will not <em>currently</em> be able to access the API due to the broken state of the deployment. However, once you and your group have resolved enough issues to begin making requests you will not need to configure anything else in Postman.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="deployment-issues">
+<h2>11.5.4. Deployment Issues<a class="headerlink" href="#deployment-issues" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p>While troubleshooting all changes made to the state of a component needs to be accounted for. Defer to your TA for taking any mutating actions—<em>do not make changes on your own</em>.</p>
+<p class="last">As your TA makes changes, consider the outcome and adjust your mental model accordingly.</p>
+</div>
+<p>Once everyone in your group has configured access to Azure you can begin troubleshooting! You can start by using external tools for diagnosis (like the browser, <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">CLI</span></code> or <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code>). Then for each issue you discover you can use the following  prompts to discuss and progress towards resolving it:</p>
+<ul class="simple">
+<li>What clues have been discovered so far?</li>
+<li>What level do you think the issue related to?</li>
+<li>What components do you think are involved?</li>
+<li>What tools will you need to use to identify the issue?</li>
+<li>What action do you suggest should be taken and why?</li>
+<li>What clues are presented after your TA attempted to fix the issue?</li>
+</ul>
+</div>
+<div class="section" id="final-mission">
+<h2>11.5.5. Final Mission<a class="headerlink" href="#final-mission" title="Permalink to this headline">¶</a></h2>
+<p>If you and your group are able to fix the deployment, you will be able to load the Swagger documentation at the public IP of the host machine. At this point, the API will be fully functional and you can complete your final mission using Postman:</p>
+<ul class="simple">
+<li>Create an account in the AADB2C tenant to get an access token</li>
+<li>Create a coding event and read its description</li>
+</ul>
+</div>
+<div class="section" id="resetting-the-az-cli">
+<h2>11.5.6. Resetting the AZ CLI<a class="headerlink" href="#resetting-the-az-cli" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">You <em>do not need to reset your AZ CLI to complete this walkthrough</em>. However, if you would like to continue working with your resources for the remaining time in the course, the following instructions can be used.</p>
+</div>
+<p>First re-issue the account clear and login commands:</p>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Windows/PowerShell</span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="n">az</span> <span class="n">account</span> <span class="nb">clear</span>
+<span class="p">&gt;</span> <span class="n">az</span> <span class="n">login</span>
+</pre></div>
+</div>
+</div>
+<p>This time rather than selecting the default account (the account registered in your TA’s directory) you will select the <em>User another account</em> option:</p>
+<img alt="AZ CLI login select use another account option" src="../../_images/reset-az-select-other-account.png" />
+<p>Enter your email address for Azure to look up all related accounts.</p>
+<div class="admonition-note admonition">
+<p class="first admonition-title"><i class="fas fa-sticky-note" aria-hidden="true"></i>Note</p>
+<p class="last">Although your email is the same this process allows you to differentiate between different accounts associated with the same email address login.</p>
+</div>
+<p>From the select account view you will need to select the <em>Personal Account</em> option:</p>
+<img alt="AZ CLI login select your personal account" src="../../_images/reset-az-select-personal-account.png" />
+<p>Back in your PowerShell Terminal you will now see the subscriptions associated with your personal account.</p>
+<div class="admonition-warning admonition">
+<p class="first admonition-title"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>Warning</p>
+<p class="last">If you can still view an account output that has your TA’s subscription name (<code class="docutils literal notranslate"><span class="pre">Troubleshooting</span> <span class="pre">-</span> <span class="pre">TA</span> <span class="pre">&lt;Name&gt;</span></code>) you have selected the wrong account. Restart the process and make sure you select <em>Personal Account</em>.</p>
+</div>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="how-to-troubleshoot.html"><span aria-hidden="true">&larr;</span> 11.4. How to Troubleshoot</a></li>
+        
+        
+        <li class="next"><a href="../../genindex.html">Index <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/troubleshooting-next-steps/walkthrough_troubleshooting-linux-deployment.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

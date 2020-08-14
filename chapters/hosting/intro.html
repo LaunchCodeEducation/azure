@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>4.1. Hosting &#8212; Microsoft Azure  documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fa/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/launchcode.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/site.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.2. Networking" href="networking.html" />
+    <link rel="prev" title="4. Introduction to Web Hosting" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body class="body-bc">
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+   <div class="container">
+     <div class="navbar-header">
+       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/lc-ed-logo.png" alt="LaunchCode logo"></span>
+       </a>
+       <span class="navbar-text navbar-version pull-left"><b></b></span>
+     </div>
+
+       <div class="collapse navbar-collapse nav-collapse">
+         <ul class="nav navbar-nav">
+           
+           
+             
+           
+           
+           
+           
+           
+         </ul>
+
+         
+           
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+    <label for="q" class="searchLabel">Search</label>
+    <input type="text" name="q" class="form-control" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+         
+       </div>
+   </div>
+ </div>
+
+<ol class="breadcrumb container">
+    <li><a href="../../index.html">Contents</a></li>
+    <li><a href="index.html">4. Introduction to Web Hosting</a></li>
+    <li class="active">4.1. Hosting</li>
+</ol>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 content ">
+
+    
+  <div class="section" id="hosting">
+<h1>4.1. Hosting<a class="headerlink" href="#hosting" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">After developing a project the natural question is how do you make your project available to a larger audience?</p>
+<p>How can your intended users interface with the code you created?</p>
+<p>This is where the idea of hosting, or deploying comes in. We will look at both of these ideas, and talk about bringing our .NET applications to the world.</p>
+<div class="section" id="local-hosting">
+<h2>4.1.1. Local Hosting<a class="headerlink" href="#local-hosting" title="Permalink to this headline">¶</a></h2>
+<p>Before we deploy any applications to a remote server or cloud environment let’s discuss the steps for deploying an application to your local machine.</p>
+<p>Throughout this class you have predominately run your applications with your IDE, Visual Studio. You simply click the green play button and your application springs to life. However, our remote server will not have access to Visual Studio and will need to run our application in a different way.</p>
+<p>Luckily for us, Microsoft has created a way to run our applications without Visual Studio. Microsoft gives us a command line interface called <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> that allows us to publish our .NET applications, so they can be run by another computer that has access to the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> runtime SDK.</p>
+<div class="section" id="run">
+<h3>4.1.1.1. Run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
+<p>The first <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> command we are interested in is <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">run</span></code>. This command invokes the .NET SDK to run the selected .NET application.</p>
+<p>When you click the green play button in Visual Studio it is simply running the <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">run</span></code> command behind the scenes. You can also manually run your project by navigating to your project directory in a terminal and entering <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">run</span></code>.</p>
+<p>Let’s take a basic MVC .NET application and run it with the <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">run</span></code> CLI.</p>
+<img alt="../../_images/dotnet-run.png" src="../../_images/dotnet-run.png" />
+<p>When we navigate to <code class="docutils literal notranslate"><span class="pre">http://localhost:5000/</span></code> we see:</p>
+<img alt="../../_images/dotnet-run-view.png" src="../../_images/dotnet-run-view.png" />
+<p>Using <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">run</span></code>, we have successfully run our .NET application, and it started our web app on the appropriate ports. This is essentially what Visual Studio is doing for us behind the scenes when we push the green play button.</p>
+</div>
+<div class="section" id="publish">
+<h3>4.1.1.2. Publish<a class="headerlink" href="#publish" title="Permalink to this headline">¶</a></h3>
+<p id="index-1">Being able to run our project is one thing, but right now our project is a combination of the code we have written, and all the libraries we have loaded as dependencies into our project. It would be great if we could package all of these together to make them easier to transport between computers. This is where the <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">publish</span></code> command comes in. This also bundles in all the requisite files so that the newly published project can be run with a lighter version of the .NET SDK. Any computer that has the runtime .NET SDK will be able to run our application.</p>
+<p>Let’s take a look at what happens when we run <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">publish</span></code> inside of our app.</p>
+<img alt="../../_images/dotnet-publish-cli.png" src="../../_images/dotnet-publish-cli.png" />
+<p>This is telling us that it created a few new directories with our newly packaged project in <code class="docutils literal notranslate"><span class="pre">bin/Debug/netcoreapp3.1/publish</span></code>.</p>
+<p>Exploring this directory, we see a few things:</p>
+<img alt="../../_images/dotnet-publish-cli-directory.png" src="../../_images/dotnet-publish-cli-directory.png" />
+<p>And from here we can simply run our application with just the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> runtime using <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">base-mvc.dll</span></code>.</p>
+<img alt="../../_images/dotnet-base-mvc.png" src="../../_images/dotnet-base-mvc.png" />
+<p id="index-2">The files that are created by our source code are known as <strong>build artifacts</strong>.</p>
+<p>Although these examples are still local, they represent how we will run our application on a server.</p>
+<p>The steps to run a project on a server are:</p>
+<ul class="simple">
+<li>Publish a project</li>
+<li>Transfer the published artifacts to remote server</li>
+<li>Download the <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> runtime SDK on remote server</li>
+<li>Run artifacts using the dotnet runtime SDK</li>
+</ul>
+</div>
+</div>
+<div class="section" id="cloud-hosting">
+<h2>4.1.2. Cloud Hosting<a class="headerlink" href="#cloud-hosting" title="Permalink to this headline">¶</a></h2>
+<p id="index-3">In the previous section we learned how to host a .NET application on our local machine. This is a good exercise because it illustrates the steps necessary to deploy a project. However, there are a few issues with hosting an application on your local machine.</p>
+<p>The first issue is that of networking. Our application is deployed on our machine, but it is only accessible on that machine and other computers on our local network. You must know the internal IP address of your computer in order to share your application with others on your network. However, we built our application for general users of the internet. Our local machine is connected to the internet, but it has no way of routing traffic on the internet to our local machine. We have a networking issue.</p>
+<p>The second major issue is that of availability. Even if our local machine was available to general internet, users would only be able to access our application when our computer is on and running the application. Ideally, we will have a dedicated server that is always on and running our application, so that users can connect to our application at all times.</p>
+<p>The final issue is that of discovery. Even if a general internet user could access our local machine, and our machine was always on and running our application, a general internet user would have to know our exact IP address in order to access our application. Most Internet Service Providers assign IP addresses dynamically. So your IP address might change over time. We need a permanent IP address. Better yet, we need a permanent name that a general internet user can use to access our application.</p>
+<p>All three of these issues are solved by cloud hosting:</p>
+<ul class="simple">
+<li>Networking</li>
+<li>Discovery</li>
+<li>Availability</li>
+</ul>
+<p>Cloud hosting allows us to overcome these issues by providing us with an always-on server, that has a public IP address that can be associated with a domain name.</p>
+<p>“Cloud” is a term used a lot in technology, but it’s really just a collection of servers that are available on the internet. These servers usually contain additional services like data backup, or privacy in the form of authentication, or encryption, and more.</p>
+<p>You can set up your own servers and configure them to always be on, and to have public-facing IP addresses. However, this can take a fair amount of setup. Most companies these days use cloud hosting providers that do this configuration for them. So you no longer need to own a server to access a server. You simply rent one from a cloud services provider. Microsoft Azure is one of these cloud services provider, and it is the tool we will be using throughout this class.</p>
+<p>Using Azure, we can easily, quickly, and cheaply start up our own server that has a public IP address, is always on, and can be configured with a domain name.</p>
+<p>After creating a server, we will be able to copy over the build artifacts we created using <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">publish</span></code>, and then run our application. It will then be accessible via the internet at a public IP address, and it will always be on and running. This allows our users to interface with our application.</p>
+</div>
+</div>
+
+
+
+    
+    <nav aria-label="Next and Previous Pages">
+      <ul class="pager">
+        
+        <li class="previous"><a href="index.html"><span aria-hidden="true">&larr;</span> 4. Introduction to Web Hosting</a></li>
+        
+        
+        <li class="next"><a href="networking.html">4.2. Networking <span aria-hidden="true">&rarr;</span></a></li>
+        
+      </ul>
+    </nav>
+    
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/chapters/hosting/intro.rst.txt"
+     rel="nofollow">Page Source</a>
+</div>
+      
+    </p>
+    <p>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
