@@ -53,7 +53,7 @@ The Local Environment
 ---------------------
 
 .. index:: 
-   :single: environment; local  
+   single: environment; local  
 
 The **local environment** is one we are already familiar with, your local development machine! This is the environment in which coding happens.
 
@@ -73,7 +73,7 @@ The Development Environment
 ---------------------------
 
 .. index:: 
-   :single: environment; development
+   single: environment; development
 
 The **development environment** is the environment in which all of the work from individual local environments is combined together. The local environment is where you test the change *you* made, whereas the development environment ensures your changes integrate with the entire codebase. This is a crucial environment that runs the full suite of automated tests.
 
@@ -87,7 +87,7 @@ The Production Environment
 --------------------------
 
 .. index:: 
-   :single: environment; production
+   single: environment; production
 
 The final environment is the **production environment** which is where the deployed application lives. This is the end-goal of the web development code we write. Ultimately, our deployed application needs to live in an environment that is accessible via the web so it can be reached by end users. 
 

@@ -139,8 +139,8 @@ Scaling Computation
 .. index:: scaling
 
 .. index::
-   :single: scaling, vertical
-   :single: scaling, horizontal
+   single: scaling, vertical
+   single: scaling, horizontal
 
 Due to the external nature of these services, they can be scaled.
 

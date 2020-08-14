@@ -132,7 +132,7 @@ Transferring a Representation of state
 ======================================
 
 .. index:: 
-   :single: state, transition
+   single: state, transition
 
 .. index:: ! transfer (REST)
 

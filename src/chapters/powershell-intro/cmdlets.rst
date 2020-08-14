@@ -134,7 +134,7 @@ Updating Help Documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
-   :single: PowerShell;documentation
+   single: PowerShell;documentation
 
 PowerShell keeps commonly used documentation locally on your machine, so that it can be accessed more quickly and offline. In some cases, you will need to update your *local* documentation cache. You can update the local help documentation using the ``Update-Help`` cmdlet. 
 

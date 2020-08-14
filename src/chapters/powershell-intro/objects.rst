@@ -18,7 +18,7 @@ PowerShell is part of the .NET family of `CLS-compliant languages <https://docs.
 .. index:: ! namespace
 
 .. index:: 
-   :single: namespace; System
+   single: namespace; System
 
 The .NET standard library is separated into different **namespaces** which are like modules of related classes.  The root namespace, called the `System namespace <https://docs.microsoft.com/en-us/dotnet/api/system?view=netcore-3.1>`_, contains the base class definitions for fundamental object types like ``Strings`` or ``Arrays``.
 

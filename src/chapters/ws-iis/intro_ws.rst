@@ -95,7 +95,7 @@ What Are Features?
 ------------------
 
 .. index:: 
-   :single: Windows Server;features
+   single: Windows Server;features
 
 **Features** are applications that can be installed on a server for managing and further customizing a machine's capabilities. Some of them are directly related to Roles while others operate independently. When a Role has a direct dependence on particular Features, a dialog box will notify you when selecting that Role.
 

@@ -174,7 +174,7 @@ In Bash, we used the ``mkdir`` command to create new directories. This alias is 
 Recall that in Bash we used a side-effect of the ``touch`` command to create a new file. The ``touch`` alias *does not exist* in PowerShell.
 
 .. index::
-   :single: PowerShell;item
+   single: PowerShell;item
 
 Instead of using a side-effect, PowerShell has a dedicated cmdlet for creating **items** of any type, such as a file or directory.
 

@@ -27,7 +27,7 @@ External Backing Services
 =========================
 
 .. index::
-  :single: backing service; external
+  single: backing service; external
 
 An **external backing service** is a dependent service that runs *externally* to the application. In other words, the backing service and the application run on different host machines and communicate over an *external* network.
 
@@ -54,7 +54,7 @@ Internal Backing Services
 =========================
 
 .. index:: 
-   :single: backing service; internal
+   single: backing service; internal
 
 An **internal backing service** is hosted on the same machine as the running application. 
 
