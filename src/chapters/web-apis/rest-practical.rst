@@ -188,7 +188,7 @@ The path to identify a resource entity would need to include:
 - The unique resource entity identifier (``/{entityId}``) within the collection.
 
 .. index::
-   single: path, variable
+   single: path; variable
 
 Because the unique identifier of the entity is *variable* we use a **path variable** (``{entityId}``) to describe it in a generic way.
 
