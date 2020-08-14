@@ -188,7 +188,7 @@ The path to identify a resource entity would need to include:
 - The unique resource entity identifier (``/{entityId}``) within the collection.
 
 .. index::
-   :single: path, variable
+   single: path; variable
 
 Because the unique identifier of the entity is *variable* we use a **path variable** (``{entityId}``) to describe it in a generic way.
 
@@ -377,7 +377,7 @@ Status Codes
 ------------
 
 .. index::
-   :double: HTTP, status code
+   double: HTTP; status code
 
 Every RESTful API response includes a status code that indicates whether the client's request succeeded or failed.
 
@@ -487,7 +487,7 @@ Headers
 -------
 
 .. index::
-   :double: HTTP, headers
+   double: HTTP; headers
 
 In RESTful design **headers** are used to communicate metadata about each interaction with a resource.
 

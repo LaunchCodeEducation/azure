@@ -149,7 +149,7 @@ External Configuration
 ^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
-   :single: configuration; external
+   single: configuration; external
 
 A best practice for handling secrets is to use **external configuration** files. In the same vein as keeping sensitive data out of our source code, external configuration goes a step further by keeping our configuration files outside of our project file tree.
 
@@ -176,7 +176,7 @@ Secrets Management
 There are many different applications that handle secrets management, and while they have slightly different implementations they are loosely based on the same basic principles. Generally speaking, we refer to these services as **secrets managers**.
 
 .. index:: 
-   :single: secrets; store
+   single: secrets; store
 
 - A **secrets store** is a directory or location that houses secrets
 - Secrets are contained in a text file
@@ -193,7 +193,7 @@ Secrets Managers
 -----------------------
 
 .. index::
-   :single: secrets manager; local
+   single: secrets manager; local
 
 ``dotnet user-secrets`` is an added module of the ``dotnet`` CLI. Like all ``dotnet`` commands, you can use the ``--help`` option to learn more. This tool is a **local secrets manager**.
 
@@ -279,7 +279,7 @@ Azure Key Vault
 ---------------
 
 .. index::
-   :single: secrets manager; remote
+   single: secrets manager; remote
 
 In our remote production environment we will be using Azure Key Vault to manage our secrets. The Azure Key Vault is a **remote secrets manager**. It behaves like ``user-secrets`` but is managed externally from your machine.
 

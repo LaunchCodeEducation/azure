@@ -2,26 +2,26 @@
 How to Troubleshoot
 ===================
 
-As a reminder troubleshooting is the process of:
+As a reminder, troubleshooting is the process of:
 
-#. realizing an issue exists
-#. identifying the issue through duplication (how and under what conditions it happens)
-#. researching the potential causes of the issue
-#. isolate the root cause of the issue by systematically eliminating the potential causes
-#. researching a fix for the root cause of the issue
-#. fixing the root cause of the issue
-#. checking that the fix resolves the issue
-#. communicating about the issue with others
+#. Realizing an issue exists
+#. Identifying the issue through duplication (how and under what conditions it happens)
+#. Researching the potential causes of the issue
+#. Isolate the root cause of the issue by systematically eliminating the potential causes
+#. Researching a fix for the root cause of the issue
+#. Fixing the root cause of the issue
+#. Checking that the fix resolves the issue
+#. Communicating about the issue with others
 
-This process can seem daunting because it involves *researching information you don't already know*. To effectively research things you don't understand you must be able to **ask the correct questions**.
+This process can seem daunting because it involves *researching information you don't already know*. To effectively research things you don't understand you must be able to *ask the correct questions*.
 
 .. admonition:: Note
 
    The best way to learn troubleshooting is to practice the skill. However, you don't have to go into your practice completely blind. 
    
-   This article will present you with ideas, tips, and tricks for assisting with the troubleshooting process.
+   This section will present you with ideas, tips, and tricks for assisting with the troubleshooting process.
 
-In this article we will discuss:
+In this section we will discuss:
 
 - Common issues across web deployments and common HTTP status codes to look out for
 - Researching strategies
@@ -82,15 +82,15 @@ In this article we will discuss:
 Identify Common Issues
 ======================
 
-Identifying an issue can be the most difficult part of troubleshooting. As your knowledge of potential causes grows it will become easier to identify issues. Until that point in time you will have to utilize your research skills to determine potential causes.
+Identifying an issue can be the most difficult part of troubleshooting. As your knowledge of potential causes grows, it will become easier to identify issues. Until that point in time, you will have to utilize your research skills to determine potential causes.
 
-For now, knowing what some of the most **common issues** encountered are and being able to **ask and answer questions about your deployment** will be your two biggest tools for identifying an issue and it's potential causes.
+For now, knowing what some of the most *common* issues encountered are, and being able to *ask and answer questions about your deployment* will be your two biggest tools for identifying an issue and its potential causes.
 
 .. admonition:: Warning
 
-   When you are still in the process of identifying an issue it is crucial to **not make any changes**! 
+   When you are still in the process of identifying an issue it is crucial to *not make any changes*! 
    
-   Every change you make needs to be accounted for because you may need to undo the change to put the system back in its original state. Changes are necessary to resolve the issue, but while you are still identifying and researching you want the system to exist in its initial state.
+   Every change you make needs to be accounted for, because you may need to undo the change to put the system back in its original state. Changes are necessary to resolve the issue, but while you are still identifying and researching you want the system to exist in its initial state.
 
 Let's take a look at some of the most common issues seen in web deployments (this list is not exhaustive):
 
@@ -111,16 +111,16 @@ Let's take a look at some of the most common issues seen in web deployments (thi
      - A server received an incorrect response from another server
      - web server is running, but the application is not
    * - HTTP Status Code: 401 Unauthorized
-     - The request did not include credentials indicating a user needs to **authenticate**
+     - The request did not include credentials indicating a user needs to *authenticate*
      - credentials were not included
    * - HTTP Status Code: 403 Forbidden
-     - The request included credentials, but the authenticated user does not have the proper level of **authorization**
+     - The request included credentials, but the authenticated user does not have the proper level of *authorization*
      - credentials are not correct, or have not been configured properly
    * - HTTP Status Code: 500 Internal Server Error
      - The request was received, however the server encountered an issue it doesn't know how to resolve
      - runtime error in the source code
 
-As you may have noticed may of the most common issues are `HTTP status codes <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>`_. These status codes are a standard across HTTP so learning the various categories and individual status codes will be *invaluable* when troubleshooting a web deployment.
+As you may have noticed, may of the most common issues are `HTTP status codes <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>`_. These status codes are a standard across HTTP, so learning the various categories and individual status codes will be *invaluable* when troubleshooting a web deployment.
 
 Researching
 ===========
@@ -129,22 +129,22 @@ Researching is a vital part of the troubleshooting process, especially when you 
 
 Being able to clearly state the issue is a powerful tool when researching potential causes. Not only will it be beneficial to communicate with your fellow teammates and superiors as a part of your research, but knowing how to phrase your question to a search engine to optimize the results can save a lot of time.
 
-For theses reasons it is beneficial to be able to state the issue in plain english, for communicating with people, and to be able to state the issue in a way to optimize search engine results.
+For theses reasons, it is beneficial to be able to state the issue in plain english. This helps in both communicating with people, and optimizing search engine results.
 
 Tools for Identifying and Reproducing Issues
 --------------------------------------------
 
 Before you can even begin researching an issue it must first be brought to your attention. 
 
-You may discover an issue on your own through your day to day activities, but it is more likely an issue will be submitted by QA or an end user through some form of ticketing software. The ticketing software will usually provide you with a brief description of what the issue was, and the conditions in which the issue was exposed. In some instances you may need to reach out to the QA team or end user to gather more information about the issue.
+You may discover an issue on your own through your day-to-day activities, but it is more likely an issue will be submitted by QA or an end user through some form of ticketing software. The ticketing software will usually provide you with a brief description of what the issue was, and the conditions in which the issue was exposed. In some instances, you may need to reach out to the QA team or end user to gather more information about the issue.
 
 .. admonition:: Note
 
-   Ticketing software goes outside the scope of this class, however you should learn how the ticketing system your team uses works as it is the most reliable method for initially discovering an issue.
+   Ticketing software goes outside the scope of this class. However, you should learn how the ticketing system your team uses works, as it is the most reliable method for initially discovering an issue.
 
-After realizing an issue exists the next step is for you to reproduce the issue in your own environment. To gain a better understanding than what the end user or QA provided you with you will want to keep an eye out for HTTP status codes and logs.
+After realizing an issue exists, the next step is for you to reproduce the issue in your own environment. To gain a better understanding than what the end user or QA provided you with, you will want to keep an eye out for HTTP status codes and logs.
 
-The HTTP status codes aren't always recognizable in the browser, but provide you with tremendous insight on potential causes. You will want to check the logs of the application which will have a record of any runtime errors that the web server encountered.
+The HTTP status codes aren't always recognizable in the browser, but provide you with tremendous insight on potential causes. You will want to check the logs of the application, which will have a record of any runtime errors that the web server encountered.
 
 .. admonition:: Note
 
@@ -153,9 +153,9 @@ The HTTP status codes aren't always recognizable in the browser, but provide you
 Search Engine Skills
 --------------------
 
-One of the easiest and first line steps of researching should be to search for an error message using a search engine like Bing or Google. You will be presented with the experiences of thousands of developers before you that have witnessed the same, or similar issue. Many times you can find the exact potential cause of the issue with very little effort by reading the experiences people have had on StackOverFlow or various other tech forums. 
+One of the easiest and first-line steps of researching should be to search for an error message using a search engine like Bing or Google. You will be presented with the experiences of thousands of developers before you that have witnessed the same, or a similar issue. Often you can find the exact potential cause of the issue with very little effort by reading the experiences people have had on StackOverFlow or other tech forums. 
 
-With a more unique issue you may not find any results referencing your exact issue. However, you should be able to find documentation, or source code that caused the issue to be raised and by reading through the documentation or source code you can usually find potential causes of the more rare issue.
+With a more unique issue you may not find any results referencing your exact issue. However, you should be able to find documentation, or source code that caused the issue. By reading through the documentation or source code you can usually find potential causes of the more rare issue.
 
 .. admonition:: Note
 
@@ -164,27 +164,27 @@ With a more unique issue you may not find any results referencing your exact iss
 Talking with Teammates
 ----------------------
 
-Outside of search engines talking with your teammates can be a fantastic tool for learning about new potential causes. Many of your teammates will have more experience in troubleshooting and you may be able to use their knowledge of potential causes to bolster your own knowledge.
+Outside of search engines, talking with your teammates can be a fantastic way to learn about new potential causes. Many of your teammates will have more experience in troubleshooting, and you may be able to use their knowledge of potential causes to bolster your own knowledge.
 
-In addition to learning about your teammates knowledge of related potential causes simply talking through the issue with someone else serves as `rubber duck debugging <https://en.wikipedia.org/wiki/Rubber_duck_debugging>`_ and many times just the act of explaining everything out loud will bring a potential cause to the top of your mind!
+In addition to learning from your teammates, simply talking through the issue with someone else serves as `rubber duck debugging <https://en.wikipedia.org/wiki/Rubber_duck_debugging>`_. Often, just the act of explaining everything out loud will bring a potential cause to the top of your mind!
 
 Create a Visual Representation of the System
 --------------------------------------------
 
-To further your insight into potential causes of issues take some time to sketch out the entire deployment. Doing so will force you to think about all of the components and their interactions. Visualizing the system as opposed to simply talking about it forces you to examine the system from a new perspective.
+To further your insight into potential causes of issues, take some time to sketch out the entire deployment. Doing so will force you to think about all of the components and their interactions. Visualizing the system, as opposed to simply talking about it, forces you to examine the system from a new perspective.
 
 .. admonition:: Note
 
-   This visualization is similar to creating a mental model of the system, however the act of drawing the system by hand will engage different areas of your brain which may spur the creativity necessary for you to identify a new potential cause.
+   This visualization is similar to creating a mental model of the system. However the act of drawing the system by hand will engage different areas of your brain, which may spur the creativity necessary for you to identify a new potential cause.
 
 Trial and Error
 ---------------
 
-As a final suggestion for researching you can use trial and error. Trial and error is the processing of making an educated guess of the root cause of an issue and making a small change related to that guess.
+As a final suggestion for researching, you can use trial and error. Trial and error is the processing of making an educated guess of the root cause of an issue and making a small change related to that guess.
 
-Trial and error can be tricky because every change made to the state must be recorded, if you aren't certain your guess is correct you should record the change that you made. If your guess is incorrect you may need to revert the change to reset the deployment to its initial state.
+Trial and error can be tricky, because every change made to the state must be recorded. If you aren't certain that your guess is correct, you should record the change that you made. If your guess is incorrect, you may need to revert the change to reset the deployment to its initial state.
 
-Trial and error is a valid research strategy when the above methods don't provide you with the information you need to resolve the issue. However, trial and error should be approached with care unless you are in a controlled environment like an education environment (this class), or a personal environment.
+Trial and error is a valid research strategy when the above methods don't provide you with the information you need to resolve the issue. However, trial and error should be approached with care unless you are in a controlled environment, such as an education environment (this class), or a personal environment.
 
 .. admonition:: Warning
 
@@ -193,15 +193,15 @@ Trial and error is a valid research strategy when the above methods don't provid
 Create a Mental Model of the System
 ===================================
 
-Troubleshooting follows a very specific pattern as mentioned at the start of this article and in the previous article. 
+Troubleshooting follows a very specific pattern, as mentioned at the start of this section and in the previous section. 
 
-The pattern is relatively easy to follow once you have come up with a **list of potential causes**. You will learn many of the potential causes throughout your career, but when you are first starting it is difficult to know many potential causes.
+The pattern is relatively easy to follow once you have come up with a *list of potential causes*. You will learn many of the potential causes throughout your career, but when you are first starting it is difficult to know many potential causes.
 
-A highly beneficial tool for determining potential causes is having a strong mental model of the deployment. If you can recognize the individual components and are aware of how the components can fail, or be misconfigured you are well on your way to performing a root cause analysis.
+A highly beneficial tool for determining potential causes is having a strong mental model of the deployment. If you can recognize the individual components, and are aware of how the components can fail or be misconfigured, you are well on your way to performing a root cause analysis.
 
-To help determine a list of potential causes consider the related components and categorize issues based on the related components. This will help you come up with a troubleshooting checklist of potential issues to check with a broken
+To help determine a list of potential causes, consider the related components and categorize issues based on the related components. This will help you come up with a troubleshooting checklist of potential issues to check.
 
-To assist you in the task of categorizing issues we have created various levels The levels are completely arbitrary, and differ between deployments. 
+To assist you in the task of categorizing issues, we have created various levels. The levels are completely arbitrary, and differ between deployments. 
 
 Use these categories as a tool to help you determine potential causes and develop a troubleshooting checklist.
 
@@ -226,43 +226,43 @@ Our Coding Events API only works with two services:
 - Key Vault (database connection string & has granted access to our VM)
 - AADB2C
 
-Not only must these services exist, and be accessible to the deployed application they must be configured properly as well. In the case of our API our Key Vault must have a secret, and most grant the VM ``get`` access to the secret. Our AADB2C must be configured to issue identity tokens and access tokens. Our AADB2C tenant must have exposed the registered Coding Events API and appropriate scopes must be granted for the registered front end application, Postman.
+Not only must these services exist and be accessible to the deployed application, they must be configured properly as well. In the case of our API, our Key Vault must have a secret, and must grant the VM ``get`` access to the secret. Our AADB2C must be configured to issue identity tokens and access tokens. Our AADB2C tenant must have exposed the registered Coding Events API, and appropriate scopes must be granted for the registered front end application, Postman.
 
 For a more complex deployment you may also consider:
 
-- external database server
-- external API our application depends on
-- external search engine service
+- External database server
+- External API that an application depends on
+- External search engine service
 
 Host Level
 ----------
 
-Our Coding Events API has a lot of things going on at the Host level inside the VM we must have:
+Our Coding Events API has a lot of things going on at the Host level inside the VM. We must have:
 
-- properly installed API dependencies (dotnet, mysql, nginx, systemd, unit file)
-- source code delivery mechanism (git)
-- source code build mechanism (dotnet publish)
-- appropriate folder and file structure
+- Properly installed API dependencies (dotnet, mysql, nginx, systemd, unit file)
+- Source code delivery mechanism (git)
+- Source code build mechanism (dotnet publish)
+- Appropriate folder and file structure
 - NGINX
 - MySQL
 - properly configured ``appsettings.json``
 
 .. admonition:: Note
 
-   In this class we have been working with a VM embedded database. In many real-world deployments this database would be a service that is external to the VM. For our deployment we consider any database issues to be at the Host level.
+   In this class we have been working with a VM-embedded database. In many real-world deployments this database would be a service that is external to the VM. For our deployment, we consider any database issues to be at the Host level.
 
 General Troubleshooting Questions
 =================================
 
-Using the mental model of this deployment we can start coming up with questions to guide our research into the issue:
+Using the mental model of this deployment, we can start coming up with questions to guide our research into the issue:
 
-Is this an issue?
+Is This an Issue?
 -----------------
 
 - Was it user error?
 - Is this something I can reproduce?
 
-What is the issue?
+What is the Issue?
 ------------------
 
 - Is this issues something I have seen before?
@@ -271,23 +271,23 @@ What is the issue?
 - Can I state this issue in plain English?
 - How would I enter this issue to a search engine?
 
-What is the category of this issue?
+What is the Category of This Issue?
 -----------------------------------
 
 - Which level is this issue affecting (network, service, host)?
-- Could this issue span across multiple levels?
-- Is this an Operations or Development issue?
+- Could this issue span multiple levels?
+- Is this an operations or development issue?
 
 .. admonition:: Note
 
-   If you don't know the category research the issue by talking with teammates, or searching the internet for other people's experiences that have had similar problem.
+   If you don't know the category, research the issue by talking with teammates, or searching the internet for other people's experiences that have had similar problems.
 
-You can then create a troubleshooting checklist of possible solutions based on the questions you answered above:
+You can then create a troubleshooting checklist of possible solutions based on the questions you answered above.
 
 Troubleshooting Checklist
 =========================
 
-Using our general troubleshooting questions and our Coding Events API mental model we have started a troubleshooting checklist for this specific deployment (take note it is not complete and you will be expanding on this in the upcoming walkthrough and throughout the rest of your career):
+Using our general troubleshooting questions and our Coding Events API mental model, we have started a troubleshooting checklist for this specific deployment. (Note it is not complete, and you will be expanding on this in the upcoming walkthrough and throughout the rest of your career):
 
 Networking issues
 -----------------
@@ -321,12 +321,12 @@ Remember that resolving one issue can bring a new issue to the surface. Seeing a
 
 The most effective way to build your skills in troubleshooting is by practicing troubleshooting. Each time you solve a new issue you will learn a new solution and you will increase your ability to research issues. 
 
-A very beneficial thing to do is to build **your own troubleshooting checklist**. The questions above give a good introduction for a starter checklist, as you continue to learn more about Operations continue adding to the checklist with your new experiences.
+A very beneficial thing to do is to build *your own troubleshooting checklist*. The questions above provide a good starter checklist. As you continue to learn more about operations, continue adding to the checklist with your new experiences.
 
 Communicate the Issue
 =====================
 
-Communicating the issue is a simple as defining each part of the troubleshooting process you have worked through so far:
+Communicating the issue is as simple as defining each part of the troubleshooting process you have worked through so far:
 
 - State how the problem was identified
 - State how the problem was proven through reproduction
@@ -339,14 +339,14 @@ You will find communicating is not only a powerful tool for reporting to superio
 Troubleshooting Tools
 =====================
 
-The tools you will use for troubleshooting vary. Sometimes you are locked in to a set of troubleshooting tools based on the tech stack of your deployment. For example if you are using Windows Server and have a personal Windows operating system the troubleshooting tools will be slightly different than if you were deploying to an Ubuntu server and have a personal MacOS. 
+The tools you will use for troubleshooting vary. Sometimes you are locked in to a set of troubleshooting tools based on the tech stack of your deployment. For example, if you are using Windows Server and have a personal Windows operating system, the troubleshooting tools will be slightly different than if you were deploying to an Ubuntu server and have a personal MacOS. 
 
 .. admonition:: Note
 
-   In some instances you will use multiple sets of troubleshooting tools. 
+   In some instances, you will use multiple sets of troubleshooting tools. 
    
-   Consider the Coding Events API deployed to an Ubuntu Virtual Machine. If you need to access a tool internal to the VM you are locked in to the tools that are usable with Ubuntu. Whereas your personal computer may have access to a completely different set of tools.
+   Consider the Coding Events API deployed to an Ubuntu Virtual Machine. If you need to access a tool internal to the VM you are locked in to the tools that are usable with Ubuntu. However, your personal computer may have access to a completely different set of tools.
 
 Tool preference will also vary across teams and individuals. You may have a personal preference for one tool, but choose to work with a different tool to match the preference of your team. You will experience new tools as you advance throughout your career. Learning the preferred tools is one of the first tasks you should accomplish when joining a new team.
 
-In the upcoming walkthrough we will introduce a variety of tools that can be used throughout the troubleshooting process of the Coding Events API. Part of being a successful troubleshooter is the ability to learn and effectively use new troubleshooting tools. Feel free to share any other tools that would be helpful with your fellow group mates.
+In the upcoming walkthrough we will introduce a variety of tools that can be used throughout the troubleshooting process of the Coding Events API. Part of being a successful troubleshooter is the ability to learn and effectively use new troubleshooting tools. Feel free to share any other tools that would be helpful with your fellow teammates.

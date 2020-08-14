@@ -68,7 +68,7 @@ Private IP Addresses
 ^^^^^^^^^^^^^^^^^^^^
 
 .. index::
-   :single: IP address, private
+   single: IP address; private
 
 A **private IP address** is an IP Address that identifies a device within a LAN.
 

@@ -115,7 +115,7 @@ Universal Representation
 ------------------------
 
 .. index::
-   :single: representation, universal
+   single: representation; universal
 
 It is necessary to adopt a **universal representation** because web APIs and client applications may be written in two different programming languages. Your web API may be written in C#/ASP.NET while the client  may be written using JavaScript and React.
 
@@ -175,7 +175,7 @@ HTTP Body
 ---------
 
 .. index:: 
-   :single: HTTP, body
+   single: HTTP; body
 
 The HTTP body is part of how we express state through the stateless HTTP protocol. An HTTP body can contain a varity of different media types, known as `MIME types <https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types>`_. 
 
@@ -221,7 +221,7 @@ HTTP Status Codes
 -----------------
 
 .. index::
-   :single: HTTP, status codes
+   single: HTTP; status codes
 
 The next HTTP component that transfers state is the **HTTP status code**. The HTTP status code is included as a part of *every* HTTP response. The status code is the API's way of telling the client application how their request was handled. 
 
@@ -251,7 +251,7 @@ HTTP Headers
 ------------
 
 .. index::
-   :single: HTTP, headers
+   single: HTTP; headers
 
 The final HTTP component that transfers state is the **HTTP header**. Any `number of headers <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers>`_ can be included in a request or response.
 
